@@ -1,11 +1,13 @@
 {
   "name": "fcc-cdg-wiki",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "History of freeCodeCamp Chengdu group",
   "main": "index.js",
   "scripts": {
     "server": "reveal-md ReadMe.md",
     "editor": "npm run server -- -w",
+    "build": "npm run server -- --static docs/",
+    "start": "web-server docs/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,5 +31,8 @@
   "homepage": "https://github.com/FreeCodeCamp-Chengdu/Wiki#readme",
   "devDependencies": {
     "reveal-md": "^2.0.5"
+  },
+  "dependencies": {
+    "koapache": "^0.2.2"
   }
 }
