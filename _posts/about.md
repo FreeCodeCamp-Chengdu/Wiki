@@ -1,7 +1,6 @@
 ---
 title: 关于 freeCodeCamp 成都社区
 toc: true
-donate: false
 ---
 
 > 原文链接：https://github.com/FreeCodeCamp-Chengdu/FCC-chengdu

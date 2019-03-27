@@ -3,9 +3,9 @@ title: 发起活动
 donate: false
 ---
 
-<a class="button is-link is-rounded" target="_blank" href="https://github.com/FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io/new/hexo/source/_posts/Activity/">添加活动</a>
+<a class="button is-link is-rounded" target="_blank" href="https://github.com/FreeCodeCamp-Chengdu/Wiki/new/master/_posts/Activity/">添加活动</a>
 
-<a class="button is-link is-rounded" target="_blank" href="https://github.com/FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io/edit/hexo/source/_data/volunteer.yml">添加人员</a>
+<a class="button is-link is-rounded" target="_blank" href="https://github.com/FreeCodeCamp-Chengdu/Wiki/edit/master/_data/volunteer.yml">添加人员</a>
 
 【Front-matter 规范】（点右下角按钮复制模板）
 

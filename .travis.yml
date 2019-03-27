@@ -1,0 +1,26 @@
+branches:
+  only:
+    - master
+
+language: node_js
+node_js:
+  - lts/*
+cache:
+  directories:
+    - node_modules
+
+install:
+  - git clone https://{GIT_URI}.git ../super/
+  - rm -r ../super/${FOLDER_SOURCE}/
+  - mv . ../super/${FOLDER_SOURCE}/
+  - cd ../super/
+  - npm install
+script:
+  - npm run build
+  - cd ${FOLDER_TARGET}
+  - git init
+  - git config user.name ${UID}
+  - git config user.email ${EMAIL}
+  - git add .
+  - git commit -m "${MESSAGE}"
+  - git push --force --quiet https://${TOKEN}@${GIT_URI}.git master:${BRANCH}
