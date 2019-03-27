@@ -14,8 +14,8 @@ tags:
 toc: true
 
 # Activity meta
-start: 2019-03-24 20:00
-end: 2019-03-24 22:00
+start: 2019-03-24 20:00:00
+end: 2019-03-24 22:00:00
 description: "freeCodeCamp 成都社区 在线工作坊 #1"
 mentors:
   - TechQuery
@@ -37,9 +37,9 @@ freeCodeCamp 成都社区 在线工作坊 #1
 
 ## 教程主旨
 
-  - **内容型网站**：新闻门户、官方网站、个人博客、维基百科、技术文档
-  - **网站应用**：基于 Google 力主的 PWA 国际标准，一键生成网站的 App
-  - **零基础**、**零成本**、**免维护**：开源的一键化生成工具、个人免费的自动化云服务
+- **内容型网站**：新闻门户、官方网站、个人博客、维基百科、技术文档
+- **网站应用**：基于 Google 力主的 PWA 国际标准，一键生成网站的 App
+- **零基础**、**零成本**、**免维护**：开源的一键化生成工具、个人免费的自动化云服务
 
 <!-- More -->
 
@@ -63,32 +63,32 @@ npm init hexo-wiki ~/Desktop/FCC \
 
 - [ ] [自定义网站配置](https://hexo.io/zh-cn/docs/configuration)
 - [ ] [配置托管服务](https://pages.github.com/)
-    - [ ] [GitHub 账号注册](https://github.com/join/)
+  - [ ] [GitHub 账号注册](https://github.com/join/)
 - [ ] [配置部署服务](https://tech-query.me/development/hello-hexo-travis/)
 - [ ] [写第一篇文章](https://hexo.io/zh-cn/docs/front-matter)
 - [ ] [配置顶级域名](https://tech-query.me/development/free-web-site/)
-    - [ ] [挑选、注册域名](https://www.freenom.com/zh/index.html)
-    - [ ] [CloudFlare 账号注册](https://dash.cloudflare.com/sign-up)
+  - [ ] [挑选、注册域名](https://www.freenom.com/zh/index.html)
+  - [ ] [CloudFlare 账号注册](https://dash.cloudflare.com/sign-up)
 - [ ] [生成独立应用](https://github.com/lavas-project/hexo-pwa)
 
 ## 参考文档
 
-  - [Hexo 官方文档](https://hexo.io/zh-cn/docs/)
-  - [Git 简易指南](http://www.bootcss.com/p/git-guide/)
+- [Hexo 官方文档](https://hexo.io/zh-cn/docs/)
+- [Git 简易指南](http://www.bootcss.com/p/git-guide/)
 
 ## 教练团队
 
-  - 主讲：水歌
-  - 助教：Akagilnc、Too、姜姜姜、书香墨剑、ing
+- 主讲：水歌
+- 助教：Akagilnc、Too、姜姜姜、书香墨剑、ing
 
 ### 助教招募
 
-  - 必要技能：熟悉 Windows、Linux 或 Mac OS X 命令行、包管理器、Git
-  - 可选技能：用过 Node.JS、Hexo（或其它静态网站生成器）
+- 必要技能：熟悉 Windows、Linux 或 Mac OS X 命令行、包管理器、Git
+- 可选技能：用过 Node.JS、Hexo（或其它静态网站生成器）
 
 ---
 
-## 【附0】Windows 软件安装图解
+## 【附 0】Windows 软件安装图解
 
 ### 0. 安装前提
 
@@ -103,30 +103,34 @@ Windows 7 / 8 / 10（及同代 Windows Server）
 ![](PowerShell-1.png)
 
 （复制、粘贴以下命令）
+
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 ```
+
 【注意】
-  - 已经装了同类或同样的软件可以把那个名字删掉，不用重复装
-  - 如有软件安装出现问题，可自行下载、安装，优先安装 [Zoom 客户端](https://zoom.us/download#client_4meeting)
+
+- 已经装了同类或同样的软件可以把那个名字删掉，不用重复装
+- 如有软件安装出现问题，可自行下载、安装，优先安装 [Zoom 客户端](https://zoom.us/download#client_4meeting)
 
 ### 3. 安装必备软件
 
 （复制、粘贴以下命令）
+
 ```shell
 choco install -y git tortoisegit nodejs-lts vscode googlechrome zoom
 ```
 
-## 【附1】Mac OS X 软件安装图解
+## 【附 1】Mac OS X 软件安装图解
 
 ### 0. 安装前提
 
-Mac OS X 10.10 及以上版本
+Mac OS X 10.10  及以上版本
 
 ### 1. 打开命令行
 
- - 在 SpotLight 里输入“终端”后回车
- - 或从 LaunchPad 里点击“终端”图标
+- 在 SpotLight 里输入“终端”后回车
+- 或从 LaunchPad 里点击“终端”图标
 
 ![](terminal.png)
 
@@ -137,9 +141,11 @@ Mac OS X 10.10 及以上版本
 ### 2. 安装 Command Line Tools
 
 在终端里粘贴如下命令后，回车执行
+
 ```shell
 xcode-select --install
 ```
+
 ![](xcode-install-command.png)
 
 弹出类似这样的窗口
@@ -153,6 +159,7 @@ xcode-select --install
 ### 3. 安装包管理器
 
 在终端里粘贴如下命令后，回车执行
+
 ```shell
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
@@ -167,34 +174,39 @@ xcode-select --install
 如没有报错，看到 Installation successful 字样即表示安装成功！
 ![](console-succes.png)
 
-注意：安装非常慢、超时等可能与国内网络条件有关，需要参考 [macOS安装Homebrew](https://blog.csdn.net/zzq900503/article/details/80404314) 使用国内镜像源安装。（如下图的报错）
+注意：安装非常慢、超时等可能与国内网络条件有关，需要参考 [macOS 安装 Homebrew](https://blog.csdn.net/zzq900503/article/details/80404314) 使用国内镜像源安装。（如下图的报错）
 ![](brew-error2.png)
 
-如下图的安装失败则需要参考 [Mac上安装homebrew的心酸历程](https://blog.csdn.net/sinat_41756672/article/details/80534031) 执行 git 的配置命令：
+如下图的安装失败则需要参考 [Mac 上安装 homebrew 的心酸历程](https://blog.csdn.net/sinat_41756672/article/details/80534031) 执行 git 的配置命令：
+
 ```shell
 git config --global http.postBuffer 524288000
 ```
+
 ![](brew-error2.png)
 
 ### 4. 安装必备软件
 
 依次执行如下两条命令进行安装 ——
+
 ```shell
 brew install node cask
 brew cask install sourcetree visual-studio-code google-chrome zoomus
 ```
+
 【注意】
-  - 已经装了同类或同样的软件可以把那个名字删掉，不用重复装
-  - 如有软件安装出现问题，可自行下载、安装，优先安装 [Zoom 客户端](https://zoom.us/download#client_4meeting)
+
+- 已经装了同类或同样的软件可以把那个名字删掉，不用重复装
+- 如有软件安装出现问题，可自行下载、安装，优先安装 [Zoom 客户端](https://zoom.us/download#client_4meeting)
 
 ### 5. 参考资料
 
-  - [macOS 缺失的软件包的管理器](https://brew.sh/index_zh-cn)
-  - [macOS安装Homebrew](https://blog.csdn.net/zzq900503/article/details/80404314)
-  - [Mac上安装homebrew的心酸历程](https://blog.csdn.net/sinat_41756672/article/details/80534031)
-  - [macOS安装homebrew报错 LibreSSL SSL_read: SSL_ERROR_SYSCALL, errno 54](https://juejin.im/post/5b657ee56fb9a04fa5610406)
+- [macOS 缺失的软件包的管理器](https://brew.sh/index_zh-cn)
+- [macOS 安装 Homebrew](https://blog.csdn.net/zzq900503/article/details/80404314)
+- [Mac 上安装 homebrew 的心酸历程](https://blog.csdn.net/sinat_41756672/article/details/80534031)
+- [macOS 安装 homebrew 报错 LibreSSL SSL_read: SSL_ERROR_SYSCALL, errno 54](https://juejin.im/post/5b657ee56fb9a04fa5610406)
 
-## 【附2】Linux 安装最新版 Node.JS
+## 【附 2】Linux 安装最新版 Node.JS
 
 Fedora/CentOS、Debian/Ubuntu 等主流发行版官方软件源的 Node.JS 版本可能 `< 6.3.0`，要先安装 **NVM**：
 
@@ -205,11 +217,12 @@ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | 
 ```
 
 再安装 Node.JS 最新 LTS 版：
+
 ```shell
 nvm install --lts
 ```
 
-## 【附3】科学上网工具
+## 【附 3】科学上网工具
 
-  - https://github.com/getlantern/lantern
-  - https://psiphon.ca/zh/
+- https://github.com/getlantern/lantern
+- https://psiphon.ca/zh/
