@@ -1,5 +1,5 @@
 ---
 type: volunteer
 layout: volunteer
-title: Volunteer
+title: 社群伙伴
 ---

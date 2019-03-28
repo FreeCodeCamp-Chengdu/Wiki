@@ -1,6 +1,16 @@
 ---
 title: 关于 freeCodeCamp 成都社区
+date: 2018-03-02 17:23:31
+updated: 2018-06-08 14:46:14
+categories:
+  - Profile
+tags:
+  - community
 toc: true
+authors:
+  - jiangyuzhen
+  - Heqingsong
+  - TechQuery
 ---
 
 > 原文链接：https://github.com/FreeCodeCamp-Chengdu/FCC-chengdu
@@ -12,6 +22,8 @@ freeCodeCamp（简称 FCC）是由美国人 Quincy Larson 发起的开源项目�
 2016 年 4 月，由 DevEco （晋剑 + Miya）将  FCC 引入中国，并举办了 2000+ 开发者参与的在线全民编程活动，到目前为止，已成功举办了 100+ 场 Coffee & Code / 编程黑客松 / 编程静修日等活动。在 FCC China ，  有 20+% 的女性加入到了社区学习、提升编程能力。
 
 [FCC 中国 2017 年度总结](https://mp.weixin.qq.com/s?__biz=MzAxMjkxNTY2OQ==&mid=2247485324&idx=1&sn=e0b7542b9fe79129a7745be6fe7111bc)
+
+<!-- more -->
 
 ## FCC 成都社区
 

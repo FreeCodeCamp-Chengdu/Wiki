@@ -7,6 +7,8 @@ tags:
   - Web
   - Hexo
   - Wiki
+authors:
+  - TechQuery
 ---
 
 [![](images/Hexo.png)](https://tech-query.me/create-hexo-wiki/ "create-hexo-wiki")

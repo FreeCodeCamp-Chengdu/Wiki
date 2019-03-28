@@ -10,7 +10,7 @@ tags:
   - GitHub
   - Web
 toc: true
-thumbnail: activity/pair-programming-concept/Code_Coffee.jpg
+thumbnail: activity/salon/pair-programming-concept/Code_Coffee.jpg
 
 # Activity meta
 description: 2016年9月份 Coffee & Code

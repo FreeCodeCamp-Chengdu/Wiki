@@ -10,7 +10,7 @@ cache:
     - node_modules
 
 install:
-  - git clone https://{GIT_URI}.git ../super/
+  - git clone https://${GIT_URI}.git ../super/
   - rm -r ../super/${FOLDER_SOURCE}/
   - mv . ../super/${FOLDER_SOURCE}/
   - cd ../super/

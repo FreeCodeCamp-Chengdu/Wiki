@@ -1,7 +1,13 @@
 ---
 title: freeCodeCamp 成都社区大事记
 date: 2018-05-25 03:16:27
+categories:
+  - Profile
+tags:
+  - community
 toc: true
+authors:
+  - TechQuery
 ---
 
 > 本文是 [freeCodeCamp 中国社区][1]在[首届 2050 大会团聚][2]时水歌代表成都社区做的汇报
@@ -13,6 +19,8 @@ toc: true
 - 2016 年 6 月始
 - **余煊** ([@Yasic](https://github.com/Yasic))
 - 连续主持 3 场技术沙龙
+
+<!-- more -->
 
 ---
 
