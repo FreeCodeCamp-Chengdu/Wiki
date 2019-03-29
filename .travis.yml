@@ -11,6 +11,8 @@ cache:
 
 install:
   - git clone --recurse-submodules https://${GIT_URI}.git ../super/
+  - rm -rf ../super/${FOLDER_SOURCE}/*
+  - mv ./* ../super/${FOLDER_SOURCE}/
   - cd ../super/
   - npm install
 script:
