@@ -12,7 +12,7 @@ cache:
 install:
   - git clone https://${GIT_URI}.git ../super/
   - rm -r ../super/${FOLDER_SOURCE}/
-  - mv . ../super/${FOLDER_SOURCE}/
+  - cp . ../super/${FOLDER_SOURCE}/
   - cd ../super/
   - npm install
 script:
