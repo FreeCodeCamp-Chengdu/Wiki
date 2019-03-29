@@ -10,9 +10,7 @@ cache:
     - node_modules
 
 install:
-  - git clone https://${GIT_URI}.git ../super/
-  - rm -r ../super/${FOLDER_SOURCE}/
-  - cp . ../super/${FOLDER_SOURCE}/
+  - git clone --depth=2 https://${GIT_URI}.git ../super/
   - cd ../super/
   - npm install
 script:
