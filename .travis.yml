@@ -10,7 +10,7 @@ cache:
     - node_modules
 
 install:
-  - git clone --depth=2 https://${GIT_URI}.git ../super/
+  - git clone --recurse-submodules https://${GIT_URI}.git ../super/
   - cd ../super/
   - npm install
 script:
