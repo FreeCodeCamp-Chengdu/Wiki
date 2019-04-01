@@ -8,6 +8,8 @@ tags:
 toc: true
 authors:
   - TechQuery
+
+slidehtml: true
 ---
 
 > 本文是 [freeCodeCamp 中国社区][1]在[首届 2050 大会团聚][2]时水歌代表成都社区做的汇报

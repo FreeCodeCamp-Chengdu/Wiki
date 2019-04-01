@@ -10,8 +10,7 @@ cache:
     - node_modules
 
 install:
-  - git clone --recurse-submodules https://${GIT_URI}.git ../super/
-  - rm -rf ../super/${FOLDER_SOURCE}/*
+  - git clone https://${GIT_URI}.git ../super/
   - mv ./* ../super/${FOLDER_SOURCE}/
   - cd ../super/
   - npm install
