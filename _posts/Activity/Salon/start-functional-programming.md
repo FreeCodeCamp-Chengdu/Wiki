@@ -92,7 +92,9 @@ let 回锅肉 = 炒(炒(切(煮(肉))), 切(蒜苗), 豆豉);
 2. 减少**外部状态**干扰
 3. 通过**高阶抽象**方便阅读、灵活组合
 
-那该怎么用呢？很多人连 JavaScript 数组自带的 `map()`、`filter()`、`reduce()` 都还用不好呢。无妨，我们动手演练 ——
+那该怎么用呢？很多人连 JavaScript 数组自带的 `map()`、`filter()`、`reduce()` 都还用不好呢。无妨，我们动手演练一个例子 —— 罗马数字与阿拉伯数字的转换。
+
+规则如下：
 
 ```javascript
 //  罗马数字与阿拉伯数字的对应
@@ -107,11 +109,48 @@ const roman_arab = {
 };
 ```
 
-以上罗马数字从大到小排列，只有下列情况除外：
+罗马数字从大到小排列，并加起来得到最后的结果，只有下列情况除外：
 
 - I 可在 V、X 前，表减 1（如 IV 表示 4）
 - X 可在 L、C 前，表减 10
 - C 可在 D、M 前，表减 100
+
+最后我们实现了罗马数字转阿拉伯数字的代码：
+
+```javascript
+const romanLetterToInt = (letter) => {
+  const table = {
+    'I': 1,
+    'V': 5,
+    'X': 10,
+    'L': 50,
+    'C': 100,
+    'D': 500,
+    'M': 1000
+  }
+  if (!table[letter]) {
+    throw Error('capacity should be positive integer')
+  } else {
+    return table[letter];
+  }
+}
+
+const strSplit = (str) => {
+  return str.split('').map(romanLetterToInt);
+}
+
+const subtractItem = (arr) => {
+  return arr.map((element, index, arr) => {
+    return index < arr.length - 1 && element < arr[index + 1] ? -element : element
+  })
+}
+
+const getInt = (str) => {
+  return subtractItem(strSplit(str)).reduce((acc, curr) => {
+    return acc += curr;
+  },0)
+}
+```
 
 ### 再举个栗子
 
