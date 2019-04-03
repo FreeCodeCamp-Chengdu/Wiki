@@ -11,6 +11,9 @@ toc: true
 authors:
   - TechQuery
   - jiangyuzhen
+photos:
+  - final-all.jpg
+  - demongodYY-coding.jpg
 
 # Activity meta
 description: "FCC 成都社区 Coffee & Code #34"
