@@ -13,7 +13,13 @@ authors:
   - jiangyuzhen
 photos:
   - final-all.jpg
+  - demongodYY-start.jpg
+  - begin-all.jpg
   - demongodYY-coding.jpg
+  - TechQuery-coding.jpg
+  - question-1.jpg
+  - question-2.jpg
+  - question-3.jpg
 
 # Activity meta
 description: "FCC 成都社区 Coffee & Code #34"
