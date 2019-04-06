@@ -13,10 +13,13 @@ authors:
   - jiangyuzhen
 photos:
   - final-all.jpg
-  - demongodYY-start.jpg
   - begin-all.jpg
+  - demongodYY-talking-1.jpg
+  - demongodYY-talking-2.jpg
+  - demongodYY-talking-3.jpg
   - demongodYY-coding.jpg
-  - TechQuery-coding.jpg
+  - TechQuery-coding-1.jpg
+  - TechQuery-coding-2.jpg
   - question-1.jpg
   - question-2.jpg
   - question-3.jpg

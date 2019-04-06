@@ -81,6 +81,11 @@ tags:
   # online 或 offline
   # 与内容相关的更多标签
 toc: true
+photos:
+  - # 第一张为活动封面图
+  - # 第二张开始为活动结束后上传的现场照片
+files:
+  - # 活动结束后上传的 PDF、PPT 等非纯文本文件
 
 # Activity meta
 description: # 活动简介
