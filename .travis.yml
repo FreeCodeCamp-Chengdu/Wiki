@@ -11,6 +11,8 @@ cache:
 
 install:
   - git clone https://${GIT_URI}.git ../super/
+  - rm $(ls -F | grep [^/]$)
+  - echo ${DOMAIN} > CNAME
   - mv ./* ../super/${FOLDER_SOURCE}/
   - cd ../super/
   - npm install

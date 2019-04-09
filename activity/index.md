@@ -1,5 +1,5 @@
 ---
 type: activity
 layout: activity
-title: 社区活动
+title: 活动时空
 ---

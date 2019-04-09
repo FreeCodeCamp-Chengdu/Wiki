@@ -12,15 +12,25 @@ tags:
 toc: true
 
 # Activity meta
+description: 个人分享 + 结对编程。现场用 cyber-dojo.org 网站进行演示，使用了比较简单易懂的 Word Wrap 题目。在疑似结对争吵中，两个人演示了结对编程基本的样子；如何做最简单的测试驱动开发；互相交换角色
 start: 2017-12-10 14:00:00
 end: 2017-12-10 18:00:00
-description: 个人分享 + 结对编程。现场用 cyber-dojo.org 网站进行演示，使用了比较简单易懂的 Word Wrap 题目。在疑似结对争吵中，两个人演示了结对编程基本的样子；如何做最简单的测试驱动开发；互相交换角色
+address: 成都市高新区天益南巷18号创客大使馆
 mentors:
   - too
   - demongodYY
 workers:
   - Akagilnc
   - jiangyuzhen
+
+photos:
+  - final-all.jpg
+  - too-teaching.jpg
+  - too-coding.jpg
+  - students-listening.jpg
+  - students-coding.jpg
+  - students-learning.jpg
+  - students-discussing.jpg
 ---
 
 什么是 Coding Dojo？
