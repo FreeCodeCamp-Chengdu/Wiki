@@ -27,8 +27,8 @@ workers:
   - alicaiting
 ---
 
-freeCodeCamp 成都社区 在线工作坊 #1
-
+> freeCodeCamp 成都社区 在线工作坊 #1
+>
 > 原文链接：https://shimo.im/docs/PcIvVWp7Ok8qnb5X
 
 ## 学习收获

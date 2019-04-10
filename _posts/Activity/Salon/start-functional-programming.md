@@ -130,81 +130,86 @@ const roman_arab = {
 最后我们实现了罗马数字转阿拉伯数字的代码：
 
 ```javascript
-const romanLetterToInt = (letter) => {
+const romanLetterToInt = letter => {
   const table = {
-    'I': 1,
-    'V': 5,
-    'X': 10,
-    'L': 50,
-    'C': 100,
-    'D': 500,
-    'M': 1000
-  }
-  if (!table[letter]) {
-    throw Error('capacity should be positive integer')
-  } else {
-    return table[letter];
-  }
-}
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000
+  };
 
-const strSplit = (str) => {
-  return str.split('').map(romanLetterToInt);
-}
+  if (table[letter]) return table[letter];
 
-const subtractItem = (arr) => {
-  return arr.map((element, index, arr) => {
-    return index < arr.length - 1 && element < arr[index + 1] ? -element : element
-  })
-}
+  throw Error("capacity should be positive integer");
+};
 
-const getInt = (str) => {
-  return subtractItem(strSplit(str)).reduce((acc, curr) => {
-    return acc += curr;
-  },0)
-}
+const strSplit = str => str.split("").map(romanLetterToInt);
+
+const subtractItem = arr =>
+  arr.map((element, index, arr) =>
+    index < arr.length - 1 && element < arr[index + 1] ? -element : element
+  );
+
+const getInt = str =>
+  subtractItem(strSplit(str)).reduce((acc, curr) => (acc += curr), 0);
 ```
+
 以及阿拉伯数字转罗马数字的代码：
+
 ```javascript
 const table = {
-  5: ['I', 'V', 'X'],
-  50: ['X', 'L', 'C'],
-  500: ['C', 'D', 'M']
-}
+  5: ["I", "V", "X"],
+  50: ["X", "L", "C"],
+  500: ["C", "D", "M"]
+};
 
-const intToIString = (number) => {
-  return new Array(number).fill('I').join('');
-}
+const intToIString = number => new Array(number).fill("I").join("");
 
 const mergeLetter = (str, numIndex) => {
   const length = str.length;
-  const headLen = Math.floor(length / 10);
-  const tailLen = length % 10;
+
+  const headLen = Math.floor(length / 10),
+    tailLen = length % 10;
+
   const headerArray = new Array(headLen).fill(table[numIndex][2]);
+
   switch (tailLen) {
     case 9:
-      return headerArray.concat([`${table[numIndex][0]}${table[numIndex][2]}`]).join('');
+      return headerArray
+        .concat([`${table[numIndex][0]}${table[numIndex][2]}`])
+        .join("");
     case 4:
-      return headerArray.concat([`${table[numIndex][0]}${table[numIndex][1]}`]).join('');
+      return headerArray
+        .concat([`${table[numIndex][0]}${table[numIndex][1]}`])
+        .join("");
     default:
-      const tailArray = new Array(Math.floor(tailLen / 5)).fill(table[numIndex][1]).concat(str.substring(str.length - tailLen % 5).split(''));
-      return headerArray.concat(tailArray).join('');
+      const tailArray = new Array(Math.floor(tailLen / 5))
+        .fill(table[numIndex][1])
+        .concat(str.substring(str.length - (tailLen % 5)).split(""));
+
+      return headerArray.concat(tailArray).join("");
   }
-}
+};
 
 const splitStr = (str, numIndex) => {
-  const index = str.split('').findIndex((ele) => {
-    return ele !== table[numIndex][0];
-  })
-  return index >= 0 ? [str.substring(0, index), str.substring(index)] : [str, ''];
-}
+  const index = str.split("").findIndex(ele => ele !== table[numIndex][0]);
 
-const mergeStr = (arr, numIndex) => {
-  return mergeLetter(arr[0], numIndex) + arr[1];
-}
+  return index >= 0 ? [str.slice(0, index), str.slice(index)] : [str, ""];
+};
 
-const getRoman = (num) => {
-  return mergeStr(splitStr(mergeStr(splitStr(mergeStr(splitStr(intToIString(num), 5), 5), 50), 50), 500), 500);
-}
+const mergeStr = (arr, numIndex) => mergeLetter(arr[0], numIndex) + arr[1];
+
+const getRoman = num =>
+  mergeStr(
+    splitStr(
+      mergeStr(splitStr(mergeStr(splitStr(intToIString(num), 5), 5), 50), 50),
+      500
+    ),
+    500
+  );
 ```
 
 ### 再举个栗子

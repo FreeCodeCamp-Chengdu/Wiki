@@ -9,6 +9,8 @@ cache:
   directories:
     - node_modules
 
+before_install:
+  - export TZ=${TIME_ZONE}
 install:
   - git clone https://${GIT_URI}.git ../super/
   - rm $(ls -F | grep [^/]$)
