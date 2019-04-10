@@ -62,43 +62,94 @@ npm init es-pack ~/Desktop/web-crawler
 code ~/Desktop/web-crawler
 ```
 
+#### 为 Node.JS 定制配置
+
+```shell
+npm uninstall amd-bundle
+
+npm install -D \
+    @babel/cli \
+    @babel/core \
+    @babel/plugin-transform-runtime
+
+npm install @babel/runtime
+```
+
+`package.json`
+
+```json
+{
+  "engines": {
+    "node": "^6.13.0"
+  },
+  "script": {
+    "pack": "babel source/ -d dist/ -s"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "6.13.0"
+          }
+        }
+      ]
+    ],
+    "plugins": ["@babel/plugin-transform-runtime"]
+  }
+}
+```
+
 ### 静态网页抓取
 
 #### 安装依赖包
 
 ```shell
-npm install web-cell jsdom
+npm install jsdom
 ```
 
 #### 核心代码
 
-`static.js`
+`source/static.js`
 
 ```javascript
 #! /usr/bin/env node
 
 import "@babel/polyfill";
 
-import "web-cell/dist/polyfill";
-
-import { request, $ } from "web-cell";
+import { JSDOM } from "jsdom";
 
 (async () => {
-  const { body } = await request("https://segmentfault.com/events?city=510100");
+  const {
+    window: { document }
+  } = await JSDOM.fromURL("https://segmentfault.com/events?city=510100");
 
-  const list = $(".all-event-list .widget-event", body).map(item => ({
-    title: $(".title", item)[0].textContent.trim(),
-    date: $(".widget-event__meta :first-child", item)[0]
+  const list = [
+    ...document.querySelectorAll(".all-event-list .widget-event")
+  ].map(item => ({
+    title: item.querySelector(".title").textContent.trim(),
+    date: item
+      .querySelector(".widget-event__meta :first-child")
       .textContent.trim()
       .slice(3),
-    address: $(".widget-event__meta :last-child", item)[0]
+    address: item
+      .querySelector(".widget-event__meta :last-child")
       .textContent.trim()
       .slice(3),
-    banner: $(".widget-event__banner", item)[0].src
+    banner: item.querySelector(".widget-event__banner").dataset.original
   }));
 
   console.info(list);
 })();
+```
+
+#### 编译并运行
+
+```shell
+npm run build
+
+node dist/static
 ```
 
 ### 动态网页抓取
@@ -106,7 +157,7 @@ import { request, $ } from "web-cell";
 #### 安装依赖包
 
 ```shell
-npm install puppeteer-core
+npm install puppeteer-core @tech_query/node-toolkit
 
 npm install fs-match -D
 ```
@@ -140,14 +191,18 @@ import "@babel/polyfill";
 
 import Puppeteer from "puppeteer-core";
 
+import { getNPMConfig } from "@tech_query/node-toolkit";
+
 (async () => {
   const browser = await Puppeteer.launch({
-    executablePath: process.env.npm_config_chrome
+    executablePath: getNPMConfig("chrome")
   });
 
   const page = await browser.newPage();
 
   await page.goto("https://juejin.im/events/chengdu");
+
+  await page.waitFor(".events-list .events-inner");
 
   const list = await page.$$eval(".events-list .events-inner", list =>
     list.map(item => ({
@@ -161,7 +216,65 @@ import Puppeteer from "puppeteer-core";
   );
 
   console.info(list);
+
+  process.exit();
 })();
+```
+
+#### 编译并运行
+
+```shell
+npm run build
+
+node dist/dynamic
+```
+
+### 数据接口分析
+
+![](HTTP-API.png)
+
+#### 安装依赖包
+
+```shell
+npm install node-fetch
+```
+
+#### 核心代码
+
+`data.js`
+
+```javascript
+#! /usr/bin/env node
+
+import "@babel/polyfill";
+
+import { URLSearchParams } from "url";
+
+import fetch from "node-fetch";
+
+(async () => {
+  const response = await fetch(
+    `https://event-storage-api-ms.juejin.im/v2/getEventList?${new URLSearchParams(
+      {
+        src: "web",
+        orderType: "startTime",
+        cityAlias: "chengdu"
+      }
+    )}`
+  );
+
+  const data = await response.json();
+
+  console.info(data);
+})();
+```
+
+#### 编译并运行
+
+```shell
+npm run build
+
+node dist/data
 ```
 
 ## 样本数据
@@ -182,6 +295,8 @@ import Puppeteer from "puppeteer-core";
 
 - [项目创意](https://github.com/FreeCodeCamp-Chengdu/cd-events)
 
-- [WebCell API 文档](https://web-cell.tk/WebCell/)
+- [DOM API 文档](https://developer.mozilla.org/zh-CN/docs/Web/API)
+
+- [Node.JS 中文文档](http://nodejs.cn/api/)
 
 - [Puppeteer 中文文档](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
