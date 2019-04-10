@@ -28,6 +28,7 @@ photos:
   - too-teaching.jpg
   - too-coding.jpg
   - students-listening.jpg
+  - students-watching.jpg
   - students-coding.jpg
   - students-learning.jpg
   - students-discussing.jpg
