@@ -12,6 +12,9 @@ tags:
   - GitHub
   - Wiki
 toc: true
+authors:
+  - TechQuery
+  - too
 
 # Activity meta
 start: 2019-03-24 20:00:00
@@ -138,25 +141,7 @@ Mac OS X 10.10  及以上版本
 
 ![](terminal-console.png)
 
-### 2. 安装 Command Line Tools
-
-在终端里粘贴如下命令后，回车执行
-
-```shell
-xcode-select --install
-```
-
-![](xcode-install-command.png)
-
-弹出类似这样的窗口
-
-![](xcode-install.png)
-
-点击 “安装” （也就是 Install），会出来如下界面，耐心等待下载安装的完成
-
-![](xcode-downloading.png)
-
-### 3. 安装包管理器
+### 2. 安装包管理器
 
 在终端里粘贴如下命令后，回车执行
 
@@ -185,7 +170,7 @@ git config --global http.postBuffer 524288000
 
 ![](brew-error2.png)
 
-### 4. 安装必备软件
+### 3. 安装必备软件
 
 依次执行如下两条命令进行安装 ——
 
@@ -199,7 +184,7 @@ brew cask install sourcetree visual-studio-code google-chrome zoomus
 - 已经装了同类或同样的软件可以把那个名字删掉，不用重复装
 - 如有软件安装出现问题，可自行下载、安装，优先安装 [Zoom 客户端](https://zoom.us/download#client_4meeting)
 
-### 5. 参考资料
+### 4. 参考资料
 
 - [macOS 缺失的软件包的管理器](https://brew.sh/index_zh-cn)
 - [macOS 安装 Homebrew](https://blog.csdn.net/zzq900503/article/details/80404314)

@@ -9,7 +9,10 @@ tags:
   - Web
   - crawler
   - Puppeteer
+  - Chrome
 toc: true
+authors:
+  - TechQuery
 
 description: "freeCodeCamp 成都社区 在线工作坊 #2"
 start: 2019-04-14 20:00:00
@@ -24,14 +27,20 @@ mentors:
 
 ## 学习收获
 
-一小时内学会用 Node.JS 从多个网站**汇总最新本地 IT 活动**列表
+一小时内学会用 Node.JS 从多个网站**汇总最新本地 IT 活动**列表，并了解一些知识点 ——
+
+1. 用 **Chrome 调试器**分析 **HTML 结构**
+2. 用 Chrome 调试器分析 **HTTP 接口**
+3. Puppeteer **无界面浏览器**操作
+4. JavaScript 最新**标准语法**
 
 ## 内容大纲
 
 - [ ] **JavaScript 标准项目**生成
 - [ ] **静态网页**抓取
 - [ ] **动态网页**抓取
-- [ ] **数据接口**分析（选修）
+- [ ] **数据接口**分析
+- [ ] **数据分页**处理
 
 <!-- more -->
 
@@ -182,7 +191,7 @@ npm run install
 
 #### 核心代码
 
-`dynamic.js`
+`source/dynamic.js`
 
 ```javascript
 #! /usr/bin/env node
@@ -241,7 +250,7 @@ npm install node-fetch
 
 #### 核心代码
 
-`data.js`
+`source/data.js`
 
 ```javascript
 #! /usr/bin/env node
@@ -265,7 +274,7 @@ import fetch from "node-fetch";
 
   const data = await response.json();
 
-  console.info(data);
+  console.info(data.d);
 })();
 ```
 
@@ -277,7 +286,118 @@ npm run build
 node dist/data
 ```
 
-## 样本数据
+### 数据分页处理
+
+#### 传统思路
+
+`source/data.js`
+
+```javascript
+export default async function(index = 1) {
+  const URL = `https://event-storage-api-ms.juejin.im/v2/getEventList?${new URLSearchParams(
+    {
+      src: "web",
+      orderType: "startTime",
+      cityAlias: "chengdu",
+      pageNum: index
+    }
+  )}`;
+
+  console.warn(URL);
+
+  return (await (await fetch(URL)).json()).d;
+}
+```
+
+`source/index.js`
+
+```javascript
+#! /usr/bin/env node
+
+import "@babel/polyfill";
+
+import crawler from "./data";
+
+(async () => {
+  const list = [];
+
+  for (let i = 0; ; )
+    try {
+      const page = await crawler(++i);
+
+      if ((page || "")[0]) list.push(...page);
+      else break;
+    } catch (error) {
+      break;
+    }
+
+  console.info(JSON.stringify(list, null, 4));
+})();
+```
+
+通过命令输出数据到文件 ——
+
+```shell
+npm run build
+
+node dist/ 1> index.json
+```
+
+#### 现代思路
+
+`source/data.js`
+
+```javascript
+export default async function*(start = 1) {
+  while (true) {
+    const URL = `https://event-storage-api-ms.juejin.im/v2/getEventList?${new URLSearchParams(
+      {
+        src: "web",
+        orderType: "startTime",
+        cityAlias: "chengdu",
+        pageNum: start++
+      }
+    )}`;
+
+    const data = (await (await fetch(URL)).json()).d;
+
+    if ((data || "")[0]) yield { URL, data };
+    else break;
+  }
+}
+```
+
+`source/index.js`
+
+```javascript
+#! /usr/bin/env node
+
+import "@babel/polyfill";
+
+import crawler from "./data";
+
+(async () => {
+  const list = [];
+
+  for await (let { URL, data } of crawler()) {
+    console.warn(URL);
+
+    list.push(...data);
+  }
+
+  console.info(JSON.stringify(list, null, 4));
+})();
+```
+
+## Think more...
+
+1. 多源数据去重
+2. 定期抓取
+3. 展示界面
+4. 本地应用打包
+5. 服务器部署
+
+## 【附】样本数据
 
 1. https://www.huodongxing.com/events?orderby=n&tag=IT%E4%BA%92%E8%81%94%E7%BD%91&city=%E6%88%90%E9%83%BD
 
@@ -291,7 +411,7 @@ node dist/data
 
 [1]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3
 
-## 参考文档
+## 【附】参考文档
 
 - [项目创意](https://github.com/FreeCodeCamp-Chengdu/cd-events)
 
