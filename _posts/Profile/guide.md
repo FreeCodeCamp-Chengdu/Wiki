@@ -126,7 +126,7 @@ files:
 
 https://fcc-cd.tk/activity/
 
-https://fcc-cd.tk/volunteer/
+https://fcc-cd.tk/community/
 
 ---
 

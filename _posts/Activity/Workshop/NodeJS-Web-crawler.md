@@ -19,6 +19,9 @@ start: 2019-04-14 20:00:00
 end: 2019-04-14 22:00:00
 mentors:
   - TechQuery
+  - too
+  - demongodYY
+  - Akagilnc
 ---
 
 > freeCodeCamp 成都社区 在线工作坊 #2
@@ -52,7 +55,7 @@ mentors:
 
 ### Windows
 
-```shell
+```powershell
 choco install -y git tortoisegit nodejs-lts vscode googlechrome zoom
 ```
 
@@ -94,6 +97,7 @@ npm install @babel/runtime
     "node": "^6.13.0"
   },
   "script": {
+    "lint": "eslint source/ --fix",
     "pack": "babel source/ -d dist/ -s"
   },
   "babel": {
@@ -209,7 +213,7 @@ import { getNPMConfig } from "@tech_query/node-toolkit";
     executablePath: getNPMConfig("chrome")
   });
 
-  const page = await browser.newPage();
+  const [page] = await browser.pages();
 
   await page.goto("https://juejin.im/events/chengdu");
 
@@ -295,6 +299,10 @@ node dist/data
 `source/data.js`
 
 ```javascript
+import { URLSearchParams } from "url";
+
+import fetch from "node-fetch";
+
 export default async function(index = 1) {
   const URL = `https://event-storage-api-ms.juejin.im/v2/getEventList?${new URLSearchParams(
     {
@@ -330,6 +338,7 @@ import crawler from "./data";
       if ((page || "")[0]) list.push(...page);
       else break;
     } catch (error) {
+      console.warn(error);
       break;
     }
 
@@ -411,8 +420,6 @@ import crawler from "./data";
 
 5. https://segmentfault.com/events?city=510100
 
-[1]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3
-
 ## 【附】参考文档
 
 - [项目创意](https://github.com/FreeCodeCamp-Chengdu/cd-events)
@@ -422,3 +429,5 @@ import crawler from "./data";
 - [Node.JS 中文文档](http://nodejs.cn/api/)
 
 - [Puppeteer 中文文档](https://zhaoqize.github.io/puppeteer-api-zh_CN/)
+
+[1]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3
