@@ -4,8 +4,6 @@ categories:
   - Sponsor
 toc: true
 thumbnail: CDTH-SE-logo.png
-
-website: http://mp.weixin.qq.com/profile?src=3&timestamp=1555566119&ver=1&signature=3zdlWE1l4QjAbufhlpUn2j19he0UDr1s04JBM3-7gSbX4wHPpf6Q123nCOiS1*YoKB*jkzXSh-3CX8ufyKVdJA==
 ---
 
 **天华社区乡愁故事馆**是由**桂溪街道天华社区居委会**主办，[桂溪街道办事处][1]支持，[爱有戏社会工作服务中心][2]运营的**公益性社区营造项目**。
@@ -13,6 +11,8 @@ website: http://mp.weixin.qq.com/profile?src=3&timestamp=1555566119&ver=1&signat
 天华故事馆以“文化艺术”作为社区营造的切入，建立生活与文化艺术之间的桥梁关系；深度发掘社区地域文化特质，推进人文、特色社区建设；搭建平台，激活辖区资源参与基层社会治理，激活辖区企业与个人，参与社区公共事务。让不同乡音、不同肤色、不同职业和谐共融，培育社区社会资本，建立有活力的自组织，持续开展在地文化生产。
 
 <!-- more -->
+
+{% asset_img CDTH-SE-hall.png %}
 
 ## 开展项目
 
@@ -47,6 +47,8 @@ website: http://mp.weixin.qq.com/profile?src=3&timestamp=1555566119&ver=1&signat
 ### 艺术家工作坊
 
 邀请外籍艺术家陈业亮、本土艺术家陈建军、杨然等，举办公共艺术工作坊，串联起社区与社会公共文化资源的纽带，建立生活与艺术的连接，打通居民私人空间与公共空间的边界。
+
+{% asset_img CDTH-SE-WeChat.jpg %}
 
 [1]: http://jcpt.chengdu.gov.cn/gaoxinqu/guixijiedao/
 [2]: http://blog.sina.com.cn/iyousheayx

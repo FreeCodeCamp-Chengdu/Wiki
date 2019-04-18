@@ -73,5 +73,11 @@ python -m pip install --upgrade pip
 pip install pipenv
 ```
 
+## 特别鸣谢
+
+[![天华社区乡愁故事馆](../../../sponsor/cdth-storyevents/CDTH-SE-logo.png)](../../../sponsor/cdth-storyevents/ "点击查看详情")
+
+天华社区乡愁故事馆是由桂溪街道天华社区居委会主办，桂溪街道办事处支持，爱有戏社会工作服务中心运营的公益性社区营造项目。
+
 [1]: https://www.theschool.ai/
 [2]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3
