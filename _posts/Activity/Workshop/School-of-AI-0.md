@@ -52,25 +52,29 @@ sponsors:
 ### Windows
 
 ```powershell
-choco install -y git tortoisegit python vscode
+choco install -y git tortoisegit python vscode miniconda3
 ```
 
 ### Mac OS X
 
 ```shell
 brew install python
-brew cask install sourcetree visual-studio-code
+brew cask install sourcetree visual-studio-code miniconda 
 ```
 
-### Python 通用
+### Conda 虚拟环境 与 python 依赖包
 
 ```shell
-python -m pip install --upgrade pip
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --set show_channel_urls yes
+conda create -n deeplearning python=3.6.5 -y
+conda-env list
+conda activate deeplearning
 
 # 中国教育网用户切换镜像
 # pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
-pip install pipenv
+pip install matplotlib numpy pandas tensorflow==1.11.0 keras -i https://pypi.doubanio.com/simple/
 ```
 
 ## 特别鸣谢
