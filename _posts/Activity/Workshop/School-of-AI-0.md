@@ -85,3 +85,22 @@ pip install matplotlib numpy pandas tensorflow==1.11.0 keras -i https://pypi.dou
 
 [1]: https://www.theschool.ai/
 [2]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3
+
+
+## 活动回顾
+
+
+# 我们的主讲Ethen老师
+{% asset_img soai_5.jpg %}
+
+
+# 专心思考的参与者们
+{% asset_img soai_3.jpg %}
+
+
+# 隐藏的角落
+{% asset_img soai_4.jpg %}
+
+
+# 下次还要来玩哦
+{% asset_img soai_1.jpg %}
