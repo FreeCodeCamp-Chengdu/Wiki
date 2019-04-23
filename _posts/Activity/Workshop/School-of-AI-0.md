@@ -90,17 +90,17 @@ pip install matplotlib numpy pandas tensorflow==1.11.0 keras -i https://pypi.dou
 ## 活动回顾
 
 
-# 我们的主讲Ethen老师
+### 我们的主讲Ethen老师
 {% asset_img soai_5.jpg %}
 
 
-# 专心思考的参与者们
+### 专心思考的参与者们
 {% asset_img soai_3.jpg %}
 
 
-# 隐藏的角落
+### 隐藏的角落
 {% asset_img soai_4.jpg %}
 
 
-# 下次还要来玩哦
+### 下次还要来玩哦
 {% asset_img soai_1.jpg %}
