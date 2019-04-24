@@ -59,7 +59,7 @@ choco install -y git tortoisegit python vscode miniconda3
 
 ```shell
 brew install python
-brew cask install sourcetree visual-studio-code miniconda 
+brew cask install sourcetree visual-studio-code miniconda
 ```
 
 ### Conda 虚拟环境 与 python 依赖包
@@ -91,7 +91,28 @@ pip install matplotlib numpy pandas tensorflow==1.11.0 keras -i https://pypi.dou
 
 
 ### 我们的主讲Ethen老师
-Ethen用浅显易懂的语言和实例，像大家介绍了什么叫做 AI，机器学习，深度学习，神经网络。真的是连完全没有经验的小白都能理解呢，给Ethen老师打call
+Ethen用浅显易懂的语言和实例，像大家介绍了什么叫做 AI，机器学习，深度学习，神经网络。
+
+
+{% asset_img soai_0_0.jpg %}
+比如，这是一个假设的，根据面积来预测房价的图，而这条绿线，就是最贴近各个点的一条线，那么其实就可以表现为一个神经元
+{% asset_img soai_0_1.jpg %}
+
+
+那么多个因素就可以生成多个神经元，根据我们定义的逻辑就可以把它们组合起来形成多个神经元组成的网络，神经网络
+{% asset_img soai_0_2.jpg %}
+
+
+而机器学习的奇妙之处，在于它可以自己去寻找这一层原本需要人类去定义的关系，所以在这里，实际的神经网络变成了如下图
+{% asset_img soai_0_3.jpg %}
+而机器学习会试着去找出更合理的规则，来让我们的答案更加贴近我们的目标
+
+
+最终，我们理解了这几个术语的意义与关系
+{% asset_img soai_0_4.jpg %}
+
+
+真的是连完全没有经验的小白都能理解呢，给Ethen老师打call
 {% asset_img soai_5.jpg %}
 
 
