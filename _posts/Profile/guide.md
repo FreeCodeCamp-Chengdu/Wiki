@@ -87,6 +87,8 @@ description: # 活动简介
 start: # 活动开始时间
 end: # 活动结束时间
 address: # 线下活动地址（市州、区县、路街、楼栋）
+links:
+  报名: # https://jinshuju.net/f/xxxxxx
 mentors:
   # 讲师、教练们的 GitHub 账号
 workers:

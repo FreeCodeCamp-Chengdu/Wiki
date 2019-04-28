@@ -19,6 +19,8 @@ description: 2016年9月份 Coffee & Code
 start: 2016-09-11 14:00:00
 end: 2016-09-11 17:00:00
 address: 成都市武侯区锦绣路1号保利中心B座19楼11号
+links:
+  报名: https://jinshuju.net/f/lijYEg
 mentors:
   - Yasic
 workers:
@@ -42,7 +44,7 @@ workers:
 
 - 大家 Git、GitHub 使用较少，在代码提交、合并方面 概念模糊
 
-[1]: https://mp.weixin.qq.com/s?__biz=MzU2MzY3NTM1Nw==&mid=2247486714&amp;idx=1&amp;sn=156c1680c687fa6a42523030bb652224&source=41#wechat_redirect
+[1]: https://mp.weixin.qq.com/s?__biz=MzU2MzY3NTM1Nw==&mid=2247486714&idx=1&sn=156c1680c687fa6a42523030bb652224#wechat_redirect
 [2]: https://www.zhihu.com/topic/19553651/
 [3]: https://www.zhihu.com/topic/19564208/
 [4]: https://github.com/FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io/blob/v0/html/feature.html

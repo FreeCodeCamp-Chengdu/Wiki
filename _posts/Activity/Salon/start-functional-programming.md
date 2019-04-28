@@ -29,11 +29,15 @@ description: "FCC 成都社区 Coffee & Code #34"
 start: 2019-03-30 14:00
 end: 2019-03-30 17:00
 address: 成都市高新区世纪城路1029号天华社区乡愁故事馆
+links:
+  报名: https://jinshuju.net/f/JAyOHc
 mentors:
   - demongodYY
   - TechQuery
 workers:
   - jiangyuzhen
+sponsors:
+  - CDTH-StoryEvents
 ---
 
 ## 活动简介

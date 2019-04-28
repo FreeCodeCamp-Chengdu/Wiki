@@ -19,12 +19,12 @@ workers:
   - TechQuery
 ---
 
-> [宣传文案](https://mp.weixin.qq.com/s?__biz=MzU2MzY3NTM1Nw==&mid=2247486704&amp;idx=2&amp;sn=3f91969142baea5c44e845518fd5183c&source=41#wechat_redirect)
+> [宣传文案](https://mp.weixin.qq.com/s?__biz=MzU2MzY3NTM1Nw==&mid=2247486704&idx=2&sn=3f91969142baea5c44e845518fd5183c#wechat_redirect)
 
 ## 主要流程
 
-   1. FCC 介绍
-   2. 自我介绍和分享
-   3. 在 FCC 学习中，遇到困难了吗？小伙伴们帮你解决
-   4. 前端导航、优质微信公众号推荐，让你对前端更入迷
-   5. 九个 **Console 命令**推荐，让 **JavaScript 调试**更简单
+1.  FCC 介绍
+2.  自我介绍和分享
+3.  在 FCC 学习中，遇到困难了吗？小伙伴们帮你解决
+4.  前端导航、优质微信公众号推荐，让你对前端更入迷
+5.  九个 **Console 命令**推荐，让 **JavaScript 调试**更简单
