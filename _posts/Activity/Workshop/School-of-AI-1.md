@@ -14,38 +14,36 @@ toc: true
 
 description: 动手用图像识别技术来对复仇者联盟的英雄们做识别
 start: 2019-5-11 14:00:00
-end: 2019-5-11 17:00:00
-address: 武侯区天益南巷创客家众创空间
+end: 2019-5-11 18:00:00
+address: 成都市高新区天益南巷创客+众创空间
 links:
   报名: http://chengdu-ai.mikecrm.com/zoIQvRq
 mentors:
-  - Akagilnc
+  - hchen13
 workers:
   - Akagilnc
-  - TechQuery
-  - HillChen3
 sponsors:
-  - CDCKplus
+  - CD-CKplus
 ---
 
-> **AI 学院** 与 **FCC 成都社区**联合出品
+> [AI 学院][1] 与 **FCC 成都社区**联合出品
 
 大家复联都看了么？每个英雄都认识的清清楚楚了吧？
 
-可你知道，AI也能认识英雄么?
+可你知道，AI 也能认识英雄么?
 
 今天，我們要教 AI 做**图像识别**，
 
-介绍我们的超级英雄给 AI　认识吧。
+介绍我们的超级英雄给 AI 认识吧。
 
-—— 在这里，数位来自成都的　AI　科技爱好者期待与你相遇！
+—— 在这里，数位来自成都的 AI 科技爱好者期待与你相遇！
+
+{% asset_img poster.png %}
 
 ## 参会须知
 
 - 目标群体：软件开发者、会一点点**程序设计**的人、AI 从业者
-- 免费！**自带电脑！！！提前做好课前准备(见下文)！！！**
-
-{% asset_img poster.png %}
+- 免费！**自带电脑！！！提前做好课前准备（见下文）！！！**
 
 <!-- more -->
 
@@ -53,7 +51,7 @@ sponsors:
 
 1.  Python 环境和深度学习开发依赖的安装
 2.  图像处理相关概念介绍
-3.  图像识别的python实现
+3.  图像识别的 Python 实现
 4.  实现**漫威英雄识别**
 
 ## 课前准备
@@ -73,15 +71,16 @@ brew install python
 brew cask install miniconda
 ```
 
-### Conda 虚拟环境 与 python 依赖包
+### Conda 虚拟环境 与 Python 依赖包
 
 ```shell
 conda create -n deeplearning python=3.6.5 matplotlib -y
 conda-env list
 conda activate deeplearning
 
-pip install scikit-image opencv-contrib-python numpy tensorflow==1.11.0 keras -i https://pypi.doubanio.com/simple/
+pip install scikit-image opencv-contrib-python numpy tensorflow==1.11.0 keras \
+    -i https://pypi.doubanio.com/simple/
 ```
 
-
-
+[1]: https://www.theschool.ai/
+[2]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3

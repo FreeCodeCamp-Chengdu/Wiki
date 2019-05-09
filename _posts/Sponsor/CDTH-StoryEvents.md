@@ -1,10 +1,14 @@
 ---
 title: 乡愁故事馆
-date: 2019-04-18 08:40:29
+date: 2019-03-27
+updated: 2019-04-18 08:40:29
 categories:
   - Sponsor
+
 toc: true
 thumbnail: CDTH-SE-logo.png
+comment: false
+donate: false
 ---
 
 **天华社区乡愁故事馆**是由**桂溪街道天华社区居委会**主办，[桂溪街道办事处][1]支持，[爱有戏社会工作服务中心][2]运营的**公益性社区营造项目**。

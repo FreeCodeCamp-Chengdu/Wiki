@@ -422,7 +422,7 @@ import crawler from "./data";
 
 ## 【附】参考文档
 
-- [项目创意](https://github.com/FreeCodeCamp-Chengdu/cd-events)
+- [项目创意](https://github.com/FreeCodeCamp-Chengdu/IT-events/blob/master/Contributing.md)
 
 - [DOM API 文档](https://developer.mozilla.org/zh-CN/docs/Web/API)
 

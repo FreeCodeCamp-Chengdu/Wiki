@@ -1,6 +1,6 @@
 ---
 title: 编程道场之结对活动
-date: 2017-12-10
+date: 2017-12-13
 categories:
   - Activity
   - Workshop
@@ -22,6 +22,8 @@ mentors:
 workers:
   - Akagilnc
   - jiangyuzhen
+sponsors:
+  - CD-CKplus
 
 photos:
   - final-all.jpg

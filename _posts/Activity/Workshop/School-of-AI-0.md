@@ -36,12 +36,12 @@ sponsors:
 
 —— 在这里，数位来自成都的热爱 AI 科技的 Deans 期待与你相遇！
 
+{% asset_img poster.jpg %}
+
 ## 参会须知
 
 - 目标群体：软件开发者、会一点点**程序设计**的人、AI 从业者
 - 免费！自带电脑！！！
-
-{% asset_img poster.jpg %}
 
 <!-- more -->
 
