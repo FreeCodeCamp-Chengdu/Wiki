@@ -12,7 +12,7 @@ authors:
   - Akagilnc
 toc: true
 
-description: 这次我们会通过AI的图像识别技术来尝试对我们的复仇者联盟的英雄们做识别
+description: 动手用图像识别技术来对复仇者联盟的英雄们做识别
 start: 2019-5-11 14:00:00
 end: 2019-5-11 17:00:00
 address: 武侯区天益南巷创客家众创空间
