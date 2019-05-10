@@ -45,6 +45,8 @@ workers:
 
 程序 = 数据结构 + 算法
 
+<!-- more -->
+
 ---
 
 ### 为何要编程？
@@ -139,19 +141,58 @@ workers:
 
 ## 第一份代码
 
-选一门直观、通俗的编程语言
-
-比如**标记型语言** HTML
+选一门直观、通俗的编程语言入门
 
 ---
 
-<iframe
-  frameborder="no"
-  allowtransparency="true"
-  allowfullscreen="true"
-  scrolling="no"
-  style="width: 100%"
-  height="600"
-  src="https://codepen.io/tech_query/embed/vwGEJV/?height=600&theme-id=dark&default-tab=html,result"
->
-</iframe>
+比如 **标记型语言** HTML
+
+[![](./Web-starter.png)](https://codepen.io/tech_query/pen/vwGEJV)
+
+---
+
+再选一个开箱即用的框架和模板
+
+<iframe src="https://code.z01.com/v4/examples/" width="100%" height="500"></iframe>
+
+---
+
+### Talk is cheap, show me your Code!
+
+[李纳斯·托沃茨][5] (1969 ~ )
+
+![](./Linus_Torvalds.jpeg)
+
+[5]: https://www.wikiwand.com/zh/%E6%9E%97%E7%BA%B3%E6%96%AF%C2%B7%E6%89%98%E7%93%A6%E5%85%B9
+
+---
+
+## 一刻钟学一课
+
+全球最大的**公益编程学习平台** freeCodeCamp
+
+[![](./FCC-learning.png)](https://learn.freecodecamp.one/)
+
+---
+
+### 中文社区
+
+[![](./FCC-China.png)](https://www.freecodecamp.one/volunteer)
+
+---
+
+### 成都社区
+
+[![](./FCC-ChengDu.png)](https://china.freecodecamp.one/?city=chengdu)
+
+---
+
+#### QQ 群
+
+[![](/images/FCC-CDC-QRC-QQG.png "点击加群")](https://jq.qq.com/?_wv=1027&k=54DSeNz)
+
+---
+
+#### 微信服务号
+
+![](/images/FCC-CDC-QRC-WMP.jpg)
