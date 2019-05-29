@@ -3,7 +3,7 @@ title: 创客+ 咖啡
 date: 2017-12-06
 updated: 2019-05-09 15:14:53
 categories:
-  - Sponsor
+  - Partner
 
 thumbnail: SignBoard.jpg
 comment: false

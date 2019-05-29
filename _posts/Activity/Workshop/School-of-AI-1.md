@@ -22,7 +22,7 @@ mentors:
   - hchen13
 workers:
   - Akagilnc
-sponsors:
+partners:
   - CD-CKplus
 ---
 

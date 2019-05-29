@@ -22,7 +22,7 @@ mentors:
 workers:
   - Akagilnc
   - jiangyuzhen
-sponsors:
+partners:
   - CD-CKplus
 
 photos:

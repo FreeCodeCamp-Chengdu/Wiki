@@ -25,7 +25,7 @@ workers:
   - Akagilnc
   - TechQuery
   - HillChen3
-sponsors:
+partners:
   - CDTH-StoryEvents
 ---
 
@@ -86,7 +86,7 @@ pip install matplotlib numpy pandas tensorflow==1.11.0 keras -i https://pypi.dou
 
 ## 特别鸣谢
 
-[![天华社区乡愁故事馆](../../../sponsor/cdth-storyevents/CDTH-SE-logo.png)](../../../sponsor/cdth-storyevents/ "点击查看详情")
+[![天华社区乡愁故事馆](../../../partner/cdth-storyevents/CDTH-SE-logo.png)](../../../partner/cdth-storyevents/ "点击查看详情")
 
 天华社区乡愁故事馆是由桂溪街道天华社区居委会主办，桂溪街道办事处支持，爱有戏社会工作服务中心运营的公益性社区营造项目。
 

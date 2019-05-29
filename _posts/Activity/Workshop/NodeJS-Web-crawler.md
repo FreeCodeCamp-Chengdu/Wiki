@@ -5,6 +5,7 @@ categories:
   - Activity
   - Workshop
 tags:
+  - online
   - Node.JS
   - Web
   - crawler

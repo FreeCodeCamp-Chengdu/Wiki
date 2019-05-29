@@ -17,7 +17,7 @@ workers:
   - demongodYY
 ---
 
-![](/images/FCC-CDC-v1.png)
+![](/images/FCC-CDC-v1-1.png)
 
 <small>
 **freeCodeCamp 成都社区** 走进 **成都七中育才学校**

@@ -36,7 +36,7 @@ mentors:
   - TechQuery
 workers:
   - jiangyuzhen
-sponsors:
+partners:
   - CDTH-StoryEvents
 ---
 
