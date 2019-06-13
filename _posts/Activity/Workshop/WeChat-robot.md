@@ -69,6 +69,7 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 ```shell
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
+如果提示权限问题，请在前面加上`sudo`
 
 ### 安装开发环境
 
@@ -79,7 +80,7 @@ choco install -y git python nodejs vscode googlechrome
 
 pip install pipenv -i https://pypi.doubanio.com/simple/
 # 或
-# pip3 install pipenv -i https://pypi.doubanio.com/simple/
+pip3 install pipenv -i https://pypi.doubanio.com/simple/
 ```
 
 #### Mac OS X
@@ -90,7 +91,7 @@ brew cask install sourcetree visual-studio-code google-chrome
 
 pip install pipenv -i https://pypi.doubanio.com/simple/
 # 或
-# pip3 install pipenv -i https://pypi.doubanio.com/simple/
+pip3 install pipenv -i https://pypi.doubanio.com/simple/
 ```
 
 ### 项目初始化
