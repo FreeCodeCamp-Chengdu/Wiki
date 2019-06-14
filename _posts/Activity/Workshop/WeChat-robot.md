@@ -15,7 +15,7 @@ toc: true
 description: 微信机器人入门工作坊
 start: 2019-06-16 13:30:00
 end: 2019-06-16 17:00:00
-address: 成都市高新区世纪城路1029号天华社区乡愁故事馆
+address: 成都市高新区天益南巷18号创客大使馆
 mentors:
   - Akagilnc
   - TechQuery
@@ -23,12 +23,12 @@ workers:
   - HillChen3
   - demongodYY
 partners:
-  - CDTH-StoryEvents
+  - CD-CKplus
 ---
 
 > 2019/6/16 13:30 ~ 17:30
 >
-> 成都市高新区世纪城路 1029 号天华社区乡愁故事馆
+> 成都市高新区天益南巷 18 号创客大使馆
 
 ## 基本流程
 
@@ -42,12 +42,12 @@ partners:
 ## 你的收获
 
 - [x] 收获志同道合的小伙伴，锻炼你的思维、动手能力和表达能力
-- [x] 了解并使用学会做自己的微信机器人
+- [x] 学会用 Python 或 JavaScript 做自己的微信机器人
 
 ## 参与须知
 
-- 活动免费，**自带电脑**，和你的**激情**！
-- **对小白友好**，欢迎任何对 coding 感兴趣的小白们参与!
+- **活动免费**，**自带电脑**和你的**激情**！
+- **对小白友好**，欢迎任何对 coding 感兴趣的小伙伴参与!
 
 <!-- more -->
 
@@ -69,7 +69,8 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 ```shell
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
-如果提示权限问题，请在前面加上`sudo`
+
+如果提示权限问题，请在前面加上 `sudo`
 
 ### 安装开发环境
 
