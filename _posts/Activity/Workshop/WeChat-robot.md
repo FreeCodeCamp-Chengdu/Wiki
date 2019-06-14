@@ -16,6 +16,8 @@ description: 微信机器人入门工作坊
 start: 2019-06-16 13:30:00
 end: 2019-06-16 17:00:00
 address: 成都市高新区天益南巷18号创客大使馆
+links:
+  报名: https://jinshuju.net/f/Yxtuy1
 mentors:
   - Akagilnc
   - TechQuery
@@ -26,9 +28,9 @@ partners:
   - CD-CKplus
 ---
 
-> 2019/6/16 13:30 ~ 17:30
+> 2019 年 6 月 16 日 13:30 ~ 17:30
 >
-> 成都市高新区天益南巷 18 号创客大使馆
+> 成都市高新区天益南巷 18 号[创客大使馆](/partner/cd-ckplus/)
 
 ## 基本流程
 
@@ -109,17 +111,16 @@ pipenv install itchat
 #### Node.JS
 
 ```shell
-npm init es-pack ~/Desktop/WeChat-robot
+mkdir ~/Desktop/WeChat-robot
 cd ~/Desktop/WeChat-robot
 
-npm uninstall amd-bundle
-
-npm install -D \
-    @babel/cli \
-    @babel/core \
-    @babel/plugin-transform-runtime
-
-npm install wechaty @babel/runtime
+npm init -y
+npm install wechaty wechaty-puppet-puppeteer puppeteer
 ```
+
+## 参考资料
+
+1. [WeChaty 官方文档](https://docs.chatie.io/v/zh/)
+2. [WeChaty 规范示例](https://github.com/wechaty/wechaty-getting-started/blob/master/README-zh.md)
 
 [1]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3
