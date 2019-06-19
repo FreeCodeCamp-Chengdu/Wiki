@@ -84,3 +84,13 @@ pip install scikit-image opencv-contrib-python numpy tensorflow==1.11.0 keras \
 
 [1]: https://www.theschool.ai/
 [2]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3
+
+### 活动回顾
+
+Ethan 老师这次给我们带来了 **图片识别** 的内容
+
+我们用到了 Google 预先训练好的 inception v3 卷积神经网络，用2573张图，训练了一个全连通的神经网络
+
+了解了每张图可以用像素的特征来展示。这里我们用1280个参数来表示一张图。
+
+最终在某种准确度上，实现了区分复联里的超级英雄的能力。
