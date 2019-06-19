@@ -131,10 +131,9 @@ npm install wechaty wechaty-puppet-puppeteer puppeteer
 ### 即将开始
 
 还没有开始呢，**水歌**大佬就已经迫不及待的指点迷津了
-
 {% asset_img water_brother.jpeg %}
 
-#### 破冰时间
+### 破冰时间
 
 大家各自介绍了自己，希望你们在活动中交到好朋友哦
 {% asset_img ice_break.jpeg %}
@@ -144,7 +143,7 @@ npm install wechaty wechaty-puppet-puppeteer puppeteer
 学习**真**是一件**开心**的事情！
 {% asset_img mentors.jpeg %}
 
-#### 活动现场
+### 活动现场
 
 我们先从**登录**和**自动回复**消息入手
 {% asset_img mentees1.jpeg %}
@@ -155,7 +154,7 @@ npm install wechaty wechaty-puppet-puppeteer puppeteer
 最后学会了如何自动**通过好友请求**，并且把这个好友拉入**指定的群**
 {% asset_img mentees3.jpeg %}
 
-#### 完结撒花
+### 完结撒花
 
 大家都动手敲了一个下午，收获满满吧。下次还要来哦
 {% asset_img the_end.jpeg %}
