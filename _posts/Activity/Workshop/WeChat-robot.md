@@ -106,7 +106,7 @@ pip3 install pipenv -i https://pypi.doubanio.com/simple/
 mkdir ~/Desktop/WeChat-robot
 cd ~/Desktop/WeChat-robot
 
-pipenv install itchat
+pipenv install itchat -i https://pypi.doubanio.com/simple/
 ```
 
 #### Node.JS
