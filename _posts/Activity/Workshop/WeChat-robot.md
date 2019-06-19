@@ -27,6 +27,16 @@ workers:
   - demongodYY
 partners:
   - CD-CKplus
+photos:
+  - ice_break.jpeg
+  - AK-talking.jpeg
+  - AK-coding.jpeg
+  - water_brother.jpeg
+  - mentors.jpeg
+  - mentees1.jpeg
+  - mentees2.jpeg
+  - mentees3.jpeg
+  - the_end.jpeg
 ---
 
 > 2019 年 6 月 16 日 13:30 ~ 17:30
@@ -116,6 +126,7 @@ mkdir ~/Desktop/WeChat-robot
 cd ~/Desktop/WeChat-robot
 
 npm init -y
+npm set puppeteer_download_host https://storage.googleapis.com.cnpmjs.org
 npm install wechaty wechaty-puppet-puppeteer puppeteer
 ```
 
@@ -123,40 +134,50 @@ npm install wechaty wechaty-puppet-puppeteer puppeteer
 
 1. [WeChaty 官方文档](https://docs.chatie.io/v/zh/)
 2. [WeChaty 规范示例](https://github.com/wechaty/wechaty-getting-started/blob/master/README-zh.md)
+3. [FCC Panky 微群管](https://github.com/FreeCodeCamp-Chengdu/wechat-robot)
 
 [1]: ../hexo-web-app/#%E3%80%90%E9%99%84-0%E3%80%91Windows-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%9B%BE%E8%A7%A3
+
+---
 
 ## 活动回顾
 
 ### 即将开始
 
 还没有开始呢，**水歌**大佬就已经迫不及待的指点迷津了
+
 {% asset_img water_brother.jpeg %}
 
 ### 破冰时间
 
 大家各自介绍了自己，希望你们在活动中交到好朋友哦
+
 {% asset_img ice_break.jpeg %}
 
 ### 导师风采
 
 学习**真**是一件**开心**的事情！
+
 {% asset_img mentors.jpeg %}
 
 ### 活动现场
 
 我们先从**登录**和**自动回复**消息入手
+
 {% asset_img mentees1.jpeg %}
 
 然后给**特定好友**发消息，再给**群组好友**发消息
+
 {% asset_img mentees2.jpeg %}
 
 最后学会了如何自动**通过好友请求**，并且把这个好友拉入**指定的群**
+
 {% asset_img mentees3.jpeg %}
 
 ### 完结撒花
 
-大家都动手敲了一个下午，收获满满吧。下次还要来哦
+大家都动手敲了一个下午，收获满满吧？下次还要来哦！
+
 {% asset_img the_end.jpeg %}
 
 ### 反馈教训
@@ -168,8 +189,8 @@ npm install wechaty wechaty-puppet-puppeteer puppeteer
 - 椅子质量有点差（摔）
 - 活动内容本身
   - 节奏希望再紧凑一些
-  - 除了按照导师教的做之外，能有一些小挑战，即学习，模仿，思考题的模式
-  - 现场采用结对编程的模式，让大家更有互动感，也可以规避一些环境安装的问题
+  - 除了按照导师教的做之外，能有一些小挑战，即学习、模仿、思考题的模式
+  - 现场采用**结对编程**的模式，让大家更有互动感，也可以规避一些环境安装的问题
   - 活动完后可以给学员一个发表感受的机会
 
 我们非常感谢这些很棒的建议，并且会应用到下一次工作坊，敬请期待～
