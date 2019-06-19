@@ -11,7 +11,7 @@ tags:
   - Python
   - JavaScript
 toc: true
-thumbnail: mentees1.jpg
+thumbnail: mentees1.jpeg
 
 description: 微信机器人入门工作坊
 start: 2019-06-16 13:30:00
