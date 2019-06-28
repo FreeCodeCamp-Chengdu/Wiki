@@ -18,7 +18,7 @@ start: 2019-06-30 13:30:00
 end: 2019-06-30 17:30:00
 address: 成都市高新区天益南巷18号创客大使馆
 links:
-
+  报名: https://jinshuju.net/f/Pgvh6G
 mentors:
   - manyuanrong
   - TingYinHelen
@@ -44,11 +44,13 @@ partners:
 
 ![](https://avatars1.githubusercontent.com/u/42048915?s=200&v=4)
 
-**Deno** 是 Node.JS 作者基于 Rust 语言、Chrome V8 引擎从零开发的一个 **TypeScript 运行时引擎**，更轻量、更安全！
+让我们来了解 Node.js 之父 Ryan Dahl 的新“造物”Deno 背后的动机，来一起学一下别人“学不动的” Deno，从背景及语法再到简单 HTTP 服务入手，畅谈 Deno 的现在和未来。
 
 #### 讲师简介
 
-**EnokMan**，Deno 开源库开发者，现为 ThoughtWorks Web 前端工程师。
+**满远荣**，前重庆优启科技架构师、前重庆奇燎科技 CTO，现 ThoughtWorks 切图仔。
+
+Deno contributor；Deno 中国发起人、[Deno 中文社区][1]站长及发起人；[denolib 组织][2] Member；Deno 生态核心基础库作者和贡献者。
 
 ### 《Chrome DevTools 之 performance》
 
@@ -60,7 +62,7 @@ partners:
 
 **Helen**，爱玩的程序媛，喜欢写代码、玩游戏、架子鼓、马拉松。
 
-她也是 **FCC 成都社区**核心成员、[Vue Beauty 组件库][1]主力开发者，并在 [Google Women TechMaker 2018（成都站）][2]、[第 0 届学生开源年会][3]等会议上发表演讲。
+她也是 **FCC 成都社区**核心成员、[Vue Beauty 组件库][3]活跃开发者，并在 [Google Women TechMaker 2018（成都站）][4]、[第 0 届学生开源年会][5]等会议上发表演讲。
 
 <!-- more -->
 
@@ -96,6 +98,14 @@ brew install deno
 
 https://google.cn/chrome
 
-[1]: https://fe-driver.github.io/vue-beauty/
-[2]: https://www.meetup.com/Chengdu-GDG/events/249594885/
-[3]: https://openingsource.org/3447/
+## 参考资料
+
+- [Deno 中文手册](https://nugine.github.io/deno-manual-cn/)
+- [Deno 核心指南](https://github.com/denolib/guide/tree/master/chinese)
+- [Deno 生态集锦](https://github.com/denolib/awesome-deno)
+
+[1]: https://denocn.org/
+[2]: https://github.com/denolib
+[3]: https://fe-driver.github.io/vue-beauty/
+[4]: https://www.meetup.com/Chengdu-GDG/events/249594885/
+[5]: https://openingsource.org/3447/
