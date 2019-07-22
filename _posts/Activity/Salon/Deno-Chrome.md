@@ -144,4 +144,4 @@ https://google.cn/chrome
 [7]: http://es6.ruanyifeng.com/#docs/module-loader
 [8]: https://deno.land/x/
 [9]: https://github.com/manyuanrong/deno-smtp
-[10]: https://www.jianshu.com/p/ed219471b393
+[10]: https://fcc-cd.tk/article/chrome-performance-summary/

@@ -24,9 +24,11 @@ categories:
   # 每级分类对应一级目录，写在本文件的文件名前面
 tags:
   # 与内容相关的更多标签
-toc: true
+
 authors:
   # 原作者们的 GitHub 账号
+original: # 文章出处链接
+toc: true
 ```
 
 [1]: https://github.com/FreeCodeCamp-Chengdu/Wiki#readme
