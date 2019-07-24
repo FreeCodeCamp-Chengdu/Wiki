@@ -15,7 +15,7 @@ original: https://www.jianshu.com/p/ed219471b393
 toc: true
 ---
 
-> 2019年06月30日 FCC 分享复盘
+> 2019 年 06 月 30 日 FCC 分享复盘
 >
 > [分享的示例][1]
 
@@ -69,8 +69,9 @@ toc: true
 这里说一点点浏览器的历史吧，最开始 Chrome 是用的苹果公司的 WebKit，后来谷歌和苹果产生了分歧，谷歌从 WebKit 中复制了一个 Blink 项目，所以我们分析渲染性能是针对的 Blink。
 
 对浏览器渲染引擎感兴趣的可以看：
- - [https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/][15]
- - [WebKit 技术内幕][16]
+
+- [https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/][15]
+- [WebKit 技术内幕][16]
 
 虽然 Blink 是 WebKit 的一个分支，但是有很多细节不同。首先，谷歌把 WebKit 的代码梳理得可读性很高，比如 `RenderObject` 变成了 `LayoutObject`，`RenderLayer` 变成了 `PaintLayer`。所以这里我需要修正一下分享时的渲染流程图，现在 Blink 内核的渲染流程图是下面这个。
 
@@ -106,7 +107,7 @@ toc: true
 
 在 Blink 引擎下，本身 `transform` 2D 不会触发 layout 和 paint，而在 WebKit 引擎下仍然会触发 layout 和 paint。
 
-所以 Chrome 提升动画性能仍然可以讲会触发 layout 和 paint 的动画操作改为 `transform`。但是如果是 3d 情况下，形成合成层的元素太多，会很消耗内存，所以需要做一个平衡。
+所以 Chrome 提升动画性能仍然会触发 layout 和 paint 的动画操作改为 `transform`。但是如果是 3d 情况下，形成合成层的元素太多，会很消耗内存，所以需要做一个平衡。
 
 [1]: https://github.com/TingYinHelen/performance
 [2]: https://fcc-cd.tk/activity/salon/deno-chrome/#%E3%80%8AChrome-DevTools-%E4%B9%8B-performance%E3%80%8B
