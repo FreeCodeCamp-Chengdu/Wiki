@@ -11,6 +11,8 @@ tags:
   - freeCodeCamp
   - translation
   - workshop
+original: https://chinese.freecodecamp.org/forum/t/topic/347/16
+thumbnail: translation-discussing.jpeg
 toc: true
 ---
 
@@ -48,19 +50,29 @@ toc: true
 
 - 接着，我照着 PPT 给大家介绍了 FCC 和我对翻译这件事情的建议“好奇心、同理心、耐心”。我们已经在 GitHub 仓库列出详细的翻译规范，所以我的建议更多是在鼓励大家 enjoy 吧（其实不只是翻译啦，这“三心”也适用于别的很多事情吧 ^\_^）。我的初衷是让氛围轻松随意一点，同时让大家多感受 FCC 团队和社区的真实与活力——就像现场一位女生看到 PPT 中的团队照片之后说“Quincy 的名字好熟啊，原来每周给我发邮件的就是创始人啊”——然后我就讲了不少细节故事，大概讲了半小时吧。
 
+{% asset_img translation-skill.jpeg %}
+
 - 我带了一盒 FCC 程序员扑克牌，用于热场。每位参与者随机抽取一张扑克牌，稍微准备一下之后，挨个分享：介绍扑克牌上的程序员，翻译上面的英文句子，讲述自己对这句话的体悟。这个环节蛮有趣，是一个小小的即兴挑战。
+
+{% asset_img translate-cards.jpeg %}
 
 - 然后我们鼓励大家主动分享在热场环节的体验，我记得似乎只有 1 人主动分享了：“Miya 推荐的腾讯翻译君小程序很好用”。
 
 - 热场之后，氛围变得轻松了些，水歌给大家介绍 GitHub 翻译协作流程，教大家如何 pull request。
 
+{% asset_img translation-specification.jpeg %}
+
 - 然后就开始结对翻译了，这个过程大概 1 小时吧。大家都很认真地讨论，其中有一组很聪明地使用谷歌翻译之后再修订，加快速度。
 
 - 在有的组遇到一句话不太会翻译的时候，上面提到的两位翻译从业者和我有帮助他们理清楚句子的意思。我也有给我那组两位女生分析一些句子结构。
 
+{% asset_img translation-discussing.jpeg %}
+
 ## 活动后
 
 - 活动结束，我们让大家保存好已翻译的内容，回去完成之后再 pull request。合影，自由聊天，部分参与者晚上聚餐。
+
+{% asset_img after-talking.jpeg %}
 
 - 参与者们很嗨皮地在社区微信群里分享照片，也有发朋友圈，群里有的小伙伴表示羡慕不已“下次一定要参与”。
 
@@ -88,8 +100,13 @@ toc: true
 
 ## 水歌的补充
 
-1. **会前拉群**确实可以让大家有所准备，能提高**到场率**，以前成都这边只有**线上工作坊**才提前拉群
-2. **会后反馈表**后面我做个统一的**打分表单**方便每次复制
+1. 我们**翻译仓库维护者**在准备**待翻译文章**时，除了在对应 MarkDown 文件中写清原文链接，最好能把原文粘贴到文件中，这样每个译者的 pull request 的**变更差异对比**界面就能看到**双语对比**
+
+2. **会前拉群**确实可以让大家有所准备，能提高**到场率**，以前成都这边只有**线上工作坊**才提前拉群
+
+3. 后面看一下 GitHub API 对**文件编辑时的 fork** 支持度如何，看能否把我开发的 [Git Pager 编辑器][10]给译者用，降低 pull request 的学习成本
+
+4. **会后反馈表**后面我做个统一的**打分表单**方便每次复制
 
 [1]: https://chinese.freecodecamp.org/forum/c/guides
 [2]: https://www.freecodecamp.org/news/
@@ -100,3 +117,4 @@ toc: true
 [7]: https://chinese.freecodecamp.org/forum/t/freecodecamp-org/250
 [8]: https://mp.weixin.qq.com/s/6AL18XNA7Jh4DfLkCmsi9w
 [9]: https://chinese.freecodecamp.org/forum/u/techquery
+[10]: https://github.com/kaiyuanshe/git-pager

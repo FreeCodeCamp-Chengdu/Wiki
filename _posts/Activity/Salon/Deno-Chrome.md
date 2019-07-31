@@ -1,6 +1,8 @@
 ---
 title: Deno 入门与 Chrome 性能调试
 date: 2019-06-27 19:12:15
+authors:
+  - TechQuery
 categories:
   - Activity
   - Salon
@@ -126,6 +128,8 @@ https://google.cn/chrome
 虽然现在 **Deno 标准库**尚不完善，但正因为基于 [ES module][7]，一个常用功能官方是否提供，甚至有没有[官方软件源][8]，都已不再重要，Deno 完全变成了**分布式系统**。
 
 尽管如此，官方还是希望维护一批由核心开发者维护的**高质量常用库**，满老师自己开发的 [SMTP 工具库][9]就是 Deno 创始人中意的之一，我们也有幸现场跟着老师从零写一遍这个库的核心代码，通过实践来体会 **SMTP 协议**和 Deno 的简洁。
+
+> 【注】我事后发现了一个 **VSCode Deno 扩展**的 bug —— https://github.com/justjavac/vscode-deno/issues/44
 
 {% asset_img Start-all.jpeg %}
 

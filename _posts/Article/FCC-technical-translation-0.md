@@ -1,6 +1,6 @@
 ---
 title: FCC 之翻译工作坊
-date: 2019-07-24 17:42:00
+date: 2019-07-21 17:42:00
 updated: 2019-07-22 22:46:00
 authors:
   - Cute233
@@ -9,8 +9,9 @@ categories:
 tags:
   - workshop
   - translation
-toc: true
 original: https://www.jianshu.com/p/a43446e6c165
+thumbnail: FCC-cards.jpeg
+toc: true
 ---
 
 > 【编者按】一位参加本期工作坊的女生写的活动总结，感谢她和大家的积极参与！
