@@ -10,6 +10,7 @@ tags:
   - science
   - history
 
+original: https://zhuanlan.zhihu.com/p/76755623
 thumbnail: big-computer.jpg
 toc: true
 ---

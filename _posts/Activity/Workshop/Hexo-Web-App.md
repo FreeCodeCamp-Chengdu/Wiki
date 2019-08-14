@@ -15,6 +15,7 @@ toc: true
 authors:
   - TechQuery
   - too
+original: https://shimo.im/docs/PcIvVWp7Ok8qnb5X
 
 # Activity meta
 start: 2019-03-24 20:00:00
@@ -31,8 +32,6 @@ workers:
 ---
 
 > freeCodeCamp 成都社区 在线工作坊 #1
->
-> 原文链接：https://shimo.im/docs/PcIvVWp7Ok8qnb5X
 
 ## 学习收获
 

@@ -29,6 +29,7 @@ authors:
   # 原作者们的 GitHub 账号
 original: # 文章出处链接
 toc: true
+thumbnail: # 封面图片
 ```
 
 [1]: https://github.com/FreeCodeCamp-Chengdu/Wiki#readme

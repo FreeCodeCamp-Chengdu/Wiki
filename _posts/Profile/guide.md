@@ -60,9 +60,11 @@ categories:
   # 每级分类对应一级目录，写在本文件的文件名前面
 tags:
   # 与内容相关的更多标签
-toc: true
 authors:
   # 原作者们的 GitHub 账号
+original: # 文章出处链接
+toc: true
+thumbnail: # 封面图片
 ```
 
 ---
@@ -93,6 +95,8 @@ mentors:
   # 讲师、教练们的 GitHub 账号
 workers:
   # 组织者、志愿者们的 GitHub 账号
+partners:
+  # 合办方、场地方、赞助方
 ```
 
 ---
@@ -118,6 +122,17 @@ photos:
   -  # 第二张开始为活动结束后上传的现场照片
 files:
   -  # 活动结束后上传的 PDF、PPT 等非纯文本文件
+```
+
+---
+
+### 一场演讲的演示文稿
+
+也可以是一篇博文
+
+```yaml
+title: Hello World
+slidehtml: true
 ```
 
 ---
@@ -196,15 +211,79 @@ https://fcc-cd.tk/community/
 
 ---
 
-#### 社区技术工具的开发
+#### 文献翻译、工具开发
 
 不但本身可以**开源项目**的模式运作
 
 也可同时做成**工作坊**活动
 
-https://fcc-cd.tk/activity/workshop/hexo-web-app/
+- https://github.com/freeCodeCamp/news-translation/blob/master/Contributing.md
 
-https://fcc-cd.tk/activity/workshop/nodejs-web-crawler/
+- https://fcc-cd.tk/activity/workshop/hexo-web-app/
+
+- https://fcc-cd.tk/activity/workshop/nodejs-web-crawler/
+
+---
+
+## 战
+
+---
+
+### 安装基础软件
+
+#### Windows
+
+```powershell
+choco install nodejs-lts git
+```
+
+#### Mac OS X
+
+```shell
+brew install node
+```
+
+---
+
+### 创建网站项目
+
+```shell
+npm init hexo-wiki ~/Desktop/FCC \
+    --theme NexT \
+    --plugins hexo-generator-slidehtml \
+    --remote https://github.com/FCC/FCC.github.io.git
+```
+
+---
+
+### 配置更新服务
+
+```yaml
+branches:
+  only:
+    - hexo
+
+language: node_js
+node_js:
+  - lts/*
+cache:
+  directories:
+    - node_modules
+
+before_install:
+  - export TZ=${TIME_ZONE}
+install:
+  - npm install
+script:
+  - npm run build
+  - cd ${FOLDER}
+  - git init
+  - git config user.name ${UID}
+  - git config user.email ${EMAIL}
+  - git add .
+  - git commit -m "${MESSAGE}"
+  - git push --force --quiet https://${TOKEN}@${GIT_URI}.git master:${BRANCH}
+```
 
 ---
 
