@@ -10,7 +10,7 @@ tags:
   - computer
   - hardware
   - history
-thumbnail: electronic-component-0.jpg
+thumbnail: https://chinese.freecodecamp.org/news/content/images/size/w2000/2019/08/182816.jpg
 original: https://zhuanlan.zhihu.com/p/76965818
 ---
 
@@ -73,7 +73,7 @@ original: https://zhuanlan.zhihu.com/p/76965818
 
 **晶体管**也是一种电子开关，它有两个电极，电极中间有一层有时导电，有时不导电，因此被称为**半导体**的材料。通过加入一个**“门电极”**，通过改变门电极上的电荷，我们可以控制半导体材料的导电性，来开关电路。
 
-![](https://pic1.zhimg.com/v2-4b7515cbf939d21b96c079089f160a18_b.jpg)
+![](https://chinese.freecodecamp.org/news/content/images/2019/08/666.gif)
 
 <figcaption>晶体三极管工作方式</figcaption>
 
