@@ -9,6 +9,7 @@ tags:
   - computer
   - science
 toc: true
+thumbnail: final-all.jpg
 
 # Activity meta
 start: 2019-08-31 13:30:00
@@ -22,6 +23,15 @@ workers:
   - TingYinHelen
 partners:
   - CD-CKplus
+photos:
+  - HeYaoHan-talking-0.jpg
+  - HeYaoHan-talking-1.jpg
+  - HeYaoHan-sharing.jpg
+  - demongodYY-talking.jpg
+  - final-all.jpg
+files:
+  - 创业中如何打造品牌和IP.pdf
+  - https://ppt.baomitu.com/d/b300340d
 ---
 
 > freeCodeCamp 成都社区 2019 秋季第一期沙龙
