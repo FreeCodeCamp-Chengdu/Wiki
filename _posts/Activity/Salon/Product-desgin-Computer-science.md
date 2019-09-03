@@ -21,6 +21,7 @@ mentors:
   - demongodYY
 workers:
   - TingYinHelen
+  - TechQuery
 partners:
   - CD-CKplus
 photos:

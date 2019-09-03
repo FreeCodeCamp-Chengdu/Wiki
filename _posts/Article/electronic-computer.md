@@ -10,8 +10,10 @@ tags:
   - computer
   - hardware
   - history
+
+original: https://chinese.freecodecamp.org/news/computer-science-history-by-shu-xiang-part-two-digital-computer/
 thumbnail: https://chinese.freecodecamp.org/news/content/images/size/w2000/2019/08/182816.jpg
-original: https://zhuanlan.zhihu.com/p/76965818
+toc: true
 ---
 
 ## 机电计算机的弊端

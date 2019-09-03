@@ -8,8 +8,9 @@ categories:
 tags:
   - logic
   - circuit
+
+original: https://chinese.freecodecamp.org/news/computer-science-history-by-shu-xiang-part-three-boolean-logic-and-logic-gate/
 thumbnail: https://chinese.freecodecamp.org/news/content/images/size/w2000/2019/08/bool.jpeg
-original: https://zhuanlan.zhihu.com/p/77271935
 toc: true
 ---
 

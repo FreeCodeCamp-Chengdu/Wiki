@@ -10,8 +10,8 @@ tags:
   - science
   - history
 
-original: https://zhuanlan.zhihu.com/p/76755623
-thumbnail: big-computer.jpg
+original: https://chinese.freecodecamp.org/news/computer-science-history-by-shu-xiang-part-one-early-history/
+thumbnail: https://chinese.freecodecamp.org/news/content/images/size/w2000/2019/08/rdn_552b25bca3bda.jpg
 toc: true
 ---
 
