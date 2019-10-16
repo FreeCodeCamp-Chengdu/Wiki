@@ -1,5 +1,5 @@
 ---
-title: 2019 成都 Web 全栈大会
+title: 【2019 成都 Web 全栈大会】首批讲师来袭！
 date: 2019-09-24 19:21:26
 authors:
   - TechQuery
@@ -11,10 +11,12 @@ tags:
   - Web
   - full-stack
 toc: true
+thumbnail: Full-Stack-dev.jpg
 
 description: 成都 Web 前端大会全新升级！
 start: 2019-11-16 09:00:00
 end: 2019-11-16 18:00:00
+address: 成都市高新区天府五街 菁蓉国际广场7号楼主会场
 links:
   讲师招募: https://jinshuju.net/f/86DawT
 mentors:
@@ -40,29 +42,29 @@ mentors:
 
 ## 内容剧透
 
-### 聊聊 Node.JS 构建部署时我们要关心的数据
+### 《聊聊 Node.js 构建部署时我们要关心的数据》
 
 在 DevOps 的时代，构建和部署都已经自动化了。我们可以在构建时和部署时收集一些我们可能要关心的数据，用于以后排错、预警等等。本 Topic 为我在蚂蚁金服做这些数据的收集和实践的一些总结。
 
 <figure>
-  <img src="https://web-conf.tk/2018/image/lecturer/Si%20Yue.png">
+{% asset_img SiYue.jpg %}
   <figcaption>死月</figcaption>
 </figure>
 
-蚂蚁金服 Node.JS 工程师；Node.JS Core Collaborator 之一；《Node.JS：来一打 C++ 扩展》作者。
+蚂蚁金服 Node.js 工程师；Node.js Core Collaborator 之一；《Node.js：来一打 C++ 扩展》作者。
 
-### 从 Angular Ivy 认识前端框架
+### 《从 Angular Ivy 认识前端框架》
 
 作为新一代的 Angular 渲染引擎，Ivy 对编译器与运行时代码进行了整体重构，在保证编译和运行效率的基础上，实现了全功能按需引入及开发者友好的代码调试支持。这里将从 Ivy 的完整工作流程入手，结合编译器及运行时实现，介绍 Angular 的完整工作流程以及与其它框架的异同分析。
 
 <figure>
-{% asset_img YuZeJiang.jpg %}
+{% asset_img YuZeJiang.png %}
   <figcaption>余泽江</figcaption>
 </figure>
 
 ThoughtWorks 咨询师，95 后，Angular 项目的社区活跃贡献者及国内早期 Angular 布道者，主要专注于 Web 前端框架、JavaScript 语言以及 Web 规范相关领域。
 
-### Thoughts In Deno
+### 《Thoughts In Deno》
 
 销声匿迹的 Deno 如今已经如何了？它身世背后的故事是什么？聊一聊我眼中的 Deno，以及我认为值得称赞的设计思想。
 
@@ -73,7 +75,7 @@ ThoughtWorks 咨询师，95 后，Angular 项目的社区活跃贡献者及国�
 
 来自重庆的 IT 难民，刚到成都讨饭吃的伪全栈工程狮。新晋的开源爱好者，Deno contributor，Deno 中国社区发起人。
 
-### 城市大脑地图可视化技术实践
+### 《城市大脑地图可视化技术实践》
 
 1. 背景
 2. 组件库设计
@@ -87,7 +89,7 @@ ThoughtWorks 咨询师，95 后，Angular 项目的社区活跃贡献者及国�
 
 中国科学技术大学毕业，计算机专业硕士。任职阿里巴巴高级前端工程师；擅长前端自动化、工程化，前端架构方向。目前在参与城市大脑前端项目建设，地图可视化组件库 gas.gl 的核心开发者。
 
-### DevCloud Web Components 实践
+### 《DevCloud Web Components 实践》
 
 Web Components 在华为云 DevCloud 如何落地？解决了什么问题？为什么要选用 Web Components？
 
@@ -98,7 +100,7 @@ Web Components 在华为云 DevCloud 如何落地？解决了什么问题？为�
 
 曾经在美团、人人网等互联网公司担任前端开发工程师，目前是华为云 DevCloud 高级前端工程师，负责前端架构、技术预研、性能优化，热爱开源，喜欢折腾新技术。
 
-### SoLiD 社交互联数据 —— 万维网之父的数据主权革命
+### 《SoLiD 社交互联数据 —— 万维网之父的数据主权革命》
 
 <figure>
 {% asset_img XieYang.jpeg %}
@@ -109,7 +111,7 @@ Web Components 在华为云 DevCloud 如何落地？解决了什么问题？为�
 
 ---
 
-全栈大会这就完了吗？
+全栈大会只有这些内容吗？
 
 不，我们今年办**两天**！~
 
