@@ -1,5 +1,5 @@
 ---
-title: 【2019 成都 Web 全栈大会】开幕在即！
+title: 【2019 成都 Web 全栈大会】门票开售！
 date: 2019-10-15 14:34:14
 authors:
   - TechQuery
@@ -12,12 +12,13 @@ tags:
 toc: true
 thumbnail: Full-stack.jpg
 
-start: 2019-11-17 09:00:00
+start: 2019-11-16 09:00:00
 end: 2019-11-17 18:00:00
 address: 成都市高新区天府五街 菁蓉国际广场7号楼主会场
 description:
 links:
-  报名:
+  议程: https://web-conf.tk/#2019/
+  报名: http://fcc-chengdu.mikecrm.com/7pG2aOh
 mentors:
   - hax
   - sorrycc
@@ -32,15 +33,31 @@ workers:
 partners:
 ---
 
-最近很多小伙伴在问：“全栈大会完整议程啥时出啊？等着买票呢！”
+最近越来越多的小伙伴在问：“全栈大会完整议程啥时出啊？等着买票呢！”
 
 那就准备好你的付款二维码，绝对物超所值哦！~
+
+> 【时间】2019 年 **11 月 16 ~ 17 日** 09:00 ~ 18:00
+>
+> 【地点】成都市高新区天府五街 **菁蓉国际广场 7 号楼主会场**
+>
+> 【议程】https://web-conf.tk/#2019/
+>
+> 【报名】http://fcc-chengdu.mikecrm.com/7pG2aOh
+
+---
+
+> 【前情提要】https://fcc-cd.tk/activity/conference/web-conf-2019-0/
 
 <!-- more -->
 
 ## 第二波主题
 
 ### /\* 贺老主题专用占位符 \*/
+
+|    领域    | 难度 |
+| :--------: | :--: |
+| ECMAScript | 进阶 |
 
 JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的影响、尚待解决的问题、采纳中需要注意的点等。
 
@@ -52,6 +69,8 @@ JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的�
 </figure>
 
 360 技术委员会 Web 前端 TC 委员，ECMA TC39 代表，W3C Chinese Web IG 成员。
+
+---
 
 ### 《蚂蚁前端研发最佳实践》
 
@@ -74,6 +93,8 @@ JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的�
 
 花名云谦，入职阿里已有 11 年。之前在淘宝，负责过淘宝首页、宝贝详情、购物车、下单等很多重要业务的前端部分。然后转岗到支付宝，曾负责 SPM、支付宝开发者工具的开发，以及创建了 Dva、Roadhog、babel-plugin-import、Umi 等。擅长的领域有工具、前端框架以及前端性能等，热衷于开源，大家可以在 https://github.com/sorrycc 找到我。
 
+---
+
 ### 《无服务器计算架构》
 
 |    领域    | 难度 |
@@ -91,11 +112,19 @@ JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的�
 
 拥有 15 年以上电信级企业应用系统开发、设计和架构经验。擅长分布式和高可用软件系统设计，擅长微服务和无服务器应用架构设计，熟悉 CMMI 和 Scrum 敏捷开发流程，熟悉 DevOps。
 
+---
+
 ### "Brand New Things in WebAssembly Post-MVP Standard"
 
 |    领域     | 难度 |
 | :---------: | :--: |
 | WebAssembly | 进阶 |
+
+WebAssembly 作为一种新的二进制格式，它可以方便地将 C/C++/Rust 等其他静态语言代码快速的“运行”在浏览器中，这一特性为前端密集计算场景提供了无限的可能。不仅如此，基于 WebAssembly 技术，我们可以快速的将基于 Unity 游戏引擎开发的大型游戏快速的移植到 Web 端，这一切都要归功于 WebAssembly 技术带来的前端运算性能的大幅度提升。
+
+WebAssembly 技术现在已经成为 W3C 的标准，众多浏览器厂商已经提供了对其 MVP 版本特性的支持。在 Google IO 2017/18/19 连续三届大会上，谷歌也将 WebAssembly 技术作为重点进行了公开的演讲介绍和推广。
+
+Post-MVP 版本标准更是会对诸如复杂类型引用（如 DOM 对象）、多线程和 GC 等特性提供支持。WebAssembly 技术所带来的、不仅仅局限于 Web 层面的技术变革在未来将变得势不可挡。
 
 #### 于航
 
@@ -104,7 +133,11 @@ JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的�
   <figcaption>PayPal - Web 前端工程师</figcaption>
 </figure>
 
-曾在阿里巴巴本地生活、Tapatalk 等国内外企业工作，现在 PayPal 上海负责 Global GRT 平台相关的技术研发工作；FCC (freeCodeCamp China) 上海技术社区负责人；多次 QCon、GMTC 大会讲师；WebAssembly 技术布道者，2017 年注册成为 W3C 官方 CG 成员，定期参与 CG 组织的各种在线视频研讨会议，在跟进 Wasm 最新发展情况的同时也为 Wasm 的标准化提出自己的建议和意见。2018 年深度参与到 Emscripten 编译器工具链项目的研发工作中，同年出版名为《深入浅出 WebAssembly》的国内第一本 Wasm 技术书籍，为推动国内 Wasm 技术的发展和落地实践做出了微小的贡献。研究领域主要为前端基础技术架构、 Serverless、WebAssembly、LLVM 及编译器等相关方向。
+曾在阿里巴巴本地生活、TapaTalk 等国内外企业工作，现在 PayPal 上海负责 Global GRT 平台相关的技术研发工作；FCC (freeCodeCamp China) 上海技术社区负责人；多次 QCon、GMTC 大会讲师。研究领域主要为前端基础技术架构、 Serverless、WebAssembly、LLVM 及编译器等相关方向。
+
+作为 WebAssembly 技术布道者，2017 年注册成为 W3C 官方 CG 成员，定期参与 CG 组织的各种在线视频研讨会议，在跟进 Wasm 最新发展情况的同时也为 Wasm 的标准化提出自己的建议和意见。2018 年深度参与到 Emscripten 编译器工具链项目的研发工作中，同年出版名为《深入浅出 WebAssembly》的国内第一本 Wasm 技术书籍，为推动国内 Wasm 技术的发展和落地实践做出了微小的贡献。
+
+---
 
 ### 《基于 Node.js 打造研发团队的瑞士军刀》
 
@@ -112,7 +145,9 @@ JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的�
 | :-------------: | :--: |
 | Node.js、工作流 | 入门 |
 
-不断提高研发效率（快）与提升研发体验（爽）应该是一个团队成长所必需的两个点。团队无论大小，实际工作中总会遇上公司特有的各种重复性工作，这些脏活儿累活儿交给工具去做无疑会极大提高效率。类似我们用到的各种框架会提供 CLI，而面向团队内部工作流以及公司业务的 CLI，就需要我们自己去开发定制了。我来分享的就是基于 Node.js，打造及持续沉淀一个团队内部工具集 Dev Tools 的过程中，所需要考虑的工具配置、用户配置、守护进程、文件操作、shell 交互、异常处理、优雅退出、团队协作、命令补全等事项，这可以是一个脚手架，也可以是个框架，目的是分享如何高效的打造这个瑞士军刀，让我们更专注去实现军刀的功能！
+不断提高研发效率（快）与提升研发体验（爽）应该是一个团队成长所必需的两个点。团队无论大小，实际工作中总会遇上公司特有的各种重复性工作，这些脏活儿累活儿交给工具去做无疑会极大提高效率。类似我们用到的各种框架会提供 CLI，而面向团队内部工作流以及公司业务的 CLI，就需要我们自己去开发定制了。
+
+我来分享的就是基于 Node.js，打造及持续沉淀一个团队内部工具集 Dev Tools 的过程中，所需要考虑的工具配置、用户配置、守护进程、文件操作、shell 交互、异常处理、优雅退出、团队协作、命令补全等事项，这可以是一个脚手架，也可以是个框架，目的是分享如何高效的打造这个瑞士军刀，让我们更专注去实现军刀的功能！
 
 #### 陈洋彬
 
@@ -122,6 +157,8 @@ JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的�
 </figure>
 
 在研发团队搭建与管理、技术体系持续演进与渐进增强、团队工作流设计等方面有一定心得和经验。多年服务后端、Web 前端研发及架构设计经验，关注技术的原理与融会贯通，主张编码与工程的专业、规范、极简。
+
+---
 
 ### 《基于 GraphQL 的业务中台实践》
 
@@ -138,6 +175,8 @@ JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的�
 </figure>
 
 原贝壳找房基础架构部工程师，多语言爱好者，偏向异步和函数式编程，酷爱原型搭建。
+
+---
 
 ### 《Rust 语言全栈开发》
 
@@ -156,6 +195,8 @@ JS 最新的 proposal 介绍，包括提案的目的、用例、对开发者的�
 
 Rust 资深开发者，RustCC 社区联合创始人，在 Rust 的应用层面有一定探索。
 
+---
+
 ### "Enhanced Privacy with Decentralized Identity"
 
 |        领域         | 难度 |
@@ -167,15 +208,19 @@ Maskbook 是一个浏览器插件，可以让用户在正常使用 Facebook、Tw
 #### Jack Works
 
 <figure>
-{% asset_img Jack-Works.jpeg %}
+  <img src="https://github.com/Jack-Works.png">
   <figcaption>Dimension - 现代前端魔法使</figcaption>
 </figure>
+
+---
 
 ## 共创伙伴
 
 十分感谢共创伙伴们多方面的大力支持！也期待更多伙伴加入成都首届全栈大会的共赢共创！
 
 ### 钻石赞助
+
+阿里云计算
 
 ![](https://img.alicdn.com/tfs/TB1Ly5oS3HqK1RjSZFPXXcwapXa-238-54.png)
 
@@ -189,4 +234,18 @@ Maskbook 是一个浏览器插件，可以让用户在正常使用 Facebook、Tw
 
 ### 铜牌赞助
 
+亚马逊 AWS
+
 ![](AWS.png)
+
+### 主办方
+
+FCC 成都社区
+
+![](/images/FCC-CDC-v1-1.png)
+
+### 协办方
+
+四川捷云信通
+
+![](https://tvax3.sinaimg.cn/crop.4.0.237.237.180/00729vHHly8fp6nb4mncdj308a07raa2.jpg?KID=imgbed,tva&Expires=1571330231&ssig=Fs1dNMHnlm)
