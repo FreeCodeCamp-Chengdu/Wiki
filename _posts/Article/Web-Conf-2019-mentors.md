@@ -6,6 +6,7 @@ authors:
   - Cute233
   - phobal
   - kitety
+  - TingYinHelen
   - Samhanx
 categories:
   - Article
@@ -72,7 +73,7 @@ thumbnail: https://web-conf.dev/banner.0af0a3bf.jpg
 
 本次有幸请到 sorrycc 大佬来成都参加由 FCC 和 阿里云联合举办的 [2019 成都 Web 全栈大会][1]，他将带来 《蚂蚁前端研发最佳实践》主题演讲，主要给大家分享一下蚂蚁前端在语言、CSS、目录结构、路由、数据流、Mock、构建工具、组件开发、测试、性能优化微前端等方面选择的最佳实践，以及最佳实践的迭代、遇到的问题、挑战和他的思考。
 
-## 慕阳 —— 优秀铲屎官
+## 慕阳 —— 平凡的铲屎官
 
 <figure>
     <img src="/activity/conference/web-conf-2019-0/MuYang.jpeg">
@@ -86,9 +87,19 @@ thumbnail: https://web-conf.dev/banner.0af0a3bf.jpg
 
 没错就是这只自带“眼罩”大懒猫，我才真实的感觉到他也是一个热爱生活的人。他并不是大家想象中的两耳不闻窗外事，一心钻研搞技术的宅男；他也是爱刷抖音、爱跑步，没事撸撸猫、看看电影，外加陪陪女朋友的人。
 
-可能有的同学了解过 Web Components，但实际使用比较多的都是类似于 Vue 或 React 形式的组件。所以大家非常好奇老师将会在这次大会中给我们带来哪些关于 Web Components 的黑科技。
+可能有的同学了解过 [Web Components][2]，但实际使用比较多的都是类似于 Vue 或 React 形式的组件。所以大家非常好奇老师将会在这次大会中给我们带来哪些关于 Web Components 的黑科技。
 
 我们已经了解到，老师将以华为云内部复杂的前端业务为背景，结合在实际项目中使用 Web Components 的一些经验，为我们带来一期干货满满的 Web Components 实践分享。希望同学们带好小本本，好好写笔记，一定会有很多收获哦！
+
+## 谢扬 —— 互联网之子
+
+<figure>
+    {% asset_img Xie-Yang.jpg %}
+</figure>
+
+谢扬，本届年纪最小的讲师，96 年小鲜肉。他在大二时开发了 Gospel，提供了软件开发的全新解决方案。曾任好东西传送门的 CTO，目前在中国推广[万维网之父的 SoLiD 项目][3]，并基于此进行商业化试水。
+
+他活跃于 GitHub，目前自己的创业项目 Authing 已经慢慢浮出水面，受到大家认可。年纪虽小，但是在初中的时候就开始编程，具有很强的编程能力和项目推动能力，十足的领导范儿。
 
 ## 于航 —— 女装真大佬，编码无 bug
 
@@ -96,7 +107,7 @@ thumbnail: https://web-conf.dev/banner.0af0a3bf.jpg
     <img src="/activity/conference/web-conf-2019-1/Yu-Hang.jpeg">
 </figure>
 
-本次大会的讲师于航（Jason Yu），除了在多个技术大会上布道之外，平时生活中也是一个极富情调的人，我们都亲切地称呼他为“航妹”。为什么呢？因为他不仅是个极客，还是传说中的“女装大佬”。访问[航妹的 Github 个人主页][2]，你就能看到他（她）的女装头像。更有甚者，航妹曾在参与某个开源项目时，被国外开发者误认为是个厉害的妹子。
+本次大会的讲师于航（Jason Yu），除了在多个技术大会上布道之外，平时生活中也是一个极富情调的人，我们都亲切地称呼他为“航妹”。为什么呢？因为他不仅是个极客，还是传说中的“女装大佬”。访问[航妹的 Github 个人主页][4]，你就能看到他（她）的女装头像。更有甚者，航妹曾在参与某个开源项目时，被国外开发者误认为是个厉害的妹子。
 
 航妹兴趣广泛。你时常能看到他发一些弹奏钢琴的短视频；也曾在公司组织团队成员练习街舞，参与演出；他甚至还是两只猫主子的铲屎官，一橘一花（其实主要是白色）。
 
@@ -114,11 +125,13 @@ thumbnail: https://web-conf.dev/banner.0af0a3bf.jpg
 
 看到这里，是不是觉得航妹妥妥的小说主角模板啊，有技术，有猫，还多才多艺。
 
-航妹在今年早些时候出版了国内第一本系统介绍 WebAssembly 技术的书[《深入浅出 WebAssembly》][3]。WebAssembly 是近年诞生的一门新技术，目前在国内还很少看到相关的应用和实践，这次他来分享 WebAssembly 相关的内容，想了解同学不容错过。
+航妹在今年早些时候出版了国内第一本系统介绍 WebAssembly 技术的书[《深入浅出 WebAssembly》][5]。WebAssembly 是近年诞生的一门新技术，目前在国内还很少看到相关的应用和实践，这次他来分享 WebAssembly 相关的内容，想了解同学不容错过。
 
-如果你想了解更多关于航妹的事情，可以看看我们之前对他做的一次访谈，[FCC DevTalk 002 丨于航：happy coding, happy life][4]，也欢迎大家支持航妹的书《深入浅出 WebAssembly》。
+如果你想了解更多关于航妹的事情，可以看看我们之前对他做的一次访谈，[FCC DevTalk 002 丨于航：happy coding, happy life][6]，也欢迎大家支持航妹的书《深入浅出 WebAssembly》。
 
 [1]: https://web-conf.dev/#2019/
-[2]: https://github.com/Becavalier
-[3]: https://book.douban.com/subject/30368088/
-[4]: https://chinese.freecodecamp.org/forum/t/topic/187
+[2]: https://www.webcomponents.org/
+[3]: https://learnsolid.cn/
+[4]: https://github.com/Becavalier
+[5]: https://book.douban.com/subject/30368088/
+[6]: https://chinese.freecodecamp.org/forum/t/topic/187
