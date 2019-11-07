@@ -183,7 +183,7 @@ https://fcc-cd.tk
 
 - 不定期中型技术活动
 
-- [年度大型技术会议](https://web-conf.tk)
+- [年度大型技术会议](https://web-conf.dev)
 
 ---
 

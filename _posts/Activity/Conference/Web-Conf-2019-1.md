@@ -17,7 +17,7 @@ end: 2019-11-17 18:00:00
 address: 成都市高新区天府五街 菁蓉国际广场7号楼主会场
 description:
 links:
-  议程: https://web-conf.tk/#2019/
+  议程: https://web-conf.dev/#2019/
   报名: http://fcc-chengdu.mikecrm.com/7pG2aOh
 mentors:
   - hax
@@ -41,7 +41,7 @@ partners:
 >
 > 【地点】成都市高新区天府五街 **菁蓉国际广场 7 号楼主会场**
 >
-> 【议程】https://web-conf.tk/#2019/
+> 【议程】https://web-conf.dev/#2019/
 >
 > 【报名】http://fcc-chengdu.mikecrm.com/7pG2aOh
 
