@@ -7,7 +7,7 @@ categories:
   - Article
 tags:
 toc: true
-thumbnail:
+thumbnail: https://windowsunited.de/wp-content/uploads/sites/3/2018/02/pwa.jpg
 ---
 
 本届大会秉持**程序员自主办会**的宗旨，努力从各方面**用编程解决问题**。
