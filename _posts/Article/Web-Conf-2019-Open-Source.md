@@ -10,7 +10,7 @@ tags:
   - conference
   - Open-Source
 toc: true
-thumbnail:
+thumbnail: WebConf-2019-banner.png
 ---
 
 > [2019 成都 Web 全栈大会][1]技术工作总结
@@ -61,7 +61,7 @@ WebCell 自 v1 以来的**装饰器**写法与 MobX 十分搭调，v2 用了 Typ
     <figcaption>BootStrap</figcaption>
 </figure>
 
-说道 UI 组件库，很多人可能觉得 [BootStrap][11] “不好看”，但水歌却对它情有独钟 ——
+说到 UI 组件库，很多人可能觉得 [BootStrap][11] “不好看”，但水歌却对它情有独钟 ——
 
 - 官方文档示例代码中的 HTML 结构**语义化**、[**无障碍** (Accessability)][12] 堪称“教科书”，对 SEO（搜索引擎爬虫）、屏幕阅读器（视障人士）极为友好
 

@@ -12,18 +12,20 @@ cache:
 before_install:
   - export TZ=${TIME_ZONE}
 install:
-  - git clone https://${GIT_URI}.git ../super/
+  - git clone https://github.com/${GIT_URI}.git ../super/
   - rm $(ls -F | grep [^/]$)
-  - echo ${DOMAIN} > CNAME
   - mv ./* ../super/${FOLDER_SOURCE}/
   - cd ../super/
   - npm install
 script:
   - npm run build
-  - cd ${FOLDER_TARGET}
-  - git init
-  - git config user.name ${UID}
-  - git config user.email ${EMAIL}
-  - git add .
-  - git commit -m "${MESSAGE}"
-  - git push --force --quiet https://${TOKEN}@${GIT_URI}.git master:${BRANCH}
+deploy:
+  provider: pages
+  on:
+    branch: master
+  skip_cleanup: true
+  local_dir: ../super/${FOLDER_TARGET}
+  fqdn: ${DOMAIN}
+  repo: ${GIT_URI}
+  target_branch: ${BRANCH}
+  token: ${TOKEN}
