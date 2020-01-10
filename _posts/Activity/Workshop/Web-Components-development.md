@@ -17,10 +17,13 @@ end: 2019-12-21 17:30:00
 address: 成都市高新区天益南巷18号创客大使馆
 description:
 links:
-  报名: null
+  报名: http://fcc-chengdu.mikecrm.com/35zDvFg
 mentors:
   - TechQuery
 workers:
+  - demongodYY
+  - zhangyanling77
+  - Akagilnc
 partners:
   - CD-CKplus
 ---
@@ -28,6 +31,10 @@ partners:
 正在筹划本期工作坊时，就看到 [FCC 成都社区][1]的微信群里有小伙伴在苦恼**前端技能提升**的问题，也有小伙伴想一起开发一个组件库，那你们这次可来对了~
 
 本期工作坊是[水歌][2]在 2019 年 [Google DevFest][3] 成都站[《Web 组件标准实践》][4]演讲后的首次配套工作坊，可以错过上次，但一定不要错过这次！
+
+> 【时间】2019 年 12 月 21 日（周六）13:30 ~ 17:30
+>
+> 【地点】成都市高新区天益南巷 18 号创客大使馆
 
 <!-- more -->
 
@@ -76,6 +83,11 @@ partners:
 ></iframe>
 
 ### Step 3 | 封装一个 BootStrap 组件
+
+<figure>
+    <img src="/article/web-conf-2019-open-source/BootStrap.png">
+    <figcaption>BootStrap</figcaption>
+</figure>
 
 [BootStrap][11] 可谓 **CSS 框架**时代的开创者，一直被模仿、从未被超越。在同时代的大量同类框架中，现在基本只有它还在持续演进。
 

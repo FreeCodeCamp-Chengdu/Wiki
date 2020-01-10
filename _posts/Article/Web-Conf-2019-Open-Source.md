@@ -57,7 +57,7 @@ WebCell 自 v1 以来的**装饰器**写法与 MobX 十分搭调，v2 用了 Typ
 ### 组件库 —— BootCell
 
 <figure>
-    <img src="https://getbootstrap.com/docs/4.4/assets/brand/bootstrap-solid.svg">
+{% asset_img BootStrap.png %}
     <figcaption>BootStrap</figcaption>
 </figure>
 
