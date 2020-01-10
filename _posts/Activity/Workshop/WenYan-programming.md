@@ -15,22 +15,25 @@ end: 2020-01-12 17:30:00
 address: 成都市高新区天府五街 200 号 菁蓉国际广场 2A 栋 9 楼 紫荆谷众创空间
 mentors:
   - demongodYY
+  - winsonwq
 workers:
   - TechQuery
 partners:
   - Bauhinia-Valley
+links:
+  报名: http://fcc-chengdu.mikecrm.com/tY0BJru
 ---
 
 说到**中文编程**，上了年纪的程序员想必知道[易语言][1]、[中蟒][2]、[周蟒][3]、[孔 Caml][4] 等语言，所有支持 Unicode 的**现代编程语言**也都支持用汉字等**非英文字符**做标识符（比如[水歌][5]参与翻译的 [CodeceptJS API][6]）。但在华人 IT 界，中文编程一直争议极大、毁誉参半。不过，两岸四地的华人程序员们，多年来却从未放弃对**母语编程**的不懈探索。
 
-最近一位在美国读书的华人学生又新创了一门中文编程语言 —— [WenYan（文言）][7]，一个月左右的时间便在 GitHub 斩获近一万四千 star！
+最近一位在美国卡耐基梅陇大学读书的华人大四学生又新创了一门中文编程语言 —— [WenYan（文言）][7]，一个月左右的时间便在 GitHub 斩获近一万四千 star！
 
 <figure>
     <img src="https://github.com/LingDong-/wenyan-lang/raw/master/screenshots/logo.png">
     <figcaption>WenYan 编程语言</figcaption>
 </figure>
 
-但它与上述前辈迥然不同，不再是简单地替换英文标识符、关键字，徒生违和感，而是完全**以古汉语的语法行文**，用 NLP（自然语言处理）一类 **AI 算法分析语义**，再编译为 JavaScript、Python 等主流语言去运行，可谓是真正的**用中文去编程**！
+但它与上述前辈迥然不同，不再是简单地替换英文标识符、关键字，徒生违和感，而是完全**以古汉语的语法行文**，再编译为 JavaScript、Python 等主流语言去运行，可谓是真正的**用中文去编程**！
 
 不仅如此，作者从一开始便运用**开源社区运营**手法 —— **英文说明文档**、**语法规范文档**、**在线开发环境**、**本地编辑器插件**等一应俱全，甚至还结合《九章算术》等古代数学著作的风格做了**代码古籍图片生成器**！实乃后生可畏，我大中华复兴有望矣！
 
@@ -42,7 +45,7 @@ partners:
 
 <!-- more -->
 
-## 序
+## 序言
 
 夫混沌初开，阴阳分晓。盖两仪化四象，四象生八卦，八卦生无穷，此天地万物之生也。至冯祖降世，悟有无之道，尽天机之正，锻金为骨，化爻为髓，作精妙之仪，御之以电，上可演九章算术，下可推少广方田， 乃开后世之先河。
 
@@ -50,7 +53,7 @@ partners:
 
 吾辈小子数人，尝创[可思摩斯](https://cocoet.cn/co3mos/projects/view)之奥义。结其于文言程式之中，乃凭文法之妙，于方寸之间，创宇宙之万物。行此聚会，以文、程二物会友。固为一乐，并望君能于乐中有所获矣。
 
-## 主要内容
+## 内容
 
 - 简单介绍文言编程的**转译源代码**，以及与 co3mos 项目的融合
 
@@ -67,23 +70,14 @@ partners:
     <figcaption>示例代码</figcaption>
 </figure>
 
-## 教练
-
-### 余琦
+## 讲师
 
 <figure>
 {% asset_img Yu-Qi.jpg %}
+    <figcaption>余琦</figcaption>
+    <figcaption>FCC 成都社区 - 核心成员</figcaption>
+    <figcaption>可好玩乐 - Web 开发工程师</figcaption>
 </figure>
-
-FCC 成都社区核心成员、可好玩乐 Web 开发工程师。
-
-### 王秋
-
-<figure>
-{% asset_img Wang-Qiu.jpg %}
-</figure>
-
-曾任职 ThoughtWorks，现任可好玩乐 CTO，拥有十余年软件开发和编程教育经验。
 
 ## 协办
 
