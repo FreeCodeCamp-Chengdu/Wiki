@@ -26,6 +26,10 @@ workers:
   - Akagilnc
 partners:
   - CD-CKplus
+photos:
+  - teaching.jpg
+  - discussing-0.jpg
+  - discussing-1.jpg
 ---
 
 正在筹划本期工作坊时，就看到 [FCC 成都社区][1]的微信群里有小伙伴在苦恼**前端技能提升**的问题，也有小伙伴想一起开发一个组件库，那你们这次可来对了~
