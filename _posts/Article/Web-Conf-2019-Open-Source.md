@@ -29,7 +29,7 @@ thumbnail: WebConf-2019-banner.png
 ### 组件引擎 —— WebCell
 
 <figure>
-    <img src="https://web-cell.dev/image/WebCell-1.png">
+    <img src="https://web-cell.dev/WebCell-1.fb612fdb.png">
     <figcaption>WebCell</figcaption>
 </figure>
 
