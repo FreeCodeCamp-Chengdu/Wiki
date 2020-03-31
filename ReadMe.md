@@ -33,7 +33,7 @@ git lfs install
 freeCodeCamp 成都社区官方网站
 </span>
 由
-<a href="https://fcc-cd.tk/"
+<a href="https://fcc-cd.dev/"
     xmlns:cc="http://creativecommons.org/ns#"
     rel="cc:attributionURL"
     property="cc:attributionName">

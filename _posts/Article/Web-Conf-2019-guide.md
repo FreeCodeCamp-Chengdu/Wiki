@@ -81,7 +81,7 @@ thumbnail: https://windowsunited.de/wp-content/uploads/sites/3/2018/02/pwa.jpg
     <figcaption>大会 App 内嵌高德导航</figcaption>
 </figure>
 
-[1]: https://fcc-cd.tk/
+[1]: https://fcc-cd.dev/
 [2]: https://github.com/EasyWebApp/WebCell/tree/v2/#readme
 [3]: https://developers.google.cn/web/progressive-web-apps/
 [4]: https://google.cn/chrome/

@@ -47,7 +47,7 @@ partners:
 
 ---
 
-> 【前情提要】https://fcc-cd.tk/activity/conference/web-conf-2019-0/
+> 【前情提要】https://fcc-cd.dev/activity/conference/web-conf-2019-0/
 
 <!-- more -->
 

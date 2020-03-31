@@ -141,9 +141,9 @@ slidehtml: true
 
 基于现代**静态网站生成器**的二次开发能力实现
 
-https://fcc-cd.tk/activity/
+https://fcc-cd.dev/activity/
 
-https://fcc-cd.tk/community/
+https://fcc-cd.dev/community/
 
 ---
 
@@ -219,9 +219,9 @@ https://fcc-cd.tk/community/
 
 - https://github.com/freeCodeCamp/news-translation/blob/master/Contributing.md
 
-- https://fcc-cd.tk/activity/workshop/hexo-web-app/
+- https://fcc-cd.dev/activity/workshop/hexo-web-app/
 
-- https://fcc-cd.tk/activity/workshop/nodejs-web-crawler/
+- https://fcc-cd.dev/activity/workshop/nodejs-web-crawler/
 
 ---
 

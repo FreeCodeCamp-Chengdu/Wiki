@@ -161,7 +161,7 @@ https://chinese.freecodecamp.org
 
 ![](/images/FCC-CDC-v1-1.png)
 
-https://fcc-cd.tk
+https://fcc-cd.dev
 
 ---
 
@@ -209,6 +209,6 @@ https://fcc-cd.tk
 
 ##### 加入我们
 
-- [吃瓜群众](https://fcc-cd.tk/contact)
+- [吃瓜群众](https://fcc-cd.dev/contact)
 
-- [运营团队](https://fcc-cd.tk/profile/guide/slide.html)
+- [运营团队](https://fcc-cd.dev/profile/guide/slide.html)

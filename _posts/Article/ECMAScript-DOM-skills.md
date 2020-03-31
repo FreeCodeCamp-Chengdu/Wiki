@@ -76,7 +76,7 @@ const getImages = (element = document) => [
     ))
 ];
 
-getImages();  // ['http://fcc-cd.tk/xxx.jpg', 'http://fcc-cd.tk/yyy.png']
+getImages();  // ['http://fcc-cd.dev/xxx.jpg', 'http://fcc-cd.dev/yyy.png']
 ```
 
 【知识点】

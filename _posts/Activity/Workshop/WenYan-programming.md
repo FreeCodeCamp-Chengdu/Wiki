@@ -99,5 +99,5 @@ links:
 [5]: https://github.com/TechQuery
 [6]: https://codecept.io/translation/#chinese
 [7]: https://wy-lang.org/
-[8]: https://fcc-cd.tk/
+[8]: https://fcc-cd.dev/
 [9]: http://www.bauhiniavalley.com/

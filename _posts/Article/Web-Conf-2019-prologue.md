@@ -44,7 +44,7 @@ slidehtml:
 
 ![](/images/FCC-CDC-v1-1.png)
 
-https://fcc-cd.tk
+https://fcc-cd.dev
 
 ---
 

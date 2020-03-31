@@ -110,7 +110,7 @@ toc: true
 所以 Chrome 提升动画性能仍然会触发 layout 和 paint 的动画操作改为 `transform`。但是如果是 3d 情况下，形成合成层的元素太多，会很消耗内存，所以需要做一个平衡。
 
 [1]: https://github.com/TingYinHelen/performance
-[2]: https://fcc-cd.tk/activity/salon/deno-chrome/#%E3%80%8AChrome-DevTools-%E4%B9%8B-performance%E3%80%8B
+[2]: https://fcc-cd.dev/activity/salon/deno-chrome/#%E3%80%8AChrome-DevTools-%E4%B9%8B-performance%E3%80%8B
 [3]: https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context
 [4]: https://developer.mozilla.org/zh-CN/docs/Web/CSS/opacity
 [5]: https://www.w3.org/TR/css-color-3/#transparency
