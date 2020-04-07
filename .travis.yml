@@ -14,7 +14,7 @@ before_install:
 install:
   - git clone https://github.com/${GIT_URI}.git ../super/
   - rm $(ls -F | grep [^/]$)
-  - mv ./* ../super/${FOLDER_SOURCE}/
+  - mv ./* ../super/source/
   - cd ../super/
   - npm install
 script:
@@ -24,8 +24,8 @@ deploy:
   on:
     branch: master
   skip_cleanup: true
-  local_dir: ../super/${FOLDER_TARGET}
-  fqdn: ${DOMAIN}
+  local_dir: ../super/public
+  fqdn: fcc-cd.dev
   repo: ${GIT_URI}
-  target_branch: ${BRANCH}
+  target_branch: master
   token: ${TOKEN}
