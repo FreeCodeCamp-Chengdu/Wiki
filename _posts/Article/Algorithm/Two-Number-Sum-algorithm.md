@@ -1,8 +1,10 @@
 ---
-title: 青铜三人行——每周一题@两数之和
+title: 【青铜三人行】每周一题@两数之和
 date: 2020-04-07 14:52:52
 authors:
   - demongodYY
+  - TingYinHelen
+  - glowd
 categories:
   - Article
   - Algorithm
@@ -19,18 +21,19 @@ thumbnail: https://pic4.zhimg.com/v2-3cd8da7b0160b55dbc1c974712227d61_1200x500.j
 <iframe
     frameborder="no" framespacing="0"
     scrolling="no" allowfullscreen="true"
+    loading="lazy" lazyload="1"
     src="//player.bilibili.com/player.html?aid=242740480&bvid=BV1Le41147ok&cid=174716511&page=1"
 ></iframe>
 
-> 因为个人水平有限，我们的解法不一定是最优的，只是希望抛转引用，分享自己的思路，带动和大家一起练习编程技能。大家有任何建议，也可以通过  bronze_3@163.com  邮箱联系我们~
+> 因为个人水平有限，我们的解法不一定是最优的，只是希望抛转引用，分享自己的思路，带动和大家一起练习编程技能。大家有任何建议，也可以通过 bronze_3@163.com 邮箱联系我们~
 
 <!-- more -->
 
-话不多说，就进入我们这周的题目吧，它出自  [LeetCode][3]  的第一题：
+话不多说，就进入我们这周的题目吧，它出自 [LeetCode][3] 的第一题：
 
 ## 题目
 
-给定一个整数数组  `nums`  和一个目标值  `target`，请你在该数组中找出和为目标值的那**两个**整数，并返回他们的**数组下标**。
+给定一个整数数组 `nums` 和一个目标值 `target`，请你在该数组中找出和为目标值的那**两个**整数，并返回他们的**数组下标**。
 
 你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
 
@@ -91,7 +94,7 @@ function twoSum(nums, target) {
 
 ![](https://pic4.zhimg.com/80/v2-285d249e04e2eed104c89cf6cb417a7f_1440w.jpg)
 
-[书香作为一个函数式编程的拥护者][4]，平日里对  `map`、 `filter`、  `reduce`  等方法都记在心里。看到这个代码，心想恐怕在循环中对数组的频繁引用是一个可以优化的点，于是利用 JavaScript 中内置的  `reduce`  方法稍作修改：
+[书香作为一个函数式编程的拥护者][4]，平日里对 `map`、 `filter`、 `reduce` 等方法都记在心里。看到这个代码，心想恐怕在循环中对数组的频繁引用是一个可以优化的点，于是利用 JavaScript 中内置的 `reduce` 方法稍作修改：
 
 ```JavaScript
 const twoSum = function(nums, target) {
@@ -177,7 +180,7 @@ OK，这就是咱们**青铜三人行**的第一次分享的全部内容啦，�
 
 如果看到了这次分享，你有一些灵感的话，请**立即**拿起手中的**键盘**，打开 LeetCode 的网站找到题目先刷一遍，并与我们或者身边的小伙伴们分享你的思路~
 
-如果有任何的建议和意见的话，也欢迎大家随时联系我们，我们的联系邮箱是  bronze_3@163.com。
+如果有任何的建议和意见的话，也欢迎大家随时联系我们，我们的联系邮箱是 bronze_3@163.com。
 
 下周见！
 
@@ -185,4 +188,3 @@ OK，这就是咱们**青铜三人行**的第一次分享的全部内容啦，�
 [2]: https://github.com/demongodYY
 [3]: https://leetcode-cn.com/
 [4]: https://fcc-cd.dev/activity/salon/start-functional-programming/
-

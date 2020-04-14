@@ -153,7 +153,11 @@ workers:
 
 再选一个开箱即用的框架和模板
 
-<iframe src="https://code.z01.com/v4/examples/" width="100%" height="500"></iframe>
+<iframe
+    width="100%" height="500"
+    loading="lazy" lazyload="1"
+    src="https://code.z01.com/v4/examples/"
+></iframe>
 
 ---
 
