@@ -42,16 +42,16 @@ _例如_
 const nums = [-1, 0, 1, 2, -1, -4];
 ```
 
-### 最初的解法
+## 最初的解法
 
 Helen 拿到题目，心想这道题岂不是如同上周的“**两数之和**”一般？无非就是多加了一个数而已。按照思路，首先暴力举出所有满足条件的三个数，再去重即可，写出了如下代码：
 
 ```js
 var threeSum = function(nums) {
   const results = [];
-  for (i = 0; i < nums.length; i++) {
-    for (j = i + 1; j < nums.length; j++) {
-      for (k = j + 1; k < nums.length; k++) {
+  for (i = 0; i < nums.length; i++)
+    for (j = i + 1; j < nums.length; j++)
+      for (k = j + 1; k < nums.length; k++)
         if (nums[i] + nums[j] + nums[k] === 0) {
           // 转换成字符串方便去重
           const strResult = [nums[i], nums[j], nums[k]]
@@ -59,9 +59,6 @@ var threeSum = function(nums) {
             .join(",");
           results.push(strResult);
         }
-      }
-    }
-  }
   return Array.from(new Set(results)).map(str => str.split(","));
 };
 ```
@@ -80,7 +77,7 @@ var threeSum = function(nums) {
 
 看样子想解出这道题，至少要“消灭”掉其中的一重循环。Helen 找来书香一起讨论，两人细细品味题目，发现题目要求：`a + b + c == 0` ，那说明这三个在数组中的数，除开三个数都为 0 的情况，必然有正有负，有大有小。
 
-换言之，如果给定一个“最小”的数，我们只需要在比这个数“大”的剩余数组里找出"其他"两个数，看看它们加起来的结果。如果等于 0，则加入结果，如果大于 0，则设法调整“其他两数”，使其和边小。若小于 0，则设法使“其他两数”之和变大。
+换言之，如果给定一个“最小”的数，我们只需要在比这个数“大”的剩余数组里找出"其他"两个数，看看它们加起来的结果。如果等于 0，则加入结果，如果大于 0，则设法调整“其他两数”，使其和变小。若小于 0，则设法使“其他两数”之和变大。
 
 而在**有序数组**中，调整两数相加之和的大小是只需要一次循环就可以做到的，如此一来，我们似乎就可以在 O(n²) 的时间复杂度中就可以完成题设了：
 
@@ -101,11 +98,8 @@ var threeSum = function(nums) {
         result.push([lNum, num, rNum].sort(funcSeq).join(","));
         rIndex -= 1;
         lIndex += 1;
-      } else if (lNum + num + rNum < 0) {
-        lIndex += 1;
-      } else if (lNum + num + rNum > 0) {
-        rIndex -= 1;
-      }
+      } else if (lNum + num + rNum < 0) lIndex += 1;
+      else if (lNum + num + rNum > 0) rIndex -= 1;
     }
   }
   return Array.from(new Set(result)).map(str => str.split(","));
@@ -136,11 +130,8 @@ var threeSum = function(nums) {
         result.push([lNum, num, rNum].sort(funcSeq).join(","));
         rIndex -= 1;
         lIndex += 1;
-      } else if (lNum + num + rNum < 0) {
-        lIndex += 1;
-      } else if (lNum + num + rNum > 0) {
-        rIndex -= 1;
-      }
+      } else if (lNum + num + rNum < 0) lIndex += 1;
+      else if (lNum + num + rNum > 0) rIndex -= 1;
     }
   }
   return Array.from(new Set(result)).map(str => str.split(","));
@@ -174,11 +165,8 @@ var threeSum = function(nums) {
         result.push([lNum, num, rNum].sort(funcSeq).join(","));
         rIndex -= 1;
         lIndex += 1;
-      } else if (lNum + num + rNum < 0) {
-        lIndex += 1;
-      } else if (lNum + num + rNum > 0) {
-        rIndex -= 1;
-      }
+      } else if (lNum + num + rNum < 0) lIndex += 1;
+      else if (lNum + num + rNum > 0) rIndex -= 1;
     }
   }
   return Array.from(new Set(result)).map(str => str.split(","));
@@ -197,32 +185,22 @@ var threeSum = function(nums) {
     let num = sortedNums[i];
     if (num > 0) break;
     if (num === sortedNums[i - 1]) continue;
-    let lIndex = i + 1;
-    let rIndex = length - 1;
+    let lIndex = i + 1,
+      rIndex = length - 1;
     while (lIndex < rIndex) {
-      let lNum = sortedNums[lIndex];
-      let rNum = sortedNums[rIndex];
+      let lNum = sortedNums[lIndex],
+        rNum = sortedNums[rIndex];
       if (lNum + num + rNum === 0) {
         result.push([lNum, num, rNum]);
-        while (
-          lIndex < rIndex &&
-          sortedNums[lIndex] === sortedNums[lIndex + 1]
-        ) {
+        while (lIndex < rIndex && sortedNums[lIndex] === sortedNums[lIndex + 1])
           lIndex++;
-        }
-        while (
-          rIndex > lIndex &&
-          sortedNums[rIndex] === sortedNums[rIndex - 1]
-        ) {
+
+        while (rIndex > lIndex && sortedNums[rIndex] === sortedNums[rIndex - 1])
           rIndex--;
-        }
-        rIndex -= 1;
-        lIndex += 1;
-      } else if (lNum + num + rNum < 0) {
-        lIndex += 1;
-      } else if (lNum + num + rNum > 0) {
-        rIndex -= 1;
-      }
+
+        (rIndex -= 1), (lIndex += 1);
+      } else if (lNum + num + rNum < 0) lIndex += 1;
+      else if (lNum + num + rNum > 0) rIndex -= 1;
     }
   }
   return result;
@@ -233,7 +211,7 @@ var threeSum = function(nums) {
 
 ![](https://pic1.zhimg.com/80/v2-03686f83024d4048bd039f07865fc378_1440w.jpg)
 
-### Extra
+## Extra
 
 最后，我们照例贴上曾大师的 Go 语言代码：
 
@@ -320,7 +298,7 @@ func threeSum(nums []int) [][]int {
 
 在这里，提个小问题：既然在“三数之和”可以参考“两数之和”的转换成 map 解题的方法，那在“两数之和”中，能不能参考上述“先排序，比较大小查找”的方法呢？
 
-### 结尾
+## 结尾
 
 这周的题目难度上升为了“中等”，随着难度的上升，在解题上也无法完全做到完美。如果你有更好的思路，欢迎通过 bronze_3@163.com 邮箱联系我们~
 
