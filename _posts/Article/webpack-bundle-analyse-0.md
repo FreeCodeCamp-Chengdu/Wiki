@@ -1,6 +1,6 @@
 ---
 title: webpack 打包文件分析（上）
-date: 2020-5-17
+date: 2020-05-17
 updated: 2020-05-18
 authors:
   - zhangyanling77
@@ -8,38 +8,48 @@ categories:
   - Article
 tags:
   - webpack
+  - bundle
 
 original: https://github.com/earlyBirdCamp/articles/issues/42
+thumbnail: https://www.ma-no.org/cache/galleries/contents-1806/1200-700/webpack-how-it-works.jpeg
 toc: true
 ---
-# webpack 打包文件分析（上）
 
 ## 前言
-![webpack](https://github.com/zhangyanling77/learn-webpack/blob/master/webpack.png)
 
-`Webpack` 是一个用于静态资源打包的工具。它分析你的项目结构，会递归的构建依赖关系，找到其中脚本、图片、样式等将其转换和打包输出为浏览器能识别的资源。<br>
-本篇文章仅对webpack打包输出的文件进行简要的分析。
+webpack 是一个用于静态资源打包的工具。它分析你的项目结构，会递归的构建依赖关系，找到其中脚本、图片、样式等将其转换和打包输出为浏览器能识别的资源。
+
+本篇文章仅对 webpack 打包输出的文件进行简要的分析。
+
+<!-- more -->
 
 ## 项目准备
+
 [项目地址](https://github.com/zhangyanling77/learn-webpack)
 
 看一下几个关键文件：
-- 依赖文件：src/foo.js
-```javascript
+
+- 依赖文件 `src/foo.js`
+
+```JavaScript
 module.exports = 'foo';
 ```
-- 入口文件：src/index.js
-```javascript
+
+- 入口文件 `src/index.js`
+
+```JavaScript
 const foo = require('./foo.js');
 console.log(foo)
 ```
-- webpack配置文件：webpack.config.js
-```javascript
+
+- webpack 配置文件 `webpack.config.js`
+
+```JavaScript
 const path = require('path');
 
 module.exports = {
   mode: 'development', // 标识不同的环境，development 开发 | production 生产
-  devtool: 'none', // 不生成 sourcemap 文件
+  devtool: 'none', // 不生成 source map 文件
   entry: './src/index.js', // 文件入口
   output: {
     path: path.resolve(__dirname, 'dist'), // 输出目录
@@ -47,11 +57,13 @@ module.exports = {
   }
 }
 ```
-## bundle分析
-首先放上打包输出文件：dist/bundle.js
 
-```javascript
- (function(modules) {
+## bundle 分析
+
+首先放上打包输出文件 `dist/bundle.js`
+
+```JavaScript
+(function(modules) {
   // 模块缓存对象
   var installedModules = {};
   function __webpack_require__(moduleId) {
@@ -79,7 +91,7 @@ module.exports = {
       Object.defineProperty(exports, name, { enumerable: true, get: getter });
     }
   };
-  // 该属性用于在导出对象exports上定义 __esModule = true，表示该模块是一个es6模块
+  // 该属性用于在导出对象exports上定义 __esModule = true，表示该模块是一个 ES 6 模块
   __webpack_require__.r = function(exports) {
     // 定义这种模块的Symbol.toStringTag为 [object Module]
     if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
@@ -105,7 +117,7 @@ module.exports = {
     if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
     return ns;
   };
-  // 获取模块的默认导出对象，这里区分 commonjs 和 es modlue两种方式
+  // 获取模块的默认导出对象，这里区分 CommonJS 和 ES module 两种方式
   __webpack_require__.n = function(module) {
     var getter = module && module.__esModule ?
       function getDefault() { return module['default']; } :
@@ -133,12 +145,17 @@ module.exports = {
 });
 ```
 
-根据上面的源码可以看出，最终打包出的是一个自执行函数。<br>
-首先，这个自执行函数它接收一个参数`modules`，`modules`为一个对象，其中`key`为打包的模块文件的路径，对应的`value`为一个函数，其内部为模块文件定义的内容。<br>
-然后，我们再来看一看自执行函数的函数体部分。函数体返回 `__webpack_require__(__webpack_require__.s = "./src/index.js")` 这段代码，此处为加载入口模块并返回模块的导出对象。<br>
-可以发现，webpack自己实现了一套加载机制，即`__webpack_require__`，可以在浏览器中使用。该方法接收一个moduleId，返回当前模块的导出对象。
-### webpack文件加载（ __webpack_require__  ）
-```javascript
+根据上面的源码可以看出，最终打包出的是一个自执行函数。
+
+首先，这个自执行函数它接收一个参数 `modules`，`modules`为一个对象，其中 `key` 为打包的模块文件的路径，对应的 `value` 为一个函数，其内部为模块文件定义的内容。
+
+然后，我们再来看一看自执行函数的函数体部分。函数体返回 `__webpack_require__(__webpack_require__.s = "./src/index.js")` 这段代码，此处为加载入口模块并返回模块的导出对象。
+
+可以发现，webpack 自己实现了一套加载机制，即 `__webpack_require__`，可以在浏览器中使用。该方法接收一个 `moduleId`，返回当前模块的导出对象。
+
+### webpack 文件加载 (\_\_webpack_require\_\_)
+
+```JavaScript
   var installedModules = {};
   function __webpack_require__(moduleId) {
     if(installedModules[moduleId]) {
@@ -155,15 +172,21 @@ module.exports = {
   }
   // ...
 ```
-首先，当前作用域顶端声明了`installedModules`这个对象，它用于缓存加载过的模块。在`__webpack_require__`方法内部，会对于传入的moduleId在缓存对象中查找对应的模块是否存在，如果已经存在，返回该模块对象的导出对象；否则，创建一个新的模块对象，记录当前模块id、标识模块是否加载过、以及定义导出对象，同时将它放到缓存对象中。<br>
-接下来就是重要的一步，执行模块的函数内容，传入module、module.exports及__webpack_require__作为参数。
-```javascript
- modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+首先，当前作用域顶端声明了 `installedModules` 这个对象，它用于缓存加载过的模块。在 `__webpack_require__` 方法内部，会对于传入的 `moduleId` 在缓存对象中查找对应的模块是否存在，如果已经存在，返回该模块对象的导出对象；否则，创建一个新的模块对象，记录当前模块 id、标识模块是否加载过、以及定义导出对象，同时将它放到缓存对象中。
+
+接下来就是重要的一步，执行模块的函数内容，传入 `module`、`module.exports` 及 `__webpack_require__` 作为参数。
+
+```JavaScript
+modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 ```
-也就是去执行自执行函数传入的modules对象中当前moduleId对应的函数。接着将该模块标识为已经加载的状态，最后返回当前模块的导出对象。此时便完成了模块的加载任务。<br>
-接着，再来看看传入的modules对象部分。
-```javascript
- ({
+
+也就是去执行自执行函数传入的 `modules` 对象中当前 `moduleId` 对应的函数。接着将该模块标识为已经加载的状态，最后返回当前模块的导出对象。此时便完成了模块的加载任务。
+
+接着，再来看看传入的 `modules` 对象部分。
+
+```JavaScript
+({
   "./src/foo.js":
   (function(module, exports) {
     module.exports = 'foo';
@@ -175,29 +198,35 @@ module.exports = {
   })
 })
 ```
-观察函数体内容，可以看到对于依赖模块`foo.js`而言，函数体内即为`foo.js`文件中的定义内容。而对于入口模块`index.js`，则需要执行`__webpack_require__`方法将依赖的文件加载进来使用。
 
-那么，到此为止，我们已经明白了webpack加载模块的基本原理。但细心的你一定发现了，我们的文件导入导出遵循的是commonjs规范，而webpack是基于nodejs实现的，所以在文件加载部分并没有特别的处理。因此，这里我们来看看不同模块规范相互加载时，webpack是如何处理的。
+观察函数体内容，可以看到对于依赖模块 `foo.js` 而言，函数体内即为 `foo.js` 文件中的定义内容。而对于入口模块 `index.js`，则需要执行 `__webpack_require__` 方法将依赖的文件加载进来使用。
+
+那么，到此为止，我们已经明白了 webpack 加载模块的基本原理。但细心的你一定发现了，我们的文件导入导出遵循的是 CommonJS 规范，而 webpack 是基于 Node.js 实现的，所以在文件加载部分并没有特别的处理。因此，这里我们来看看不同模块规范相互加载时，webpack 是如何处理的。
 
 **harmony（和谐，即对于不同模块规范加载的一个兼容处理）**
 
-- commonjs 加载 commonjs
+- CommonJS 加载 CommonJS
 
 这种方式即我们上面示例的加载方式，就不做赘述了。
 
-- commonjs 加载 es module
+#### CommonJS 加载 ES module
 
 src/foo.js
-```javascript
+
+```JavaScript
 export default 'foo';
 ```
+
 src/index.js
-```javascript
+
+```JavaScript
 const foo = require('./foo.js');
 console.log(foo)
 ```
+
 dist/bundle.js
-```javascript
+
+```JavaScript
 ({
   "./src/foo.js":
   (function(module, __webpack_exports__, __webpack_require__) {
@@ -212,8 +241,9 @@ dist/bundle.js
 })
 ```
 
-由打包后的源码可以发现，当`foo.js`使用es module方式导出，与之前的相比，多了`__webpack_require__.r(__webpack_exports__)`这段代码，`__webpack_exports__`很好理解，即模块的导出对象。那么，`__webpack_require__.r`方法是干嘛的呢？
-```javascript
+由打包后的源码可以发现，当 `foo.js` 使用 ES module 方式导出，与之前的相比，多了 `__webpack_require__.r(__webpack_exports__)`这段代码，`__webpack_exports__` 很好理解，即模块的导出对象。那么，`__webpack_require__.r` 方法是干嘛的呢？
+
+```JavaScript
 // ...
 __webpack_require__.r = function(exports) {
   if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
@@ -223,27 +253,34 @@ __webpack_require__.r = function(exports) {
 };
 // ...
 ```
-根据其实现可知，该方法将传入的对象标识上`__esModule=true`，即表明该模块为es6模块。同时定义该对象的`Symbol.toStringTag`为`Module`，即当使用`Object.prototype.toString.call`时将返回`[object Module]`。<br>
-最后，将模块的内容挂在`__webpack_exports__`的`default`属性上。
 
-- es module 加载 es module
+根据其实现可知，该方法将传入的对象标识上 `__esModule=true`，即表明该模块为 ES 6 模块。同时定义该对象的 `Symbol.toStringTag` 为 `Module`，即当使用 `Object.prototype.toString.call` 时将返回 `[object Module]`。
+
+最后，将模块的内容挂在 `__webpack_exports__` 的 `default` 属性上。
+
+#### ES module 加载 ES module
 
 src/foo.js
-```javascript
+
+```JavaScript
 export default 'foo';
 ```
+
 src/index.js
-```javascript
+
+```JavaScript
 import foo from './foo.js';
 console.log(foo)
 ```
+
 dist/bundle.js
-```javascript
+
+```JavaScript
 ({
   "./src/foo.js":
   (function(module, __webpack_exports__, __webpack_require__) {
     __webpack_require__.r(__webpack_exports__);
-    __webpack_exports__["default"] = ('foo');         
+    __webpack_exports__["default"] = ('foo');
   }),
   "./src/index.js":
   (function(module, __webpack_exports__, __webpack_require__) {
@@ -254,10 +291,11 @@ dist/bundle.js
 })
 ```
 
-当入口文件`index.js`和依赖文件`foo.js`都遵循es module的方式时，可以发现在`index.js`中，对于获取导出对象的方式也有所不同。`_foo_js__WEBPACK_IMPORTED_MODULE_0__`用来接收导入的文件，并通过`default`属性获取到文件的默认导出内容。<br>
+当入口文件 `index.js` 和依赖文件 `foo.js` 都遵循 ES module 的方式时，可以发现在 `index.js` 中，对于获取导出对象的方式也有所不同。`_foo_js__WEBPACK_IMPORTED_MODULE_0__` 用来接收导入的文件，并通过 `default` 属性获取到文件的默认导出内容。
+
 那么，是如何实现这种方式的呢？
 
-```javascript
+```JavaScript
 // ...
 __webpack_require__.d = function(exports, name, getter) {
   if(!__webpack_require__.o(exports, name)) {
@@ -277,21 +315,26 @@ __webpack_require__.o = function(object, property) { return Object.prototype.has
 // ...
 ```
 
-分析这几个方法可以发现，`__webpack_require__.o`其实就是`Object.prototype.hasOwnProperty`的一个重写，用于判断对象自身属性中是否具有指定的属性。而`__webpack_require__.d`即`Object.defineProperty`，这里用于定义兼容各种模块规范输出的getter函数。`__webpack_require__.n`则是用于获取模块的默认导出对象，兼容commonjs 和 es modlue两种方式。
+分析这几个方法可以发现，`__webpack_require__.o` 其实就是 `Object.prototype.hasOwnProperty` 的一个重写，用于判断对象自身属性中是否具有指定的属性。而 `__webpack_require__.d` 即 `Object.defineProperty`，这里用于定义兼容各种模块规范输出的 getter 函数。`__webpack_require__.n` 则是用于获取模块的默认导出对象，兼容 CommonJS 和 ES module 两种方式。
 
-- es module 加载 commonjs
+#### ES module 加载 CommonJS
 
 src/foo.js
-```javascript
+
+```JavaScript
 module.exports = 'foo';
 ```
+
 src/index.js
-```javascript
+
+```JavaScript
 import foo from './foo.js';
 console.log(foo)
 ```
+
 dist/bundle.js
-```javascript
+
+```JavaScript
 ({
   "./src/foo.js":
   (function(module, exports) {
@@ -306,8 +349,11 @@ dist/bundle.js
   })
 })
 ```
-当入口文件`index.js`以es module的方式加载遵循commonjs规范的`foo.js`时，通过`__webpack_require__`加载传入的模块，将得到的模块`_foo_js__WEBPACK_IMPORTED_MODULE_0__`再传入`__webpack_require__.n`方法获取到该模块的默认导出对象。因为`foo.js`中的内容是通过**export**导出，而非**export default**导出。因此`foo`被挂在了`default`的一个`a`属性上。
 
-webpack对于不同模块规范的相互加载的处理，我们已经有了基本的了解。但此时我们的文件加载都是同步的，那么文件的异步加载又是怎么样的呢？
+当入口文件 `index.js` 以 ES module 的方式加载遵循 CommonJS 规范的 `foo.js` 时，通过 `__webpack_require__` 加载传入的模块，将得到的模块 `_foo_js__WEBPACK_IMPORTED_MODULE_0__` 再传入 `__webpack_require__.n` 方法获取到该模块的默认导出对象。因为 `foo.js` 中的内容是通过 `export` 导出，而非 `export default` 导出。因此 `foo` 被挂在了 `default` 的一个 `a` 属性上。
+
+## 结语
+
+webpack 对于不同模块规范的相互加载的处理，我们已经有了基本的了解。但此时我们的文件加载都是同步的，那么文件的异步加载又是怎么样的呢？
 
 请听下回分解。
