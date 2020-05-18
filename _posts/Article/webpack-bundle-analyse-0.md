@@ -1,3 +1,17 @@
+---
+title: webpack 打包文件分析（上）
+date: 2020-5-17
+updated: 2020-05-18
+authors:
+  - zhangyanling77
+categories:
+  - Article
+tags:
+  - webpack
+
+original: https://github.com/earlyBirdCamp/articles/issues/42
+toc: true
+---
 # webpack 打包文件分析（上）
 
 ## 前言
