@@ -12,6 +12,7 @@ tags:
   - 二叉树
 toc: true
 original: https://zhuanlan.zhihu.com/p/138447429
+thumbnail: https://pic2.zhimg.com/v2-d79dda3692ec28345140f966ecab302a_1200x500.jpg
 ---
 
 每周一题，代码无敌~ 这一次，青铜三人行决定在五一假期期间挑战一道难度为「困难」的题目：
