@@ -18,9 +18,11 @@ toc: true
 
 上一篇[webpack 打包文件分析（上）][1]我们讲到 `webpack` 打包源码中文件加载的部分，通过分析了解了在 `webpack` 中不同模块规范相互加载的处理。而至此，只包括了文件的**同步加载**分析，对于文件的异步加载又是如何处理的呢？
 
-我们使用 `webpack` 将项目打包为一个 `bundle.js` 文件，通过 `<script />` 标签插入到页面中引用。但如果这个 `bundle.js` 体积特别大，就会导致我们加载时间过长，阻塞页面的渲染。
+我们使用 `webpack` 将项目打包为一个 `bundle.js` 文件，通过 `script` 标签插入到页面中引用。但如果这个 `bundle.js` 体积特别大，就会导致我们加载时间过长，阻塞页面的渲染。
 
 其次，这个打包出来的 `bundle.js` 中其实部分的代码资源是当前加载页面用不到的，这样也导致了浪费。于是，资源加载的优化就成了必须要考虑的问题，而异步加载（或者说动态加载）就是解决这个问题的方案之一。
+
+<!-- more -->
 
 ## 异步加载
 
@@ -230,7 +232,7 @@ __webpack_require__.e = function requireEnsure(chunkId) {
 
 - 获取传入的 chunkName 在 `installedChunks` 对象中对应的加载状态，如果状态为非加载完成，则构造一个 `promise`，将它的 `resolve`、`reject` 作为该 chunk 的正在加载状态，并存入到 `promises` 中。
 
-- 创建 `<script>` 标签，将 chunk 的路径作为脚本的加载路径，然后插入到页面的 `<head>` 中，让浏览器去下载这个 chunk。
+- 创建 `script` 标签，将 chunk 的路径作为脚本的加载路径，然后插入到页面的 `<head>` 中，让浏览器去下载这个 chunk。
 
 - 最后返回 `promises` 的执行结果，让所有的 `promise` 都变为完成态，即完成所有 chunk 的加载。
 
