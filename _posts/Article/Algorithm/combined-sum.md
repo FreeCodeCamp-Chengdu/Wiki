@@ -8,8 +8,8 @@ authors:
 categories:
   - Article
   - Algorithm
-original: 'https://zhuanlan.zhihu.com/p/142539639'
-thumbnail: 'https://pic1.zhimg.com/v2-cdc247a0009b4d11b092827aa2a23b83_1200x500.jpg'
+original: https://zhuanlan.zhihu.com/p/142539639
+thumbnail: https://pic1.zhimg.com/v2-cdc247a0009b4d11b092827aa2a23b83_1200x500.jpg
 toc: true
 ---
 
