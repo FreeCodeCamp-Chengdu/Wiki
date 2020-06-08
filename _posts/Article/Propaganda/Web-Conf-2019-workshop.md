@@ -5,6 +5,7 @@ authors:
   - TechQuery
 categories:
   - Article
+  - Propaganda
 tags:
   - workshop
 toc: true

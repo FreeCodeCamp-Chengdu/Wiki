@@ -2,15 +2,16 @@
 title: Chrome 性能调试工具
 date: 2019-07-08 12:14:00
 updated: 2019-07-08 12:21:00
+authors:
+  - TingYinHelen
 categories:
   - Article
+  - Summary
 tags:
   - Chrome
   - performance
   - debug
 
-authors:
-  - TingYinHelen
 original: https://www.jianshu.com/p/ed219471b393
 toc: true
 ---

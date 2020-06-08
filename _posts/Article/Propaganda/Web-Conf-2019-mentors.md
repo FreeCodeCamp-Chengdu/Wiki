@@ -10,6 +10,7 @@ authors:
   - Samhanx
 categories:
   - Article
+  - Propaganda
 tags:
   - Web
   - full-stack

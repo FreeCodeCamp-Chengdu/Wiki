@@ -5,7 +5,7 @@ authors:
   - TechQuery
 categories:
   - Article
-tags:
+  - Propaganda
 toc: true
 thumbnail: https://windowsunited.de/wp-content/uploads/sites/3/2018/02/pwa.jpg
 ---

@@ -6,6 +6,7 @@ authors:
   - miyaliu666
 categories:
   - Article
+  - Summary
 tags:
   - summary
   - freeCodeCamp

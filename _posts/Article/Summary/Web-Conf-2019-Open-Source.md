@@ -5,6 +5,7 @@ authors:
   - TechQuery
 categories:
   - Article
+  - Summary
 tags:
   - Web
   - conference

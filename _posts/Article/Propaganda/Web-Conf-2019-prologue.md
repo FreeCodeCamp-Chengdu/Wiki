@@ -5,9 +5,8 @@ authors:
   - TechQuery
 categories:
   - Article
-tags:
+  - Propaganda
 toc: true
-thumbnail:
 slidehtml:
   titleMerge: false
 ---

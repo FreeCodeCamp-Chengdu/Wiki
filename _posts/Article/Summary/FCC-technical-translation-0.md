@@ -6,6 +6,7 @@ authors:
   - Cute233
 categories:
   - Article
+  - Summary
 tags:
   - workshop
   - translation

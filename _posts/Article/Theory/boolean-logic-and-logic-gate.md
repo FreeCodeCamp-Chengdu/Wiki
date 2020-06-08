@@ -5,6 +5,7 @@ authors:
   - demongodYY
 categories:
   - Article
+  - Theory
 tags:
   - logic
   - circuit

@@ -6,6 +6,7 @@ authors:
   - demongodYY
 categories:
   - Article
+  - Theory
 tags:
   - computer
   - hardware
