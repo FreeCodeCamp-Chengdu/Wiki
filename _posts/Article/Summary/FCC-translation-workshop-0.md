@@ -8,7 +8,6 @@ categories:
   - Article
   - Summary
 tags:
-  - summary
   - freeCodeCamp
   - translation
   - workshop
