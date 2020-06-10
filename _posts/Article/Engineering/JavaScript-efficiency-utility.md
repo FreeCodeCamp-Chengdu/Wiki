@@ -96,14 +96,15 @@ export const HanZi = /\p{Unified_Ideograph}/u;
 
 ### 最佳实践
 
-- 前端：[HTML 5 表单校验 API][9]
-- 后端：[基于装饰器的数据校验][10]
+- 学习：正则分析器 [RegExr][9]、[Regex101][10]
+- 前端：[HTML 5 表单校验 API][11]
+- 后端：[基于装饰器的数据校验][12]
 
 ## 数据转换
 
 ### 阿拉伯数字转中文
 
-ECMA-402 标准（[ECMAScript 国际化 API][11]）把各语言之间的**数据格式转换算法**都封装好了，我们引入 polyfill 就可以直接用：
+ECMA-402 标准（[ECMAScript 国际化 API][13]）把各语言之间的**数据格式转换算法**都封装好了，我们引入 polyfill 就可以直接用：
 
 ```JavaScript
 export const toChineseNumber = raw =>
@@ -112,11 +113,11 @@ export const toChineseNumber = raw =>
 
 ## 数据类型
 
-判断一个值的类型，用比较**构造函数名**或**类名**的方式兼容性比较差，因为线上环境通常是压缩后的代码，自定义的函数名、类名不再是原名，应用开发者一般也不会实现 [`Symbol.toStringTag` getter 类成员][12]，导致 `Object.prototype.toString.call()` 只会返回默认值 `[object Object]`。
+判断一个值的类型，用比较**构造函数名**或**类名**的方式兼容性比较差，因为线上环境通常是压缩后的代码，自定义的函数名、类名不再是原名，应用开发者一般也不会实现 [`Symbol.toStringTag` getter 类成员][14]，导致 `Object.prototype.toString.call()` 只会返回默认值 `[object Object]`。
 
 ### JavaScript
 
-综上，我们应该利用 [JavaScript 原型继承][13]，来统一判断“值的类型归属”：
+综上，我们应该利用 [JavaScript 原型继承][15]，来统一判断“值的类型归属”：
 
 ```JavaScript
 export const isType = (value, constructor) =>
@@ -147,11 +148,11 @@ let test;
 if (isType(test, Number)) console.log(test!.toFixed(2));
 ```
 
-[【在编辑器中体验 TS 类型提示】][14]
+[【在编辑器中体验 TS 类型提示】][16]
 
 ## 浏览器检测
 
-以下使用 `globalThis` 是为了兼容浏览器主线程、[Web Worker][15]、[Node.js][16]、[Deno][17] 等不同 JavaScript 运行时环境。
+以下使用 `globalThis` 是为了兼容浏览器主线程、[Web Worker][17]、[Node.js][18]、[Deno][19] 等不同 JavaScript 运行时环境。
 
 ### 品牌
 
@@ -171,7 +172,7 @@ export const isRobot = (UA = globalThis.navigator?.userAgent || '') =>
 
 ### 正则表达式
 
-以下使用了 [non-greedy（非贪婪模式）][18]来提升性能，并规避正文中可能出现的示例代码没完全转译尖括号，导致删除错误。
+以下使用了 [non-greedy（非贪婪模式）][20]来提升性能，并规避正文中可能出现的示例代码没完全转译尖括号，导致删除错误。
 
 ```JavaScript
 export const removeHtmlTag = raw => raw.replace(/<[\s\S]+?>/g, '');
@@ -193,6 +194,8 @@ export function removeHtmlTag(raw) {
 
 ## URL 参数追加
 
+[`URL()`][21]、[`URLSearchParams()`][22] 在浏览器主线程、Web Worker、Node.js 10+、Deno 均全局可用。
+
 ```JavaScript
 export function appendQuery(path, data, base = globalThis.location.href) {
     const URI = new URL(path, base);
@@ -208,14 +211,20 @@ export function appendQuery(path, data, base = globalThis.location.href) {
 
 还有一些可以用新标准（部分为提案）直接实现的特性，集中罗列如下：
 
-- [`.trim()`][19]、[`.trimStart()`][20]、[`.trimEnd()`][21]（原文第 53 条）
-- [`.includes()`][22]（原文第 42 条）
-- [`Array.from()`][23]（原文第 48 条）
-- [数组去重][24]（原文第 44 条）
-- [动态 `import`][25]（原文第 27 条）
-- [`element.classList`][26]（原文第 29 ~ 31 条）
-- [`saveAs()`][27]（原文第 28 条）
-- [`text-transform`][28]（原文第 54 条）
+- [`.trim()`][23]、[`.trimStart()`][24]、[`.trimEnd()`][25]（原文第 53 条）
+- [`.includes()`][26]（原文第 42 条）
+- [`Array.from()`][27]（原文第 48 条）
+- [数组去重][28]（原文第 44 条）
+- [动态 `import`][29]（原文第 27 条）
+- [`element.classList`][30]（原文第 29 ~ 31 条）
+- [`saveAs()`][31]（原文第 28 条）
+- [`text-transform`][32]（原文第 54 条）
+
+## 开源库
+
+![WebCell](https://web-cell.dev/WebCell-1.fb612fdb.png)
+
+水歌把日常开发中积累的各种工具方法，用 TypeScript 写成一个 **Web 开源工具库** —— https://web-cell.dev/web-utility/ ，欢迎大家使用、改进！~
 
 [1]: https://fcc-cd.dev/
 [2]: https://github.com/TechQuery
@@ -225,23 +234,27 @@ export function appendQuery(path, data, base = globalThis.location.href) {
 [6]: https://home.unicode.org/
 [7]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
 [8]: https://zhuanlan.zhihu.com/p/33335629
-[9]: https://developer.mozilla.org/zh-CN/docs/Learn/HTML/Forms/Data_form_validation
-[10]: https://github.com/typestack/class-validator
-[11]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl
-[12]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag
-[13]: https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/Objects/Inheritance
-[14]: https://www.typescriptlang.org/play/index.html#code/GYVwdgxgLglg9mABDAzgFQJ4AcCmAeNAPgAoA3AQwBsQcAuRNAGkQgRSgCcRo4P6BvRGBwB3YgDpJAE3JRy9cmAwBtALoBKemkQBfTYgrUcyFA0T8AUImuIOOKCA5IA8gCMAVjmhkqNdcjB2RQgcOGAWNk5uKF4AbgsdCwtKe0QoHHZ4ixhw4lRMXGJ09mYAORAAW1ccDnV-VkC4FPFKOABzIoyoAEJxGIAxGAAPHCliACY62KA
-[15]: https://developer.mozilla.org/zh-CN/docs/Web/API/WorkerGlobalScope
-[16]: https://nodejs.org/dist/latest-v12.x/docs/api/globals.html#globals_global
-[17]: https://doc.deno.land/https/github.com/denoland/deno/releases/latest/download/lib.deno.d.ts
-[18]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
-[19]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-[20]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/TrimLeft
-[21]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/TrimRight
-[22]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
-[23]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from
-[24]: https://github.com/TechQuery/array-unique-proposal
-[25]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import#%E5%8A%A8%E6%80%81import
-[26]: https://developer.mozilla.org/zh-CN/docs/Web/API/Element/classList
-[27]: https://github.com/eligrey/FileSaver.js
-[28]: https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-transform
+[9]: https://regexr.com/
+[10]: https://regex101.com/
+[11]: https://developer.mozilla.org/zh-CN/docs/Learn/HTML/Forms/Data_form_validation
+[12]: https://github.com/typestack/class-validator
+[13]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Intl
+[14]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Symbol/toStringTag
+[15]: https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/Objects/Inheritance
+[16]: https://www.typescriptlang.org/play/index.html#code/GYVwdgxgLglg9mABDAzgFQJ4AcCmAeNAPgAoA3AQwBsQcAuRNAGkQgRSgCcRo4P6BvRGBwB3YgDpJAE3JRy9cmAwBtALoBKemkQBfTYgrUcyFA0T8AUImuIOOKCA5IA8gCMAVjmhkqNdcjB2RQgcOGAWNk5uKF4AbgsdCwtKe0QoHHZ4ixhw4lRMXGJ09mYAORAAW1ccDnV-VkC4FPFKOABzIoyoAEJxGIAxGAAPHCliACY62KA
+[17]: https://developer.mozilla.org/zh-CN/docs/Web/API/WorkerGlobalScope
+[18]: https://nodejs.org/dist/latest-v12.x/docs/api/globals.html#globals_global
+[19]: https://doc.deno.land/https/github.com/denoland/deno/releases/latest/download/lib.deno.d.ts
+[20]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet
+[21]: https://developer.mozilla.org/zh-CN/docs/Web/API/URL
+[22]: https://developer.mozilla.org/zh-CN/docs/Web/API/URLSearchParams
+[23]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+[24]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/TrimLeft
+[25]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/TrimRight
+[26]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+[27]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+[28]: https://github.com/TechQuery/array-unique-proposal
+[29]: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/import#%E5%8A%A8%E6%80%81import
+[30]: https://developer.mozilla.org/zh-CN/docs/Web/API/Element/classList
+[31]: https://github.com/eligrey/FileSaver.js
+[32]: https://developer.mozilla.org/zh-CN/docs/Web/CSS/text-transform
