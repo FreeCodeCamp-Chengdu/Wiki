@@ -21,6 +21,8 @@ toc: true
 
 接下来，我就按功能类别来对一些有必要优化的工具方法一一重构。
 
+<!-- more -->
+
 ## 数据校验
 
 完全基于[正则表达式][5]的检验规则其实可以不用封装成函数，全放在独立的模块中，导入后直接 `/regexp/.test(data)` 即可。
@@ -180,7 +182,7 @@ export const removeHtmlTag = raw => raw.replace(/<[\s\S]+?>/g, '');
 
 ### DOM API
 
-下面再提供一直借助 DOM 引擎的实现：
+下面再提供一种借助 DOM 引擎的实现：
 
 ```JavaScript
 const box = document.createElement('template');
