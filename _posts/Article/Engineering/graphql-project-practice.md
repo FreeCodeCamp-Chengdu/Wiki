@@ -1,6 +1,7 @@
 ---
 title: 基于graphql+react+apollo（前端）、koa+mongodb（后端）的项目实践
 date: 2020-06-08
+updated: 2020-06-16
 authors:
   - zhangyanling77
 categories:
@@ -18,17 +19,19 @@ toc: true
 
 ## 项目背景
 
-源于2019年11月16日成都Web全栈大会上尹吉峰老师的 `GraphQL` 的分享，让我产生了浓厚的兴趣。几经研究、学习，做了个实践的小项目。
+源于2019年11月16日FCC成都社区主办的Web全栈大会上尹吉峰老师的 `GraphQL` 的分享，让我产生了浓厚的兴趣。`GraphQL` 是一个用于 `API` 的查询语言，是使用基于类型系统来执行查询的服务端运行时（类型系统由你的数据定义）。一个 `GraphQL` 服务是通过定义类型和类型上的字段来创建的，然后给每个类型上的每个字段提供解析函数。
 
-学习资料：
+参考学习资料：
 
-[graphql.cn/learn/](https://graphql.cn/learn/)
+[graphql.cn/learn](https://graphql.cn/learn/)
 
-[typescript.bootcss.com/basic-types.html](https://typescript.bootcss.com/basic-types.html)
+[typescript.bootcss.com/basic-types](https://typescript.bootcss.com/basic-types.html)
 
-[www.apollographql.com/docs/react/](https://www.apollographql.com/docs/react/)
+[www.apollographql.com/docs/react](https://www.apollographql.com/docs/react/)
 
-就代码做以下分析。
+基于以上的一番学习，做了个实践的小项目。就代码做以下分析。
+
+（ 附上项目地址：[react-graphql-project](https://github.com/zhangyanling77/react-graphql-project) ）
 
 ## 项目目录
 
@@ -48,9 +51,9 @@ toc: true
 
 使用的 `mongodb` 数据库，这里对于该数据库的安装等不做赘述。
 
-默认已经 具备 `mongodb` 的环境。启动数据库。
+默认已经 具备 `mongodb` 的环境。接下来，启动数据库。
 
-到 `mongodb` 安装路径下，如**C:\Program Files\MongoDB\Server\4.2\bin**
+到 `mongodb` 安装路径下，如 **C:\Program Files\MongoDB\Server\4.2\bin**
 
 打开终端，执行命令：
 
@@ -58,11 +61,11 @@ toc: true
 mongod --dbpath=./data
 ```
 
-> 创建项目总目录：react-graphql-project，并进入目录
+创建项目总目录：react-graphql-project，并进入目录。
 
 ### 后端部分
 
-- 创建项目
+- 创建项目，并初始化
 
 ```bash
 mkdir server && cd server
@@ -81,24 +84,8 @@ yarn add koa koa-grphql koa2-cors koa-mount koa-logger graphql
 
 ```json
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
-  },
-  "keywords": [],
-  "author": "zhangyanling",
-  "license": "MIT",
-  "dependencies": {
-    "graphql": "^14.5.8",
-    "koa": "^2.11.0",
-    "koa-graphql": "^0.8.0",
-    "koa-logger": "^3.2.1",
-    "koa-mount": "^4.0.0",
-    "koa2-cors": "^2.0.6",
-    "mongoose": "^5.7.11"
   }
 }
 ```
@@ -107,18 +94,21 @@ yarn add koa koa-grphql koa2-cors koa-mount koa-logger graphql
 
 入口文件 `index.js`
 
+> 这里我们启动一个 Koa 服务，进行日志监听，支持跨域操作，并将 graphql 服务挂到 Koa 服务上。 \
+> 通过 koa-graphql 提供HTTP服务，传入 schema，并启动 graphiql。graphiql 在测试和开发过程中都非常有用，但生产环境下应禁用它。
+
 ```javascript
 const Koa = require('koa');
 const mount = require('koa-mount');
 const graphqlHTTP = require('koa-graphql');
-const cors = require('koa2-cors'); // 解决跨域
-const logger = require('koa-logger'); // 日志输出
+const cors = require('koa2-cors');
+const logger = require('koa-logger');
 const myGraphQLSchema = require('./schema');
 
 const app = new Koa();
-
+// 日志
 app.use(logger())
-
+// 跨域支持
 app.use(cors({
   origin: '*',
   allowMethods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS']
@@ -135,6 +125,10 @@ app.listen(4000, () => {
 ```
 
 数据库连接，创建model文件 `model.js`
+
+> 这里我们建立数据链接，定义 schema，并生成对应的 model 导出。\
+> schema 是 mongoose 里会用到的一种数据模式，可以理解为表结构的定义。每个 schema 会映射到 mongodb 中的一个 collection，它并不具备操作数据库的能力。\
+> model 是由 schema 生成的模型，可以对数据库进行操作。
 
 ```javascript
 const mongoose = require('mongoose');
@@ -171,7 +165,8 @@ module.exports = {
 ```
 
 `schema.js`
-> 定义查询的 schema 对象
+> 定义查询的 schema 对象。在 graphql 中有许多内置的 Schema Types 可供我们用来定义字段名类型。\
+> 这里我们通过定义查询对象类型，通过 model 就可以对数据库进行增、删、改、查等相应操作了。
 
 ```javascript
 const graphql = require('graphql');
@@ -184,8 +179,7 @@ const {
   GraphQLList,
   GraphQLNonNull
 }  = graphql
-
-
+// 分类类型定义
 const Category = new GraphQLObjectType({
   name: 'Category',
   fields: () => (
@@ -202,29 +196,18 @@ const Category = new GraphQLObjectType({
     }
   )
 })
-
+// 商品类型定义
 const Product = new GraphQLObjectType({
   name: 'Product',
   fields: () => (
-    {
-      id: { type: GraphQLString },
-      name: { type: GraphQLString },
-      category: {
-        type: Category,
-        async resolve(parent){
-          let result = await CategoryModel.findById(parent.category)
-          return result
-        }
-      }
-    }
+    // ...
   )
 })
-
-
+// 根查询对象
 const RootQuery = new GraphQLObjectType({
   name: 'RootQuery',
   fields: {
-    getCategory: {
+    getCategory: { // 通过id获取分类
       type: Category,
       args: {
         id: { type: new GraphQLNonNull(GraphQLString) }
@@ -234,39 +217,14 @@ const RootQuery = new GraphQLObjectType({
         return result
       }
     },
-    getCategories: {
-      type: new GraphQLList(Category),
-      args: {},
-      async resolve(parent, args){
-        let result = await CategoryModel.find()
-        return result
-      }
-    },
-    getProduct: {
-      type: Product,
-      args: {
-        id: { type: new GraphQLNonNull(GraphQLString) }
-      },
-      async resolve(parent, args){
-        let result = await ProductModel.findById(args.id)
-        return result 
-      }
-    },
-    getProducts: {
-      type: new GraphQLList(Product),
-      args: {},
-      async resolve(parent, args){
-        let result = await ProductModel.find()
-        return result 
-      }
-    }
+    // ... 其他查询定义
   }
 })
-
+// 根变更对象
 const RootMutation = new GraphQLObjectType({
   name: 'RootMutation',
   fields: {
-    addCategory: {
+    addCategory: { //根据name添加分类
       type: Category,
       args: {
         name: { type: new GraphQLNonNull(GraphQLString) }
@@ -276,27 +234,7 @@ const RootMutation = new GraphQLObjectType({
         return result  
       }
     },
-    addProduct: {
-      type: Product,
-      args: {
-        name: { type: new GraphQLNonNull(GraphQLString) },
-        category: { type: new GraphQLNonNull(GraphQLString) }
-      },
-      async resolve(parent, args){
-        let result = await ProductModel.create(args)
-        return result 
-      }
-    },
-    deleteProduct: {
-      type: Product,
-      args: {
-        id: { type: new GraphQLNonNull(GraphQLString) },
-      },
-      async resolve(parent, args){
-        let result = await ProductModel.deleteOne({"_id": args.id})
-        return result
-      }
-    }
+    // ... 其他变更定义
   }
 })
 
@@ -312,14 +250,14 @@ module.exports = new GraphQLSchema({
 yarn start
 ```
 
-访问 **http://localhost:4000/graphql** 看到数据库操作playground界面。可进行一系列数据库crud操作。
+访问 **http://localhost:4000/graphql** 看到数据库操作playground界面。可进行一系列数据库CRUD操作。
 
 ## 前端部分
 
 - 创建项目
 
 ```bash
-npx create-react-app react-graphql-project --template typescript
+npx create-react-app client --template typescript
 ```
 
 - 配置webpack
@@ -338,7 +276,7 @@ yarn add react-app-rewired customize-cra
 }
 ```
 
-然后在根目录下新建 `config-overrides.js` 文件，以做 `webpack` 的相关配置。
+然后在根目录下新建 `config-overrides.js` 文件，以添加 `webpack` 的相关配置。
 
 安装前端UI组件库 `antd`，并配置按需加载、路径别名支持等。
 
@@ -391,16 +329,7 @@ module.exports = override(
       "esnext"
     ],
     "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
+    // ... 省略
     "jsx": "react"
   },
   "include": [
@@ -416,13 +345,13 @@ module.exports = override(
 
 入口文件 `index.tsx`
 
+> 首先我们需要创建 apollo 客户端，传入启动的后端地址作为 uri 的值，将生成的客户端实例通过 context 注入到整个单页应用中。
+
 ```tsx
-import React from 'react';
-import ReactDOM from 'react-dom';
+// ...
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import App from './router';
-import * as serviceWorker from './serviceWorker';
 // 创建apollo客户端
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql'
@@ -432,21 +361,20 @@ ReactDOM.render(
   <ApolloProvider client={client}>
     <App />
   </ApolloProvider>, document.getElementById('root'));
-serviceWorker.unregister();
 ```
 
-路由文件 `router.js`
+创建路由文件 `router.js`
+
+> 主要包括商品列表页、商品详情等路由的配置。
 
 ```javascript
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, memo } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Spin } from 'antd';
 
-// 懒加载组件
 const Layouts = lazy(() => import('@/components/layouts'));
 const ProductList = lazy(() => import('@/pages/productlist'));
 const ProductDetail = lazy(() => import('@/pages/productdetail'));
-
 
 const RouterComponent = () => {
   return (
@@ -454,16 +382,15 @@ const RouterComponent = () => {
       <Suspense fallback={<Spin size="large" />}>
         <Layouts>
           <Switch>
-            <Route path="/" exact={true} component={ProductList}></Route>
-            <Route path="/detail/:id" component={ProductDetail}></Route>
+            <Route path="/" exact={true} component={ProductList} />
+            <Route path="/detail/:id" component={ProductDetail} />
+            <Route render={() =><h1>404 Not Found</h1>} />
           </Switch>
         </Layouts>
       </Suspense>
     </Router>
   )
 };
-
-export default RouterComponent;
 ```
 
 定义类型文件 `types.tsx`
@@ -510,19 +437,17 @@ const Layouts: React.FC = (props) => (
         {props.children}
       </div>
     </Content>
-    <Footer style={{ textAlign: 'center' }}> ©2019 Created by zhangyanling. </Footer>
+    <Footer style={{ textAlign: 'center' }}> ©2019 - {new Date().getFullYear()} Created by zhangyanling77. </Footer>
   </Layout>
 )
-
-
 export default Layouts;
 ```
 
-定义gql查询语句文件 `api.tsx`
+定义 `gql` 查询语句文件 `api.tsx`
 
 ```tsx
 import { gql } from 'apollo-boost';
-
+// 获取所有的商品
 export const GET_PRODUCTS = gql`
   query{
     getProducts{
@@ -540,105 +465,31 @@ export const GET_PRODUCTS = gql`
   }
 `;
 
-// 查询所有的上屏分类和产品
-export const CATEGORIES_PRODUCTS = gql`
-  query{
-    getCategories{
-      id
-      name
-      products{
-        id
-        name
-      }
-    }
-    getProducts{
-      id
-      name
-      category{
-        id
-        name
-        products{
-          id
-          name
-        }
-      }
-    }
-  }
-`;
-
-// 添加产品
-export const ADD_PRODUCT = gql`
-  mutation($name:String!, $categoryId:String!){
-    addProduct(name: $name, category: $categoryId){
-      id
-      name
-      category{
-        id
-        name
-      }
-    }
-  }
-`;
-
-// 根据id删除产品
-export const DELETE_PRODUCT = gql`
-  mutation($id: String!){
-    deleteProduct(id: $id){
-      id
-      name
-    }
-  }
-`;
-
-// 根据id查询商品详情及相应商品分类及所属分类全部商品
-export const GET_PRODUCT = gql`
-  query($id: String!){
-    getProduct(id: $id){
-      id
-      name
-      category{
-        id
-        name
-        products{
-          id
-          name
-        }
-      }
-    }
-  }
-`;
+// ... 其他查询语句定义
 ```
 
 开发商品列表组件 `ProductList`
 
-> 已经实现商品列表展示、删除商品、新增商品等功能。
+> 实现商品列表展示、删除商品、新增商品等功能。
 
 ```tsx
-import React, { useState } from 'react';
-import { Table, Modal, Row, Col, Button, Divider, Tag, Form, Input, Select, Popconfirm } from 'antd';
-import { Link } from 'react-router-dom';
+// ... 其他依赖引入
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CATEGORIES_PRODUCTS, GET_PRODUCTS, ADD_PRODUCT, DELETE_PRODUCT } from '@/api';
 import { Product, Category } from '@/types';
+// ...
 
-const { Option } = Select;
-/**
- * 商品列表
- */
 const ProductList: React.FC = () => {
-  let [visible, setVisible] = useState<boolean>(false);
-  let [pageSize, setPageSize] = useState<number|undefined>(10);
-  let [current, setCurrent] = useState<number|undefined>(1)
+  // ... 其他状态定义
   const { loading, error, data } = useQuery(CATEGORIES_PRODUCTS);
   const [deleteProduct] = useMutation(DELETE_PRODUCT);
  
-  if(error) return <p>加载发生错误</p>;
-  if(loading) return <p>加载中...</p>;
-  
+  // ... 错误处理，加载中处理
+
   const { getCategories, getProducts } = data
 
   const confirm = async (event?:any, record?:Product) => {
-    // console.log("详情",  record);
+    // 删除商品
     await deleteProduct({
       variables: {
         id: record?.id
@@ -651,68 +502,10 @@ const ProductList: React.FC = () => {
   }
    
   const columns = [
-    {
-      title: "商品ID",
-      dataIndex: "id"
-    },
-    {
-      title: "商品名称",
-      dataIndex: "name"
-    },
-    {
-      title: "商品分类",
-      dataIndex: "category",
-      render: (text: any) => {
-        let color = ''
-        const tagName = text.name;
-        if(tagName === '服饰'){
-          color = 'red'
-        } else if(tagName === '食品') {
-          color = 'green'
-        } else if(tagName === '数码'){
-          color = 'blue'
-        } else if(tagName === '母婴'){
-          color = 'purple'
-        }
-        return (
-          <Tag color={color}>{text.name}</Tag>
-        )
-      }
-    },
-    {
-      title: "操作",
-      render: (text: any, record: any) => (
-        <span>
-          <Link to={`/detail/${record.id}`}>详情</Link>
-          {/* <Divider type="vertical" /> */}
-          {/* <a style={{color: 'orange'}}>修改</a> */}
-          <Divider type="vertical" />
-          <Popconfirm
-            title="确定删除吗?"
-            onConfirm={(event) => confirm(event, record)}
-            okText="确定"
-            cancelText="取消"
-          >
-            <a style={{color:'red'}}>删除</a>
-          </Popconfirm>
-        </span>
-      )
-    }
+    // ...
   ];
 
-  const handleOk = () => {
-    setVisible(false)
-  }
-
-  const handleCancel = () => {
-    setVisible(false)
-  }
-
-  const handleChange = (pagination: { current?:number, pageSize?:number}) => {
-    const { current, pageSize } = pagination
-    setPageSize(pageSize)
-    setCurrent(current)
-  }
+  // ...
 
   return (
     <div>
@@ -721,33 +514,14 @@ const ProductList: React.FC = () => {
           <Button type="primary" onClick={() => setVisible(true)}>新增</Button>
         </Col>
       </Row>
-      <Row>
-        <Col span={24}>
-          <Table 
-            columns={columns} 
-            dataSource={getProducts} 
-            rowKey="id" 
-            pagination={{
-              current: current,
-              pageSize: pageSize,
-              showSizeChanger: true,
-              showQuickJumper: true,
-              total: data.length
-            }}
-            onChange={handleChange}
-          />
-        </Col>
-      </Row>
+      // ...
       {
         visible && <AddForm handleOk={handleOk} handleCancel={handleCancel} categories={getCategories} />
       }
     </div>
   )
 }
-
-/**
- * 新增产品Modal
- */
+// 新增产品
 interface FormProps {
   handleOk: any,
   handleCancel: any,
@@ -755,53 +529,27 @@ interface FormProps {
 }
 
 const AddForm:React.FC<FormProps> = ({handleOk, handleCancel, categories}) => {
-  let [product, setProduct] = useState<Product>({ name: '', categoryId: [] });
+  // ... 其他状态定义
   let [addProduct] = useMutation(ADD_PRODUCT);
 
   const handleSubmit = async () => {
-    // 获取表单的值
     await addProduct({
       variables: product,
-      refetchQueries: [{
+      refetchQueries: [{ // 添加成功后执行查询全部商品的操作，是个回调
         query: GET_PRODUCTS
       }]
     })
-    // 清空表单
-    setProduct({ name: '', categoryId: [] })
+    setProduct({ name: '', categoryId: [] }) // 清空表单
     handleOk()
   }
   
   return (
     <Modal
       title="新增产品"
-      visible={true}
-      onOk={handleSubmit}
-      okText="提交"
-      cancelText="取消"
-      onCancel={handleCancel}
-      maskClosable={false}
+      // ...
     >
       <Form>
-        <Form.Item label="商品名称">
-          <Input 
-            placeholder="请输入" 
-            value={product.name} 
-            onChange={event => setProduct({ ...product, name: event.target.value })} 
-          />
-        </Form.Item>
-        <Form.Item label="商品分类">
-          <Select 
-            placeholder="请选择" 
-            value={product.categoryId} 
-            onChange={(value: string | []) => setProduct({ ...product, categoryId: value })}
-          >
-            {
-              categories.map((item: Category) => (
-                <Option key={item.id} value={item.id}>{item.name}</Option>
-              ))
-            }
-          </Select>
-        </Form.Item>
+        // ...
       </Form>
     </Modal>
   )
@@ -815,8 +563,7 @@ export default ProductList;
 > 根据ID查询商品详情及其所属商品分类下的所有商品。
 
 ```tsx
-import React from 'react';
-import { Card, List, Spin, Alert } from 'antd';
+// ...
 import { useQuery } from '@apollo/react-hooks';
 import { GET_PRODUCT } from '@/api';
 import { Product } from '@/types';
@@ -827,9 +574,7 @@ const ProductDetail: React.FC = (props:any) => {
     variables: { id: _id }
   });
 
-   if(error) return <p>加载发生错误</p>;
-
-  if(loading) return  <Spin size="large" tip="Loading..." />;
+  // ... 错误处理
  
   const { getProduct } = data; 
   const { id, name, category: { id: categoryId, name: categoryName, products }} = getProduct;
@@ -841,28 +586,11 @@ const ProductDetail: React.FC = (props:any) => {
           <p><b>商品ID：</b>{id}</p>
           <p><b>商品名称：</b>{name}</p>
         </div>
-        <List
-          header={
-            <div>
-              <p><b>分类ID：</b>{categoryId}</p>
-              <p><b>分类名称：</b>{categoryName}</p>
-            </div>
-          }
-          footer={null}
-          bordered
-          dataSource={products}
-          renderItem={(item:Product) => (
-            <List.Item>
-              <p>{item.name}</p>
-            </List.Item>
-          )}
-        >
-        </List>
+        // ... 商品列表展示
       </Card>
     </div>
   )
 }
-
 
 export default ProductDetail;
 ```
@@ -888,6 +616,5 @@ export default ProductDetail;
 
 ## 结语
 
-通过这个项目实践，基本掌握了 GraphQL 的使用。虽然这只是一个简单的CRUD功能，但是对后端、数据库、前端都涉及到了，因此对于学习拓展来说也是不错的。
+通过这个项目实践，基本掌握了 GraphQL 的使用。虽然这个项目只包含了简单的CRUD功能，但是对后端、数据库、前端都涉及到了，因此对于学习拓展来说也是不错的。后续也继续实现了登录验证、个人中心等功能，这里不做详细介绍，可自行查看项目代码了解。
 
-附上项目地址：[react-graphql-project](https://github.com/zhangyanling77/react-graphql-project)
