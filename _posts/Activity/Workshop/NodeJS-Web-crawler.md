@@ -304,7 +304,7 @@ import { URLSearchParams } from "url";
 
 import fetch from "node-fetch";
 
-export default async function(index = 1) {
+export default async function (index = 1) {
   const URL = `https://event-storage-api-ms.juejin.im/v2/getEventList?${new URLSearchParams(
     {
       src: "web",
@@ -360,7 +360,7 @@ node dist/ 1> index.json
 `source/data.js`
 
 ```javascript
-export default async function*(start = 1) {
+export default async function* (start = 1) {
   while (true) {
     const URL = `https://event-storage-api-ms.juejin.im/v2/getEventList?${new URLSearchParams(
       {

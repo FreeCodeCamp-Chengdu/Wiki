@@ -47,7 +47,7 @@ const nums = [-1, 0, 1, 2, -1, -4];
 Helen 拿到题目，心想这道题岂不是如同上周的“**两数之和**”一般？无非就是多加了一个数而已。按照思路，首先暴力举出所有满足条件的三个数，再去重即可，写出了如下代码：
 
 ```js
-var threeSum = function(nums) {
+function threeSum(nums) {
   const results = [];
   for (i = 0; i < nums.length; i++)
     for (j = i + 1; j < nums.length; j++)
@@ -60,7 +60,7 @@ var threeSum = function(nums) {
           results.push(strResult);
         }
   return Array.from(new Set(results)).map(str => str.split(","));
-};
+}
 ```
 
 拿入测试用例执行，结果正确 😎：
@@ -82,7 +82,7 @@ var threeSum = function(nums) {
 而在**有序数组**中，调整两数相加之和的大小是只需要一次循环就可以做到的，如此一来，我们似乎就可以在 O(n²) 的时间复杂度中就可以完成题设了：
 
 ```javascript
-var threeSum = function(nums) {
+function threeSum(nums) {
   const funcSeq = (a, b) => a - b;
   const sortedNums = nums.sort(funcSeq);
   const length = sortedNums.length;
@@ -103,7 +103,7 @@ var threeSum = function(nums) {
     }
   }
   return Array.from(new Set(result)).map(str => str.split(","));
-};
+}
 ```
 
 然而在提交时，遇到了一个诡异的测试用例，导致还是超时了 😰：
@@ -113,7 +113,7 @@ var threeSum = function(nums) {
 居然还有这么奇葩的测试用例！大量的 0 构成的数组。还好这并没有难倒 Helen, 既然题设里要求没有**重复的三元组**，那么加上了一个**跳过重复元素**的条件就好了：
 
 ```javascript
-var threeSum = function(nums) {
+function threeSum(nums) {
   const funcSeq = (a, b) => a - b;
   const sortedNums = nums.sort(funcSeq);
   const length = sortedNums.length;
@@ -135,7 +135,7 @@ var threeSum = function(nums) {
     }
   }
   return Array.from(new Set(result)).map(str => str.split(","));
-};
+}
 ```
 
 提交，代码终于顺利通过啦 😆：
@@ -147,7 +147,7 @@ var threeSum = function(nums) {
 看到解题终于通过，大家欢欣鼓舞，也打开了更多的思路。书香发现，既然要相加等于 0，那么除开**全为 0**的情况，必然结果里**有正有负**。换言之，第一层循环选取的数字，只需要遍历“**非正数**”的部分就好，于是加了个条件尝试了一番：
 
 ```javascript
-var threeSum = function(nums) {
+function threeSum(nums) {
   const funcSeq = (a, b) => a - b;
   const sortedNums = nums.sort(funcSeq);
   const length = sortedNums.length;
@@ -170,13 +170,13 @@ var threeSum = function(nums) {
     }
   }
   return Array.from(new Set(result)).map(str => str.split(","));
-};
+}
 ```
 
 而 Helen 则从“**去重**”这一部分上进行了优化，节省了转化成字符串，再用 `Set` 等数据结构去重带来的额外开销：
 
 ```js
-var threeSum = function(nums) {
+function threeSum(nums) {
   const funcSeq = (a, b) => a - b;
   const sortedNums = nums.sort(funcSeq);
   const length = sortedNums.length;
@@ -204,7 +204,7 @@ var threeSum = function(nums) {
     }
   }
   return result;
-};
+}
 ```
 
 而优化之后的结果也是相当理想：

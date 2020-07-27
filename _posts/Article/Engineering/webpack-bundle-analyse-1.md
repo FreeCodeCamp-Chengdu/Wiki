@@ -68,7 +68,7 @@ import(/* webpackChunkName: "foo" */ "./foo").then(foo => {
 - `index.bundle.js`
 
 ```javascript
-(function(modules) {
+(function (modules) {
   function webpackJsonpCallback(data) {
     // ...
   }
@@ -107,7 +107,7 @@ import(/* webpackChunkName: "foo" */ "./foo").then(foo => {
   // ...
 
   // 异步加载时触发的错误函数
-  __webpack_require__.oe = function(err) {
+  __webpack_require__.oe = function (err) {
     console.error(err);
     throw err;
   };
@@ -124,7 +124,7 @@ import(/* webpackChunkName: "foo" */ "./foo").then(foo => {
   // __webpack_require__.s 用于缓存入口模块id
   return __webpack_require__((__webpack_require__.s = "./src/index.js"));
 })({
-  "./src/index.js": function(module, exports, __webpack_require__) {
+  "./src/index.js": function (module, exports, __webpack_require__) {
     // 异步加载 foo
     __webpack_require__
       .e("foo")
@@ -143,7 +143,11 @@ import(/* webpackChunkName: "foo" */ "./foo").then(foo => {
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([
   ["foo"],
   {
-    "./src/foo.js": function(module, __webpack_exports__, __webpack_require__) {
+    "./src/foo.js": function (
+      module,
+      __webpack_exports__,
+      __webpack_require__
+    ) {
       "use strict";
       // 将模块标识为 ES Module
       __webpack_require__.r(__webpack_exports__);
@@ -172,7 +176,7 @@ __webpack_require__.e = function requireEnsure(chunkId) {
       promises.push(installedChunkData[2]);
     } else {
       // 在chunk缓存中设置 Promise
-      var promise = new Promise(function(resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         installedChunkData = installedChunks[chunkId] = [resolve, reject];
       });
       // 此时 installedChunkData = [resolve, reject, promise]
@@ -192,7 +196,7 @@ __webpack_require__.e = function requireEnsure(chunkId) {
       script.src = jsonpScriptSrc(chunkId);
       // 脚本加载完成、超时、出错的事件处理函数
       var error = new Error();
-      onScriptComplete = function(event) {
+      onScriptComplete = function (event) {
         // 避免IE内存泄漏
         script.onerror = script.onload = null;
         clearTimeout(timeout);
@@ -218,7 +222,7 @@ __webpack_require__.e = function requireEnsure(chunkId) {
           installedChunks[chunkId] = undefined;
         }
       };
-      var timeout = setTimeout(function() {
+      var timeout = setTimeout(function () {
         onScriptComplete({ type: "timeout", target: script });
       }, 120000);
       script.onerror = script.onload = onScriptComplete;
@@ -312,7 +316,7 @@ module.exports = "foo";
 
 ```javascript
 ({
-  "./src/index.js": function(module, exports, __webpack_require__) {
+  "./src/index.js": function (module, exports, __webpack_require__) {
     __webpack_require__
       .e("foo")
       .then(__webpack_require__.t.bind(null, "./src/foo.js", 7))
@@ -326,7 +330,7 @@ module.exports = "foo";
 该方法传入模块的路径，以及一个数字 `7`，作用当然也是为了加载模块内容。但它和 `__webpack_require__` 相比究竟有什么区别呢？
 
 ```javascript
-__webpack_require__.t = function(value, mode) {
+__webpack_require__.t = function (value, mode) {
   if (mode & 1) value = __webpack_require__(value);
   if (mode & 8) return value;
   if (mode & 4 && typeof value === "object" && value && value.__esModule)
@@ -342,7 +346,7 @@ __webpack_require__.t = function(value, mode) {
       __webpack_require__.d(
         ns,
         key,
-        function(key) {
+        function (key) {
           return value[key];
         }.bind(null, key)
       );

@@ -15,6 +15,7 @@ tags:
   - MongoDB
 
 original: https://juejin.im/post/5ede47a45188253684677f61
+thumbnail: https://graphql.org/img/og_image.png
 toc: true
 ---
 
