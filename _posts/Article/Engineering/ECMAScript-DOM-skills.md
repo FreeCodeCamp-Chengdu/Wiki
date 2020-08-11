@@ -9,6 +9,7 @@ categories:
 tags:
   - ECMAScript
   - DOM
+  - BOM
   - API
 toc: true
 thumbnail: https://perfectacle.github.io/images/js-001-es/thumb.png
@@ -27,9 +28,9 @@ thumbnail: https://perfectacle.github.io/images/js-001-es/thumb.png
 
 ### 1. 如何隐藏所有指定的元素？
 
-```JavaScript
-for (const element of document.querySelectorAll('.your-selector'))
-    element.hidden = true;
+```javascript
+for (const element of document.querySelectorAll(".your-selector"))
+  element.hidden = true;
 ```
 
 【知识点】
@@ -39,15 +40,18 @@ for (const element of document.querySelectorAll('.your-selector'))
 
 ### 4. 如何获取当前页面的滚动位置？
 
-```JavaScript
-const getScrollPosition = (
-    { pageXOffset, pageYOffset, scrollLeft, scrollTop } = window
-) => ({
-    x: pageXOffset ?? scrollLeft,
-    y: pageYOffset ?? scrollTop
+```javascript
+const getScrollPosition = ({
+  pageXOffset,
+  pageYOffset,
+  scrollLeft,
+  scrollTop
+} = window) => ({
+  x: pageXOffset ?? scrollLeft,
+  y: pageYOffset ?? scrollTop
 });
 
-getScrollPosition();  // {x: 0, y: 200}
+getScrollPosition(); // {x: 0, y: 200}
 ```
 
 【知识点】（ES 11/2020 特性，略微超纲）
@@ -56,10 +60,10 @@ getScrollPosition();  // {x: 0, y: 200}
 
 ### 5. 如何平滑滚动到页面顶部？
 
-```JavaScript
+```javascript
 window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
+  top: 0,
+  behavior: "smooth"
 });
 ```
 
@@ -69,15 +73,17 @@ window.scrollTo({
 
 ### 8. 如何获取元素中的所有图像？
 
-```JavaScript
+```javascript
 const getImages = (element = document) => [
-    ...new Set(Array.from(
-        element.querySelectorAll('img, input[type="image"]'),
-        ({ src }) => src
-    ))
+  ...new Set(
+    Array.from(
+      element.querySelectorAll('img, input[type="image"]'),
+      ({ src }) => src
+    )
+  )
 ];
 
-getImages();  // ['http://fcc-cd.dev/xxx.jpg', 'http://fcc-cd.dev/yyy.png']
+getImages(); // ['http://fcc-cd.dev/xxx.jpg', 'http://fcc-cd.dev/yyy.png']
 ```
 
 【知识点】
@@ -87,8 +93,8 @@ getImages();  // ['http://fcc-cd.dev/xxx.jpg', 'http://fcc-cd.dev/yyy.png']
 
 ### 9. 如何确定设备是移动设备还是台式机、笔记本电脑？
 
-```JavaScript
-const isMobile = 'ontouchend' in document;
+```javascript
+const isMobile = "ontouchend" in document;
 
 console.log(isMobile);
 ```
@@ -99,11 +105,11 @@ console.log(isMobile);
 
 ### 11. 如何创建一个包含当前 URL 参数的对象？
 
-```JavaScript
+```javascript
 const parseURLData = (raw = location.search) =>
-    Object.fromEntries([...new URLSearchParams(raw)]);
+  Object.fromEntries([...new URLSearchParams(raw)]);
 
-parseURLData('http://url.com/page?n=Adam&s=Smith');  // {n: 'Adam', s: 'Smith'}
+parseURLData("http://url.com/page?n=Adam&s=Smith"); // {n: 'Adam', s: 'Smith'}
 ```
 
 【知识点】（ES 10/2019 特性，略微超纲）
@@ -115,10 +121,10 @@ parseURLData('http://url.com/page?n=Adam&s=Smith');  // {n: 'Adam', s: 'Smith'}
 
 ### 12. 如何将一组表单元素转化为对象？
 
-```JavaScript
+```javascript
 const formToJSON = form => Object.fromEntries([...new FormData(form)]);
 
-formToJSON(document.forms[0]);  // {email: 'test@email.com', name: 'Test Name'}
+formToJSON(document.forms[0]); // {email: 'test@email.com', name: 'Test Name'}
 ```
 
 【知识点】
@@ -129,13 +135,13 @@ formToJSON(document.forms[0]);  // {email: 'test@email.com', name: 'Test Name'}
 
 ### 14. 如何在等待指定时间后调用提供的函数？
 
-```JavaScript
+```javascript
 const delay = seconds =>
-    new Promise(resolve => setTimeout(resolve, seconds * 1000));
+  new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
 await delay(1);
 
-console.log('1 second later');
+console.log("1 second later");
 ```
 
 【知识点】
@@ -145,30 +151,28 @@ console.log('1 second later');
 
 ### 17. 如何获得给定毫秒数的可读格式？
 
-```JavaScript
-const unitISO = ['Y', 'M', 'D', 'H', 'm', 's', 'ms'],
-    patternISO = /[YMDHms]+/g;
+```javascript
+const unitISO = ["Y", "M", "D", "H", "m", "s", "ms"],
+  patternISO = /[YMDHms]+/g;
 
-function formatDate(
-    time = new Date(), template = 'YYYY-MM-DD HH:mm:ss'
-) {
-    time = time instanceof Date ? time : new Date(time);
+function formatDate(time = new Date(), template = "YYYY-MM-DD HH:mm:ss") {
+  time = time instanceof Date ? time : new Date(time);
 
-    const temp = new Date(+time - time.getTimezoneOffset() * 60 * 1000)
-        .toJSON()
-        .split(/\D/)
-        .reduce((temp, section, index) => {
-            temp[unitISO[index]] = section;
+  const temp = new Date(+time - time.getTimezoneOffset() * 60 * 1000)
+    .toJSON()
+    .split(/\D/)
+    .reduce((temp, section, index) => {
+      temp[unitISO[index]] = section;
 
-            return temp;
-        }, {});
+      return temp;
+    }, {});
 
-    return template.replace(patternISO, section =>
-        temp[section[0]].padStart(section.length, '0')
-    );
+  return template.replace(patternISO, section =>
+    temp[section[0]].padStart(section.length, "0")
+  );
 }
 
-formatDate(new Date(1989, 05, 04), 'YYYY年MM月DD日');  // '1989年06月04日'
+formatDate(new Date(1989, 05, 04), "YYYY年MM月DD日"); // '1989年06月04日'
 ```
 
 【知识点】
@@ -181,40 +185,36 @@ formatDate(new Date(1989, 05, 04), 'YYYY年MM月DD日');  // '1989年06月04日'
 
 ### 20. 如何对传递的 URL 发出 POST 请求？
 
-```JavaScript
+```javascript
 const request = (
-    path,
-    method = 'GET',
-    body = null,
-    header = { 'Content-Type': 'application/json' },
-    option = { responseType: 'json' }
-) => new Promise((resolve, reject) => {
-    const client = new XMLHttpRequest()
+  path,
+  method = "GET",
+  body = null,
+  header = { "Content-Type": "application/json" },
+  option = { responseType: "json" }
+) =>
+  new Promise((resolve, reject) => {
+    const client = new XMLHttpRequest();
 
-    client.onload = () => resolve(client.response),
-    client.onerror = reject;
+    (client.onload = () => resolve(client.response)), (client.onerror = reject);
 
     client.open(method, path);
 
-    for (const name in header)
-        client.setRequestHeader(name, header[name]);
+    for (const name in header) client.setRequestHeader(name, header[name]);
 
     Object.assign(client, option);
 
-    client.send(
-        (body && typeof body === 'object') ?
-            JSON.stringify(body) : body
-    );
-});
+    client.send(body && typeof body === "object" ? JSON.stringify(body) : body);
+  });
 
-console.log(await request(
-    'https://jsonplaceholder.typicode.com/posts', 'POST', {
-        userId: 1,
-        id: 1337,
-        title: 'Foo',
-        body: 'bar bar bar'
-    }
-));
+console.log(
+  await request("https://jsonplaceholder.typicode.com/posts", "POST", {
+    userId: 1,
+    id: 1337,
+    title: "Foo",
+    body: "bar bar bar"
+  })
+);
 ```
 
 【知识点】

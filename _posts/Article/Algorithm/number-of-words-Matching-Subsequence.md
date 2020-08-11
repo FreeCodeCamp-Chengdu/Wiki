@@ -56,44 +56,42 @@ words\[i\] 的长度在 \[1, 50\]。
 
 这周的题目相对简单。从题意上来理解，无非就是 `words` 数组中每一个单词拿到 `S` 字符串中去尝试匹配就好。稍微值得注意的是，因为匹配的规则在于**不一定是连续子字符串匹配**，因此需要考虑**每个字母**在其中是否**全部都**存在，Helen 给出了暴力解法：
 
-```JavaScript
+```javascript
 function numMatchingSubseq(S, words) {
-    let count = 0;
+  let count = 0;
 
-    for (const word of words) {
-        let index = -1, _count = 0;
+  for (const word of words) {
+    let index = -1,
+      _count = 0;
 
-        for (const str of word) {
-            _count++;
-            const _index = S.indexOf(str, index + 1);
+    for (const str of word) {
+      _count++;
+      const _index = S.indexOf(str, index + 1);
 
-            if (_index === -1)
-                break;
-            else
-                index = _index;
+      if (_index === -1) break;
+      else index = _index;
 
-            if (_count === word.length)
-                count++;
-        }
+      if (_count === word.length) count++;
     }
-    return count;
+  }
+  return count;
 }
 ```
 
 书香在同样的思路上，利用 JS 的自带 API ，稍微做了一些**写法上的优化**，让程序看起来更简短了一些：
 
-```JavaScript
+```javascript
 function numMatchingSubseq(S, words) {
-    const isSubWord = function (s, word) {
-        let pos = -1;
-        for (let i = 0; i < word.length; i++) {
-            pos = s.indexOf(word[i], pos + 1);
-            if (pos == -1) return 0;
-        }
-        return 1;
-    };
+  const isSubWord = function (s, word) {
+    let pos = -1;
+    for (let i = 0; i < word.length; i++) {
+      pos = s.indexOf(word[i], pos + 1);
+      if (pos == -1) return 0;
+    }
+    return 1;
+  };
 
-    return words.reduce((count, word) => count + isSubWord(S, word), 0)
+  return words.reduce((count, word) => count + isSubWord(S, word), 0);
 }
 ```
 
@@ -103,16 +101,16 @@ function numMatchingSubseq(S, words) {
 
 既然是字串匹配，自然可以通过正则表达式来完成匹配。书香尝试了这一解法：
 
-```JavaScript
- function numMatchingSubseq(S, words) {
-    return words.reduce((count, word) => {
-        const testReg = new RegExp(word.split('').join('\w*'));
+```javascript
+function numMatchingSubseq(S, words) {
+  return words.reduce((count, word) => {
+    const testReg = new RegExp(word.split("").join("w*"));
 
-        if(testReg.test(S)) count++;
+    if (testReg.test(S)) count++;
 
-        return count;
-    },0)
-};
+    return count;
+  }, 0);
+}
 ```
 
 但是，**正则匹配**花费的计算资源会**更高**一些，因此这个解法在题目中的**超长字串**测试用例中，因为超出时间限制而失败了…… 在这里贴出这段代码，仅作为一种思路的参考。
@@ -121,35 +119,33 @@ function numMatchingSubseq(S, words) {
 
 Helen 作为三人行里唯一的女生，自然忍不了动不动就 **「暴力破解」**的做法 ‍♀️。因此她换了一个不那么暴力的思路，通过将 `words` 中的单词按照**首字母**先排序到一个 **「桶」**中，将数据进行了**预处理**，然后在字符串匹配其中字符的的时候，就可以从对应的地方匹配了：
 
-```JavaScript
-  function numMatchingSubseq(S, words) {
-    const bucket = Array.from({ length: 26 }, () => []);
+```javascript
+function numMatchingSubseq(S, words) {
+  const bucket = Array.from({ length: 26 }, () => []);
 
-    let count = 0;
+  let count = 0;
 
-    for (const word of words)
-        bucket[word.charCodeAt(0) - 97].push(word); // a 的 Unicode 是 97
+  for (const word of words) bucket[word.charCodeAt(0) - 97].push(word); // a 的 Unicode 是 97
 
-    for (const str of S) {
-        const list = bucket[str.charCodeAt(0) - 97];
-        bucket[str.charCodeAt(0) - 97] = [];
+  for (const str of S) {
+    const list = bucket[str.charCodeAt(0) - 97];
+    bucket[str.charCodeAt(0) - 97] = [];
 
-        for (let word of list)
-            if (word.length > 1) {
-                word = word.slice(1);
-                if (word) bucket[word.charCodeAt(0) - 97].push(word);
-            } else
-                count++;
-    }
-    return count;
-};
+    for (let word of list)
+      if (word.length > 1) {
+        word = word.slice(1);
+        if (word) bucket[word.charCodeAt(0) - 97].push(word);
+      } else count++;
+  }
+  return count;
+}
 ```
 
 ## Extra
 
 曾大师的 Go 语言时光，他似乎也很暴力……
 
-```Go
+```go
 func numMatchingSubseq(S string, words []string) int {
     count := 0
     for i := 0; i < len(words); i++ {

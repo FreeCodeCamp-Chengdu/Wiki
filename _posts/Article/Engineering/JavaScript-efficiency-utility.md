@@ -29,8 +29,8 @@ toc: true
 
 ### 电邮地址
 
-```JavaScript
-export const Email = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
+```javascript
+export const Email = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
 // 原文：/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/
 ```
 
@@ -45,7 +45,7 @@ export const Email = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
 
 其实以下只适用于中国大陆手机号，其它国家手机号似乎与固定电话号之间没有明显的区分。
 
-```JavaScript
+```javascript
 export const Mobile = /^1[3-9]\d{9}$/;
 // 原文：/^1[0-9]{10}$/
 ```
@@ -59,14 +59,14 @@ export const Mobile = /^1[3-9]\d{9}$/;
 
 中国大陆固定电话号码“区号 + 机号”始终为 11 位。
 
-```JavaScript
+```javascript
 export const Phone = /^((0\d{2}-)?\d{8}|(0\d{3}-)?\d{7})$/;
 // 原文：/^([0-9]{3,4}-)?[0-9]{7,8}$/
 ```
 
 ### 网址
 
-```JavaScript
+```javascript
 export const URL = /^\w+:\/\/\S+$/;
 // 原文：/^http[s]?:\/\/.*/
 ```
@@ -80,8 +80,8 @@ export const URL = /^\w+:\/\/\S+$/;
 
 判断是否为合法的日期格式除了用正则之外，还可利用 [`Date` 构造函数][7]内部的算法：
 
-```JavaScript
-export const isDate = raw => !isNaN(+new Date(raw))
+```javascript
+export const isDate = raw => !isNaN(+new Date(raw));
 ```
 
 对于无法解析为日期的数据，`date.toString()` 会返回“Invalid Date”，`date.getTime()` 对应的返回值则是 `NaN`。而**算数运算符**会调用对象的 `valueOf()` 方法，`date.valueOf()` 的返回值又与 `date.getTime()` 相同。
@@ -90,7 +90,7 @@ export const isDate = raw => !isNaN(+new Date(raw))
 
 “汉字”在计算机领域的学名叫**中日韩统一表意文字**（俗称 CJK），在 2017 年 6 月发布的 Unicode 10 标准中，它有了代码级明确的指代：
 
-```JavaScript
+```javascript
 export const HanZi = /\p{Unified_Ideograph}/u;
 ```
 
@@ -108,9 +108,9 @@ export const HanZi = /\p{Unified_Ideograph}/u;
 
 ECMA-402 标准（[ECMAScript 国际化 API][13]）把各语言之间的**数据格式转换算法**都封装好了，我们引入 polyfill 就可以直接用：
 
-```JavaScript
+```javascript
 export const toChineseNumber = raw =>
-    new Intl.NumberFormat('zh-Hans-u-nu-hanidec').format(raw)
+  new Intl.NumberFormat("zh-Hans-u-nu-hanidec").format(raw);
 ```
 
 ## 数据类型
@@ -121,9 +121,9 @@ export const toChineseNumber = raw =>
 
 综上，我们应该利用 [JavaScript 原型继承][15]，来统一判断“值的类型归属”：
 
-```JavaScript
+```javascript
 export const isType = (value, constructor) =>
-    Object(value) instanceof constructor;
+  Object(value) instanceof constructor;
 ```
 
 「注解」
@@ -134,16 +134,17 @@ export const isType = (value, constructor) =>
 
 下面，我再给出一个 TypeScript 的实现，让**类型推断**更加准确：
 
-```TypeScript
+```typescript
 export function isType<T>(
-    value: T, constructor: { new(...data: any[]): T }
+  value: T,
+  constructor: { new (...data: any[]): T }
 ): value is T {
-    return Object(value) instanceof constructor;
+  return Object(value) instanceof constructor;
 }
 ```
 
-```TypeScript
-import { isType } from './utility';
+```typescript
+import { isType } from "./utility";
 
 let test;
 
@@ -158,16 +159,18 @@ if (isType(test, Number)) console.log(test!.toFixed(2));
 
 ### 品牌
 
-```JavaScript
-export const isBrowserVendor = (name, UA = globalThis.navigator?.userAgent || '') =>
-    UA.toLowerCase().includes(name);
+```javascript
+export const isBrowserVendor = (
+  name,
+  UA = globalThis.navigator?.userAgent || ""
+) => UA.toLowerCase().includes(name);
 ```
 
 ### 爬虫
 
-```JavaScript
-export const isRobot = (UA = globalThis.navigator?.userAgent || '') =>
-    /bot|spider|crawler/i.test(UA);
+```javascript
+export const isRobot = (UA = globalThis.navigator?.userAgent || "") =>
+  /bot|spider|crawler/i.test(UA);
 ```
 
 ## 去除 HTML 标签
@@ -176,21 +179,21 @@ export const isRobot = (UA = globalThis.navigator?.userAgent || '') =>
 
 以下使用了 [non-greedy（非贪婪模式）][20]来提升性能，并规避正文中可能出现的示例代码没完全转译尖括号，导致删除错误。
 
-```JavaScript
-export const removeHtmlTag = raw => raw.replace(/<[\s\S]+?>/g, '');
+```javascript
+export const removeHtmlTag = raw => raw.replace(/<[\s\S]+?>/g, "");
 ```
 
 ### DOM API
 
 下面再提供一种借助 DOM 引擎的实现：
 
-```JavaScript
-const box = document.createElement('template');
+```javascript
+const box = document.createElement("template");
 
 export function removeHtmlTag(raw) {
-    box.innerHTML = raw;
+  box.innerHTML = raw;
 
-    return box.content.textContent;
+  return box.content.textContent;
 }
 ```
 
@@ -198,14 +201,14 @@ export function removeHtmlTag(raw) {
 
 [`URL()`][21]、[`URLSearchParams()`][22] 在浏览器主线程、Web Worker、Node.js 10+、Deno 均全局可用。
 
-```JavaScript
+```javascript
 export function appendQuery(path, data, base = globalThis.location.href) {
-    const URI = new URL(path, base);
-    const { searchParams } = URI;
+  const URI = new URL(path, base);
+  const { searchParams } = URI;
 
-    for (const key in data) searchParams.append(key, data[key]);
+  for (const key in data) searchParams.append(key, data[key]);
 
-    return URI + '';
+  return URI + "";
 }
 ```
 

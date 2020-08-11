@@ -87,15 +87,15 @@ push(5), pop() -> 5, pop() -> 3, pop() -> 2, pop() -> 1
 
 回到这道题目，一开始看起来题目有点绕，让人不知道要做什么。后来 Helen 提议，既然题目要求是考虑在*最初空栈上进行的推入 push 和弹出 pop 操作*，那么我们不妨就建立一个**空栈**尝试用程序的方式来模拟一遍操作的流程，看看会不会明朗点：
 
-```JavaScript
+```javascript
 function validateStackSequences(pushed, popped) {
-    const stack = [];
+  const stack = [];
 
-    pushed.forEach(ele => {
-        stack.push(ele);
-        stack.pop();
-    });
-    return !stack.length;
+  pushed.forEach(ele => {
+    stack.push(ele);
+    stack.pop();
+  });
+  return !stack.length;
 }
 ```
 
@@ -113,43 +113,37 @@ function validateStackSequences(pushed, popped) {
 
 要满足这三个条件，一个方法就是，**尝试在 `push` 的每一步时，尽可能按照指定顺序 `pop` 出所有的元素**。根据这个思路，Helen 给出了题解：
 
-```JavaScript
+```javascript
 function validateStackSequences(pushed, popped) {
-    const stack = [];
-    let popIndex = 0;
+  const stack = [];
+  let popIndex = 0;
 
-    for (const val of pushed) {
-        stack.push(val);
+  for (const val of pushed) {
+    stack.push(val);
 
-        while (
-            stack.length !== 0 &&
-            stack[stack.length - 1] === popped[popIndex]
-        ) {
-            stack.pop();
-            popIndex++;
-        }
+    while (stack.length !== 0 && stack[stack.length - 1] === popped[popIndex]) {
+      stack.pop();
+      popIndex++;
     }
-    return stack.length === 0;
+  }
+  return stack.length === 0;
 }
 ```
 
 书香的思路一模一样，只是把代码写的更短了点 ：
 
-```JavaScript
+```javascript
 function validateStackSequences(pushed, popped) {
-    const stack = [];
+  const stack = [];
 
-    pushed.forEach(ele => {
-        stack.push(ele);
-        while (
-            stack.length &&
-            stack[stack.length - 1] === popped[0]
-        ) {
-            stack.pop();
-            popped.shift();
-        }
-    });
-    return !stack.length;
+  pushed.forEach(ele => {
+    stack.push(ele);
+    while (stack.length && stack[stack.length - 1] === popped[0]) {
+      stack.pop();
+      popped.shift();
+    }
+  });
+  return !stack.length;
 }
 ```
 
@@ -161,7 +155,7 @@ function validateStackSequences(pushed, popped) {
 
 为此，他写出了 **2 米长**的 Go 语言代码：
 
-```Go
+```go
 func validateStackSequences(pushed []int, popped []int) bool {
 
     if len(popped) == 0 {

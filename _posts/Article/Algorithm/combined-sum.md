@@ -83,35 +83,36 @@ toc: true
 
 了解了思路，我们先来看看 Helen 的解法
 
-```JavaScript
+```javascript
 /**
  * @param {number[]} candidates
  * @param {number} target
  * @return {number[][]}
  */
 function combinationSum(candidates, target) {
-    const result = [];
-    let tmpPath = [], start = 0;
+  const result = [];
+  let tmpPath = [],
+    start = 0;
 
-    candidates = candidates.sort((a, b) => a - b);
+  candidates = candidates.sort((a, b) => a - b);
 
-    function backtrack(tmpPath, target, start) {
-        if (target === 0) {
-            result.push(tmpPath);
-            return;
-        }
-
-        for (let index = start; index < candidates.length; index++) {
-            if (target < 0) break;
-
-            tmpPath.push(candidates[index]);
-            backtrack(tmpPath.slice(), target - candidates[index], index);
-            tmpPath.pop();     //回溯
-        }
+  function backtrack(tmpPath, target, start) {
+    if (target === 0) {
+      result.push(tmpPath);
+      return;
     }
-    backtrack(tmpPath, target, start);
 
-    return result;
+    for (let index = start; index < candidates.length; index++) {
+      if (target < 0) break;
+
+      tmpPath.push(candidates[index]);
+      backtrack(tmpPath.slice(), target - candidates[index], index);
+      tmpPath.pop(); //回溯
+    }
+  }
+  backtrack(tmpPath, target, start);
+
+  return result;
 }
 ```
 
@@ -121,7 +122,7 @@ function combinationSum(candidates, target) {
 
 而书香稍微改了下结构，把代码缩短了点：
 
-```JavaScript
+```javascript
 function combinationSum(candidates, target) {
   const sliceArr = candidates
       .filter(item => item <= target)
@@ -147,7 +148,7 @@ function combinationSum(candidates, target) {
 
 他在注释里顺便给我们解释了 **「示例 1」**，并且直接将函数命名成了 `DFS`（深度优先搜索）。果然很有算法大师的风范呀！
 
-```Go
+```go
 // 深度搜索加减枝,具体过程如下
 // 2 -> 22 -> 222 -> 2222 -> 223(合适) -> 23 -> 233 -> 26 -> 3 -> 33 -> 333 -> 36 -> 6 -> 66 ->7(合适)
 

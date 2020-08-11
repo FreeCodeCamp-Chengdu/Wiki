@@ -300,7 +300,7 @@ yarn add react-app-rewired customize-cra
 
 安装前端 UI 组件库 `antd`，并配置按需加载、路径别名支持等。
 
-```Shell
+```shell
 yarn add antd babel-plugin-import
 ```
 

@@ -67,6 +67,7 @@ photos:
 <iframe
   style="width: 100%" height="600" frameborder="no"
   scrolling="no" allowtransparency="true" allowfullscreen="true"
+  loading="lazy" lazyload="1"
   src="https://codepen.io/tech_query/embed/jONqOzj/?height=600&amp;theme-id=31315&amp;default-tab=html,result">
 </iframe>
 
@@ -97,7 +98,7 @@ photos:
 
 在当今基于 Angular、React、Vue 等的 **JS 组件库**大行其道之时，BootStrap 为何仍有很大的优势？来基于它亲自封装一个**通用 Web 组件**、开发一个 Web 应用，你就能体会到其设计的独到之处~
 
-[1]: https://fcc-cd.tk/
+[1]: https://fcc-cd.dev/
 [2]: https://github.com/TechQuery
 [3]: https://devfest.withgoogle.com/
 [4]: https://tech-query.me/programming/web-components-practise/slide.html

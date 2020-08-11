@@ -70,7 +70,7 @@ thumbnail: https://pic2.zhimg.com/v2-d79dda3692ec28345140f966ecab302a_1200x500.j
 
 ### 求取某一节点为起始的最大路径和
 
-```JavaScript
+```javascript
 function maxChildrenPathValue(node) {
   if (node == null) return 0;
 
@@ -89,7 +89,7 @@ function maxChildrenPathValue(node) {
 
 完成了上一步，我们就可以求取经过某一特定根节点的最大路径和了，即把「某个节点的值」与「左边最大路径和」和「右边最大路径和」相加：
 
-```JavaScript
+```javascript
 function getRootMaxPathVal(root) {
   const leftMaxPathVal = maxChildrenPathValue(root.left),
     rightMaxPathVal = maxChildrenPathValue(root.right);
@@ -102,7 +102,7 @@ function getRootMaxPathVal(root) {
 
 有了上面的基础，我们就可以遍历整个二叉树，来求取所有节点的最大路径和，并取出其中的最大值来作为整颗二叉树的最大路径和了，在这里我们用了二叉树前序遍历，并使用了一个全局变量 `result` 来记录最大值：
 
-```JavaScript
+```javascript
 function preorderTraversal(root) {
   if (!root) return;
 
@@ -110,14 +110,13 @@ function preorderTraversal(root) {
 
   if (value > result) result = value;
 
-  preorderTraversal(root.left),
-  preorderTraversal(root.right);
+  preorderTraversal(root.left), preorderTraversal(root.right);
 }
 ```
 
 到此我们就可以解出这道题目了，完整代码如下：
 
-```JavaScript
+```javascript
 /**
  * Definition for a binary tree node.
  * function TreeNode(val) {
@@ -157,8 +156,7 @@ function maxPathSum(root) {
 
     if (value > result) result = value;
 
-    preorderTraversal(root.left),
-    preorderTraversal(root.right);
+    preorderTraversal(root.left), preorderTraversal(root.right);
   }
 
   preorderTraversal(root);
@@ -171,7 +169,7 @@ function maxPathSum(root) {
 
 同样的解题思路下，Helen 发现到在**求取某一节点为起始的最大路径和**这一步的时候，已经在对二叉树进行遍历了，那能不能直接在一次递归遍历中解出题目呢？Helen 对代码进行了优化：
 
-```JavaScript
+```javascript
 function maxPathSum(root) {
   let max_sum = -Infinity;
 
@@ -200,7 +198,7 @@ function maxPathSum(root) {
 
 最后依然是曾大师的 Go 语言 show time~
 
-```Go
+```go
 func maxPathSum(root *TreeNode) int {
     var val = INT_MIN();
 

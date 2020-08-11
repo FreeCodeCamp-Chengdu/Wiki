@@ -48,7 +48,7 @@ toc: true
 
 #### C
 
-```C
+```c
 int jj;
 
 for (jj = 0; jj < 10; jj++)
@@ -60,7 +60,7 @@ printf("\n");
 
 #### Java
 
-```Java
+```java
 // for loop structure => for(<start_statement>; <conditional>; <step>)
 for (int fooFor = 0; fooFor < 10; fooFor++)
     System.out.println(fooFor);
@@ -71,20 +71,20 @@ System.out.println("fooFor Value: " + fooFor);
 
 #### JavaScript
 
-```JavaScript
+```javascript
 for (var i = 0; i < 5; i++) {
-    // will run 5 times
+  // will run 5 times
 }
 ```
 
 #### Python
 
-```Python
+```python
 for i in range(4):
     print(i)
 ```
 
-```Python
+```python
 animals = ["dog", "cat", "mouse"]
 
 for i, value in enumerate(animals):
@@ -93,7 +93,7 @@ for i, value in enumerate(animals):
 
 #### Rust
 
-```Rust
+```rust
  // Ranges
 for i in 0u32..10 {
     print!("{} ", i);
@@ -104,13 +104,13 @@ println!("");
 
 #### Go
 
-```Go
+```go
 for x := 0; x < 3; x++ { // ++ is a statement.
     fmt.Println("iteration", x)
 }
 ```
 
-```Go
+```go
 for key, value := range map[string]int{"one": 1, "two": 2, "three": 3} {
     // for each pair in the map, print key and value
     fmt.Printf("key=%s, value=%d\n", key, value)
@@ -121,7 +121,7 @@ for key, value := range map[string]int{"one": 1, "two": 2, "three": 3} {
 
 #### C
 
-```C
+```c
 int ii = 0;
 
 while (ii < 10)  //ANY value less than ten is true.
@@ -133,7 +133,7 @@ printf("\n");
 
 #### Java
 
-```Java
+```java
 int fooWhile = 0;
 
 while(fooWhile < 100) {
@@ -147,16 +147,16 @@ System.out.println("fooWhile Value: " + fooWhile);
 
 #### JavaScript
 
-```JavaScript
+```javascript
 // As does `while`.
 while (true) {
-    // An infinite loop!
+  // An infinite loop!
 }
 ```
 
 #### Python
 
-```Python
+```python
 x = 0
 
 while x < 4:
@@ -166,7 +166,7 @@ while x < 4:
 
 #### Rust
 
-```Rust
+```rust
  while 1 == 1 {
     println!("The universe is operating normally.");
     // break statement gets out of the while loop.
@@ -177,7 +177,7 @@ while x < 4:
 
 #### Go
 
-```Go
+```go
 // Go 语言里面只有 for 循环，但是 for 循环可以不加范围
 
 for { // Infinite loop.
@@ -194,7 +194,7 @@ for { // Infinite loop.
 
 而基本所有的循环最后大概都会被编译成以下的样子，这叫做**汇编语言**，它是最接近计算机的思考方式的编程语言了。
 
-```Assembly
+```assembly
     mov eax, val1        ; 把变量 val1 放到 EAX 里面
 beginwhile:
     cmp eax, val2        ; 比较 val1 和 val2

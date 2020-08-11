@@ -45,7 +45,7 @@ thumbnail: https://pic4.zhimg.com/v2-3cd8da7b0160b55dbc1c974712227d61_1200x500.j
 
 拿到题目，Helen 心想，这次题目难度不大。略一思忖，要在数组中找到满足某个条件的两个数，一个双重循环搞定即可：
 
-```JavaScript
+```javascript
 function twoSum(num, target) {
     for (const index in num) {
         for (const _index in num) {
@@ -70,7 +70,7 @@ function twoSum(num, target) {
 
 接下来就要优化算法，Helen 审视代码，发觉影响效率的主要原因恐怕是在于双重循环所造成的 O(n²) 复杂度。要想提高效率，恐怕就要在一重循环里搞定题目。但如何在一次迭代中找到两个数的关系呢？确实颇费考虑…… 算法领域中，空间与时间通常如同鱼和熊掌一般不可兼得。空间换时间…… Helen 灵光一现，对了，一次迭代中表现两个数的关系，可以在 map 结构中用查找 key 的方式呀。考虑至此，信手写出了第二版代码：
 
-```JavaScript
+```javascript
 function twoSum(nums, target) {
     const numsMap = {};
     for (const index in nums) {
@@ -96,7 +96,7 @@ function twoSum(nums, target) {
 
 [书香作为一个函数式编程的拥护者][4]，平日里对 `map`、 `filter`、 `reduce` 等方法都记在心里。看到这个代码，心想恐怕在循环中对数组的频繁引用是一个可以优化的点，于是利用 JavaScript 中内置的 `reduce` 方法稍作修改：
 
-```JavaScript
+```javascript
 const twoSum = function(nums, target) {
     const objNums = nums.reduce((acc, num,index) => {
         acc[num]=index;
@@ -126,7 +126,7 @@ const twoSum = function(nums, target) {
 
 于此同时，Helen 则进一步对代码进行了优化。题目要求只需要找到满足条件的两个数，那么有可能在没有遍历完的时候就能找到呀。如此一来，就不必提前将整个数组转换成 map 结构，而是边转换边查找，在找到满足条件的时候即可返回：
 
-```JavaScript
+```javascript
 function twoSum(nums, target) {
     const numsMap = {};
     for (const index in nums) {
@@ -152,7 +152,7 @@ function twoSum(nums, target) {
 
 最后，由曾大师为我们在 Go 语言中展现了一把对内存的极致管理，也体现了对于不同编程语言特性的优化差别：
 
-```Go
+```go
 func twoSum(nums []int, target int) []int {
     for i := 0; i < len(nums); i++ {
         for j := i+1; j < len(nums); j++ {

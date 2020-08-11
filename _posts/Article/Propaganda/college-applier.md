@@ -12,7 +12,7 @@ tags:
   - PWA
 toc: true
 original: https://github.com/freeCodeCamp-China/activity/issues/11
-thumbnail:
+thumbnail: https://img14.360buyimg.com/n1/jfs/t1/119147/20/5048/404108/5eb260c6E8e88fd49/94ddfbc9426f974e.jpg
 ---
 
 2020 年高考是一场非常不容易的高考，毕业生和社会各界都历经艰辛，希望我们的拼搏都能有更加美好的明天。
