@@ -8,6 +8,7 @@ tags:
   - Git
   - GitHub
   - Web
+original: https://mp.weixin.qq.com/s/jMAgs7x1mX0VeiMyTBADOA
 
 # Activity meta
 description: "FCC 成都社区 Coffee & Code #5"
@@ -21,8 +22,6 @@ mentors:
 workers:
   - jiangyuzhen
 ---
-
-> [宣传文案](https://mp.weixin.qq.com/s?__biz=MzU2MzY3NTM1Nw==&mid=2247486699&idx=2&sn=c6ee2dce76a328551437004ca035286b#wechat_redirect)
 
 ## 主要流程
 

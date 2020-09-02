@@ -80,11 +80,9 @@ photos:
 [WebCell][9] 是一个基于 Web Components API 的**轻量级组件引擎**，在保留 Web Components 核心写法的同时，基于 TypeScript、JSX、[Parcel][10] 等成熟技术，进一步简化 Web 组件的开发。
 
 <iframe
-  title="WebCell scaffold"
-  style="width: 100%; height: 90vh; border: 0; border-radius: 5px"
-  src="https://codesandbox.io/embed/github/EasyWebApp/scaffold/tree/master/?autoresize=1&amp;fontsize=14&amp;hidenavigation=1&amp;module=%2Fsrc%2FClock.tsx&amp;theme=dark"
-  allow="geolocation; microphone; camera; midi; vr; accelerometer; gyroscope; payment; ambient-light-sensor; encrypted-media; usb"
-  sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"
+    title="WebCell scaffold"
+    style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+    src="https://codesandbox.io/embed/webcell-demo-9gyll?autoresize=1&fontsize=14&hidenavigation=1&module=%2Fsrc%2FClock.tsx&theme=dark"
 ></iframe>
 
 ### Step 3 | 封装一个 BootStrap 组件

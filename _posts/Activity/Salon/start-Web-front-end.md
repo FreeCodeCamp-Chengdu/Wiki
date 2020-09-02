@@ -7,6 +7,7 @@ categories:
 tags:
   - Web
   - debug
+original: https://mp.weixin.qq.com/s/6czwTWCLpUyqtbuVvc3-bA
 
 # Activity meta
 description: "FCC 成都社区 Coffee & Code #4"
@@ -18,8 +19,6 @@ mentors:
 workers:
   - TechQuery
 ---
-
-> [宣传文案](https://mp.weixin.qq.com/s?__biz=MzU2MzY3NTM1Nw==&mid=2247486704&idx=2&sn=3f91969142baea5c44e845518fd5183c#wechat_redirect)
 
 ## 主要流程
 

@@ -31,6 +31,8 @@ files:
 > 【地点】成都天府五街 菁蓉国际广场 2 栋 5 楼少颢厅
 > 【设备】**自带电脑！自带电脑！自带电脑！**
 
+<!-- more -->
+
 <img
     style="width: 100%; max-height: none"
     src="https://ucc.alicdn.com/pic/developer-ecology/e603465250054b07a8a2ee28e1e660d9.png"
