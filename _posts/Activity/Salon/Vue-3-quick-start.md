@@ -1,13 +1,13 @@
 ---
 title: FCC 小姐姐直播教你 Vue 3.0！
-date: 2020-08-24 17:00:00
+date: 2020-08-19 10:11:00
 categories:
   - Activity
   - Salon
 tags:
   - Vue
   - online
-original: https://bbs.huaweicloud.com/signup/4b0de6fdeb874c2d8115da61ac4522da
+original: https://mp.weixin.qq.com/s/2S8txwan57ZPXZ8OsiXAwQ
 
 start: 2020-08-27 19:00:00
 end: 2020-08-27 20:00:00

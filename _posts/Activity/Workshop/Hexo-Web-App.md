@@ -57,7 +57,7 @@ workers:
 
 ```shell
 # 以 GitHub 账号 FCC 为例
-npm init hexo-wiki ~/Desktop/FCC \
+npm init hexo-wiki create ~/Desktop/FCC \
     --theme NexT \
     --plugins hexo-permalink-pinyin \
     --remote https://github.com/FCC/FCC.github.io.git
