@@ -1,5 +1,5 @@
 ---
-title: Github在线IDE初体验
+title: GitHub在线IDE初体验
 date: 2020-10-16 17:31:27
 authors:
     - Kitety
@@ -7,7 +7,7 @@ categories:
     - Article
     - Summary
 tags:
-    - Github
+    - GitHub
     - Codespaces
 
 original: https://kitety.github.io/posts/73c1c21d.html
@@ -15,19 +15,19 @@ thumbnail: https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-16/1602840943531-
 toc: true
 ---
 
-之前就有听说 Github 将推出在线 IDE，一搜索发现很多结果。
+之前就有听说 GitHub 将推出在线 IDE，一搜索发现很多结果。
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201014212657.png">
 </figure>
 
-现在 Github 的在线 IDE 发布一段时间了，官方命名为：[Github Codespaces](https://github.com/features/codespaces)（点击可以申请），今天我们就来体验一下。
+现在 GitHub 的在线 IDE 发布一段时间了，官方命名为：[GitHub Codespaces](https://GitHub.com/features/codespaces)（点击可以申请），今天我们就来体验一下。
 
 <!-- more -->
 
 ## 基础体验
 
-在这里，我就拿本人博客的[仓库](https://github.com/kitety/blog)来简单跑一下 Github Codespaces。
+在这里，我就拿本人博客的[仓库](https://github.com/kitety/blog)来简单跑一下 GitHub Codespaces。
 
 ### 创建 IDE
 
@@ -50,7 +50,7 @@ toc: true
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602682883142-image.png">
 </figure>
-我们会发现在 Vscode 的配置和插件扩展都会被同步过来（当然，前提是你本地的 VSC 和自己的 Github 绑定起来，并且同步配置）。
+我们会发现在 Vscode 的配置和插件扩展都会被同步过来（当然，前提是你本地的 VSC 和自己的 GitHub 绑定起来，并且同步配置）。
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602683153389-image.png">
 </figure>
@@ -69,7 +69,7 @@ toc: true
 
 #### 预装基础环境
 
-简单的几行代码 我们可以发现 IDE 已经预装了 node、docker、npm、git、python 等等基础开发环境。
+简单的几行代码 我们可以发现 IDE 已经预装了 `node`、`Docker`、`npm`、`git`、`python` 等等基础开发环境。
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602690279501-image.png">
@@ -78,9 +78,13 @@ toc: true
 
 #### 启动项目
 
-首先 **全局安装 Hexo**`yarn add global hexo`，再启动项目`yarn d`.
+首先全局安装 `Hexo`,再启动项目`yarn d`。
 
-因为 github 的环境在外面，因此安装速度还是很快的，纵享丝滑。
+```bash
+yarn add global hexo
+```
+
+因为 GitHub 的环境在外面，因此安装速度还是很快的，纵享丝滑。
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602690553256-image.png">
@@ -116,12 +120,12 @@ toc: true
 
 ## 进阶玩法
 
-我们的项目不仅仅是前端项目，也有可能是后端 Server，这里我就用一个[后端 Server](https://github.com/kitety/likeReddit)来简单演示一下。
+我们的项目不仅仅是前端项目，也有可能是后端 Server，这里我就用一个[后端 Server](https://GitHub.com/kitety/likeReddit)来简单演示一下。
 
 ### 安装依赖跑起来
 
--   全局安装 nodemon
--   进入 server 目录安装依赖
+-   全局安装 `nodemon`
+-   进入 `server` 目录安装依赖
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015152911.png">
@@ -146,7 +150,7 @@ sudo -i -u postgres
 
 ### Docker 出马
 
-我们可以观察到 Codespace 已经为我们安装了 docker，而且在现在相当流行容器化部署，上面的那种安装方式也不够优雅。
+我们可以观察到 Codespace 已经为我们安装了 Docker，而且在现在相当流行容器化部署，上面的那种安装方式也不够优雅。
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015153359.png">
@@ -155,7 +159,7 @@ sudo -i -u postgres
 因此运行命令，安装 PostgreSQL
 
 ```bash
-Docker run -p 5432:5432 -v /home/Docker/postgresql/data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=123456 -e TZ=PRC -d --name=some-postgres postgres
+docker run -p 5432:5432 -v /home/docker/postgresql/data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=123456 -e TZ=PRC -d --name=some-postgres postgres
 //-p端口映射
 //-v将数据存到宿主服务器
 //-e POSTGRES_PASSWORD 密码（默认用户名postgres）
@@ -185,7 +189,7 @@ Docker run -p 5432:5432 -v /home/Docker/postgresql/data:/var/lib/postgresql/data
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015153909.png">
 </figure>
-简单演示一下 get 请求，并且是即时的，修改之后可以通过域名来访问。
+简单演示一下 Get 请求，并且是即时的，修改之后可以通过域名来访问。
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015154129.png">
 </figure>
@@ -215,15 +219,15 @@ Docker run -p 5432:5432 -v /home/Docker/postgresql/data:/var/lib/postgresql/data
 
 编程更重要的是一种思想，而编码更重要的是去表达思想。
 
-如果我们将配置环境，机器选择的的步骤省下来，让自己更加专注于思想表达，专注于编码的话，这样会让我们事半功倍。而现在 Github IDE 就可以看成 VSC 的网页版。如果你将 VSC 的配置同步到 Github 账户的话，你打开在线 IDE 的时候就会直接同步配置，你会很快上手。
+如果我们将配置环境，机器选择的的步骤省下来，让自己更加专注于思想表达，专注于编码的话，这样会让我们事半功倍。而现在 GitHub IDE 就可以看成 VSC 的网页版。如果你将 VSC 的配置同步到 GitHub 账户的话，你打开在线 IDE 的时候就会直接同步配置，你会很快上手。
 
-除此之外，Github 的里面预装各种环境，让你不再苦恼于环境安装，而且所处的网络环境也很棒，各种库、配置下载起来也是很快，我想这对我们的帮助也是很大的。比如再也不用纠结`node-sass`下载不下等尴尬场景。
+除此之外，GitHub 的里面预装各种环境，让你不再苦恼于环境安装，而且所处的网络环境也很棒，各种库、配置下载起来也是很快，我想这对我们的帮助也是很大的。比如再也不用纠结`node-sass`下载不下等尴尬场景。
 
 **遇到紧急的事情，一个浏览器就可以让你专注开发，这难道不香吗？**
 
 ### 不足
 
-虽然 Github 在线 IDE 有很多优点,但是还是有一些不足，肯定不能和 VSC 真机比拟。比如一些接口`/graphql`，就没有本地真机开发的那么爽。除此之外，真机的 VSC 就有很多辅助扩展。比如 PicGo 来实现图片上传到 Github 做图床，在浏览器 IDE 里面经过测试是跑不通的。
+虽然 GitHub 在线 IDE 有很多优点,但是还是有一些不足，肯定不能和 VSC 真机比拟。比如一些接口`/graphql`，就没有本地真机开发的那么爽。除此之外，真机的 VSC 就有很多辅助扩展。比如 `PicGo` 来实现图片上传到 GitHub 做图床，在浏览器 IDE 里面经过测试是跑不通的。
 
 我测试的时候限制了同时启用两个 IDE，不然会提示你让你处理。
 
@@ -237,6 +241,6 @@ Docker run -p 5432:5432 -v /home/Docker/postgresql/data:/var/lib/postgresql/data
 
 之前听过“阿里 云电脑”，加上现在 5G 的逐渐普及，说不定未来大家需要的只是一个显示器，可以完成学习、工作和娱乐，配置全部都在远端。听起来天方夜谭，说不定在未来就会实现。
 
-一个新兴事物的出来，肯定引起人们的好奇和质疑。仔细想想 Github 被微软收购之后，先后推出了个人无限私有仓库，免费使用 Github Actions，再有 Github Codespaces。而微软也先后推出 TS、VSC 等市场举足轻重的开源项目。我所看到是开源界的发展和繁荣，也希望未来越来越好。
+一个新兴事物的出来，肯定引起人们的好奇和质疑。仔细想想 GitHub 被微软收购之后，先后推出了个人无限私有仓库，免费使用 `GitHub Actions`，再有 GitHub Codespaces。而微软也先后推出 TS、VSC 等市场举足轻重的开源项目。我所看到是开源界的发展和繁荣，也希望未来越来越好。
 
 撒花！
