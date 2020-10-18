@@ -35,14 +35,14 @@ slidehtml: true
 [3]: https://developer.mozilla.org/zh-CN/docs/Web/Progressive_web_apps
 [4]: https://www.typescriptlang.org/zh/
 
-<!-- more -->
-
 ---
 
 <img
     style="width: 100%; max-height: none"
     src="https://developer-res-cbc-cn.obs.myhwclouds.com/devcenter/activitysign/img/20200916/1600242478177823.jpg"
 />
+
+<!-- more -->
 
 ---
 
@@ -95,6 +95,9 @@ yarn create strapi-app my-project --quickstart
 
 ---
 
-### OAuth 登录
+### 后端难点
 
-https://strapi.io/documentation/v3.x/plugins/users-permissions.html#providers
+- [OAuth 登录](https://strapi.io/documentation/v3.x/plugins/users-permissions.html#providers)
+- [OSS 文件上传](https://github.com/hezzze/strapi-provider-upload-oss)
+- [富文本编辑器](https://strapi.io/blog/how-to-change-the-wysiwyg-in-strapi)
+- [API 文档生成](https://www.npmjs.com/package/strapi-plugin-documentation)

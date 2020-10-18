@@ -1,18 +1,17 @@
 ---
-title: GitHub在线IDE初体验
-date: 2020-10-16 17:31:27
+title: GitHub 在线 IDE 初体验
 authors:
-    - Kitety
+  - Kitety
 categories:
-    - Article
-    - Summary
+  - Article
+  - Engineering
 tags:
-    - GitHub
-    - Codespaces
-
-original: https://kitety.github.io/posts/73c1c21d.html
-thumbnail: https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-16/1602840943531-image.png
+  - GitHub
+  - Codespaces
+original: "https://kitety.github.io/posts/73c1c21d.html"
+thumbnail: "https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-16/1602840943531-image.png"
 toc: true
+date: 2020-10-16 17:31:27
 ---
 
 之前就有听说 GitHub 将推出在线 IDE，一搜索发现很多结果。
@@ -31,13 +30,15 @@ toc: true
 
 ### 创建 IDE
 
-在 Clone 的按钮选择`Open With Codespaces`
+在 Clone 的按钮选择“Open With Codespaces”
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602682721438-image.png">
      <figcaption>创建流程</figcaption>
 </figure>
+
 进入之后会列出已有的 IDE 列表，没有的话点击下面的新建就是了。
+
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602682784043-image.png">
      <figcaption>创建流程</figcaption>
@@ -50,11 +51,15 @@ toc: true
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602682883142-image.png">
 </figure>
-我们会发现在 Vscode 的配置和插件扩展都会被同步过来（当然，前提是你本地的 VSC 和自己的 GitHub 绑定起来，并且同步配置）。
+
+我们会发现在 VS Code 的配置和插件扩展都会被同步过来（当然，前提是你本地的 VSC 和自己的 GitHub 绑定起来，并且同步配置）。
+
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602683153389-image.png">
 </figure>
-同时，IDE 可以自动识别 package.json 安装依赖，进来就自动安装好了。
+
+同时，IDE 可以自动识别 `package.json` 安装依赖，进来就自动安装好了。
+
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602682955735-image.png">
 </figure>
@@ -69,7 +74,7 @@ toc: true
 
 #### 预装基础环境
 
-简单的几行代码 我们可以发现 IDE 已经预装了 `node`、`Docker`、`npm`、`git`、`python` 等等基础开发环境。
+简单的几行代码，我们可以发现 IDE 已经预装了 `node`、`docker`、`npm`、`git`、`python` 等等基础开发环境。
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602690279501-image.png">
@@ -78,7 +83,7 @@ toc: true
 
 #### 启动项目
 
-首先全局安装 `Hexo`,再启动项目`yarn d`。
+首先全局安装 `Hexo`，再启动项目 `yarn d`。
 
 ```bash
 yarn add global hexo
@@ -90,7 +95,7 @@ yarn add global hexo
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-14/1602690553256-image.png">
 </figure>
 
-**外部端口的打开**
+##### 外部端口的打开
 
 如果我们的页面需要启动本地端口，IDE 也会提示出来有外部端口。
 
@@ -99,7 +104,7 @@ yarn add global hexo
      <figcaption>端口打开</figcaption>
 </figure>
 
-我们也可以在`Remote Explorer`看到全部的端口映射情况
+我们也可以在“Remote Explorer”看到全部的端口映射情况
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-15/1602694549227-image.png">
@@ -120,16 +125,17 @@ yarn add global hexo
 
 ## 进阶玩法
 
-我们的项目不仅仅是前端项目，也有可能是后端 Server，这里我就用一个[后端 Server](https://GitHub.com/kitety/likeReddit)来简单演示一下。
+我们的项目不仅仅是前端项目，也有可能是后端 Server，这里我就用一个[后端 Server](https://GitHub.com/kitety/likeReddit) 来简单演示一下。
 
 ### 安装依赖跑起来
 
--   全局安装 `nodemon`
--   进入 `server` 目录安装依赖
+- 全局安装 `nodemon`
+- 进入 `server` 目录安装依赖
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015152911.png">
 </figure>
+
 很明显这里报错了，原因是我们的 Server 需要连接 PostgreSQL，而我们没有安装。
 
 ### 不恰当的安装方法
@@ -146,6 +152,7 @@ sudo -i -u postgres
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015153252.png">
 </figure>
+
 最后，我们会卡在这里，因为我们不知道 Codespace 的密码，因此安装失败。
 
 ### Docker 出马
@@ -173,27 +180,34 @@ docker run -p 5432:5432 -v /home/docker/postgresql/data:/var/lib/postgresql/data
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015153646.png">
 </figure>
+
 查看下状态
+
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015153710.png">
 </figure>
+
 现在重启 server，发现已经可以连接上了。
+
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015153818.png">
 </figure>
 
 ### 端口
 
-我们可以在`Forwarded Ports`增加端口转发
+我们可以在“Forwarded Ports”增加端口转发
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015153909.png">
 </figure>
+
 简单演示一下 Get 请求，并且是即时的，修改之后可以通过域名来访问。
+
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015154129.png">
 </figure>
-顺便说一句，如果我们在代码中写好 url 地址，就可以直接用鼠标在命令行打开对应端口，网址也会被进行替换。
+
+顺便说一句，如果我们在代码中写好 URL 地址，就可以直接用鼠标在命令行打开对应端口，网址也会被进行替换。
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015154329.png">
@@ -206,7 +220,9 @@ docker run -p 5432:5432 -v /home/docker/postgresql/data:/var/lib/postgresql/data
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015154656.png">
 </figure>
-如果我们访问`/graphql`,请求就会提示`Server cannot be reached`和一些跨域错误。
+
+如果我们访问 `/graphql`，请求就会提示“Server cannot be reached”和一些跨域错误。
+
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/img/20201015154819.png">
 </figure>
@@ -221,13 +237,13 @@ docker run -p 5432:5432 -v /home/docker/postgresql/data:/var/lib/postgresql/data
 
 如果我们将配置环境，机器选择的的步骤省下来，让自己更加专注于思想表达，专注于编码的话，这样会让我们事半功倍。而现在 GitHub IDE 就可以看成 VSC 的网页版。如果你将 VSC 的配置同步到 GitHub 账户的话，你打开在线 IDE 的时候就会直接同步配置，你会很快上手。
 
-除此之外，GitHub 的里面预装各种环境，让你不再苦恼于环境安装，而且所处的网络环境也很棒，各种库、配置下载起来也是很快，我想这对我们的帮助也是很大的。比如再也不用纠结`node-sass`下载不下等尴尬场景。
+除此之外，GitHub 的里面预装各种环境，让你不再苦恼于环境安装，而且所处的网络环境也很棒，各种库、配置下载起来也是很快，我想这对我们的帮助也是很大的。比如再也不用纠结 `node-sass` 下载不下等尴尬场景。
 
 **遇到紧急的事情，一个浏览器就可以让你专注开发，这难道不香吗？**
 
 ### 不足
 
-虽然 GitHub 在线 IDE 有很多优点,但是还是有一些不足，肯定不能和 VSC 真机比拟。比如一些接口`/graphql`，就没有本地真机开发的那么爽。除此之外，真机的 VSC 就有很多辅助扩展。比如 `PicGo` 来实现图片上传到 GitHub 做图床，在浏览器 IDE 里面经过测试是跑不通的。
+虽然 GitHub 在线 IDE 有很多优点，但是还是有一些不足，肯定不能和 VSC 真机比拟。比如一些接口 `/graphql`，就没有本地真机开发的那么爽。除此之外，真机的 VSC 就有很多辅助扩展。比如 `PicGo` 来实现图片上传到 GitHub 做图床，在浏览器 IDE 里面经过测试是跑不通的。
 
 我测试的时候限制了同时启用两个 IDE，不然会提示你让你处理。
 
@@ -241,6 +257,6 @@ docker run -p 5432:5432 -v /home/docker/postgresql/data:/var/lib/postgresql/data
 
 之前听过“阿里 云电脑”，加上现在 5G 的逐渐普及，说不定未来大家需要的只是一个显示器，可以完成学习、工作和娱乐，配置全部都在远端。听起来天方夜谭，说不定在未来就会实现。
 
-一个新兴事物的出来，肯定引起人们的好奇和质疑。仔细想想 GitHub 被微软收购之后，先后推出了个人无限私有仓库，免费使用 `GitHub Actions`，再有 GitHub Codespaces。而微软也先后推出 TS、VSC 等市场举足轻重的开源项目。我所看到是开源界的发展和繁荣，也希望未来越来越好。
+一个新兴事物的出来，肯定引起人们的好奇和质疑。仔细想想 GitHub 被微软收购之后，先后推出了个人无限私有仓库，免费使用 GitHub Actions，再有 GitHub Codespaces。而微软也先后推出 TS、VSC 等市场举足轻重的开源项目。我所看到是开源界的发展和繁荣，也希望未来越来越好。
 
 撒花！
