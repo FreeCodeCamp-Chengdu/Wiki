@@ -17,6 +17,7 @@ start: 2020-09-27 19:00:00
 end: 2020-09-27 21:00:00
 links:
   报名: https://bbs.huaweicloud.com/signup/0117d00ad31a4558905c1db48c2f54ca
+  回放: https://bbs.huaweicloud.com/videos/103440
 mentors:
   - TechQuery
 partners:

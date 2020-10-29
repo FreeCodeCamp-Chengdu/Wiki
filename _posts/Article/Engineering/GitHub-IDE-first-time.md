@@ -117,7 +117,7 @@ yarn add global hexo
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-15/1602694402020-image.png">
 </figure>
 
-当我们修改之后，在侧边栏至直接提交就是了，简单快捷。也不用任何的设置。
+当我们修改之后，在侧边栏直接提交就是了，简单快捷。也不用任何的设置。
 
 <figure>
     <img src="https://cdn.jsdelivr.net/gh/kitety/blog_img/2020-10-15/1602694872590-image.png">
@@ -167,12 +167,12 @@ sudo -i -u postgres
 
 ```bash
 docker run -p 5432:5432 -v /home/docker/postgresql/data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=123456 -e TZ=PRC -d --name=some-postgres postgres
-//-p端口映射
-//-v将数据存到宿主服务器
-//-e POSTGRES_PASSWORD 密码（默认用户名postgres）
-//-e TZ=PRC时区，中国
-//-d后台运行
-//--name容器名称
+// -p 端口映射
+// -v 将数据存到宿主服务器
+// -e POSTGRES_PASSWORD 密码（默认用户名 postgres）
+// -e TZ=PRC 时区：中国
+// -d 后台运行
+// --name 容器名称
 ```
 
 运行之后，找不到镜像会自动去拉取镜像
