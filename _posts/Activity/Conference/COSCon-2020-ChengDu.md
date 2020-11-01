@@ -15,11 +15,11 @@ toc: true
 start: 2020-10-24 09:20:00
 end: 2020-10-25 18:00:00
 address: 成都市高新区天府五街 菁蓉国际广场 2A 栋 5 层
-mentors:
-  - TechQuery
 workers:
+  - TechQuery
   - miyaliu666
   - Cute233
+  - LiJiahaoCoder
   - demongodYY
 partners:
   - SKFI
