@@ -11,6 +11,7 @@ tags:
   - 展览
   - Web
 toc: true
+thumbnail: 2elhomd3jyh.png
 
 start: 2020-10-24 09:20:00
 end: 2020-10-25 18:00:00
