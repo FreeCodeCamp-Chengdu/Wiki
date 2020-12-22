@@ -8,3 +8,5 @@ thumbnail: logo.png
 comment: false
 donate: false
 ---
+
+CICS 是 Covariant Institute of Computer Science 的英文缩写 to be continued
