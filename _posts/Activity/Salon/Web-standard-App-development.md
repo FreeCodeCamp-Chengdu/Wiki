@@ -38,6 +38,8 @@ partners:
 
 ![](https://ptgmedia.pearsoncmg.com/images/chap3_0789729547/elementLinks/03fig04.jpg)
 
+<!-- more -->
+
 ---
 
 ### Adobe Photoshop
