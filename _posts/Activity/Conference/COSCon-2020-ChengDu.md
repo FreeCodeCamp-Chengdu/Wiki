@@ -22,6 +22,10 @@ workers:
   - Cute233
   - LiJiahaoCoder
   - demongodYY
+mentors:
+  - TechQuery
+  - mikecovlee
+  - jin1xiao3long2
 partners:
   - SKFI
 ---
