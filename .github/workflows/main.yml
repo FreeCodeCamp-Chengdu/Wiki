@@ -1,0 +1,41 @@
+name: CI & CD
+on:
+    push:
+        branches:
+            - master
+jobs:
+    Build-and-Deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Data repository
+              uses: actions/checkout@v2
+              with:
+                  lfs: true
+            - name: Checkout Program repository
+              uses: actions/checkout@v2
+              with:
+                  repository: ${{ secrets.GIT_URI }}
+                  path: super/
+            - name: Merge Data & Program
+              run: |
+                  shopt -s extglob
+                  mv !(super) super/source/
+                  mv super/* .
+            - name: Use Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 14
+                  cache: yarn
+            - name: Install & build
+              run: |
+                  yarn
+                  yarn build
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  publish_dir: ./public
+                  cname: fcc-cd.dev
+                  external_repository: ${{ secrets.GIT_URI }}
+                  publish_branch: master
+                  personal_token: ${{ secrets.PERSONAL_TOKEN }}
+                  force_orphan: true
