@@ -2,9 +2,10 @@ name: Fetch Web pages
 on:
     issues:
         types:
-            - opened
+            - labeled
 jobs:
     Fetch-and-Save:
+        if: github.event.label.name == 'Translation'
         runs-on: ubuntu-latest
         permissions:
             contents: write
@@ -12,13 +13,6 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
-            - uses: pnpm/action-setup@v2
-              with:
-                  version: 8
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: 18
-                  cache: pnpm
             - uses: freeCodeCamp-China/article-webpage-to-markdown-action@v1
               with:
                   newsLink: "${{ github.event.issue.Body }}"
