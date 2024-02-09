@@ -6,19 +6,11 @@ translator: ""
 reviewer: ""
 ---
 
-[Waitlist LLC![Waitlist Logo](/logo_waitlist.svg)](/)
-
-Open menu
-
-[Platforms and Features](/platforms)[Demo](/demo)[Pricing](/pricing)[Documentation](https://docs.getwaitlist.com/)[Blog](/blog)
-
-[Sign in](/signin)[Sign up](/signup)
-
-# 💰 My Frugal Indie Dev Startup Stack
-
 By [Maya Kyler](https://twitter.com/getwaitlist) on December 5, 2022
 
 Indie developers today stand on the shoulders of giants. There are tons of great SAAS products that have made otherwise expensive, enterprise-grade features cheap and accessible. This enables entrepreneurship. I've been able to build [getwaitlist.com](https://getwaitlist.com) on a shoestring budget to serve thousands of users and millions of signups on Waitlists. I thought it might be nice to share the tools I've used to get here, and the favors I've pulled to spend as little as possible.
+
+<!-- more -->
 
 I'll give you the summary up-front, and go into detail afterwards. My monthly spend breaks down as follows:
 

@@ -7,10 +7,6 @@ translator: ""
 reviewer: ""
 ---
 
-[Tools](/pycharm/category/tools/)
-
-# Django vs Flask: Which is the Best Python Web Framework?
-
 ![Denis Mashutin](https://blog.jetbrains.com/wp-content/uploads/2022/09/photo_2022-08-23_18-09-02-200x200.jpg)
 
 [Denis Mashutin](https://blog.jetbrains.com/author/denis-mashutin-jetbrains-com)
@@ -32,6 +28,8 @@ Before diving deep, let’s take a look at the basic principles and “philosoph
 
 Now that we’ve covered the essentials, let’s compare Flask vs Django by looking at the various aspects and challenges of using each framework for web development.
 
+<!-- more -->
+
 ## Templating system: Django templates vs Jinja2 templates
 
 If we only had to work with static HTML pages, that would be very easy, but most of today’s web applications include dynamic content. This is why we need a templating system.
@@ -40,7 +38,7 @@ Django has a built-in template engine, while Flask is fully compatible with Jinj
 
 ![Django template vs. Jinja2 template](https://blog.jetbrains.com/wp-content/uploads/2023/11/django-vs-jinja2-template.png)
 
-Jinja2 was influenced by the Django template language. That’s why their syntax looks pretty similar. For example, both use double curly braces (`{{ }}`) for variables and curly braces with percent signs (`{% %}`) for logical elements, like loops and conditional statements.
+Jinja2 was influenced by the Django template language. That’s why their syntax looks pretty similar. For example, both use double curly braces (`\{\{ \}\}`) for variables and curly braces with percent signs (`\{\% \%\}`) for logical elements, like loops and conditional statements.
 
 At the same time, there are significant differences. Let’s look at these in more detail.
 
@@ -60,13 +58,6 @@ Jinja2 has a more complex syntax, while Django templates are less flexible and m
 
 For example, Jinja2 lets you define macros, which are reusable blocks of code:
 
-{% macro greeting(name) %}
-  Hello, {{ name }}!
-{% endmacro %}
-
-{{ greeting("Alice") }}
-{{ greeting("Bob") }}
-
 Other examples of more flexible syntax in Jinja2 include:
 
 -   Mathematical operations.
@@ -85,19 +76,15 @@ Both template engines allow you to create custom tags and filters. If you’re u
 
 Many limitations in Django templates can be compensated by using additional libraries. However, it’s important to remember that any extra dependency may negatively affect your application’s performance and security. Here are some popular extensions for Django templates:
 
-1.  [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/): introduces the `|crispy` filter and the `{% crispy %}` tag to let you format Django forms easily and beautifully.
-2.  [django-widget-tweaks](https://pypi.org/project/django-widget-tweaks/): adds the `{% render_field %}` tag for customizing form fields by using an HTML-like syntax and a bunch of template filters for tweaking form fields and CSS classes.
+1.  [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/): introduces the `|crispy` filter and the `\{\% crispy \%\}` tag to let you format Django forms easily and beautifully.
+2.  [django-widget-tweaks](https://pypi.org/project/django-widget-tweaks/): adds the `\{\% render_field \%\}` tag for customizing form fields by using an HTML-like syntax and a bunch of template filters for tweaking form fields and CSS classes.
 3.  [django-ckeditor](https://django-ckeditor.readthedocs.io/en/latest/): provides a WYSIWYG rich text editor so that your application’s users can add their own content as formatted text.
 
 ![WYSIWYG rich text editor](https://blog.jetbrains.com/wp-content/uploads/2023/11/django-ckeditor-rich-text-editor-field.png)
 
 In Jinja2, you can also import extensions for the sake of customization or even more sophisticated logic. For example, [Loop Controls](https://jinja.palletsprojects.com/en/3.0.x/extensions/#loop-controls) adds support for `break` and `continue` in loops. The following loop will stop after processing 10 users from the `users` list:
 
-{% for user in users %}
-    {%- if loop.index >= 10 %}{% break %}{% endif %}
-{%- endfor %}
-
-The [Debug Extension](https://jinja.palletsprojects.com/en/3.0.x/extensions/#debug-extension) lets you use the `{% debug %}` tag in Jinja2 templates to explore the context without setting up a debugger.
+The [Debug Extension](https://jinja.palletsprojects.com/en/3.0.x/extensions/#debug-extension) lets you use the `\{\% debug \%\}` tag in Jinja2 templates to explore the context without setting up a debugger.
 
 By the way, PyCharm lets you [debug Django templates without any extra tags](https://www.jetbrains.com/help/pycharm/debugging-django-template-tutorial.html). Another great feature is the [real-time preview of Django templates](https://www.jetbrains.com/help/pycharm/live-preview-of-django-templates.html). The IDE renders templates as you edit them, so that you don’t need to switch to your browser.
 
@@ -115,18 +102,18 @@ In Flask, routing is done by adding decorators to functions. Basically, here is 
 
 It’s as simple as that. Here’s the full code of a “Hello world” application in Flask:
 
+```python
 from flask import Flask
 
-app = Flask(\_\_name\_\_)
-
+app = Flask(__name__)
 
 @app.route('/')
-def hello\_world():
-    return 'Hello World!'
+def hello_world():
+return 'Hello World!'
 
-
-if \_\_name\_\_ == '\_\_main\_\_':
-    app.run()
+if __name__ == '__main__':
+app.run()
+```
 
 Django uses dedicated Python files (usually, **urls.py**) in order to match the requested URL with the corresponding view (piece of application logic). Views are written separately in **views.py**. To show a page with “Hello World!”, your application must include the following files:
 
@@ -154,9 +141,11 @@ URL parameters are variable parts of the URL that are used to send additional in
 
 One advantage of Django is that it allows using regular expressions in URL patterns with the help of the `re_path()` function:
 
-urlpatterns = \[
-    re\_path(r'^user/(?P<username>\\w{0,50})/$', views.user\_details),
-\]
+```python
+urlpatterns = [
+re_path(r'^user/(?P<username>\\w{0,50})/$', views.user_details),
+]
+```
 
 If you add such a pattern to your Django application, you’ll be able to request a URL, like `/user/john/`. The application will call the `user_details` function passing “`john`” as a parameter.
 
@@ -260,94 +249,95 @@ Both Django and Flask are equally suitable for many different tasks, but there a
 
 The table below summarizes all the points made in the article:
 
-|  | Django | Flask |
-| --- | --- | --- |
-| **Templates** | Django template language:  
+|               | Django                    | Flask |
+| ------------- | ------------------------- | ----- |
+| **Templates** | Django template language: |
+
 -   Django-specific
 -   Syntax is restricted to encourage best practices
 -   Readable by non-programmers
 -   Extensions are available
 
- | Jinja2:  
+| Jinja2:
 
 -   Compatible with many web frameworks
 -   Syntax allows performing operations in the template
 -   Extensions are available
 
- |
-| **URLs** | 
+|
+| **URLs** |
 
 -   Routing is more complicated but extremely powerful
 -   Regexes can be used to capture URL parameters
 -   Not fully RESTful-compliant
 
- | 
+|
 
 -   Simplified routing, perfect for a quick start
 -   Routes and logic are written in one file
 -   RESTful-compliant
 
- |
-| **Databases** | 
+|
+| **Databases** |
 
 -   Built-in ORMs
 -   Difficult to use unsupported databases
 
- | 
+|
 
 -   ORM support via extensions
 -   NoSQL databases can be used
 
- |
+|
 | **Authentication and authorization** | Built-in apps:
 
 -   Django auth
 -   Django admin
 
- | Extensions:
+| Extensions:
 
 -   Flask-Admin
 -   Flask-Login
 -   Flask-Security
 
- |
-| **Testing** | 
+|
+| **Testing** |
 
 -   Built-in test features and client
 -   pytest-django
 -   Automatic test isolation in databases
 
- | 
+|
 
 -   Built-in test features and client
 -   pytest-flask
 -   Database operations during testing to be handled manually or with extensions
 
- |
-| **Architecture** | 
+|
+| **Architecture** |
 
 -   Used mostly for monolithic applications
 -   One app is responsible for one thing
 -   Can also be used for microservices
 
- | Perfect for microservices:
+| Perfect for microservices:
 
 -   Compact size
 -   Easily extendable
 -   RESTful-compliant
 
- |
-| **Learning curve** | 
+|
+| **Learning curve** |
 
 -   Challenging learning curve
 -   Consistent architecture facilitates late onboarding
 
- | 
+|
 
 -   The first app can be created in no time
 -   Perfect first framework for learning
 
- |
+|
 
 ### FAQ
 
@@ -413,19 +403,3 @@ However, combining Flask and Django can be justified in specific cases, for exam
 -   [_Linkedin_](http://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fblog.jetbrains.com%2Fpycharm%2F2023%2F11%2Fdjango-vs-flask-which-is-the-best-python-web-framework%2F?linkedin_en_US)
 
 [_Prev post_ PyCharm 2023.2.4 Is Out!](https://blog.jetbrains.com/pycharm/2023/11/2023-2-4/)
-
-#### Subscribe to Blog updates
-
-  
-
-Subscribe form 
-
- By submitting this form, I agree to the JetBrains [Privacy Policy _Notification icon_](https://www.jetbrains.com/company/privacy.html)
-
-By submitting this form, I agree that JetBrains s.r.o. ("JetBrains") may use my name, email address, and location data to send me newsletters, including commercial communications, and to process my personal data for this purpose. I agree that JetBrains may process said data using [third-party](https://www.jetbrains.com/legal/privacy/third-parties.html) services for this purpose in accordance with the [JetBrains Privacy Policy](https://www.jetbrains.com/company/privacy.html). I understand that I can revoke this consent at any time in [my profile](https://account.jetbrains.com/profile-details/privacy). In addition, an unsubscribe link is included in each email.
-
-Submit
-
-Thanks, we've got you!
-
-![image description](https://blog.jetbrains.com/wp-content/themes/jetbrains/assets/img/img-form.svg)

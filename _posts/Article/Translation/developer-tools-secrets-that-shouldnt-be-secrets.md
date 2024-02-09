@@ -6,18 +6,6 @@ translator: ""
 reviewer: ""
 ---
 
-[Skip to content](#content)
-
--   [![Christian Heilmann Avatar](https://christianheilmann.com/wp-content/uploads/2023/03/chris-transparent.png)](https://christianheilmann.com/)
--   [About this](https://christianheilmann.com/about-this/)
--   [Archives](https://christianheilmann.com/archives/)
-
-[Christian Heilmann](https://christianheilmann.com/)
-
-Search the archives: 
-
-# Developer Tools secrets that shouldn’t be secrets
-
 Monday, November 1st, 2021 at 3:21 pm
 
 > **Update**: As this [is blowing up on Hackernews](https://news.ycombinator.com/item?id=29071700) I added information to each of the tips in which environment they are supported in parenthesis after each heading. When I state “Chromium browsers”, this refers to all browsers that use the Chromium core and also feature all the Developer Tools. This is Chrome, Microsoft Edge, Brave and many more. As a reminder: Microsoft Edge is the browser that comes with Windows 10/11 and is based on Chromium and thus from a platform perspective simular to Chrome. They differ in UX and services around the core. Edge Developer Tools work closely with Google on bringing the work we add to the product back into the Chromium Core. But some of the things I am talking about here are experiments and exclusively in Microsoft Edge, which is available on Windows, Mac and Linux. Some functionality is only available inside Visual Studio Code via the [Edge DevTools for VS Code extension](https://aka.ms/devtools-for-code) .
@@ -26,9 +14,12 @@ This is a talk that I’ve given at [CityJS](https://cityjsconf.org/) this Septe
 
 You can watch the [recording of the talk on Youtube](https://www.youtube.com/watch?v=q_qzHzIVxw4) .
 
+<!-- more -->
+
 Here’s a write-up of all the things I covered:
 
-## 1\. Console is much more than \`log()\`!  
+## 1\. Console is much more than \`log()\`!
+
 (All browsers with developer tools following the standard)
 
 There is no doubt that, besides the Elements tool, Console is the most used part of the browser developer tools. Specificially, people love to debug by putting a \`console.log()\` in their code to learn what’s going on. There are a few problems with that, and there are better ways to debug scripts, but as this is what people do, let’s talk how to make that experience better.
@@ -97,18 +88,19 @@ The console comes with a lot of convenience methods you can use called the [Cons
   <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #009900;">{</span>url<span style="color: #339933;">:</span> a.<span style="color: #660066;">href</span><span style="color: #339933;">,</span> text<span style="color: #339933;">:</span> a.<span style="color: #660066;">innerText</span><span style="color: #009900;">}</span>
 <span style="color: #009900;">}</span><span style="color: #009900;">)</span></pre></td></tr></tbody></table>
 
-$$('a').map(a => { return {url: a.href, text: a.innerText} })
+$$
+('a').map(a => { return {url: a.href, text: a.innerText} })
 
 [![An example how the $$ function returns a collection of HTML elements that you can filter like any other array](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)
 
-## 2\. You can log without source access – live expressions and logpoints  
+## 2\. You can log without source access – live expressions and logpoints
 (Chromium browsers)
 
 The normal way to add a \`console.log()\` is to put it inside your code at the place you want to get the information. But you can also get insights into code you can’t access and change. [Live expressions](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/live-expressions) are a great way to log information without changing your code. They are also incredible to log values that change constantly without flooding the console and thus slowing down your product. You can see the difference in the following screencast:
 
 Logpoints are a special kind of breakpoint. You can right-click any line in a JavaScript in the Sources tool of the Developer Tools and set a logpoint. You get asked to provide an expression you’d like to log and will get its value in the console when the line of code is executed. This means you can technically inject a \`console.log()\` anywhere on the web. I [wrote about logpoints](https://christianheilmann.com/2021/08/24/using-console-log-on-any-website-logpoints-let-you-do-that/) back in August and you can see a demo in the following screencast:
 
-## 3\. You can log outside the browser – VS Code debugger  
+## 3\. You can log outside the browser – VS Code debugger
 (Chromium Browsers and VS Code)
 
 When you start a debugging session in Visual Studio Code, you can spawn a browser instance and the Debug Console becomes the Console you are used to from the browser developer tools. I blogged about this in July in detail, so you can [read up there how to do that](https://christianheilmann.com/2021/07/30/using-console-log-debugging-in-visual-studio-code/) . There is also more in the [official documentation](https://docs.microsoft.com/microsoft-edge/visual-studio-code/microsoft-edge-devtools-extension#browser-debugging-with-microsoft-edge-devtools-integration-in-visual-studio-code).
@@ -117,14 +109,14 @@ When you start a debugging session in Visual Studio Code, you can spawn a browse
 
 You can also watch this one minute video of me showing the functionality:
 
-## 4\. You can inject code into any site – snippets and overrides.  
+## 4\. You can inject code into any site – snippets and overrides.
 (Chromium Browsers)
 
 [Snippets](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets) are a way in Developer Tools to run a script against the current web site. You can use the [Console Utilities](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities) in these scripts and it is a great way to write and store complex DOM manipulation scripts you normally execute in the Console. You can run your scripts in the window context of the current document either from the snippets editor or from the command menu. In the latter case, start your command with an ! and type the name of the snippet you want to run.
 
 [Overrides](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/overrides) allow you to store local copies of remote scripts and override them when the page loads. This is great if you have, for example, a slow build process for your whole application and you want to try something out. It is also a great tool to replace annoying scripts from third party web sites without having to use a browser extension.
 
-## 5\. You can inspect and debug much more than you know!  
+## 5\. You can inspect and debug much more than you know!
 (Chromium Browsers)
 
 You may know the Chromium developer tools from browsers like Google Chrome, Brave or Microsoft Edge, but they are available in a lot more environments. Any app that’s based on Electron can have them enabled and you can use the Tools to peek under the hood and see how the product was done. This works, for example, in GitHub Desktop, Visual Studio Code, or you can even debug the Developer Tools of the browser using Developer Tools!
@@ -133,7 +125,7 @@ If you inspect the Developer Tools, you will see that they are written in HTML, 
 
 [![Inspecting the Chromium Developer tools with another instance of the developer tools](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)
 
-### Edge Developer Tools in Visual Studio Code  
+### Edge Developer Tools in Visual Studio Code
 (Microsoft Edge via a VS Code extension)
 
 The embeddable nature of the tools also allowed us to offer you a way to use them outside the browser. The [Microsoft Edge Tools for Visual Studio Code](https://aka.ms/devtools-for-code) extension brings the tools to Visual Studio Code. That way you can use the visual debugging tools right next to your code editor and you don’t need to jump between the two all the time.This also ties in with the “Console in Visual Studio Code” trick mentioned earlier. When you start a debugging session and you click the Developer Tools icon, the tools will open or – the first time – you will be prompted to install the extension.
@@ -146,7 +138,7 @@ The embeddable nature of the tools also allowed us to offer you a way to use the
 
 Working intimately with developer tools and getting feedback and usage information taught me a few dirty secrets. The first one is that whilst we are all super excited about all the amazing features of developer tools, users only use a very small percentage of them. Many things heralded as the best thing since sliced bread in presentations and video tutorials are hardly every opened, let alone used. I thought this was about a lack of documentation and we spent a massive amount of time to update the [DevTools documentation](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/) to ensure everything in them is described and explained, but that wasn’t it. Documentation is something people seem to go to as a last resort when they are stuck and Google/Stack Overflow/Social channels didn’t yield any results.
 
-### Developer tools have become complex and are overwhelming – a few ideas how to fix that  
+### Developer tools have become complex and are overwhelming – a few ideas how to fix that
 (Microsoft Edge)
 
 It might be that the plain fact is that the Developer Tools of browsers grew organically over the years and can be incredibly overwhelming to look at. And that bothers me and I think we should do better. Here’s my mantra when it comes to tools for developers:
@@ -161,7 +153,7 @@ Another feature we are working on are “informational overlays”. You get a he
 
 [![Developer tools covered by overlays explaining what each of them are,](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)
 
-### There is still a disconnect between authoring code and debugging the outcome  
+### There is still a disconnect between authoring code and debugging the outcome
 (Microsoft Edge)
 
 Whilst it is amazing what tools provide us these days there is still a disconnect between authoring and debugging. Most of the time we write our code, create the app and then go to the browser to see what doesn’t work. We then use the browser developer tools to tweak and fix these issues. And then comes the big issue we still need to fix: how do you get the changes you created using the browser developer tools back into your code? Most of the time, the answer is “copy and paste or try to remember what needs changing”.
@@ -172,7 +164,7 @@ CSS Mirroring in Visual Studio Code:
 
 What if… Visual Studio Code became the editor of in-browser Developer Tools?
 
-## 7\. You’re the audience and the clients of Developer Tools!  
+## 7\. You’re the audience and the clients of Developer Tools!
 (Applies to all browsers, but channels shown here are Microsoft Edge only)
 
 As a developer, you are the main audience for Developer Tools. We are open to your feedback and many of the recent changes to the tools are direct results from demands from outside developers. We try to make this as easy as possible by providing in-context ways to contact us directly. For example, the Visual Studio Code extension has prominent links and buttons for you to report issues and request features.
@@ -209,3 +201,4 @@ It records automatically what URL the issue happened on, takes a screenshot to i
 Theme by Chris Heilmann. SVG Icons by [Dan Klammer](https://github.com/danklammer/bytesize-icons) . Hosted by MediaTemple. Powered by Coffee and Spotify Radio.
 
 [Get the feed, all the cool kids use RSS!](https://christianheilmann.com/feed/)
+$$

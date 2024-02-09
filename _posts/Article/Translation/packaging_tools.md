@@ -8,15 +8,15 @@ reviewer: ""
 
 ![](/images/author/image_al.jpg)
 
-##### Anna-Lena Popkes
+Anna-Lena Popkes
 
 August 24, 2023
-
-# An unbiased evaluation of environment management and packaging tools
 
 ## Motivation
 
 When I started with Python and created my first package I was confused. Creating and managing a package seemed much harder than I expected. In addition, multiple tools existed and I wasn’t sure which one to use. I’m sure most of you had the very same problem in the past. Python has a zillion tools to manage virtual environments and create packages and it can be hard (or almost impossible) to understand which one fits your needs. Several talks and blog post on the topic exist, but none of them gives a complete overview or evaluates the tools in a structured fashion. This is what this post is about. I want to give you a truly unbiased evaluation of existing packaging and environment management tools. In case you’d rather watch a talk, take a look at the recording of [PyCon DE 2023](https://www.youtube.com/watch?v=MsJjzVIVs6M) or [EuroPython 2023](https://www.youtube.com/watch?v=3-drZY3u5vo).
+
+<!-- more -->
 
 ## Categorization
 
@@ -65,7 +65,7 @@ pyenv install 3.10.4
 
 # Switch between Python versions
 pyenv shell <version> # select version just for current shell session
-pyenv local <version> # automatically select version whenever you are in the current directory 
+pyenv local <version> # automatically select version whenever you are in the current directory
 pyenv global <version> # select version globally for your user account
 ```
 
@@ -187,14 +187,14 @@ pipenv shell
 
 Last but not least I want to present multi-purpose tools for packaging. I promised an unbiased evaluation. For this purpose I created a list of features that I consider important when comparing different tools. The features are:
 
-|  |  |
-| --- | --- |
-| Does the tool manage dependencies? | ? |
-| Does it resolve/lock dependencies? | ? |
-| Is there a clean build/publish flow? | ? |
-| Does it allow to use plugins? | ? |
-| Does it support PEP 660 (editable installs)? | ? |
-| Does it support PEP 621 (project metadata)? | ? |
+|                                              |     |
+| -------------------------------------------- | --- |
+| Does the tool manage dependencies?           | ?   |
+| Does it resolve/lock dependencies?           | ?   |
+| Is there a clean build/publish flow?         | ?   |
+| Does it allow to use plugins?                | ?   |
+| Does it support PEP 660 (editable installs)? | ?   |
+| Does it support PEP 621 (project metadata)?  | ?   |
 
 Regarding the two PEPs: Python has a lot of open and closed PEPs on packaging. For a full overview take a look at [this page](https://peps.python.org/topic/packaging/). I only included PEP 660 and PEP 621 for specific reasons:
 
@@ -217,14 +217,14 @@ This is also reflected in our Venn diagram:
 
 #### Feature evaluation
 
-|  |  |
-| --- | --- |
-| Does the tool manage dependencies? | ❌ |
-| Does it resolve/lock dependencies? | ❌ |
-| Is there a clean build/publish flow? | ✅ |
-| Does it allow to use plugins? | ❌ |
-| Does it support PEP 660 (editable installs)? | ✅ |
-| Does it support PEP 621 (project metadata)? | ✅ |
+|                                              |     |
+| -------------------------------------------- | --- |
+| Does the tool manage dependencies?           | ❌  |
+| Does it resolve/lock dependencies?           | ❌  |
+| Is there a clean build/publish flow?         | ✅  |
+| Does it allow to use plugins?                | ❌  |
+| Does it support PEP 660 (editable installs)? | ✅  |
+| Does it support PEP 621 (project metadata)?  | ✅  |
 
 #### Main commands
 
@@ -232,7 +232,7 @@ This is also reflected in our Venn diagram:
 # Create new pyproject.toml
 flit init
 
-# Build and publish 
+# Build and publish
 flit publish
 ```
 
@@ -252,14 +252,14 @@ Taking a look at the feature evaluation below you will see than Poetry does **no
 
 #### Feature evaluation
 
-|  |  |
-| --- | --- |
-| Does the tool manage dependencies? | ✅ |
-| Does it resolve/lock dependencies? | ✅ |
-| Is there a clean build/publish flow? | ✅ |
-| Does it allow to use plugins? | ✅ |
-| Does it support PEP 660 (editable installs)? | ✅ |
-| Does it support PEP 621 (project metadata)? | ❌ |
+|                                              |     |
+| -------------------------------------------- | --- |
+| Does the tool manage dependencies?           | ✅  |
+| Does it resolve/lock dependencies?           | ✅  |
+| Is there a clean build/publish flow?         | ✅  |
+| Does it allow to use plugins?                | ✅  |
+| Does it support PEP 660 (editable installs)? | ✅  |
+| Does it support PEP 621 (project metadata)?  | ❌  |
 
 #### Main commands
 
@@ -305,7 +305,7 @@ When installing a package for the first time, Poetry resolves all dependencies l
 poetry build
 
 # Publish to PyPI
-poetry publish 
+poetry publish
 ```
 
 ### PDM
@@ -327,14 +327,14 @@ The main commands of PDM are similar to Poetry. However, less commands exist. Fo
 
 #### Feature evaluation
 
-|  |  |
-| --- | --- |
-| Does the tool manage dependencies? | ✅ |
-| Does it resolve/lock dependencies? | ✅ |
-| Is there a clean build/publish flow? | ✅ |
-| Does it allow to use plugins? | ✅ |
-| Does it support PEP 660 (editable installs)? | ✅ |
-| Does it support PEP 621 (project metadata)? | ✅ |
+|                                              |     |
+| -------------------------------------------- | --- |
+| Does the tool manage dependencies?           | ✅  |
+| Does it resolve/lock dependencies?           | ✅  |
+| Is there a clean build/publish flow?         | ✅  |
+| Does it allow to use plugins?                | ✅  |
+| Does it support PEP 660 (editable installs)? | ✅  |
+| Does it support PEP 621 (project metadata)?  | ✅  |
 
 #### Creating a new project
 
@@ -359,7 +359,7 @@ pdm list --graph
 #### Running code
 
 ```bash
-# No pdm shell command 
+# No pdm shell command
 
 # Run script within env
 pdm run python <script_name.py>
@@ -376,7 +376,7 @@ The locking functionality of PDM is similar to Poetry. When installing a package
 pdm build
 
 # Publish to PyPI
-pdm publish 
+pdm publish
 ```
 
 ### Hatch
@@ -395,14 +395,14 @@ It should be noted that the author of Hatch promised that locking functionality 
 
 #### Feature evaluation
 
-|  |  |
-| --- | --- |
-| Does the tool manage dependencies? | ❌ |
-| Does it resolve/lock dependencies? | ❌ |
-| Is there a clean build/publish flow? | ✅ |
-| Does it allow to use plugins? | ✅ |
-| Does it support PEP 660 (editable installs)? | ✅ |
-| Does it support PEP 621 (project metadata)? | ✅ |
+|                                              |     |
+| -------------------------------------------- | --- |
+| Does the tool manage dependencies?           | ❌  |
+| Does it resolve/lock dependencies?           | ❌  |
+| Is there a clean build/publish flow?         | ✅  |
+| Does it allow to use plugins?                | ✅  |
+| Does it support PEP 660 (editable installs)? | ✅  |
+| Does it support PEP 621 (project metadata)?  | ✅  |
 
 #### Creating a new project
 
@@ -444,7 +444,7 @@ hatch run python <script_name.py>
 hatch build
 
 # Publish to PyPI
-hatch publish 
+hatch publish
 ```
 
 #### Declarative environment management
@@ -467,14 +467,14 @@ Currently, Rye does not have a plugin interface. However, since new releases are
 
 #### Feature evaluation
 
-|  |  |
-| --- | --- |
-| Does the tool manage dependencies? | ✅ |
-| Does it resolve/lock dependencies? | ✅ |
-| Is there a clean build/publish flow? | ✅ |
-| Does it allow to use plugins? | ❌ |
-| Does it support PEP 660 (editable installs)? | ✅ |
-| Does it support PEP 621 (project metadata)? | ✅ |
+|                                              |     |
+| -------------------------------------------- | --- |
+| Does the tool manage dependencies?           | ✅  |
+| Does it resolve/lock dependencies?           | ✅  |
+| Is there a clean build/publish flow?         | ✅  |
+| Does it allow to use plugins?                | ❌  |
+| Does it support PEP 660 (editable installs)? | ✅  |
+| Does it support PEP 621 (project metadata)?  | ✅  |
 
 #### Creating a new project
 
@@ -514,19 +514,19 @@ rye run python <script_name.py>
 rye build
 
 # Publish to PyPI
-rye publish 
+rye publish
 ```
 
 ### Overview
 
-|  | Flit | Poetry | PDM | Hatch | Rye |
-| --- | --- | --- | --- | --- | --- |
-| Does the tool manage dependencies? | ❌ | ✅ | ✅ | ❌ | ✅ |
-| Does it resolve/lock dependencies? | ❌ | ✅ | ✅ | ❌ | ✅ |
-| Is there a clean build/publish flow? | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Does it allow to use plugins? | ❌ | ✅ | ✅ | ✅ | ❌ |
-| Does it support PEP 660 (editable installs)? | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Does it support PEP 621 (project metadata)? | ✅ | ❌ | ✅ | ✅ | ✅ |
+|                                              | Flit | Poetry | PDM | Hatch | Rye |
+| -------------------------------------------- | ---- | ------ | --- | ----- | --- |
+| Does the tool manage dependencies?           | ❌   | ✅     | ✅  | ❌    | ✅  |
+| Does it resolve/lock dependencies?           | ❌   | ✅     | ✅  | ❌    | ✅  |
+| Is there a clean build/publish flow?         | ✅   | ✅     | ✅  | ✅    | ✅  |
+| Does it allow to use plugins?                | ❌   | ✅     | ✅  | ✅    | ❌  |
+| Does it support PEP 660 (editable installs)? | ✅   | ✅     | ✅  | ✅    | ✅  |
+| Does it support PEP 621 (project metadata)?  | ✅   | ❌     | ✅  | ✅    | ✅  |
 
 ## Tools that do not fit the categories
 

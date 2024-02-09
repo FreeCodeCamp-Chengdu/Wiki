@@ -25,6 +25,8 @@ Playing a game that pays you money is cool for one important reason. Nobody can 
 
 I enjoy exploring the similarities between video games and remote software engineering. However, on a serious note, remote work has its own set of pros and cons, which those experienced in this field are well aware of. Having worked remotely for almost two years, I’ve gained some valuable insights and lessons that I want to share in this blog post. I believe these insights could be helpful to others, especially as more people are considering remote work after the Covid era.
 
+<!-- more -->
+
 ### Trust - The Currency of Success in Remote Work
 
 It is said (source: “So Good They Can’t Ignore You” by Cal Newport) that there are three traits that characterize work done with passion: creativity, impact, and control.
@@ -60,17 +62,17 @@ You want to leave your messages in a state where your colleagues can quickly act
 Let me provide a few examples:
 
 > You are blocked by an error introduced by your colleague’s pull request. You currently can’t fix it, so you want to give her a heads-up that her diff broke the functionality. What should you do?
-> 
+>
 > **Bad**: Leave an imprecise, sloppy message like, \*“Hey, X, have you seen this before: \[insert the last line from the stack trace\]? Please help!”
-> 
+>
 > **Good**: Leave a detailed description of the problem, including the full stack trace (not just the last few lines), along with an explanation of what you were trying to achieve, what your environment is, and how to reproduce the problem.
 
 or
 
 > You have a proposal for a feature or a design solution that you want to share with the team.
-> 
+>
 > **Bad**: Leave a convoluted, unstructured, hasty explanation that, ironically, raises more questions.
-> 
+>
 > **Good**: Provide a short, high-level description of what you would like to implement and include a piece of pseudocode, a flowchart, or a diagram. It doesn’t matter whether you use a formal language like UML or any other visual representation. The key is to efficiently compress your ideas into a format that will enable your colleagues to accurately reconstruct your mental model.
 
 Yes, following this advice may take an extra 10 minutes of your time, but it will save you twice that time by avoiding back-and-forth exchanges with your team. It will also provide nicely documented material for future reference and show that you are a good communicator who is mindful of the time of your teammates. Remember: slow is smooth, and smooth is fast.

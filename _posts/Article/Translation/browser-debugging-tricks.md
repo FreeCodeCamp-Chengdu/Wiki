@@ -8,6 +8,8 @@ reviewer: ""
 
 A list of useful, not-obvious hacks to get the most out of your browser’s[1](#user-content-fn-1) debugger. Assumes an intermediate-level-or-higher understanding of the developer tools.
 
+<!-- more -->
+
 ## [Advanced Conditional Breakpoints](#advanced-conditional-breakpoints)
 
 By using expressions that have side effects in places you wouldn’t expect, we can squeeze more functionality out of basic features like conditional breakpoints.
@@ -121,34 +123,26 @@ Use a global boolean to gate one or more conditional breakpoints:
 Then programmatically toggle the boolean, e.g.
 
 -   manually, from the console
-    
-    \[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-    
+
     ```javascript
-    1window.enableBreakpoints = true;
+    window.enableBreakpoints = true;
     ```
-    
-    \[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-    
+
     ```javascript
-    1window.enableBreakpoints = true;
+    window.enableBreakpoints = true;
     ```
-    
+
 -   from other breakpoints ![Boolean gate - enable from other breakpoint](/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-gated-enable-from-breakpoint.1c568b6e.png&w=1920&q=75)
 -   from a timer on the console
-    
-    \[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-    
+
     ```javascript
-    1setTimeout(() => (window.enableBreakpoints = true), 5000);
+    setTimeout(() => (window.enableBreakpoints = true), 5000);
     ```
-    
-    \[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-    
+
     ```javascript
-    1setTimeout(() => (window.enableBreakpoints = true), 5000);
+    setTimeout(() => (window.enableBreakpoints = true), 5000);
     ```
-    
+
 -   etc
 
 ## [monitor() class Calls](#monitor-class-calls)
@@ -157,41 +151,31 @@ Then programmatically toggle the boolean, e.g.
 
 You can use Chrome’s `monitor` command line method to easily trace all calls to class methods. E.g. given a class `Dog`
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1class Dog {2  bark(count) {3    /* ... */4  }5}
+class Dog {2  bark(count) {3    /* ... */4  }5}
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1class Dog {2  bark(count) {3    /* ... */4  }5}
+class Dog {2  bark(count) {3    /* ... */4  }5}
 ```
 
 If we want to know all calls made to all instances of `Dog`, paste this into the command line:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1var p = Dog.prototype;2Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
+var p = Dog.prototype;
+Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1var p = Dog.prototype;2Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
+var p = Dog.prototype;
+Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 ```
 
 and you’ll get output in the console:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) }
-
 ```
 > function bark called with arguments: 2
 ```
-
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) }
 
 ```
 > function bark called with arguments: 2
@@ -205,16 +189,14 @@ You can use `debug` instead of `monitor` if you want to pause execution on any m
 
 If you don’t know the class but you have an instance:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1var p = instance.constructor.prototype;2Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
+var p = instance.constructor.prototype;
+Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1var p = instance.constructor.prototype;2Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
+var p = instance.constructor.prototype;
+Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 ```
 
 Useful when you’d like to write a function that does this for any instance of any class (instead of just `Dog`)
@@ -223,30 +205,28 @@ Useful when you’d like to write a function that does this for any instance of 
 
 Before calling the function you want to debug in the console, call `debugger`. E.g. given:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1function fn() {2  /* ... */3}
+function fn() {
+    /* ... */
+}
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1function fn() {2  /* ... */3}
+function fn() {
+    /* ... */
+}
 ```
 
 From your console:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) }
-
+```js
+debugger;
+fn(1);
 ```
-> debugger; fn(1);
-```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) }
-
-```
-> debugger; fn(1);
+```js
+debugger;
+fn(1);
 ```
 
 And then “Step into next function call” to debug the implementation of `fn`.
@@ -259,32 +239,38 @@ In Chrome you can also optionally call `debug(fn)` on the command line and the d
 
 To pause execution before a single-page application modifies the URL (i.e. some routing event happens):
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1const dbg = () => {2  debugger;3};4history.pushState = dbg;5history.replaceState = dbg;6window.onhashchange = dbg;7window.onpopstate = dbg;
+const dbg = () => {
+    debugger;
+};
+history.pushState = dbg;
+history.replaceState = dbg;
+window.onhashchange = dbg;
+window.onpopstate = dbg;
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1const dbg = () => {2  debugger;3};4history.pushState = dbg;5history.replaceState = dbg;6window.onhashchange = dbg;7window.onpopstate = dbg;
+const dbg = () => {
+    debugger;
+};
+history.pushState = dbg;
+history.replaceState = dbg;
+window.onhashchange = dbg;
+window.onpopstate = dbg;
 ```
 
 Creating a version of `dbg` that pauses execution without breaking navigation is an exercise left up to the reader.
 
 Also, note that this doesn’t handle when code calls `window.location.replace/assign` directly because the page will immediately unload after the assignment, so there is nothing to debug. If you still want to see the source of these redirects (and debug your state at the time of redirect), in Chrome you can `debug` the relevant methods:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1debug(window.location.replace);2debug(window.location.assign);
+debug(window.location.replace);
+debug(window.location.assign);
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1debug(window.location.replace);2debug(window.location.assign);
+debug(window.location.replace);
+debug(window.location.assign);
 ```
 
 ## [Debugging Property Reads](#debugging-property-reads)
@@ -331,90 +317,104 @@ Useful when inspecting DOM that is dependent on specific cursor position, focus,
 
 To grab a copy of the DOM in its current state:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1copy(document.documentElement.outerHTML);
+copy(document.documentElement.outerHTML);
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1copy(document.documentElement.outerHTML);
+copy(document.documentElement.outerHTML);
 ```
 
 To record a snapshot of the DOM every second:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1doms = [];2setInterval(() => {3  const domStr = document.documentElement.outerHTML;4  doms.push(domStr);5}, 1000);
+doms = [];
+setInterval(() => {
+    const domStr = document.documentElement.outerHTML;
+    doms.push(domStr);
+}, 1000);
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1doms = [];2setInterval(() => {3  const domStr = document.documentElement.outerHTML;4  doms.push(domStr);5}, 1000);
+doms = [];
+setInterval(() => {
+    const domStr = document.documentElement.outerHTML;
+    doms.push(domStr);
+}, 1000);
 ```
 
 Or just dump it to the console:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1setInterval(() => {2  const domStr = document.documentElement.outerHTML;3  console.log("snapshotting DOM: ", domStr);4}, 1000);
+setInterval(() => {
+    const domStr = document.documentElement.outerHTML;
+    console.log("snapshotting DOM: ", domStr);
+}, 1000);
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1setInterval(() => {2  const domStr = document.documentElement.outerHTML;3  console.log("snapshotting DOM: ", domStr);4}, 1000);
+setInterval(() => {
+    const domStr = document.documentElement.outerHTML;
+    console.log("snapshotting DOM: ", domStr);
+}, 1000);
 ```
 
 ### [Monitor Focused Element](#monitor-focused-element)
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1(function () {2  let last = document.activeElement;3  setInterval(() => {4    if (document.activeElement !== last) {5      last = document.activeElement;6      console.log("Focus changed to: ", last);7    }8  }, 100);9})();
+(function () {
+    let last = document.activeElement;
+    setInterval(() => {
+        if (document.activeElement !== last) {
+            last = document.activeElement;
+            console.log("Focus changed to: ", last);
+        }
+    }, 100);
+})();
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1(function () {2  let last = document.activeElement;3  setInterval(() => {4    if (document.activeElement !== last) {5      last = document.activeElement;6      console.log("Focus changed to: ", last);7    }8  }, 100);9})();
+(function () {
+    let last = document.activeElement;
+    setInterval(() => {
+        if (document.activeElement !== last) {
+            last = document.activeElement;
+            console.log("Focus changed to: ", last);
+        }
+    }, 100);
+})();
 ```
 
 ![Monitor focused element](/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmonitor-focus.b9692b99.gif&w=1920&q=75)
 
 ### [Find Bold Elements](#find-bold-elements)
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1const isBold = (e) => {2  let w = window.getComputedStyle(e).fontWeight;3  return w === "bold" || w === "700";4};5Array.from(document.querySelectorAll("*")).filter(isBold);
+const isBold = (e) => {
+    let w = window.getComputedStyle(e).fontWeight;
+    return w === "bold" || w === "700";
+};
+Array.from(document.querySelectorAll("*")).filter(isBold);
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1const isBold = (e) => {2  let w = window.getComputedStyle(e).fontWeight;3  return w === "bold" || w === "700";4};5Array.from(document.querySelectorAll("*")).filter(isBold);
+const isBold = (e) => {
+    let w = window.getComputedStyle(e).fontWeight;
+    return w === "bold" || w === "700";
+};
+Array.from(document.querySelectorAll("*")).filter(isBold);
 ```
 
 #### [Just Descendants](#just-descendants)
 
 Or just descendants of the element currently selected in the inspector:
 
-\[data-bright-mode="dark"\] { display: block } :root.light \[data-bright-mode="dark"\] { display: none } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1Array.from($0.querySelectorAll("*")).filter(isBold);
+Array.from($0.querySelectorAll("*")).filter(isBold);
 ```
 
-\[data-bright-mode="light"\] { display: none } :root.light \[data-bright-mode="light"\] { display: block } \[data-bright-theme\] ::selection { background-color: var(--selection-background) } \[data-bright-theme\] \[data-bright-ln\] { color: var(--line-number-color); margin-right: 1.5ch; display: inline-block; text-align: right; user-select: none; }
-
 ```javascript
-1Array.from($0.querySelectorAll("*")).filter(isBold);
+Array.from($0.querySelectorAll("*")).filter(isBold);
 ```
 
 ### [Reference Currently Selected Element](#reference-currently-selected-element)

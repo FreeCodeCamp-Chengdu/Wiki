@@ -6,41 +6,11 @@ translator: ""
 reviewer: ""
 ---
 
-[
-
-Quick Start
-
-](quickstart.html)[
-
-Tutorial
-
-](tutorial.html)[
-
-Tools & Languages
-
-](tools.html)[
-
-Examples
-
-](examples.html)[
-
-Reference
-
-](refflavors.html)[
-
-Book Reviews
-
-](books.html)
-
-<table class="side" cellspacing="0" cellpadding="4"><tbody><tr><td class="sideheader">Welcome</td></tr><tr><td><a href="index.html" target="_top">Introduction</a></td></tr><tr><td><a href="quickstart.html" target="_top">Regular Expressions Quick Start</a></td></tr><tr><td><a href="tutorial.html" target="_top">Regular Expressions Tutorial</a></td></tr><tr><td><a href="replacetutorial.html" target="_top">Replacement Strings Tutorial</a></td></tr><tr><td><a href="tools.html" target="_top">Applications and Languages</a></td></tr><tr><td><a href="examples.html" target="_top">Regular Expressions Examples</a></td></tr><tr><td><a href="refflavors.html" target="_top">Regular Expressions Reference</a></td></tr><tr><td><a href="refreplace.html" target="_top">Replacement Strings Reference</a></td></tr><tr><td><a href="books.html" target="_top">Book Reviews</a></td></tr><tr><td><a href="print.html" target="_top">Printable PDF</a></td></tr><tr><td><a href="about.html" target="_top">About This Site</a></td></tr><tr><td><a href="updates.html" target="_top">RSS Feed &amp; Blog</a></td></tr></tbody></table>
-
-[![RegexBuddy—Better than a regular expression tutorial!](/ads/728/rxbtutorial100.png)](https://www.regexbuddy.com/create.html)
-
-# Regular Expressions Quick Start
-
 This quick start gets you up to speed quickly with regular expressions. Obviously, this brief introduction cannot explain everything there is to know about regular expressions. For detailed information, consult the [regular expressions tutorial](tutorial.html). Each topic in the quick start corresponds with a topic in the tutorial, so you can easily go back and forth between the two.
 
 Many applications and programming languages have their own implementation of regular expressions, often with slight and sometimes with significant differences from other implementations. When two applications use a different implementation of regular expressions, we say that they use different “regular expression flavors”. This quick start explains the syntax supported by the most popular regular expression flavors.
+
+<!-- more -->
 
 ## Text Patterns and Matches
 

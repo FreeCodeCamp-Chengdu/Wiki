@@ -7,13 +7,11 @@ translator: ""
 reviewer: ""
 ---
 
-[Artificial Intelligence](https://serpapi.com/blog/tag/artificial-intelligence/)
-
-# Web scraping experiment with AI (Parsing HTML with GPT-4)
-
 Parsing data from web scraping results can often be cumbersome. But what if there's a way to turn this painstaking process into a breeze? Let's experiment with new AI model by OpenAI
 
 -   [![Hilman Ramadhan](/blog/content/images/size/w100/2023/10/profile-picture.png)](/blog/author/hilman/)
+
+<!-- more -->
 
 #### [Hilman Ramadhan](/blog/author/hilman/)
 
@@ -66,7 +64,7 @@ If you don't want to read the whole post, here is the summary of the pros and co
 
 ## Tools and Preparation
 
--   Since we're going to use OpenAI's API, make sure to register and have your api\_key first. You might need your OpenAI org ID as well.
+-   Since we're going to use OpenAI's API, make sure to register and have your api_key first. You might need your OpenAI org ID as well.
 -   I'm using Python for this experiment, but feel free to use any programming language you want.
 -   Since we want to return a consistent JSON format, we'll be using [new function calling feature from OpenAI](https://platform.openai.com/docs/guides/function-calling), where we can define the response's keys and values with a nice format.
 -   We're going to use this model `gpt-4-1106-preview .`
@@ -85,7 +83,6 @@ I'll also install `requests` package to get the raw HTML
 pip install requests
 ```
 
-  
 Here's what our code base will look like
 
 ```python
@@ -164,7 +161,7 @@ for book in data:
 
 -   We're using the `ChatCompletion` API from OpenAI
 -   Use model: gpt-4-1106-preview
--   Using the prompt "You are a master at scraping and parsing raw HTML" and passing the raw\_html to be analyzed.
+-   Using the prompt "You are a master at scraping and parsing raw HTML" and passing the raw_html to be analyzed.
 -   At `tools` parameter, we're defining our imaginary function to parse the raw data. Don't forget to adjust the properties of parameters to return the exact format you want.
 
 **Here i**s **the result**  
@@ -309,7 +306,7 @@ As you can see, each of the items includes many information. We'll scrape:
 \- Additional service  
 \- Thumbnail image
 
-> **Warning!** It turns out, Google Maps load this data via Javascript, so I have to change my method to get the raw\_html from using `requests` to `selenium` for python.
+> **Warning!** It turns out, Google Maps load this data via Javascript, so I have to change my method to get the raw_html from using `requests` to `selenium` for python.
 
 **Code**
 
@@ -408,7 +405,7 @@ print(data)
 
 local maps API scraping with AI results
 
-It turns out perfect! I'm able to get the exact data for each of this local\_results.
+It turns out perfect! I'm able to get the exact data for each of this local_results.
 
 **Time to finish with Selenium**: ~47s  
 **Time to finish (exclude Selenium time)**: ~34s
@@ -422,7 +419,6 @@ _Let's see how to_ _target multiple data points with multiple functions calling 
 Here's the code
 
 ```python
-
 completion = client.chat.completions.create(
   model="gpt-4-1106-preview",
   messages=[
@@ -511,8 +507,8 @@ for result in people_also_ask:
 
 **Code Explanation:**
 
--   Adjust the prompt to include specific information on what to scrape: "You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people\_also\_ask section from the Google search result page."
--   Adding and separating functions, one for organic results_,_ and one for people-also-ask section.
+-   Adjust the prompt to include specific information on what to scrape: "You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people_also_ask section from the Google search result page."
+-   Adding and separating functions, one for organic results*,* and one for people-also-ask section.
 -   Testing the output in two different formats.
 
 Here's the result:
@@ -522,10 +518,10 @@ Here's the result:
 Scraping multiple data points with AI
 
 **Success:**  
-I'm able to scrape both the organic\_results and people\_also\_ask separately. Kudos to OpenAI!
+I'm able to scrape both the organic_results and people_also_ask separately. Kudos to OpenAI!
 
 **Problem:**  
-I'm not able to scrape the answer and original URL for the people\_also\_ask section. _The reason is_ that this information is hidden somewhere in the script tag. We could try this by providing that specific part of the script content, but I would consider it `cheating` for this experiment, as we want to pass the raw HTML without pinpointing or giving a hint.
+I'm not able to scrape the answer and original URL for the people*also_ask section. \_The reason is* that this information is hidden somewhere in the script tag. We could try this by providing that specific part of the script content, but I would consider it `cheating` for this experiment, as we want to pass the raw HTML without pinpointing or giving a hint.
 
 **Time to finish**: ~30s
 
@@ -538,11 +534,11 @@ If you want to learn how to scrape these data cheaper, faster, and more accurate
 
 Here's the timetable comparison using OpenAI's new GPT-4 model for web scraping VS [SerpApi](https://serpapi.com/?ref=web-scraping-with-ai-experiment-blog) . We're comparing with the 'normal speed'; SerpApi has faster (roughly twice as fast) when using [Ludicrous Speed](https://serpapi.com/ludicrous-speed).
 
-| Subject | gpt-4-1106-preview | SerpApi |
-| --- | --- | --- |
-| Organic results | 15s | 2.4s |
-| Organic results with Related questions | 30s | 2.4s |
-| Maps local results | 47s | 2.7s |
+| Subject                                | gpt-4-1106-preview | SerpApi |
+| -------------------------------------- | ------------------ | ------- |
+| Organic results                        | 15s                | 2.4s    |
+| Organic results with Related questions | 30s                | 2.4s    |
+| Maps local results                     | 47s                | 2.7s    |
 
 ## Conclusion
 

@@ -6,104 +6,18 @@ translator: ""
 reviewer: ""
 ---
 
-Share this post
-
-![](https://substackcdn.com/image/fetch/w_120,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd2b714b0-c85c-4b90-90d5-c650138efccc_759x517.png)
-
-#### The right way to install Python on a Mac
-
-marvelousmlops.substack.com
-
-Copy link
-
-Facebook
-
-Email
-
-Note
-
-Other
-
-![](https://substackcdn.com/image/fetch/w_128,h_128,c_fill,f_auto,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe931dbd6-0894-4f67-8bab-ebcc02e3072e_1286x830.png)![](https://substackcdn.com/image/fetch/w_48,h_48,c_fill,f_auto,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F52063997-b4b8-467e-9412-6aac8f390211_830x830.png)
-
-#### Discover more from Marvelous MLOps Substack
-
-Serving you expertise MLOps content
-
-Over 1,000 subscribers
-
-Subscribe
-
-Continue reading
-
-Sign in
-
-# The right way to install Python on a Mac
-
-### Carefree and flexible Python use awaits you!
-
-[![](https://substackcdn.com/image/fetch/w_80,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa40acb35-bd6b-42f7-ba88-03b69d19860a_512x512.jpeg)](https://substack.com/profile/153357949-raphael-hoogvliets)
-
-[Raphaël Hoogvliets](https://substack.com/@hoogvliets)
-
-Nov 4, 2023
-
-7
-
-Share this post
-
-![](https://substackcdn.com/image/fetch/w_120,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd2b714b0-c85c-4b90-90d5-c650138efccc_759x517.png)
-
-#### The right way to install Python on a Mac
-
-marvelousmlops.substack.com
-
-Copy link
-
-Facebook
-
-Email
-
-Note
-
-Other
-
-[](https://marvelousmlops.substack.com/p/the-right-way-to-install-python-on/comments)
-
-[
-
-Share
-
-](javascript:void(0))
-
-I saw a discussion a while ago on twitter in reply to a question by Chris Albon.
-
-[
-
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdb4d747c-77f9-49d4-b230-9cfe2ba110ba_526x184.png)
-
-
-
-](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdb4d747c-77f9-49d4-b230-9cfe2ba110ba_526x184.png)
-
 The question got a whopping 521 replies. What a hot topic! I read through a lot of them. I mean, hey, it’s summer and the sun is shining. What else is an ML Engineer to do? The answers were pretty wild I thought, here are a few examples:
 
 -   “Use miniconda”
-    
 -   “Docker 😛”
-    
 -   “There’s no right way, it will get f\*\*\*ed beyond repair somewhere down the road regardless”
-    
 -   “The right way is to don’t and ssh to a remote server with Linux and GPUs”
-    
 -   And lots and lots of crazy stories of people who just use Python until it stops working. Some of whom even have to reinstall their entire MacBook when it breaks. Yikes!
-    
 -   One guy even had to get a new life and identity, with that vacuum seller guy from Breaking Bad, after breaking his Python.
-    
 
 So what is the right way to install Python on a MacBook? Luckily I saw the right answer pop up quite a few times in the replies as well.
 
-Subscribe
+<!-- more -->
 
 ### Pyenv + pyenv-virtualenv
 
@@ -114,8 +28,6 @@ Another advantage of pyenv is its user-centric design. Traditionally, installing
 [
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F09bf2c99-a91a-47fd-bac7-72727414e40d_1280x720.png)
-
-
 
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F09bf2c99-a91a-47fd-bac7-72727414e40d_1280x720.png)
 
@@ -233,8 +145,6 @@ Just install Jupyter Lab in each environment, launch it from the command line us
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff4f31977-6d33-49c4-ad39-4da4409b31ac_556x423.png)
 
-
-
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Ff4f31977-6d33-49c4-ad39-4da4409b31ac_556x423.png)
 
 Beautiful! Want to be smart and efficient and use one environment across multiple projects? Don’t do it.
@@ -244,8 +154,6 @@ You might not want to re-download all packages for each separate environment, be
 [
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0bbd52ba-9801-4e53-a0c1-644220875f34_1200x630.png)
-
-
 
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0bbd52ba-9801-4e53-a0c1-644220875f34_1200x630.png)
 
@@ -259,8 +167,6 @@ Click your python version in the bottom navigation menu, below your tabs even (s
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4c3a638b-0539-42e1-add9-a727ab9df9df_759x294.png)
 
-
-
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4c3a638b-0539-42e1-add9-a727ab9df9df_759x294.png)
 
 Now choose Interpreter Settings…
@@ -268,8 +174,6 @@ Now choose Interpreter Settings…
 [
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F02fe5f9f-cdb5-420d-866b-bb2dcd55074a_273x129.png)
-
-
 
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F02fe5f9f-cdb5-420d-866b-bb2dcd55074a_273x129.png)
 
@@ -279,8 +183,6 @@ In the following menu click the settings wheel behind Python Interpreter and cho
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd2b714b0-c85c-4b90-90d5-c650138efccc_759x517.png)
 
-
-
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd2b714b0-c85c-4b90-90d5-c650138efccc_759x517.png)
 
 Now click the … button behind Existing environment
@@ -288,8 +190,6 @@ Now click the … button behind Existing environment
 [
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F18d5e4a4-a424-4efe-98ff-5e7b2ab25030_759x498.png)
-
-
 
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F18d5e4a4-a424-4efe-98ff-5e7b2ab25030_759x498.png)
 
@@ -299,8 +199,6 @@ Here it gets interesting, so many pythons to choose from!!! Which one are you pi
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb909c8d2-7c86-4e9a-8915-a9cba5755925_759x1139.png)
 
-
-
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb909c8d2-7c86-4e9a-8915-a9cba5755925_759x1139.png)
 
 In the file browser that is called \`Select Python Interpreter\` navigate to **\`./Users/<username>/.pyenv/versions/<myproject>/bin/python\` …**
@@ -308,8 +206,6 @@ In the file browser that is called \`Select Python Interpreter\` navigate to **\
 [
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F617b1fe2-1526-4594-8210-58e5312a2c21_447x481.png)
-
-
 
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F617b1fe2-1526-4594-8210-58e5312a2c21_447x481.png)
 
@@ -326,8 +222,6 @@ So in the example below it’s **conversion-em-py**
 [
 
 ![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa6a4c83e-5d8b-462f-89d1-428d422be5ff_759x206.png)
-
-
 
 ](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa6a4c83e-5d8b-462f-89d1-428d422be5ff_759x206.png)
 

@@ -14,12 +14,16 @@ None of these things feel super surprising in retrospect, but I hadn’t thought
 
 The facts are:
 
--   [the “index”, “staging area” and “–cached” are all the same thing](#the-index-staging-area-and-cached-are-all-the-same-thing)
--   [the stash is a bunch of commits](#the-stash-is-a-bunch-of-commits)
--   [not all references are branches or tags](#not-all-references-are-branches-or-tags)
--   [merge commits aren’t empty](#merge-commits-aren-t-empty)
+- [Some miscellaneous git facts](#some-miscellaneous-git-facts)
+    - [the “index”, “staging area” and “–cached” are all the same thing](#the-index-staging-area-and-cached-are-all-the-same-thing)
+    - [the stash is a bunch of commits](#the-stash-is-a-bunch-of-commits)
+    - [not all references are branches or tags](#not-all-references-are-branches-or-tags)
+    - [merge commits aren’t empty](#merge-commits-arent-empty)
+    - [that’s all!](#thats-all)
 
 Let’s talk about them!
+
+<!-- more -->
 
 ### the “index”, “staging area” and “–cached” are all the same thing
 
@@ -160,10 +164,6 @@ It looks like this is trying to tell me that one branch added `x`, another branc
 
 I’ll keep this post short, maybe I’ll write another blog post with more git facts as I learn them.
 
-#mc\_embed\_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; display: inline;} #mc\_embed\_signup { display: inline; } #mc\_embed\_signup input.button { background: #ff5e00; display: inline; color: white; padding: 6px 12px; }
-
-.form-inline { display:flex; flex-flow: row wrap; justify-content: center; } .form-inline input,span { padding: 10px; } .form-inline input { display:inline; max-width:30%; margin: 0 10px 0 0; background-color: #fff; border: 1px solid #ddd; border-radius: 5px; padding: 10px; } button { background-color: #f50; box-shadow: none; border: 0; border-radius: 5px; color: white; padding: 5px 10px; } @media (max-width: 800px) { .form-inline input { margin: 10px 0; max-width:100% !important; } .form-inline { flex-direction: column; align-items: stretch; } }
-
-Want a weekly digest of this blog?  Subscribe
+Want a weekly digest of this blog? Subscribe
 
 [New talk: Making Hard Things Easy](https://jvns.ca/blog/2023/10/06/new-talk--making-hard-things-easy/ "Previous Post: New talk: Making Hard Things Easy")

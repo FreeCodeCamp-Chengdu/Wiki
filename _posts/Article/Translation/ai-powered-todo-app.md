@@ -7,8 +7,6 @@ translator: ""
 reviewer: ""
 ---
 
-# Building AI-powered TODO app
-
 _Demo of the AI TODO app [https://ivan-tolkunov--surukoto-run.modal.run/](https://ivan-tolkunov--surukoto-run.modal.run/) (warning: the app could take up to 30s to boot up). All data is reset after 5 minuts of inactivity. Try telling it: “add every color of the rainbow”, then “mark all todos mentioning colors between green and violet as done” and “clean up completed todos”_
 
 ![](/images/surukoto.jpg)
@@ -16,6 +14,8 @@ _Demo of the AI TODO app [https://ivan-tolkunov--surukoto-run.modal.run/](https:
 Everyone is building TODO apps to get started with a programming language or technology. I asked myself a question: what would a TODO app look like in the age of AI?
 
 So I came up with an idea to build a TODO app you can simply speak to to give instructions. I started with a simple use-case of telling the app to “add milk to the shopping list”. But then I realized that using modern LLMs, I could also make the app check-off TODO items or remove them based on the user commands. The app turned out to be really fun to use!
+
+<!-- more -->
 
 Under the hood, it’s a simple Django web app. The model is very simple:
 
@@ -54,29 +54,29 @@ const recordButtonText = document.getElementById("record-text");
 let recorder = null;
 
 recordButton.onclick = async () => {
-  if (recorder) {
-    recorder.stop();
-    recorder = null;
-    return;
-  }
+    if (recorder) {
+        recorder.stop();
+        recorder = null;
+        return;
+    }
 
-  const chunks = [];
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const chunks = [];
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-  recorder = new MediaRecorder(stream);
-  recorder.ondataavailable = (e) => chunks.push(e.data);
-  recorder.onstop = async () => {
-    const blob = new Blob(chunks, { type: "audio/webm;" });
-    const formData = new FormData();
-    formData.append("audio_file", blob, "voice-command.webm");
-    const response = await fetch("/todos/process-voice-command/", {
-      method: "POST",
-      body: formData,
-    });
-    window.location.reload();
-  };
+    recorder = new MediaRecorder(stream);
+    recorder.ondataavailable = (e) => chunks.push(e.data);
+    recorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: "audio/webm;" });
+        const formData = new FormData();
+        formData.append("audio_file", blob, "voice-command.webm");
+        const response = await fetch("/todos/process-voice-command/", {
+            method: "POST",
+            body: formData,
+        });
+        window.location.reload();
+    };
 
-  recorder.start();
+    recorder.start();
 };
 ```
 

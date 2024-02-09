@@ -6,37 +6,11 @@ translator: ""
 reviewer: ""
 ---
 
-# Build an AI Tool to Summarize Books Instantly
-
 ## Get the gist of any book without reading it cover to cover.
 
-[
+[![Alessandro Amenta](https://miro.medium.com/v2/resize:fill:88:88/1*eJmL2XsmvUfWxRbTJrfHvQ.png)](https://medium.com/@alessandroamenta1?source=post_page-----828680c1ceb4--------------------------------)
 
-![Alessandro Amenta](https://miro.medium.com/v2/resize:fill:88:88/1*eJmL2XsmvUfWxRbTJrfHvQ.png)
-
-
-
-
-
-
-
-
-
-](https://medium.com/@alessandroamenta1?source=post_page-----828680c1ceb4--------------------------------)[
-
-![Level Up Coding](https://miro.medium.com/v2/resize:fill:48:48/1*5D9oYBd58pyjMkV_5-zXXQ.jpeg)
-
-
-
-
-
-
-
-
-
-
-
-](https://levelup.gitconnected.com/?source=post_page-----828680c1ceb4--------------------------------)
+[![Level Up Coding](https://miro.medium.com/v2/resize:fill:48:48/1*5D9oYBd58pyjMkV_5-zXXQ.jpeg)](https://levelup.gitconnected.com/?source=post_page-----828680c1ceb4--------------------------------)
 
 [Alessandro Amenta](https://medium.com/@alessandroamenta1?source=post_page-----828680c1ceb4--------------------------------)
 
@@ -46,23 +20,12 @@ reviewer: ""
 
 Published in
 
-[
-
-Level Up Coding
-
-](https://levelup.gitconnected.com/?source=post_page-----828680c1ceb4--------------------------------)
-
+[Level Up Coding](https://levelup.gitconnected.com/?source=post_page-----828680c1ceb4--------------------------------)
 ·
-
 4 min read
-
 ·
-
 4 days ago
-
-[
-
-](https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2F_%2Fvote%2Fgitconnected%2F828680c1ceb4&operation=register&redirect=https%3A%2F%2Flevelup.gitconnected.com%2Fbuild-an-ai-tool-to-summarize-books-instantly-828680c1ceb4&user=Alessandro+Amenta&userId=f39ff33c76d2&source=-----828680c1ceb4---------------------clap_footer-----------)
+[](https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2F_%2Fvote%2Fgitconnected%2F828680c1ceb4&operation=register&redirect=https%3A%2F%2Flevelup.gitconnected.com%2Fbuild-an-ai-tool-to-summarize-books-instantly-828680c1ceb4&user=Alessandro+Amenta&userId=f39ff33c76d2&source=-----828680c1ceb4---------------------clap_footer-----------)
 
 \--
 
@@ -70,15 +33,13 @@ Level Up Coding
 
 [](https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2F_%2Fbookmark%2Fp%2F828680c1ceb4&operation=register&redirect=https%3A%2F%2Flevelup.gitconnected.com%2Fbuild-an-ai-tool-to-summarize-books-instantly-828680c1ceb4&source=-----828680c1ceb4---------------------bookmark_footer-----------)
 
-Listen
-
-Share
-
 In this article, we’ll build a simple yet powerful book summarizer using Python, Langchain and OpenAI embeddings.
 
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*DFqc1P6PnOZ8S95puZqSEg.png)
 
 Generated with DALL·E 3.
+
+<!-- more -->
 
 # The Challenge
 
@@ -109,26 +70,26 @@ First, we need to read the book’s content. We’ll support PDF and EPUB format
 
 import os  
 import tempfile  
-from langchain.document\_loaders import PyPDFLoader, UnstructuredEPubLoader  
-  
-def load\_book(file\_obj, file\_extension):  
-    """Load the content of a book based on its file type."""  
-    text = ""  
-    with tempfile.NamedTemporaryFile(delete=False, suffix=file\_extension) as temp\_file:  
-        temp\_file.write(file\_obj.read())  
-        if file\_extension == ".pdf":  
-            loader = PyPDFLoader(temp\_file.name)  
-            pages = loader.load()  
-            text = "".join(page.page\_content for page in pages)  
-        elif file\_extension == ".epub":  
-            loader = UnstructuredEPubLoader(temp\_file.name)  
-            data = loader.load()  
-            text = "\\n".join(element.page\_content for element in data)  
-        else:  
-            raise ValueError(f"Unsupported file extension: {file\_extension}")  
-        os.remove(temp\_file.name)  
-    text = text.replace('\\t', ' ')  
-    return text
+from langchain.document_loaders import PyPDFLoader, UnstructuredEPubLoader
+
+def load_book(file_obj, file_extension):  
+ """Load the content of a book based on its file type."""  
+ text = ""  
+ with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as temp_file:  
+ temp_file.write(file_obj.read())  
+ if file_extension == ".pdf":  
+ loader = PyPDFLoader(temp_file.name)  
+ pages = loader.load()  
+ text = "".join(page.page_content for page in pages)  
+ elif file_extension == ".epub":  
+ loader = UnstructuredEPubLoader(temp_file.name)  
+ data = loader.load()  
+ text = "\\n".join(element.page_content for element in data)  
+ else:  
+ raise ValueError(f"Unsupported file extension: {file_extension}")  
+ os.remove(temp_file.name)  
+ text = text.replace('\\t', ' ')  
+ return text
 
 # Step 2: Split and Embed the Text
 
@@ -136,15 +97,15 @@ AI models have a token limit, which means they can’t process a whole book at o
 
 We’ll split the text into chunks and convert them into embeddings. Embeddings convert text into a compact numerical form quickly and with minimal computation, making the process both fast and cost-effective.
 
-from langchain.text\_splitter import RecursiveCharacterTextSplitter  
-from langchain.embeddings import OpenAIEmbeddings  
-  
-def split\_and\_embed(text, openai\_api\_key):  
-    text\_splitter = RecursiveCharacterTextSplitter(separators=\["\\n\\n", "\\n", "\\t"\], chunk\_size=10000, chunk\_overlap=3000)  
-    docs = text\_splitter.create\_documents(\[text\])  
-    embeddings = OpenAIEmbeddings(openai\_api\_key=openai\_api\_key)  
-    vectors = embeddings.embed\_documents(\[x.page\_content for x in docs\])  
-    return docs, vectors
+from langchain.text_splitter import RecursiveCharacterTextSplitter  
+from langchain.embeddings import OpenAIEmbeddings
+
+def split_and_embed(text, openai_api_key):  
+ text_splitter = RecursiveCharacterTextSplitter(separators=\["\\n\\n", "\\n", "\\t"\], chunk_size=10000, chunk_overlap=3000)  
+ docs = text_splitter.create_documents(\[text\])  
+ embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)  
+ vectors = embeddings.embed_documents(\[x.page_content for x in docs\])  
+ return docs, vectors
 
 # Step 3: Cluster the Embeddings
 
@@ -153,35 +114,35 @@ We use KMeans clustering to group similar chunks. In my version, as you can see 
 Here, after we’ve turned the whole book into chunks and then into embeddings. These embeddings are grouped based on their similarity. For each group, we pick the most representative embedding and map it back to its corresponding text chunk.
 
 from sklearn.cluster import KMeans  
-import numpy as np  
-  
-def cluster\_embeddings(vectors, num\_clusters):  
-    kmeans = KMeans(n\_clusters=num\_clusters, random\_state=42).fit(vectors)  
-    closest\_indices = \[np.argmin(np.linalg.norm(vectors - center, axis=1)) for center in kmeans.cluster\_centers\_\]  
-    return sorted(closest\_indices)
+import numpy as np
+
+def cluster_embeddings(vectors, num_clusters):  
+ kmeans = KMeans(n_clusters=num_clusters, random_state=42).fit(vectors)  
+ closest_indices = \[np.argmin(np.linalg.norm(vectors - center, axis=1)) for center in kmeans.cluster_centers\_\]  
+ return sorted(closest_indices)
 
 # Step 4: Summarize the Representative Chunks
 
 We’ll summarize only the selected chunks using GPT-3.5.
 
-from langchain.chains.summarize import load\_summarize\_chain  
-from langchain.prompts import PromptTemplate  
-  
-def summarize\_chunks(docs, selected\_indices, openai\_api\_key):  
-    llm3\_turbo = ChatOpenAI(temperature=0, openai\_api\_key=openai\_api\_key, max\_tokens=1000, model='gpt-3.5-turbo-16k')  
-    map\_prompt = """  
-    You are provided with a passage from a book. Your task is to produce a comprehensive summary of this passage. Ensure accuracy and avoid adding any interpretations or extra details not present in the original text. The summary should be at least three paragraphs long and fully capture the essence of the passage.  
-    \`\`\`{text}\`\`\`  
-    SUMMARY:  
-    """  
-    map\_prompt\_template = PromptTemplate(template=map\_prompt, input\_variables=\["text"\])  
-    selected\_docs = \[docs\[i\] for i in selected\_indices\]  
-    summary\_list = \[\]  
-  
-    for doc in selected\_docs:  
-        chunk\_summary = load\_summarize\_chain(llm=llm3\_turbo, chain\_type="stuff", prompt=map\_prompt\_template).run(\[doc\])  
-        summary\_list.append(chunk\_summary)  
-      
+from langchain.chains.summarize import load_summarize_chain  
+from langchain.prompts import PromptTemplate
+
+def summarize_chunks(docs, selected_indices, openai_api_key):  
+ llm3_turbo = ChatOpenAI(temperature=0, openai_api_key=openai_api_key, max_tokens=1000, model='gpt-3.5-turbo-16k')  
+ map_prompt = """  
+ You are provided with a passage from a book. Your task is to produce a comprehensive summary of this passage. Ensure accuracy and avoid adding any interpretations or extra details not present in the original text. The summary should be at least three paragraphs long and fully capture the essence of the passage.  
+ \`\`\`{text}\`\`\`  
+ SUMMARY:  
+ """  
+ map_prompt_template = PromptTemplate(template=map_prompt, input_variables=\["text"\])  
+ selected_docs = \[docs\[i\] for i in selected_indices\]  
+ summary_list = \[\]
+
+    for doc in selected\_docs:
+        chunk\_summary = load\_summarize\_chain(llm=llm3\_turbo, chain\_type="stuff", prompt=map\_prompt\_template).run(\[doc\])
+        summary\_list.append(chunk\_summary)
+
     return "\\n".join(summary\_list)
 
 # Step 5: Create the Final Summary
@@ -189,34 +150,34 @@ def summarize\_chunks(docs, selected\_indices, openai\_api\_key):
 We combine the individual summaries into one final, cohesive summary using GPT-4.
 
 from langchain.schema import Document  
-from langchain.chat\_models import ChatOpenAI  
-  
-def create\_final\_summary(summaries, openai\_api\_key):  
-    llm4 = ChatOpenAI(temperature=0, openai\_api\_key=openai\_api\_key, max\_tokens=3000, model='gpt-4', request\_timeout=120)  
-    combine\_prompt = """  
-    You are given a series of summarized sections from a book. Your task is to weave these summaries into a single, cohesive, and verbose summary. The reader should be able to understand the main events or points of the book from your summary. Ensure you retain the accuracy of the content and present it in a clear and engaging manner.  
-    \`\`\`{text}\`\`\`  
-    COHESIVE SUMMARY:  
-    """  
-    combine\_prompt\_template = PromptTemplate(template=combine\_prompt, input\_variables=\["text"\])  
-    reduce\_chain = load\_summarize\_chain(llm=llm4, chain\_type="stuff", prompt=combine\_prompt\_template)  
-    final\_summary = reduce\_chain.run(\[Document(page\_content=summaries)\])  
-    return final\_summary
+from langchain.chat_models import ChatOpenAI
+
+def create_final_summary(summaries, openai_api_key):  
+ llm4 = ChatOpenAI(temperature=0, openai_api_key=openai_api_key, max_tokens=3000, model='gpt-4', request_timeout=120)  
+ combine_prompt = """  
+ You are given a series of summarized sections from a book. Your task is to weave these summaries into a single, cohesive, and verbose summary. The reader should be able to understand the main events or points of the book from your summary. Ensure you retain the accuracy of the content and present it in a clear and engaging manner.  
+ \`\`\`{text}\`\`\`  
+ COHESIVE SUMMARY:  
+ """  
+ combine_prompt_template = PromptTemplate(template=combine_prompt, input_variables=\["text"\])  
+ reduce_chain = load_summarize_chain(llm=llm4, chain_type="stuff", prompt=combine_prompt_template)  
+ final_summary = reduce_chain.run(\[Document(page_content=summaries)\])  
+ return final_summary
 
 # Bringing It All Together
 
 Now, we combine all the steps into a single function that takes an uploaded file and generates a summary.
 
-\# ... (previous code for imports and functions)  
-  
-def generate\_summary(uploaded\_file, openai\_api\_key, num\_clusters=11, verbose=False):  
-    file\_extension = os.path.splitext(uploaded\_file.name)\[1\].lower()  
-    text = load\_book(uploaded\_file, file\_extension)  
-    docs, vectors = split\_and\_embed(text, openai\_api\_key)  
-    selected\_indices = cluster\_embeddings(vectors, num\_clusters)  
-    summaries = summarize\_chunks(docs, selected\_indices, openai\_api\_key)  
-    final\_summary = create\_final\_summary(summaries, openai\_api\_key)  
-    return final\_summary
+\# ... (previous code for imports and functions)
+
+def generate_summary(uploaded_file, openai_api_key, num_clusters=11, verbose=False):  
+ file_extension = os.path.splitext(uploaded_file.name)\[1\].lower()  
+ text = load_book(uploaded_file, file_extension)  
+ docs, vectors = split_and_embed(text, openai_api_key)  
+ selected_indices = cluster_embeddings(vectors, num_clusters)  
+ summaries = summarize_chunks(docs, selected_indices, openai_api_key)  
+ final_summary = create_final_summary(summaries, openai_api_key)  
+ return final_summary
 
 # Testing the Summarizer
 
@@ -224,12 +185,12 @@ Finally, we can test our summarizer with a book file.
 
 \# Testing the summarizer  
 if \_\_name\_\_ == '\_\_main\_\_':  
-    load\_dotenv()  
-    openai\_api\_key = os.getenv('OPENAI\_API\_KEY')  
-    book\_path = "path\_to\_your\_book.epub"  
-    with open(book\_path, 'rb') as uploaded\_file:  
-        summary = generate\_summary(uploaded\_file, openai\_api\_key, verbose=True)  
-        print(summary)
+ load_dotenv()  
+ openai_api_key = os.getenv('OPENAI_API_KEY')  
+ book_path = "path_to_your_book.epub"  
+ with open(book_path, 'rb') as uploaded_file:  
+ summary = generate_summary(uploaded_file, openai_api_key, verbose=True)  
+ print(summary)
 
 # Wrapping up
 

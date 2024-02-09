@@ -34,6 +34,8 @@ Published in [CloudBoost][6] · 5 min read · Jun 15, 2016
 
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*OtKvlJDJPjbSVM6o-yjL_Q.png)
 
+<!-- more -->
+
 总的来说，使用 _setState_ 有三种问题：
 
 ## 1. setState 是异步的
