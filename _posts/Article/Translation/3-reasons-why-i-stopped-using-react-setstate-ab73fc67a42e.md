@@ -24,17 +24,17 @@ Published in [CloudBoost][6] · 5 min read · Jun 15, 2016
 
 自几个月前，我已在所有我新写的 React 组件弃用 React 的 _setState_ 。别误会我，我没有弃用本地组件状态，我只是不再用 React 去管理它，并且令人愉快！
 
-Using _setState_ is tricky for beginners. Even experienced React programmers easily introduce subtle bugs when using React’s own state mechanism, like this:
+使用 _setState_ 对初学者来说很棘手。即使经验丰富的 React 程序员在使用 React 自有状态机制时，也很容易引入微妙的 bug，例如：
 
 ![](https://miro.medium.com/v2/resize:fit:640/1*v2qbGqdV8wM1G4ixs7woEw.gif)
 
-Bug introduced by forgetting that React state is asynchronous; the log is always one item behind
+忘记 React 状态是异步的而引入了 bug，日志输出总是在后面一项。
 
-The excellent Reacts [docs][9] sum up everything that could go wrong when using _setState_:
+这篇优秀的 React [文档][9]总结了错误使用 _setState_ 的各种情况：
 
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*OtKvlJDJPjbSVM6o-yjL_Q.png)
 
-To summarize, there are 3 issues when using _setState:_
+总的来说，使用 _setState_ 有三种问题：
 
 ## 1\. setState is asynchronous
 
