@@ -46,13 +46,13 @@ Published in [CloudBoost][6] · 5 min read · Jun 15, 2016
 
 **_编辑于 2018 年 1 月 25 日：_** [**_Dan Abramov_**][10] **_已经热心地写下一个广为人知而有力的_** [**_解释_**][11] **_，从设计的角度讲为什么 setState 是异步的。_**
 
-## 2\. setState causes unnecessary renders
+## 2. setState 引起没必要的渲染
 
-The second issue with _setState_ is that it always triggers a re-render. Often those re-renders are unnecessary. You can use the [_printWasted_][12] method from the React performance tools to find out when this happens. But roughly speaking there are several reasons why a re-render may be unnecessary:
+使用 _setState_ 的第二个问题是，它总会触发重渲染。通常这些重渲染是不必要的。你可以使用 React 性能工具中的 [_printWasted_][12] 方法来找出它什么时间发生。但粗略地讲，有几种原因是一次重渲染为什么可能是不必要的：
 
--   The new state is actually the same as the previous one. This can often be addressed by implementing _shouldComponentUpdate_. You may already be using a (pure render) library to solve this for you.
--   Sometimes the changed state is relevant for the rendering, but not under all circumstances. For example when some data is only conditionally visible.
--   Thirdly, as pointed out in Aria Buckles’ [talk at React Europe 2015][13], sometimes instance state is not relevant for the rendering at all! This is often householding state related to managing event listeners, timer ID’s etc.
+-   新状态实际上和之前的一模一样。这通常可以通过实现 _shouldComponentUpdate_ 来解决。你可能已经使用了一个（纯渲染）库来解决。
+-   有时改变的状态与渲染有关，但并不是所有情况都是。比如当有些数据只条件性可见。
+-   第三，正如 Aria Buckles [在 React Europe 2015 上的演讲][13]所指出的那样，有时候实例状态根本与渲染无关！这通常是与管理事件监听器、计时器 ID 等相关的家务状态。
 
 ## 3\. setState is not sufficient to capture all component state
 
