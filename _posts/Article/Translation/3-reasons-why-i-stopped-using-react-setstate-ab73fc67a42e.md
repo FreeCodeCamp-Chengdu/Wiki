@@ -54,15 +54,15 @@ Published in [CloudBoost][6] · 5 min read · Jun 15, 2016
 -   有时改变的状态与渲染有关，但并不是所有情况都是。比如当有些数据只条件性可见。
 -   第三，正如 Aria Buckles [在 React Europe 2015 上的演讲][13]所指出的那样，有时候实例状态根本与渲染无关！这通常是与管理事件监听器、计时器 ID 等相关的家务状态。
 
-## 3\. setState is not sufficient to capture all component state
+## 3. setState 无法捕获所有组件状态
 
-Following the last point above, not all component state should be stored and updated using _setState_. More complex components often have administration that is needed by lifecycle hooks to manage timers, network requests, events etc. Managing those with _setState_ not only causes unnecessary renders, but also causes related lifecycle hooks to be triggered again, leading to weird situations.
+接上面最后一点，不是所有组件状态都应该用 _setState_ 存储和更新。更多复杂组件通常有基于生命周期钩子的管理需求，去管理计时器、网络请求和事件等。用 _setState_ 管理这些不仅引起不必要的渲染，还会引起相关生命周期钩子被重新触发，引起奇怪的问题。
 
-# Managing local component state with MobX
+# 用 MobX 管理本地组件状态
 
-(Surprise, surprise) At [Mendix][14] we already rely on MobX to manage all our stores. However, we were still using React’s own state mechanism for local component state. Recently, we switched to managing local component state with MobX as well. That looks like this:
+（惊喜，惊喜）在 [Mendix][14]，我们已经依赖 MobX 管理我们所有的状态存储。然而，我们曾使用 React 自有状态机制来处理本地组件状态。最近，我们已经切换到用 MobX 管理本地组件状态。它看起来就像这样：
 
-For completeness sake:
+为了完整性的缘故：
 
 ![](https://miro.medium.com/v2/resize:fit:640/1*LPl8MGfkPyWGtRERQdw_3w.gif)
 
