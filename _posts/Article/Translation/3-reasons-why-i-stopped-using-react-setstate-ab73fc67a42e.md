@@ -66,30 +66,30 @@ Published in [CloudBoost][6] · 5 min read · Jun 15, 2016
 
 ![](https://miro.medium.com/v2/resize:fit:640/1*LPl8MGfkPyWGtRERQdw_3w.gif)
 
-No unexpected bugs when using a state mechanism that is synchronous
+当使用一个同步状态机制时，没有未预期的 bug。
 
-The above code snippet is not only more concise, MobX also addresses all of the setState related issues:
+上面的代码片段不但更简洁，MobX 也解决了所有 setState 相关问题：
 
-Changes to the state are immediately reflected in the local component state. This makes our logic simpler and code reuse easier. You don’t have to compensate for the fact that the state might not have been updated yet.
+对状态的改变被立即反应到本地组件状态，让我们的逻辑更简单、代码复用更容易。你不必找补“状态可能还没更新”的事实。
 
-MobX determines at runtime which observables are relevant for rendering. So observables that are temporarily irrelevant for the rendering, won’t cause a re-rendering. Until they are relevant again. For this reason, there are also no rendering penalties (or lifecycle issues) when marking fields as _@observable_ that are not relevant for rendering at all.
+MobX 在运行时确定哪些可观察量与渲染相关。所以，暂时与渲染无关的可观察量将不会触发重渲染，直到它们重新相关为止。因此，当把渲染无关的类属性变为 _@observable_时，也完全不存在渲染惩罚（或生命周期问题）。
 
-So renderable and non-renderable state is treated uniformly. In addition, state stored in our components now works the same as state stored in any of our stores. This makes it trivial to refactor components, and move local component state into a separate store or vice versa. Which is demonstrated in this [egghead][15] tutorial.
+所以，可渲染和不可渲染的状态都能被统一处理。同时，现在我们组件存储的状态和存在其它存储的状态工作方式一模一样。这让重构组件有些琐碎，并移动本地组件状态进一个独立存储，反之亦然。详见这个 [egghead][15] 教程的演示。
 
-> MobX effectively turns your components into small stores
+> MobX 高效地把你的组件转化为小型 store
 
-Furthermore, rookie mistakes like assigning values directly to the _state_ object cannot be made anymore when using observables for state. Oh, and don’t worry about implementing _shouldComponentUpdate_ or _PureRenderMixin,_ MobX already takes care of that as well. Finally, you might be wondering, what if I want to wait until _setState_ has finished? Well, you can still use the \_compentDidUpdate l\_ifecycle hook for that.
+此外，当为 state 应用 observable 时，不会再犯直接向 _state_ 对象赋值的菜鸟错误了。哦，不再操心实现 _shouldComponentUpdate_ 或 _PureRenderMixin_，MobX 已处理好这些。最后，你可能好奇，如果我想等到 _setState_ 完成呢？嗯，你仍可用 _compentDidUpdate_ 生命周期钩子来实现。
 
-## Sounds cool! How do I get started with MobX?
+## 听起来好酷！我如何开始使用 MobX？
 
-Pretty simple, follow the [10 minute interactive introduction][16] or watch the aforementioned video. You can simply take a single component from your code base, slap _@observer_ on it and introduce some _@observable_ properties. You don’t even have to replace your existing _setState_ calls, they continue to work while using MobX. Although, within a few minutes you might find them so convoluted that you will replace them anyway :). (Oh, and if you don’t like decorators, no worries, it works with [good ol’ ES5 as well][17]).
+非常简单，照着 [10 分钟交互介绍][16] 或观看前述视频。你可以简单地从你的代码库挑一个组件，把 _@observer_ 拍在上面，并引入一些 _@observable_ 属性。你甚至都不需要替换你现有的 _setState_ 调用，当使用 MobX 时它们依然可用。尽管不出几分钟你可能就会发现它们是如此复杂，无论如何你将会把它们换掉🙂。（哦，如果你不喜欢装饰器，不用担心，它也[适用于 ES5][17]）。
 
-## TL;DR:
+## 长话短说：
 
-I’ve stopped using React to manage local component state. I use MobX instead. Now React is truly “just the view” :). MobX now manages both local component state and state in stores. It is concise, synchronous, efficient and uniform. From experience, I’ve learned that MobX is even easier to explain to React beginners than React’s own _setState._ It keeps our components clean and simple.
+我已不再用 React 管理本地组件状态，我用 MobX 代替，现在 React 就真的成了“仅为视图”🙂。MobX 现在同时管理本地组件状态和 store 状态。它是简洁的、同步的、高效的和统一的。从经验来看，我发现 MobX 比 React 自有 _setState_ 更容易向 React 初学者解释，它让我们的组件干净而简单。
 
--   [JSBin][18] using _setState_ for state management
--   [JSBin][19] using _MobX observables_ for state management
+-   把 _setState_ 用于状态管理的 [JSBin][18]
+-   把 _MobX observables_ 用于状态管理的 [JSBin][19]
 
 [1]: https://blog.cloudboost.io/3-reasons-why-i-stopped-using-react-setstate-ab73fc67a42e
 [2]: https://medium.com/@mweststrate?source=post_page-----ab73fc67a42e--------------------------------
