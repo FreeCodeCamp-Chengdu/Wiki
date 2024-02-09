@@ -36,15 +36,15 @@ Published in [CloudBoost][6] · 5 min read · Jun 15, 2016
 
 总的来说，使用 _setState_ 有三种问题：
 
-## 1\. setState is asynchronous
+## 1. setState 是异步的
 
-Many devs don’t realize this initially, but setState is _asynchronous._ If you set some state, than take a look at it, you will still see the old state.This is the most tricky part of setState. setState calls don’t look asynchronous, and naively calling setState introduces very subtle bugs. The next gist demonstrates that nicely:
+很多开发者一开始没有意识到这一点，但 setState 是 _异步的_ 。如果你设置一些状态后再查看一下，你将仍看到旧状态。这是 setState 最棘手的部分。setState 调用看起来不像异步的，天真地调用 setState 会引入非常微妙的 bug。接下来的 gist 非常好地演示了这一点：
 
-At first glance this might look fine. Two event handlers and a utility function that fire the _onSelect_ event if provided. However, this _Select_ component has a bug that is nicely demonstrated in the GIF above. _onSelect_ is always fired with the previous value of _state.selection_, because _setState_ hasn’t done it’s job _yet_ when the _fireOnSelect_ helper is invoked. I think the least React could do here is rename the method to _scheduleState_ or make the callback required.
+猛地一看，这可能看起来还不错。两个事件处理器和一个工具函数在 _onSelect_ 存在时触发事件。然而，这个 _Select_ 组件有个 bug，在上面的 GIF 图中被很好地演示。 _onSelect_ 总是带着 _state.selection_ 旧值被触发，因为 _fireOnSelect_ 工具函数执行时，_setState_ _还_ 没做完他的工作。我认为此处 React 至少可以把这个方法改名为 _scheduleState_，或让回调参数变成必填。
 
-> This bug is easily fixed, the tricky part is realizing it’s there.
+> 这个 bug 很容易修复，最棘手的部分是意识到它在这儿。
 
-**_Edit 25–jan–2018:_** [**_Dan Abramov_**][10] **_has been so kind to write down an extensive an sound_** [**_explanation_**][11] **_why setState is asynchronous by design._**
+**_编辑于 2018 年 1 月 25 日：_** [**_Dan Abramov_**][10] **_已经热心地写下一个广为人知而有力的_** [**_解释_**][11] **_，从设计的角度讲为什么 setState 是异步的。_**
 
 ## 2\. setState causes unnecessary renders
 
