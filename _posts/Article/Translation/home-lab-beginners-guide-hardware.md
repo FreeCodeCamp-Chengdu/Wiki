@@ -253,17 +253,17 @@ _**更新：** AMD 提高了标准。我对 M715q 的 CPU 性能印象最深。�
 ## 总结和结论
 
 ![homelab](https://static.linuxblog.io/wp-content/uploads/2020/02/homelab-868x376.jpg "homelab")  
-_[Image][82]: 您的设置就是您的设置。传统的、定制的，随你喜欢！_
+_[图片][82]: 您的设置就是您的设置。传统的、定制的，随你喜欢！_
 
 在撰写本指南时，我尽力传达我的热情、想法和整个选择过程中的考虑因素。在建造家庭实验室时，找到自己的激情非常重要。你将用它来做什么？它将如何造福于你和他人？
 
 如果你有计划，如果你的实验室是你乐于学习、失败和成功的地方，那么它就会以这样或那样的方式为自己带来回报。尽管如此，还是要注意耗电量！你不想最终...... _房贷 1100 美元，电费 1200 美元，走进家庭实验室的感觉......不是无价的_。
 
-计划时要留有扩展余地，可以从小处着手。您不必从机架、机柜、接线板和所有其他设备开始。先把脚浸湿，更换 ISP 调制解调器，然后再从那里开始建设。避免贸然决定硬件，而是先做做准备。然后，在**[新社区论坛][83]**上发布一两个问题，从其他技术人员和系统管理员那里获得宝贵的反馈意见。你会发现，你研究得越多，就会发现更多的方法，让事情变得恰到好处或大错特错。更重要的是，要玩得开心！与你的配偶、同事、孩子以及街对面那位五年后仍然只会挥手的邻居分享你的家庭实验室目标。
+计划时要留有扩展余地，可以从小处着手。您不必从机架、机柜、接线板和所有其他设备开始。先把脚浸湿，更换 ISP 调制解调器，然后再从那里开始建设。避免贸然决定硬件，而是先做做准备。然后，在 **[新社区论坛][83]** 上发布一两个问题，从其他技术人员和系统管理员那里获得宝贵的反馈意见。你会发现，你研究得越多，就会发现更多的方法，让事情变得恰到好处或大错特错。更重要的是，要玩得开心！与你的配偶、同事、孩子以及街对面那位五年后仍然只会挥手的邻居分享你的家庭实验室目标。
 
 我希望这篇文章能给您带来帮助和启发，并开启我们之间的对话。请随时 [联系我][84]。我喜欢聆听、支持和向你们学习！
 
-**_更新 1 – March 10th, 2020:_**
+**_更新 1 – 2020.3.10:_**
 
 到今天为止，我已经基本完成了新家庭实验室的安装，现在它已经完全可以正常使用了。我对购买的所有物品都很满意。在这次更新中，我在文章中添加了一些亮点、技巧和发现，并用大写字母标注在每个硬件项目下面。
 
@@ -274,11 +274,11 @@ _[Image][82]: 您的设置就是您的设置。传统的、定制的，随你喜
 ![homelab update March 2020](https://static.linuxblog.io/wp-content/uploads/2020/02/homelab_update-868x670.jpg "homelab update March 2020")  
 _我的家庭实验室，正在建设中（以下列出了所有图片）_
 
-_**更新 2 – March 25th, 2020: 我会尽快跟进细节和反馈。以下是最新状态照片:**_
+_**更新 2 – 2020.3.25: 我会尽快跟进细节和反馈。以下是最新状态照片:**_
 
 ![homelab update 2](https://static.linuxblog.io/wp-content/uploads/2020/03/homelab_update2-868x868.jpeg)
 
-_**更新 3 – April 19th, 2020.**_
+_**更新 3 – 2020.4.15:**_
 
 在过去几周里，我增加了一些内容。
 
@@ -309,13 +309,13 @@ _**更新 3 – April 19th, 2020.**_
 ![Home Lab #homelab](https://static.linuxblog.io/wp-content/uploads/2020/03/homelab.jpg "Home Lab #homelab")  
 ![Home Lab cables](https://static.linuxblog.io/wp-content/uploads/2020/03/homelab_cable_runs-868x338.jpg "Home Lab cables")
 
-_**Update 4 – May 1st, 2020:**_
+_**更新 4 – 2020.5.1:**_
 
 -   添加了一个单独的 21 英寸显示器，通过配合Raspberry Pi 和 Zabbix，用于显示远程主机/仪表板。
 
 ![May 2020 home lab](https://static.linuxblog.io/wp-content/uploads/2020/03/may_2020_home_lab.jpeg "May 2020 home lab")
 
-_**Update 5 – June 7th, 2020:**_
+_**更新 5 – 2020.6.7:**_
 
 - 添加了键盘和鼠标，以便随时访问 Zabbix 用户界面。
 - 将网状安全罩换成有色有机玻璃。
@@ -323,7 +323,7 @@ _**Update 5 – June 7th, 2020:**_
 
 ![home lab June 2020](https://static.linuxblog.io/wp-content/uploads/2020/03/home-lab.jpg)
 
-_**Update – August 19th, 2021:**_
+_**更新 – 2021.8.19:**_
 
 一个月前，一位朋友问我能否为他们家安装类似的设备。他们想要一个简单的全屋 VPN 设置。下图就是结果。通过一台 700VA UPS，总耗电量不到 40 瓦。
 
@@ -339,11 +339,11 @@ _**Update – August 19th, 2021:**_
 
 ![Whole Home VPN - Homelab](https://static.linuxblog.io/wp-content/uploads/2021/08/whole-home-VPN-homelab.jpg "Whole Home VPN - Homelab")
 
-_**Update – October 7th, 2022:** 添加了关于 AC Infinity CLOUDPLATE T7-N、机架安装风扇面板 2U（进气口）的更新。确保每隔几个月清理一次这些设备上的灰尘。在 2 年未进行任何维护的情况下，4 个风扇中有 2 个瘫痪了。如果清洁后它们能重新工作，我会及时更新。_ 
+_**更新 – 2022.10.7:** 添加了关于 AC Infinity CLOUDPLATE T7-N、机架安装风扇面板 2U（进气口）的更新。确保每隔几个月清理一次这些设备上的灰尘。在 2 年未进行任何维护的情况下，4 个风扇中有 2 个瘫痪了。如果清洁后它们能重新工作，我会及时更新。_ 
 
-_**Update – December 13th, 2022:** _我们二月份搬到了新家。所以我搬走了家庭实验室--电缆和所有东西。终于有时间安装了。我只做了很小的改动，因为我真的很喜欢现在的样子。_
+_**更新 – 2022.12.13:** _我们二月份搬到了新家。所以我搬走了家庭实验室--电缆和所有东西。终于有时间安装了。我只做了很小的改动，因为我真的很喜欢现在的样子。_
 
-_**Changes:**_
+_**变更:**_
 
 -   _安装高度更符合人体工学。_
 -   _将一些设备左右翻转（以便于拔出插头/按下电源按钮）_
@@ -351,18 +351,18 @@ _**Changes:**_
 
 _[![Peplink Balance 20x Router Review](https://static.linuxblog.io/wp-content/uploads/2023/02/Balance-20x-blog-article-image-868x580.png "Peplink Balance 20x Router Review")][112]_
 
-_**Update: May 3rd, 2023:**_
+_**更新: 2023.5.3:**_
 
 -  _我购买了一台[1500VA的CyberPower不间断电源（UPS）](https://www.cyberpowersystems.com/products/ups-systems/homeoffice-ups/pfsa1500g)，并拆下三个PC显示器和一个游戏用电脑。这样，机架内的1U UPS只连接服务器和网络设备。这使得在需要时电池供电的运行时间最长可达3小时_。
-**Update: Sept 24th, 2023:**
+**更新: 2023.9.24:**
 
 - _添加了有关AC Infinity CLOUDPLATE T7-N机架式进气风扇故障的信息。_
 
 - _添加了对Peplink Balance 20x路由器评测的链接。_
 
-_Published: Feb 25th, 2020 | Last updated: March 8th, 2024_
+_发布日期：2020年2月25日|最后更新日期：2024年3月8日_
 
-**Additional related articles:** 
+**添加相关文章:** 
 
 -   [五种适用于居家办公和小企业的网络设备][115].
 -   [找到兼容Linux的打印机][116].
