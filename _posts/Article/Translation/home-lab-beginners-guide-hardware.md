@@ -1,5 +1,5 @@
 ---
-title: Home Lab Beginners guide (Hardware)
+title: 家庭实验室新手指南（硬件）
 author: Hayden James
 authorURL: https://linuxblog.io/about-me/
 originalURL: https://linuxblog.io/home-lab-beginners-guide-hardware/
@@ -7,365 +7,367 @@ translator: ""
 reviewer: ""
 ---
 
-# [Home Lab Beginners guide (Hardware)][1]
+# [家庭实验室新手指南（硬件）][1]
 
 <!-- more -->
 
-**March 8, 2024** by **[Hayden James][2]**, in [Blog][3] [Linux][4]
+**3月8号, 2024** by **[Hayden James][2]**, in [Blog][3] [Linux][4]
 
-Until recently, and for well over the past decade, my wife and I have been nomads. Moving from the Caribbean to Miami, New York, Las Vegas, Vancouver, and now back home. This has meant that for many of those years, my home office basically comprised of a few laptops and screens.
+直到最近，并且超过过去十年的大部分时间，我和我的妻子都是数字游民。我们从加勒比海搬到了迈阿密、纽约、拉斯维加斯、温哥华，现在又回到了家乡。这意味着在过去的许多年里，我的家庭办公室基本上由几台笔记本电脑和屏幕组成。
 
-These days, we are more settled; my wife has completed her studies, works full-time, and my full-time job remains remote, via a home office [supporting Linux servers][5] and [hosting them][6].
+如今，我们的生活更加安定；我的妻子完成了学业，从事全职工作，而我的全职工作仍然是远程办公，通过[支持 Linux 服务器][5] 的家庭办公室和[托管它们][6]。
 
-After a short trip to Antigua, I had a brief meeting with a tech friend of mine, [Yves Ephraim][7]. He was an Engineer with [Cable & Wireless][8] for 20 years (until 2003). Yves left C&W shortly before I started there in 2004. He’s a champion of the internet and technological developments in Antigua & Barbuda.
+短暂的安提瓜之行后，我与我的一位技术朋友 [Yves Ephraim][7] 进行了简短的会面。他曾在 [Cable & Wireless 公司][8] 担任工程师长达 20 年（直到 2003 年）。伊夫在我 2004 年入职前不久离开了 C&W。他支持了安提瓜和巴布达互联网和技术发展。
 
-We sat in his home office, where he told me a bit about his current projects, as well as his dabbling with [IPv6][9], web hosting, mail, [BGP4][10], among other things. Most of which he does via his very capable home lab.
+我们坐在他家的办公室里，他向我介绍了一些他目前的项目，以及他在[IPv6][9]、虚拟主机、邮件、[BGP4][10]等方面的涉猎。他的大部分工作都是通过他的家庭实验室完成的。
 
-Table of Contents
+目录
 
--   [What is a Home Lab?][11]
--   [May we inspire each other to great home labs][12]
--   [Home lab location, it’s all about location.][13]
--   [Network vs. Server Racks vs. Cabinets?][14]
--   [Recommended Home Lab Hardware][15]
-    -   [To replace or not to replace: ISP Cable Modem][16]
-    -   [Selecting Your Home Lab Rack][17]
-    -   [Home Lab UPS (Uninterruptible Power Supply)][18]
-    -   [Universal Home Lab Rack Shelf][19]
-    -   [Rack Mount Home Lab Power supply][20]
-    -   [Rack Mount Home Lab Cooling Fans][21]
-    -   [Home Lab Routers and switches][22]
-    -   [Home Lab Patch Panels and Network Cables][23]
-    -   [Home Lab Servers][24]
--   [Summary and Conclusion][25]
+- [家庭实验室新手指南（硬件）](#家庭实验室新手指南硬件)
+  - [什么是家庭实验室?](#什么是家庭实验室)
+  - [愿我们相互激励，共同创建伟大的家庭实验室](#愿我们相互激励共同创建伟大的家庭实验室)
+  - [家庭实验室的位置，一切都与位置有关。](#家庭实验室的位置一切都与位置有关)
+  - [网络与服务器机架与机柜？](#网络与服务器机架与机柜)
+  - [推荐的家庭实验室硬件](#推荐的家庭实验室硬件)
+    - [换还是不换 网络运营商的调制解调器](#换还是不换-网络运营商的调制解调器)
+    - [选择您的家用实验室机架](#选择您的家用实验室机架)
+    - [家庭实验室 UPS（不间断电源）](#家庭实验室-ups不间断电源)
+    - [通用家用实验室架子](#通用家用实验室架子)
+    - [机架式家庭实验室电源](#机架式家庭实验室电源)
+    - [机架式家庭实验室散热风扇](#机架式家庭实验室散热风扇)
+    - [家庭实验室路由器和交换机](#家庭实验室路由器和交换机)
+    - [家庭实验室配线架和网线](#家庭实验室配线架和网线)
+    - [家庭实验室服务器](#家庭实验室服务器)
+  - [总结和结论](#总结和结论)
 
-## What is a Home Lab?
+## 什么是家庭实验室?
 
-![My Home Lab - 2020](https://static.linuxblog.io/wp-content/uploads/2020/03/my_homelab-868x868.jpg "My Home Lab - 2020")  
-_My current Home lab in a 12u rack as of May 2020_
+![我的家庭实验室 - 2020](https://static.linuxblog.io/wp-content/uploads/2020/03/my_homelab-868x868.jpg "My Home Lab - 2020")  
+_截至 2020 年 5 月，我家庭实验室位于一个 12u 机架中_
 
-Think of a home lab as a place where you can fail in the privacy of your own home. As Thomas A. Edison said: _“I have not failed. I’ve just found 10,000 ways that won’t work.”_ I consider myself an expert at failure. But seriously, I would like to fail a lot more, and a home lab will create endless opportunities for me to fail. Of course, all the while seeking success, but you got that already.
+把家庭实验室看成是一个可以让你在家中个人环境中尝试失败的地方。正如托马斯-爱迪生所说 我没有失败。我认为自己是失败专家。不过说真的，我还想失败得更多一些，而家庭实验室将为我创造无穷无尽的失败机会。当然，在追求成功的同时，你已经得到了成功。
 
-In general, a lab is a place where you can safely perform experiments. Most of you reading this article are techies and sysadmins. As you know, trying out new things on production equipment never ends well. Shush… it’s OK, I know, I know, you didn’t think that one command would take everything offline. This risk is the reason why we build ourselves a sandbox environment to dabble, test, and fail in, all from the comfort of our own homes.
+一般来说，实验室是一个可以安全进行实验的地方。阅读本文的大多数人都是技术人员和系统管理员。正如你们所知，在生产设备上尝试新东西从来都不会有好结果。嘘......没关系，我知道，我知道，你不会想到一个命令就能让所有东西都离线。正因为存在这种风险，我们才要为自己构建一个沙盒环境，让自己在舒适的环境中进行尝试、测试和失败。
 
-To date, I host my test labs on servers in North America and Europe. I’m creating a customized network and server home lab; to fill those areas where I would like to become more familiar. I will also be using my home lab for remote backups, [network monitoring and alerting of remote servers][26], and wired UAP APs, among other things.
+迄今为止，我的测试实验室设在北美和欧洲的服务器上。我正在创建一个定制的网络和服务器家庭实验室，让我更加熟悉的相关领域。我还将使用家庭实验室进行远程备份、[远程服务器的网络监控和警报][26]以及有线 UAP 接入点等。
 
-## May we inspire each other to great home labs
+## 愿我们相互激励，共同创建伟大的家庭实验室
 
-As I told Yves, our chat had me revisiting the idea. In fact, I think my exact words were, “Yves, I see your home lab, and I’ll raise you mine.” As always, I’m certain there’s a lot more to learn through discussion. In light of this fact, I wanted to share this journey with you, starting with the hardware selection process for my home lab.
+正如我告诉 Yves 的那样，我们的聊天让我重新审视了这个想法。事实上，我想我的原话是："Yves，我看到了你的家庭实验室，我会把我的也提出来。和往常一样，我确信通过讨论还能学到很多东西。有鉴于此，我想从我的家庭实验室的硬件选择过程开始，与大家分享我的心路历程。
 
-Of course, over the years, I’ve had equipment lying around, but that stops today. Well, sort of. So, if you have ever been interested in building a home lab or if you already have one, then [let’s mingle, share and dabble together][27].
+当然，这些年来，我一直在四处闲置设备，但今天这一切都停止了。算是吧。所以，如果你曾经有兴趣建立一个家庭实验室，或者你已经有了一个，那么[让我们一起交流、分享和探索][27]。
 
-Where do we begin? Not to sound cliché, but let’s start from the ground up, or wall forward. What I’m trying to say is, we need storage space, physical storage space, for our new home lab.
+我们该从哪里开始呢？为了避免听起来陈词滥调，让我们从头做起，或者说是向前推进。我想说的是，我们需要存储空间，物理上的存储空间，为我们的新家庭实验室服务。
 
-## Home lab location, it’s all about location.
+## 家庭实验室的位置，一切都与位置有关。
 
-Location, Location, Location. It’s all about location! Please excuse the lack of originality – I’m a sysadmin, not a writer. I’ll try my best to get you to the end of this article.
+位置、位置、位置。一切都与位置有关！请原谅我缺乏新意。我是系统管理员，不是作家。我会尽力让你读完这篇文章。
 
-Location is critical for several reasons. The choice between the home office, living room, closet, attic, basement, or garage depends on a range of important variables. These include room temperature and ventilation, workable space around your equipment, ease and distance of network cable runs, foot traffic, 24-hour ease of access, power, noise levels from your home lab, and more.
+位置至关重要，原因有几个。在家庭办公室、起居室、壁橱、阁楼、地下室或车库之间做出选择，取决于一系列重要的变量。这些变量包括室温和通风、设备周围的工作空间、网线铺设的方便程度和距离、人流量、24 小时进出的方便程度、电源、家庭实验室的噪音水平等等。
 
-Here’s a quick list of Pros vs. Cons I’ve compiled to get us thinking about all the possible home lab locations. Choose wisely:
 
-**Home office**
+这里是一个优点与缺点速选对比表，我整理出来以帮助我们思考所有可能的家居实验室位置。请明智地选择：
 
--   Pros: Proximity to work area/desk/devices, fewer cable runs, and you can watch lights flash all day.
--   Cons: no home office or you already spend too much time in your home office.
+**家庭办公室**
 
-**Living room**
+-   优点：靠近工作区域、办公桌或设备，减少电缆铺设，整天观看指示灯闪烁。
+-   缺点：占用空间或者你会在家里的办公花费了太多时间。
 
--   Pros: Usually cool, lots of space/setup options, blinky-blinky sci-fi movie nights, and counts as family time.
--   Cons: divorce, foot traffic, could get damaged, or damaged during the divorce.
+**客厅**
 
-**Closet**
+-   优点：通常很酷，空间大且布局灵活，适合晚上一起看科幻电影，融入家庭生活。
+-   缺点：可能造成离婚、人多可能损坏，或者在离婚过程中受损。
 
--   Pros: Easily accessible, stealthy, and you get to say: “Look at what I have hiding in my closet.”
--   Cons: Poor ventilation (excess heat), lack of space, and one less closet = unhappy wife.
+**衣柜**
 
-**Basement**
+-   优点：容易接近，隐蔽，你可以说： "看看我衣柜里藏了什么"
+-   缺点：通风不良（热量过高），空间不足，少了一个衣柜=妻子不开心。
 
--   Pros: Usually cooler temps, and volunteering to do laundry (maybe con?).
--   Cons: don’t have a basement, flooding, spiders, or no access when injured.
+**地下室**
 
-**Attic**
+-   优点：通常温度较低，并且自愿洗衣服（可能也是缺点？）。
+-   缺点：你真的有地下室？洪水泛滥、蜘蛛出没或受伤时无法进入。
 
--   Pros: Less noise, easier cable runs.
--   Cons: can get hot depending on where you live, roof leaks, humidity/condensation, and creepy at night.
+**阁楼**
 
-**Garage**
+-   优点： 噪音小，电缆铺设方便。
+-   缺点：不同地区，可能会面临阳光太强烈温度高、屋顶漏水、潮湿结露，造成电路损坏、设备噪音，夜间令人毛骨悚然。
 
--   Pros: Less noise in the house, completely out of sight, wife won’t even notice.
--   Cons: A Bug’s Life _in_ your lab, excess heat (if no AC), dust, could require longer cables, or gets wrecked when parking the car.
+**车库**
 
-For my lab, I’m going to build it out in my home office. I have laptops, a desktop, a server, and other devices in my office, so that this location will require shorter cable runs. When selecting your location, consider the coolest area of the room/space, avoid direct sunlight and consider reserving space for future expansion.
+-   优点： 室内噪音小，完全隐蔽，妻子甚至不会注意到。
+-   缺点：有虫子，过热（如果没有空调），灰尘，可能需要更长的电缆，或者在停车时被弄坏。
 
-It’s wise if you draw/sketch out a home network diagram or [use network design software][28]. Keep in mind your floor plan and how you will accomplish the cable runs. For example, most of the homes on this island have 8″ concrete interior walls. Think about these things before, not after. In other words, map everything out, make notes and create lists.
+对于我的实验室，我打算把它建在家里的办公室里。我的办公室里有笔记本电脑、台式机、服务器和其他设备，因此这个位置需要的电缆线较短。在选择位置时，应考虑房间/空间中最凉爽的区域，避免阳光直射，并考虑为将来的扩展预留空间。
 
-## Network vs. Server Racks vs. Cabinets?
+最好能画出家庭网络图或 [使用网络设计软件][28]。请牢记您的楼层平面图以及如何完成电缆铺设。例如，岛上大多数住宅都有 8 英寸的混凝土内墙。这些都要事先考虑，而不是事后。换句话说，把所有事情都规划好，做好笔记并列出清单。
+
+## 网络与服务器机架与机柜？
 
 ![home lab rack vs cabinet](https://static.linuxblog.io/wp-content/uploads/2020/02/home_lab_rack_vs_cabinet-868x399.jpg "home lab rack vs cabinet")
 
-Next, we need to decide how we will store the equipment (modems, routers, switches, servers, patch panels, UPS systems, power strips, cooling fans, etc.).
+接下来，我们需要决定如何存放设备（调制解调器、路由器、交换机、服务器、配线架、UPS 系统、电源插座、冷却风扇等）。
 
-Network cabinets and racks are often confused with S_erver_ cabinets and racks. Routers, switches, patch panels, and the like are usually much shallower than servers. As such, Network Cabinets and Racks are usually not as deep as Server Cabinets and Racks. Also, networking devices often produce less heat than servers. You will find some network cabinets will have glass doors that may not leave enough ventilation for servers.
+网络机柜和机架经常与服务器机柜和机架混淆。路由器、交换机、配线架等通常比服务器浅得多。因此，网络机柜和机架通常没有服务器机柜和机架那么深。此外，网络设备产生的热量通常比服务器要少。你会发现有些网络机柜有玻璃门，可能无法为服务器留出足够的通风空间。
 
-After deciding the depth and ventilation requirements for your home lab, there are a couple of other things to consider. A cabinet is an enclosed space with door(s) and/or removable sides, whereas a rack is a semi or fully open (4 sides open) frame. To help you decide whether to use a cabinet or rack, consider the following:
+在决定了家庭实验室的深度和通风要求后，还需要考虑其他一些事项。机柜是一个带门和/或可移动侧面的封闭空间，而机架则是一个半开放或完全开放（四面开放）的框架。为了帮助您决定使用柜还是架，请考虑以下几点：
 
--   If you are **installing large, heavy servers**, then the extra stability of cabinets or four-sided racks should be considered.
--   If you **need frequent access** to the sides or rear of equipment, then an open rack or cabinet with removable sides would work well.
--   If your **equipment requires extra cooling**, an enclosed cabinet will need more attention to cooling and ventilation.
--   If the **room is prone to dust**, the extra protection of a cabinet will go a long way in keeping it out of your equipment.
--   If you are **installing in a general living area** frequented by house guests, consider an enclosed cabinet that can often look neater in appearance when locked. However, a well-maintained open rack with tidy power and network cable runs can look just as neat!
--   If **restricted access/security** is required, many enclosed cabinets often offer lock and key access control for better security.
+- 如果要**安装大型、重型服务器**，则应考虑机柜或四面机架的额外稳定性。
+- 如果您**需要经常接触**设备的侧面或后部，那么开放式机架或侧面可拆卸的机柜会很合适。
+- 如果您的**设备需要额外的冷却**，那么封闭式机柜需要更加注意冷却和通风。
+- 如果**房间容易积尘**，机柜的额外保护将大大有助于防止灰尘进入设备。
+- 如果**安装在有客人经常光顾的一般生活区域**，可以考虑使用封闭式机柜，这种机柜在上锁后通常会显得更加整洁。不过，维护良好的开放式机架以及整齐的电源和网线走线看起来也同样整洁！
+- 如果需要**限制访问/安全**，许多封闭式机柜通常提供锁和钥匙访问控制，以提高安全性。
 
-## Recommended Home Lab Hardware
+## 推荐的家庭实验室硬件
 
-_**UPDATE:** I’ve updated the article. Some of the devices mentioned have been discontinued or are not readily accessible anymore. I’ve updated with upgrades I’ve made and other recommended hardware and accessories. It’s been nearly four years since my original homelab build._
+**更新：** 我已经更新了这篇文章。其中提到的一些设备已经停产或不再容易买到。我已经更新了我所做的升级以及其他推荐的硬件和配件。从我最初建立家庭实验室到现在，已经将近四年了。
 
-Now that you have already measured your equipment’s maximum depth and considered all the above advice, it’s time to buy your first piece of hardware. Or not. You could have probably skipped to this section if you prefer more em’, creative methods for hosting your home lab. However, most of the above advice applies even if you plan to set up your home lab in your existing living room cabinet, on a bookshelf, under your desk, or in a cardboard box. No, seriously…
+现在，您已经测量了设备的最大深度，并考虑了上述所有建议，是时候购买您的第一件硬件了。或者不买。如果你喜欢用更有创意的方法来搭建家庭实验室，或许可以跳过本节。不过，即使你打算把家庭实验室设在客厅现有的柜子里、书架上、书桌下或纸箱里，上述大部分建议也适用。不，说真的...
 
 ![cardboard box home lab](https://static.linuxblog.io/wp-content/uploads/2020/02/cardboard-box-home-lab-868x564.jpg)  
-_[Image][29]: Fancy cardboard box cabinet._
+_[Image][29]: 精美的纸板箱橱柜._
 
-**NOTE:** You can get most of the equipment listed below via Craigslist, Universities, and other local second-hand options in some countries. Prices on this page reflect Amazon’s current pricing, which is subject to change. As an Amazon Associate member, I’ve included paid links to items, for which I’m compensated. For all other items not listed on Amazon, if the links become broken over time, please let me know, as it always seems to happen often, which is another benefit of using Amazon’s links. Let’s move on to the recommended home lab hardware.
+**注：** 在某些国家，您可以通过 Craigslist、Universities 和其他本地二手商家获得以下列出的大部分设备。本页面上的价格反映的是亚马逊当前的定价，可能会有变动。作为亚马逊准会员，我提供了付费商品链接，并因此获得报酬。对于亚马逊未列出的所有其他商品，如果链接随着时间的推移而不可访问，请告诉我，因为这种情况似乎总是经常发生，这也是使用亚马逊链接的另一个好处。下面我们来看看推荐的家庭实验室硬件。
 
-### To replace or not to replace: ISP Cable Modem
+### 换还是不换 网络运营商的调制解调器
 
 ![replace cable modem](https://static.linuxblog.io/wp-content/uploads/2020/02/replace_cable_modem-868x196.jpg "replace cable modem")
 
-Before we delve a bit deeper into my home lab recommendations, if you are a beginner to switching and routing, then a lot of the hardware below may seem to be a bit of an overkill. You can get your feet wet by merely replacing your ISP’s cable modem (ISP or Internet Service Provider), you know, that thing with all the flashing lights that you frequently have to unplug to reset to regain internet access. Yup, that one, the mini heater in your living room.
+在我们深入探讨我的家庭实验室建议之前，如果你是交换机和路由的初学者，那么下面的许多硬件可能看起来有点矫枉过正。你只需更换网络运营商的调制解调器就能轻松上手，你知道的，就是那个闪烁着各种指示灯的东西，你经常需要拔下插头重新设置才能重新访问互联网。对，就是那个，你客厅里的迷你加热器。
 
-Most US ISPs charge monthly rental for that thing. Buying your own could make some financial sense. As well as giving better performance, reliability, and security. Bet you were already sold with the financial bit eh? But it gets better; most of these modems provided by ISPs are usually of poor quality, used, and lack features. Lastly, your ISP’s Modem/Router combos often cannot independently update firmware versions as new exploits emerge. This means you are at the mercy of your ISP to push new patched firmware.
+大多数美国网络运营商都会收取月租。购买一台自己的网络设备在经济上更有意义。而且还能提供更好的性能、可靠性和安全性。我敢打赌，你已经被财务方面的优势所吸引了，对吧？但还有更好的办法；网络运营商提供的这些调制解调器通常质量很差，都是二手货，缺乏功能。最后，网络运营商的调制解调器/路由器组合通常无法根据新出现的漏洞独立更新固件版本。这意味着您只能听从网络运营商推送新的修补固件。
 
-If you have a great ISP and this does not apply to you, stick with your modem. The only reason to replace it in such circumstances will be to have access to additional network features and create a home lab where you can test away! I replaced the modem/router combo from my ISP. I went with the [Motorola MB7420 16×4 Cable Modem][30]. _Update: 3 years later, there are much faster models, for example, the [Motorola MB7621 32×8][31]._
 
-If you would like to keep things simple, then go with a [Modem + Wi-Fi router combo][32]. Otherwise, continue if you would like to build out a home lab to manage Firewall, NAS storage, VPN, VLANs, PoE (Power over Ethernet), Virtualization, remote network infrastructure monitoring/alerting, wired APs, web servers, backup servers, the list goes on.
+如果您有一个很好的网络运营商，而且这种情况对您不适用，请继续使用您的调制解调器。在这种情况下，更换调制解调器的唯一原因是为了获得更多的网络功能，并创建一个家庭实验室进行测试！我从 ISP 更换了调制解调器/路由器组合。我选择了 [Motorola MB7420 16×4 Cable Modem][30]。更新：3 年后，有了更快的型号，例如 [Motorola MB7621 32×8][31]。
 
-_**Update:** This modem, similar to most I’ve used, gives off quite a bit of heat. When deciding placement, I would suggest toward the top or leave space below and above. That said, I love this modem! Unlike the ISP’s modem, it shows the quality of your connection, including Freq. (MHz), Pwr (dBmV), SNR (dB), corrected and uncorrected, and even allows manual downstream frequency setting if needed by your ISP._  
+如果您希望一切从简，那就选择 [Modem + Wi-Fi 路由器组合][32]。否则，如果您想建立一个家庭实验室来管理防火墙、NAS 存储、VPN、VLAN、PoE（以太网供电）、虚拟化、远程网络基础设施监控/警报、有线 AP、网络服务器、备份服务器等，请继续。
 
-### Selecting Your Home Lab Rack
+***更新：** 这款调制解调器与我使用过的大多数调制解调器类似，都会发出大量热量。在决定放置位置时，我建议放在顶部，或者在下面和上面留出空间。尽管如此，我还是很喜欢这款调制解调器！与网络运营商的调制解调器不同，它可以显示您的连接质量，包括频率（MHz）、功率（dBmV）、信噪比（dB）、校正和未校正，如果网络运营商需要，甚至可以手动设置下行频率。 
 
-A rack _unit_ (abbreviated _U_ or _RU_) is a unit of measure defined as 1 3⁄4 inches (or 44.45 mm). It’s the unit of measurement for the height of 19-inch and 23-inch rack frames and the equipment’s height. The height of the frame/equipment is expressed as multiples of rack units. A typical full-size rack is 42U high. Racks and cabinets are then listed as 1U, 2U, 3U, 4U, and so on.
+### 选择您的家用实验室机架
 
-Here’s an example below of a 6U rack (labeled):
+机架单位（缩写为 _U_ 或 _RU_）是一种测量单位，定义为 1 3⁄4 英寸（或 44.45 毫米）。它是 19 英寸和 23 英寸机架框架高度和设备高度的测量单位。机架/设备的高度以机架单位的倍数表示。典型的全尺寸机架高度为 42U。机架和机柜则以 1U、2U、3U、4U 等单位表示。
+
+下面是一个 6U 机架的示例（已标注）：
 
 ![6u rack example](https://static.linuxblog.io/wp-content/uploads/2020/02/6u-rack-2-868x583.jpg "6u rack example")
 
--   [StarTech 12U Wall Mount Rack – 13.5″ Deep / 19″ wide / 125lbs Capacity][33] – $158 ([specs][34]) – During my search for a wall-mounted rack, I almost purchased the 6U version of this rack, then at the last minute, I switched to the 12U version for possible future expansion.
--   [Samson SRK-12 Universal Equipment Rack Stand][35] – $230 ([specs][36]) – This was my first choice; this is an audio equipment rack that is fully compatible with shallow-mount equipment. One advantage is that it’s supported on wheels, so you don’t have to fix it to a wall or floor. However, I’m 6′ 2″, and I want to mount my rack about 4′ off the ground, so as you will see, I have also purchased a 2U cooling fan (intake), which I will place at or to the bottom of my setup. If your room is air-conditioned 24/7 and you don’t mind the low-to-floor setup, this may be the rack for you. Here’s a [great example of how clean this Rack can look when set up][37].
--   [NavePoint 9U Basic IT Wall Mount Network Rack Locking Glass Door][38] – $235 ([specs][39]) – This is a very beautiful-looking Network Cabinet. The issue for me is that I only use the AC in my office in the summer, and I don’t want the heat ever to be an issue; thus, for my home setup, an enclosed cabinet wasn’t right for me.
+- [StarTech 12U 壁挂式机架 - 13.5 英寸深/19 英寸宽/125 磅承重][33] - $158 （[规格][34]）- 在寻找壁挂式机架的过程中，我几乎买了这款机架的 6U 版本，但在最后一刻，我改买了 12U 版本，以便将来可能进行扩展。
+- [Samson SRK-12 通用设备架支架][35] - 230 美元（[规格][36]）- 这是我的首选；这是一款完全兼容浅安装设备的音频设备架。它的一个优点是有轮子支撑，因此不必固定在墙上或地板上。不过，我的身高是 6 英尺 2 英寸，我想把机架安装在离地面约 4 英尺的地方，所以正如你所看到的，我还购买了一个 2U 的冷却风扇（进气口），我将把它放在设备的底部。如果你的房间全天候都有空调，而且你不介意安装在离地面较低的位置，那么这个机架可能会适合你。下面是一个[很好的例子，说明这种机架在安装时可以看起来多么整洁][37]。
+- [NavePoint 9U 基本 IT 壁挂式网络机架（玻璃门锁定）][38] - 235 美元（[规格][39]）--这是一款外观非常漂亮的网络机柜。对我来说，问题在于我只在夏天使用办公室的空调，我不希望热量成为问题；因此，对于我的家庭设置来说，封闭式机柜并不适合我。
+_**更新：** 这是一个非常坚固的壁挂式机架。我可以确认，所见即所得。没有任何问题需要报告。它完全达到了预期的效果。_
 
-_**Update:** This is a very solid wall-mount rack. I can confirm that what you see is what you get. No issues to report. It does exactly what it’s supposed to._
-
-### Home Lab UPS (Uninterruptible Power Supply)
+### 家庭实验室 UPS（不间断电源）
 
 ![CyberPower OR500LCDRM1U](https://static.linuxblog.io/wp-content/uploads/2020/02/CyberPower-OR500LCDRM1U-868x99.jpg "CyberPower OR500LCDRM1U")
 
-At home, we have a backup generator that runs on propane. It can run for up to a week, which is useful in the tropics. Other than hurricane season, power cuts are extremely rare here. So far, for 2020, we have had one outage due to a lightning strike on a nearby electrical post.
+在家里，我们有一台使用丙烷的备用发电机。它可以运行长达一周，这在热带地区非常有用。除了飓风季节，这里很少停电。2020 年至今，我们曾因雷击附近的电线杆而停过一次电。
 
-It takes a minute or so to failover to the backup generator. So the rack mount UPS solution I’m looking for is something that will support between 100W and 200W for a couple of minutes. Long enough to fail over to the backup gen or to shut down all the equipment cleanly. In the future, I may expand this with larger batteries, but with no way of returning anything I purchase, I’m a bit wary of investing in a larger backup battery only to find out it’s a dud. I will test for a year first, and so here’s what I decided on:
+切换到备用发电机需要一分钟左右的时间。因此，我正在寻找的机架式不间断电源解决方案是能够支持 100W 到 200W 的功率，持续几分钟。足够长的时间来故障切换到备用发电机或干净利落地关闭所有设备。将来，我可能会用更大的电池来扩展这个方案，但由于购买的东西无法退货，我有点担心投资了更大的备用电池却发现它是个哑弹。我会先测试一年，所以我决定这样做：
 
--   [CyberPower OR500LCDRM1U UPS, 500VA/300W, 6 Outlets, AVR, 1U Rackmount][40] – $220 ([specs][41]) – A small 1U rackmount UPS coming in at 20lbs, which should give me around 10 to 15 minutes of runtime.
+- [CyberPower OR500LCDRM1U UPS，500VA/300W，6 个插座，AVR，1U 机架式][40] - 220 美元（[规格][41]）--小型 1U 机架式 UPS，重 20 磅，运行时间约为 10 至 15 分钟。
 
-Ultimately, you will have to decide whether you even require an uninterruptible power supply at home. From experience, UPS batteries are almost always a disappointment, and this is largely because of the cost vs. return. If you really need to have a UPS, you could spend thousands just to have a long enough runtime. If you work from home or host critical services hosted from home – you probably shouldn’t – then it may be worthwhile. My advice, get a UPS that provides just enough runtime for everything to shut down cleanly and only use the UPS for the most essential and efficient devices in your home lab. With all things considered, I’ll have to come back to this section before recommending any other UPS models.
+最终，您必须决定是否需要在家中安装不间断电源。根据经验，不间断电源电池几乎总是让人失望，这主要是因为成本与回报的关系。如果你真的需要不间断电源，你可能要花费数千美元才能获得足够长的运行时间。如果你在家工作或在家里运行关键服务（你可能不应该这样做），那么这可能是值得的。我的建议是，购买一台运行时间足够长的 UPS，让所有设备都能干净利落地关闭，并且只将 UPS 用于家庭实验室中最重要和最高效的设备。考虑到所有因素，在推荐其他 UPS 型号之前，我还得再看看这部分内容。
 
-_**Update:** Surprisingly, the battery performance of this UPS so far is above my expectations. I ran it down to around 50%, which gave me just over 30 mins of run time, including powering [2 PoE APs][42] and a [27″ monitor][43]. As mentioned later in this article, pay attention to your power consumption. This was something I considered, and it’s paid off thus far. The APs for example, max power consumption is just 6.5W per AP. The max load is about 20% to 30% of UPS capacity._ 
+_**更新：** 令人惊讶的是，到目前为止，这款 UPS 的电池性能超出了我的预期。我将它的电量降至 50% 左右，运行时间刚好超过 30 分钟，包括为 [2 个 PoE 接入点][42] 和一台 [27 英寸显示器][43] 供电。正如本文后面提到的，请注意您的耗电量。这也是我考虑过的问题，而且到目前为止已经得到了回报。以 AP 为例，每个 AP 的最大功耗仅为 6.5W。最大负载约为 UPS 容量的 20% 至 30%。_
 
-### Universal Home Lab Rack Shelf
+### 通用家用实验室架子
 
 ![AC Infinity Vented Cantilever 1U Universal Rack Shelf](https://static.linuxblog.io/wp-content/uploads/2020/02/AC-Infinity-Vented-Cantilever-1U-Universal-Rack-Shelf-1-868x308.jpg "AC Infinity Vented Cantilever 1U Universal Rack Shelf")
 
-Did you notice that the CyberPower 1U UPS does not have rack mounts? Of course, you could rest it on top of other equipment; however, I wouldn’t recommend that because we should keep the batteries as cool as possible and leave space between equipment to reduce the amount of trapped heat. Lastly, for this setup, it will look more professional if placed on a ventilated 1U rack shelf:
+您注意到 CyberPower 1U UPS 没有机架支架吗？当然，您也可以把它放在其他设备的顶部；不过，我不建议您这样做，因为我们应该尽可能保持电池的低温，并在设备之间留出空间，以减少滞留的热量。最后，对于这种设置，如果把它放在通风的 1U 机架上，会显得更专业：
 
--   [AC Infinity Vented Cantilever 1U Universal Rack Shelf, 10″ Deep, for 19”][44] – $30 ([specs][45]) – These shelves are available from 6″ to 16″ deep. The backup battery is 9.5″. Pay attention to the depth of your rack/cabinet and equipment before deciding what you need.
+- [AC Infinity 通风悬臂式 1U 通用机架搁板，10 英寸深，适用于 19 英寸][44] - 30 美元（[规格][45]）- 这些搁板的深度从 6 英寸到 16 英寸不等。备用电池为 9.5 英寸。在决定您的需要之前，请注意您的机架/机柜和设备的深度。
 
-_**Update:** Very sturdy, great for keeping equipment cool and cable management thanks to the vents and slots._ 
+_**更新：** 非常坚固，由于有通风口和插槽，非常适合设备散热和线缆管理。_
 
-### Rack Mount Home Lab Power supply
+### 机架式家庭实验室电源
 
 ![ADJ Products AC POWER STRIP PC 100A](https://static.linuxblog.io/wp-content/uploads/2020/02/ADJ-Products-AC-POWER-STRIP-PC-100A-868x89.jpg "ADJ Products AC POWER STRIP PC 100A")
 
-The aforementioned CyberPower UPS comes with six outlets – four backup /w surge + two surges only. Currently, under my desk, I’m using seven outlets, and this is before ordering a replacement ISP modem, router, switch, servers and does not consider any future expansion. Right above the UPS, I will be mounting the following:
+前面提到的 CyberPower UPS 配有六个插座 - 四个后备 /w 浪涌 + 两个浪涌。目前，在我的办公桌下，我使用了七个插座，这还是在订购替代 ISP 调制解调器、路由器、交换机和服务器之前的情况，并没有考虑未来的扩展。在 UPS 的正上方，我将安装以下设备：
 
--   [ADJ Products AC POWER STRIP (PC-100A)][46] – $30 ([specs][47] / [alternative][48]) – will plug this into the 1U CyberPower UPS.
+-  [ADJ Products AC POWER STRIP (PC-100A)][46] - $30 ([specs][47] / [alternative][48]) - 将其插入 1U CyberPower UPS。
 
-_**Update:** This is a very convenient piece of hardware. It plugs directly into the UPS and allows easy on/off switching of other equipment and devices._ 
+_**更新：** 这是一个非常方便的硬件。它可以直接插入不间断电源，方便地开关其他设备和装置。_
 
-### Rack Mount Home Lab Cooling Fans
+### 机架式家庭实验室散热风扇
 
 ![AC Infinity CLOUDPLATE T7-N](https://static.linuxblog.io/wp-content/uploads/2020/02/AC-Infinity-CLOUDPLATE-T7-N-868x269.jpg "AC Infinity CLOUDPLATE T7-N")
 
-Maintaining an optimal temperature for rack-mounted equipment prevents overheating, ensures consistent performance, and extends their lifespan. The plan is to mount an intake fan at the bottom rack unit position (remember hot air rises). After testing, I will decide whether I’ll need an exhaust fan at the very top of the rack.
+保持机架安装设备的最佳温度可防止过热，确保性能稳定，并延长其使用寿命。计划在机架底部安装一个进气风扇（记住热空气会上升）。测试之后，我将决定是否需要在机架顶部安装排气风扇。
 
--   [AC Infinity CLOUDPLATE T7-N, Rack Mount Fan Panel 2U, Intake for 19” Racks][49] – $130 ([specs][50]) – an intelligent cooling fan system providing quiet high airflow cooling.  The system is housed in a solid aluminum 2U case that’s less than 4 inches deep. It includes a thermostat for automatic fan speed during varying temperatures. A max airflow rating of 220 CFM will provide useful cooling to server, network, and other equipment.
--   [AC Infinity CLOUDPLATE T1-N, Rack Mount Fan Panel 1U, Intake for 19” Racks][51] – $150 ([specs][52]) – A more compact 1U design that moves less air (up to 60 CFM) if you are low on free rack units.
--   [AC Infinity CLOUDPLATE T2, Rack Mount Fan Panel 1U, Top Exhaust for 19″ racks][53] – $150 ([specs][54]) – This 1U top exhaust cooling fan can move up to 300 CFM. At 13.5″ deep it will be either a tight squeeze or will need modification for my rack. So I have not ordered this until I can examine it closer.
+- [AC Infinity CLOUDPLATE T7-N，机架安装风扇面板 2U，19 "机架进风口][49] - 130 美元（[规格][50]）--智能冷却风扇系统，提供安静的高气流冷却。 该系统安装在一个不到 4 英寸深的坚固铝制 2U 机箱中。它包括一个恒温器，可在温度变化时自动调节风扇转速。最大风量为 220 CFM，可为服务器、网络和其他设备提供有效冷却。
+- [AC Infinity CLOUDPLATE T1-N，机架安装风扇面板 1U，19 "机架进风口][51] - 150 美元（[规格][52]）--更紧凑的 1U 设计，可在空闲机架设备较少的情况下减少空气流量（最多 60 CFM）。
+- [AC Infinity CLOUDPLATE T2，1U 机架安装风扇面板，顶部排风，适用于 19 英寸机架][53] - 150 美元（[规格][54]） - 这款 1U 顶部排风冷却风扇的风量可达 300 CFM。它的深度为 13.5 英寸，对于我的机架来说，要么很挤，要么需要改装。因此，在仔细检查之前，我还没有订购。
 
-_**Update:** At the lowest fan speed, this cools rack temps by about 2 to 3 degrees Fahrenheit. I’ll update my thoughts again in the summer._
+_**更新：** 风扇转速最低时，机架温度可降低约 2 至 3 华氏度。我将在夏天再次更新我的想法。_
 
-**_Update 2:_** As of September 2022, two of the four fans have failed. I’ve removed it from the rack and will try to clean it with compressed air. Over the past 2 years of use, they are filled with dust! I still recommend buying these units, but I also recommend cleaning them out more often than I have!
+_**更新 2：**  截至 2022 年 9 月，四个风扇中有两个出现故障。我已将其从机架上拆下，并尝试用压缩空气进行清洁。在过去两年的使用过程中，它们已经积满了灰尘！我仍然建议购买这些设备，但我也建议比我更经常地清理它们！_
 
-_**Update 3:** As of September 2023 – 3 of the 4 fans have failed again._ 
 
-### Home Lab Routers and switches
+_**更新 3：** 截至 2023 年 9 月，4 个风扇中有 3 个再次出现故障。_ 
+
+### 家庭实验室路由器和交换机
 
 ![Ubiquiti Networks EdgeRouter ER-10X](https://static.linuxblog.io/wp-content/uploads/2020/02/Ubiquiti-Networks-EdgeRouter-ER-10X-868x304.jpg "Ubiquiti Networks EdgeRouter ER-10X")  
-After many weeks of research, online comparisons, reading reviews, watching YouTube videos, and countless hours spent on [/r/homelab][55], I can safely say that the following three companies’ devices will fully cover all of your routing and switching needs: [Cisco][56] > [Ubiquiti][57] > [TP-Link][58]. Sorry TP, nothing personal you are just 3rd, but not last; is that better?
+经过数周的研究、在线比较、阅读评论、观看 YouTube 视频以及在 [/r/homelab][55] 上花费无数个小时之后，我可以肯定地说，以下三家公司的设备将完全满足您的所有路由和交换需求： [思科][56] > [Ubiquiti][57] > [TP-Link][58]。对不起，TP，不是针对你，你只是第三名，但不是最后一名；这样更好吗？
 
-For my setup, I’m going more small-business than a home office as far as equipment goes. I want to be able to have future access to additional features. The following were my selections, followed by the runner-ups.
+就我的设置而言，就设备而言，我更倾向于小型企业，而不是家庭办公室。我希望将来能够获得更多的功能。以下是我的选择，然后是亚军。
 
-**Routers**
+**路由器**
 
--   ****Multi-WAN Load balancing:**** [Peplink Balance 20X \[CAT 7\] | Futureproof Gigabit Dual WAN Router][59] – $500 – Simultaneous Dual-Band (2.4GHz / 5GHz), Wi-Fi 5 1x WAN Port, 4 x LAN Port, 1x Embedded Cellular Modem with Redundant SIM Slots, 1x USB Interface 1 Gbps Router Throughput.
+-   **Multi-WAN Load balancing:** [Peplink Balance 20X \[CAT 7\] | Futureproof Gigabit Dual WAN Router][59] – $500 – Simultaneous Dual-Band (2.4GHz / 5GHz), Wi-Fi 5 1x WAN Port, 4 x LAN Port, 1x Embedded Cellular Modem with Redundant SIM Slots, 1x USB Interface 1 Gbps Router Throughput.
 -   **Small Biz features:** [Ubiquiti EdgeRouter ER-10X, 10 Port Gigabit Router with PoE Flexibility][60] – $220 ([specs][61]) – (10) Gigabit RJ45 Ports, PoE Passthrough on Port 10, Dual-Core, 880 MHz, MIPS1004Kc Processor, 512 MB DDR3 RAM, 512 MB NAND Flash Storage, Internal Switch, Serial Console Port.
 -   **Home lab Value:** [TP-Link ER7206 Multi-WAN VPN Router][62] – $150 (specs) – 1 Gigabit SFP WAN Port + 1 Gigabit WAN Port + 2 Gigabit WAN/LAN Ports plus1 Gigabit LAN Port. Supports up to 100× LAN-to-LAN IPsec, 50× OpenVPN, 50× L2TP, and 50× PPTP VPN connections.
 
-**Switches**
+**交换机**
 
 -   **Enterprise features:** [Ubiquiti EdgeSwitch ES-10XP, Managed 10-Port Gigabit Switch with PoE][63] – $215 ([specs][64]) – (8) Gigabit RJ45 Ports, (2) SFP ports, 24V passive PoE output on all RJ45 ports, 10 Gbps Total Non-Blocking Throughput, 20 Gbps Switching Capacity.
 -   **Home lab Value:** [TP-Link 8-Port Gigabit Ethernet Easy Smart Switch (TL-SG108E)][65] – $40 ([specs][66]) Unmanaged Pro, Plug and Play, Shielded Ports.
 
-There’s also [Netgear][67], [pfSense][68], and many, many other options, but you want me to complete this article, don’t you? Of course, this means that you will still have to research the recommendations on your own, as not all of my picks may fit your requirements.
+还有 [Netgear][67]、[pfSense][68]，以及很多很多其他选择，但你希望我完成这篇文章，不是吗？当然，这意味着您仍需自行研究这些推荐产品，因为并非我推荐的所有产品都符合您的要求。
 
-_**Update**: Just what I needed. The router runs modified Debian. How cool! It’s packed with enterprise features. I’m excited to learn full command line management._ 
+_**更新**： 正合我意。路由器运行修改过的 Debian。真酷 它包含了很多企业级功能。我很高兴能学习完整的命令行管理。_
 
-### Home Lab Patch Panels and Network Cables
+### 家庭实验室配线架和网线
 
 ![16 port patch panel](https://static.linuxblog.io/wp-content/uploads/2020/02/16-port-patch-panel-2-868x234.jpg)
 
-In hindsight, I should have gone with the [24 port patch panel][69]. Instead, I went with [this 16 port patch panel][70] because, well, I liked how centered and less busy it looked. I know. I don’t want to hear it. But look at that thing! If it isn’t already obvious by the 16 ports, it’s the image just above.
+事后看来，我应该选择 [24 端口配线架][69]。相反，我却选了 [这个 16 端口配线架][70]，因为我喜欢它居中的样子，看起来不那么忙乱。我知道。我不想听。但看看那东西！如果这 16 个端口还不明显的话，那就是上面的图片了。
 
-The fastest internet plan available from my ISP is 160Mbps down / 30Mbps up. For my home lab, I won’t be needing CAT8 or CAT7 anytime soon, and I don’t need high LAN traffic. So I purchased [250′ of regular CAT6 reel][71] and [some different lengths Cat6][72] as I’m ok with the 1000Mbps limit. Yeah, I also like my coffee black. If you want smoother network traffic, then, by all means, go for at least [CAT6a][73]. However, make sure you go with a [shielded patch panel][74]. Going CAT7 cable or Cat6a is a waste of money if your RJ45 connectors and patch panels don’t support it. “Keep it simple stupid!” No, I’m not talking to you; that was me speaking to myself while selecting the patch panel and cables.
+我的网络运营商提供的最快上网计划是下行 160Mbps / 上行 30Mbps。对于我的家庭实验室来说，我很快就不需要 CAT8 或 CAT7 了，也不需要很大的局域网流量。因此，我购买了 [250 英尺的普通 CAT6 卷轴][71] 和 [一些不同长度的 Cat6][72]，因为我可以接受 1000Mbps 的限制。是的，我还喜欢有时间喝黑咖啡。如果您想要更流畅的网络流量，那么请至少选择 [CAT6a][73]。不过，一定要使用[屏蔽配线架][74]。如果您的 RJ45 接头和配线架不支持 CAT7 或 CAT6a，那么使用 CAT7 或 CAT6a 就是浪费钱。"保持简单，笨蛋！" 不，我不是在跟你说话；这是我在选择配线架和电缆时对自己说的话。
 
-_**Update:** High quality! Easy to punch down. All my patch connections worked on the first try._
+_**更新：** 高质量！易于打孔。我的所有补丁连接第一次就成功了。_
 
-### Home Lab Servers
+
+### 家庭实验室服务器
 
 ![Thinkcentre as a server](https://static.linuxblog.io/wp-content/uploads/2020/02/thinkcentre-as-a-server-868x175.jpg "Thinkcentre as a server")
 
-For this article’s purpose, I won’t recommend any specific servers because this will vary a ton depending on what you will be hosting. NAS storage, VMs, web servers, backup servers, mail servers, ad blockers, and all the rest. For my requirements, I purchased a [ThinkCentre M73][75] and [ThinkCentre M715q][76]; both used off eBay. As far as full-fledged servers go, some good options are [Dell][77], [HP,][78] [Cisco][79], and [Lenovo][80]. For home labs, these are often best purchased _used_ from Craigslist or eBay. You can use Wikipedia to search the specs of older generations, for example, [Dell PowerEdge model history][81].
+出于本文的目的，我不会推荐任何特定的服务器，因为这将根据您要托管的内容而有很大的不同。NAS存储、虚拟机、网络服务器、备份服务器、邮件服务器、广告拦截器等等，都是如此。根据我的要求，我从 eBay 上购买了一台 [ThinkCentre M73][75] 和一台 [ThinkCentre M715q][76]；两台都是二手货。至于成熟的服务器，一些不错的选择是 [戴尔][77]、[惠普][78]、[思科][79] 和 [联想][80]。对于家庭实验室来说，最好从 Craigslist 或 eBay 购买二手服务器。您可以使用维基百科搜索老一代产品的规格，例如[戴尔 PowerEdge 型号历史][81]。
 
-_**Update:** AMD has raised the bar. I’m most impressed with the CPU performance of the M715q. They both run quiet and cool, with Ubuntu Server and Windows 10._ 
+_**更新：** AMD 提高了标准。我对 M715q 的 CPU 性能印象最深。在使用 Ubuntu Server 和 Windows 10.0 时，它们都能安静、低温运行。_
 
-## Summary and Conclusion
+## 总结和结论
 
 ![homelab](https://static.linuxblog.io/wp-content/uploads/2020/02/homelab-868x376.jpg "homelab")  
-_[Image][82]: your setup, should be your setup. As traditional or as custom as you’d like!_
+_[Image][82]: 您的设置就是您的设置。传统的、定制的，随你喜欢！_
 
-When writing this guide, I tried my best to convey my passion, thoughts, and considerations throughout the selection process. It’s important that you find your passion when it comes to building your home lab. What will you use it for? How will it benefit you and others?
+在撰写本指南时，我尽力传达我的热情、想法和整个选择过程中的考虑因素。在建造家庭实验室时，找到自己的激情非常重要。你将用它来做什么？它将如何造福于你和他人？
 
-If you have a plan, and if your lab will be something you enjoy learning, failing, and succeeding with, it will pay for itself in one way or another. That said, be careful with the power consumption! You don’t want to end up with… _mortgage of $1,100, a power bill of $1,200, the feeling when walking into your home lab… NOT priceless._
+如果你有计划，如果你的实验室是你乐于学习、失败和成功的地方，那么它就会以这样或那样的方式为自己带来回报。尽管如此，还是要注意耗电量！你不想最终...... _房贷 1100 美元，电费 1200 美元，走进家庭实验室的感觉......不是无价的_。
 
-Plan with room to expand, and feel free to start small. You don’t have to start with a rack, cabinet, patch panels, and all the other gear. Get your feet wet, replace your ISP modem, then build from there. Avoid making rash decisions on hardware; instead, sleep on it. Then, post a question or two in the **[new community forums][83]**, to get valuable feedback from other techies and sysadmins. You will find that the more you research, it will open up additional ways to get things just right or very wrong. More importantly, have fun! Share your home lab goals with your spouse, colleagues, kids, and that neighbor across the street who still only waves after five years.
+计划时要留有扩展余地，可以从小处着手。您不必从机架、机柜、接线板和所有其他设备开始。先把脚浸湿，更换 ISP 调制解调器，然后再从那里开始建设。避免贸然决定硬件，而是先做做准备。然后，在**[新社区论坛][83]**上发布一两个问题，从其他技术人员和系统管理员那里获得宝贵的反馈意见。你会发现，你研究得越多，就会发现更多的方法，让事情变得恰到好处或大错特错。更重要的是，要玩得开心！与你的配偶、同事、孩子以及街对面那位五年后仍然只会挥手的邻居分享你的家庭实验室目标。
 
-I hope this article was useful and inspiring and opens a dialogue between us. Feel free to [contact me][84]. I love hearing, supporting, and learning from you guys!
+我希望这篇文章能给您带来帮助和启发，并开启我们之间的对话。请随时 [联系我][84]。我喜欢聆听、支持和向你们学习！
 
-**_Update 1 – March 10th, 2020:_**
+**_更新 1 – March 10th, 2020:_**
 
-As of today, I’ve almost completed the setup of my new Home lab, and it’s now fully functional. I’m pleased with all of the items purchased. For this update, I’ve added to the article some highlights, tips, and findings below each hardware item in _italics_.
+到今天为止，我已经基本完成了新家庭实验室的安装，现在它已经完全可以正常使用了。我对购买的所有物品都很满意。在这次更新中，我在文章中添加了一些亮点、技巧和发现，并用大写字母标注在每个硬件项目下面。
 
-One thing I missed in the original article and Home lab setup was the coaxial cable. The existing cable turned out to be about three feet shorter than required. Tomorrow, I’ll replace it with a longer cable. As you can see, I’ve also replaced the ISP modem with the Motorola model listed below.
+在最初的文章和家庭实验室设置中，我忽略了一件事，那就是同轴电缆。现有的电缆比要求的短了三英尺。明天，我将换上更长的电缆。如你所见，我还将 ISP 调制解调器换成了下面列出的摩托罗拉型号。
 
-Unfortunately, the [Ubiquiti EdgeRouter and EdgeSwitch][85] turned out to be about an inch too wide. I failed to consider this because I measured their combined width and then compared that measurement to the rack’s interior width instead of the width of the rack shelf. Oops! Now, so that the switch doesn’t remain sitting on the router, I’ve just ordered two [Ubiquiti rack mounts][86]. Better cooling and aesthetics, but also the rack mounts will allow positioning the router and switch directly below the 16 port patch panel pictured below.  Check back in a week or two for another update.
+不幸的是，[Ubiquiti EdgeRouter 和 EdgeSwitch][85] 太宽了大约一英寸。我没有考虑到这一点，因为我测量了它们的总宽度，然后将其与机架的内部宽度进行了比较，而不是与机架架子的宽度进行比较。哎呀！现在，为了不让交换机一直放在路由器上，我刚刚订购了两个 [Ubiquiti 机架支架][86]。这样不仅能更好地散热和美观，而且还能将路由器和交换机放置在下图中 16 端口配线架的正下方。 一两周后再来查看更新。
 
 ![homelab update March 2020](https://static.linuxblog.io/wp-content/uploads/2020/02/homelab_update-868x670.jpg "homelab update March 2020")  
-_My Home lab  – a work in progress (everything pictured is listed below)_
+_我的家庭实验室，正在建设中（以下列出了所有图片）_
 
-_**Update 2 – March 25th, 2020: I Will follow up with details and feedback shortly. Here’s an updated status photo:**_
+_**更新 2 – March 25th, 2020: 我会尽快跟进细节和反馈。以下是最新状态照片:**_
 
 ![homelab update 2](https://static.linuxblog.io/wp-content/uploads/2020/03/homelab_update2-868x868.jpeg)
 
-_**Update 3 – April 19th, 2020.**_
+_**更新 3 – April 19th, 2020.**_
 
-Over the past few weeks, I’ve added a few things.
+在过去几周里，我增加了一些内容。
 
--   A [Netgear 4G LTE modem][87] (and [antenna][88]) for internet auto fail-over from ISP1 (cable internet) to ISP2 (4G internet).
--   [1U Blanking Panels][89] to improve the efficiency of the cooling fans.
--   The previous two vented 1U blanks are now at the top of the rack. It will be used to mount a monitor. (see to-do’s below)
--   Quick access [1u mess cover][90] to prevent accidental power switch toggling.
--   [Rackmount kits][91] for the [E][92][dgeRouter ER-10X][93] and [EdgeSwitch ES-10XP][94].
--   Cleaned up all wires and cables. Labeled network cables but didn’t label the patch panel, of course!
--   Added VLANs, restricted bandwidth of guest devices as well as some other home devices, hardened firewall.
--   Installed Zabbix server for additional monitoring of 150+ remote servers.
--   Added a domain to static IP, which has a couple of public-facing subdomains.
--   Removed or smoked out some of the logos and text for a cleaner look. (aka. OCD)
--   Added [x2 UAPs][95] and [x2 beacons][96].
--   [Outlet savers][97] so I could make use of all available power outlets.
--   Added push notification for when ISP1 goes down since switching to backup ISP2 is completely seamless.
+- [Netgear 4G LTE 调制解调器][87] （和[天线][88]），用于从 ISP1（有线网络）自动故障切换到 ISP2（4G 网络）。
+- [1U 消隐板][89] 用于提高冷却风扇的效率。
+- 之前的两个通风 1U 隔板现在位于机架顶部。它将用于安装显示器。(见下文待办事项)
+- 快速访问 [1U mess cover][90]，防止意外切换电源开关。
+- 用于 [E][92][dgeRouter ER-10X][93] 和 [EdgeSwitch ES-10XP][94] 的 [机架安装套件][91]。
+- 清理所有电线和电缆。给网线贴上标签，当然没有给配线架贴标签！
+- 添加了 VLAN，限制了访客设备和其他一些家庭设备的带宽，加固了防火墙。
+- 安装了 Zabbix 服务器，以便对 150 多台远程服务器进行额外监控。
+- 为静态 IP 添加了一个域，其中有几个面向公众的子域。
+- 删除或淡化了一些标识和文字，使外观更整洁。(又名强迫症）
+- 添加 [x2 UAPs][95] 和 [x2 beacon][96].
+- [插座保护器][97]，这样我就可以使用所有可用的电源插座。
+- 添加了 ISP1 出现故障时的推送通知，因为切换到备用 ISP2 是完全无缝的。
 
-To-do’s:
+待办事项：
 
--   Add a separate 21″ monitor to display Zabbix hosts/dashboard.
--   Dabble with [pfSense][98]. Reset everything to defaults and reconfigure with lessons learned.
--   Add indoor PoE surveillance cameras (currently only outdoor cams).
--   Set up KVM desktop switch to be able to switch easier between the two servers and desktop.
--   Check rack temperatures from June to August to determine if the setup is as cooling efficiently as planned.
+- 添加一个单独的 21 英寸显示器，用于显示 Zabbix 主机/仪表板。
+- 尝试使用 [pfSense][98]。将一切重置为默认值，然后根据经验教训重新配置。
+- 添加室内 PoE 监控摄像头（目前只有室外摄像头）。
+- 安装 KVM 桌面切换器，以便在两台服务器和桌面之间更方便地切换。
+- 从 6 月到 8 月检查机架温度，以确定设置的冷却效率是否与计划相符。
 
-Latest home lab photo:
+最新家庭实验室照片：
 
 ![Home Lab #homelab](https://static.linuxblog.io/wp-content/uploads/2020/03/homelab.jpg "Home Lab #homelab")  
 ![Home Lab cables](https://static.linuxblog.io/wp-content/uploads/2020/03/homelab_cable_runs-868x338.jpg "Home Lab cables")
 
 _**Update 4 – May 1st, 2020:**_
 
--   Added a separate 21″ monitor to display remote hosts/dashboard using Raspberry Pi and Zabbix.
+-   添加了一个单独的 21 英寸显示器，通过配合Raspberry Pi 和 Zabbix，用于显示远程主机/仪表板。
 
 ![May 2020 home lab](https://static.linuxblog.io/wp-content/uploads/2020/03/may_2020_home_lab.jpeg "May 2020 home lab")
 
 _**Update 5 – June 7th, 2020:**_
 
--   Added keyboard and mouse for walk-by access to Zabbix UI.
--   Swapped out mesh security cover with tinted plexiglass.
--   At this point, my home lab is complete. Is it ever? :)
+- 添加了键盘和鼠标，以便随时访问 Zabbix 用户界面。
+- 将网状安全罩换成有色有机玻璃。
+- 至此，我的家庭实验室就完成了。是这样吗？）
 
 ![home lab June 2020](https://static.linuxblog.io/wp-content/uploads/2020/03/home-lab.jpg)
 
 _**Update – August 19th, 2021:**_
 
-A month ago a friend asked if I could set up something similar for their home. They wanted a simple whole-home VPN setup. Pictured below is the result. All together uses less than 40 watts via a 700VA UPS.
+一个月前，一位朋友问我能否为他们家安装类似的设备。他们想要一个简单的全屋 VPN 设置。下图就是结果。通过一台 700VA UPS，总耗电量不到 40 瓦。
 
--   [StarTech.com 6U Wall Mount Network Equipment Rack – 14 Inch Deep][99]
--   [AC Infinity Vented Cantilever 1U Universal Rack Shelf, 10″ Deep][100]
--   [C2G 12-Port Patch Panel][101]
--   [VCE UL Listed CAT6 RJ45 Keystone Jack Inline Couplers][102]
--   [Vilros – Raspberry Pi 4 2GB Basic Kit][103] – running [Unifi Controller][104]
--   [Brume (GL-MV1000)][105] – [Edge Gateway + VPN (wireguard)][106]
--   [Edgeswitch 10xp][107]
--   [StarTech.com 8 Outlet Horizontal 1U Rack Mount PDU Power Strip][108]
--   [CyberPower SL700U Standby UPS System, 700VA/370W, 8 Outlets, 2 USBs][109]
+- [StarTech.com 6U 壁挂式网络设备机架 - 14 英寸深][99]
+- [AC Infinity 通风悬臂式 1U 通用机架，10 英寸深][100]
+- [C2G 12 端口跳线板][101]
+- [VCE UL 认证的 CAT6 RJ45 Keystone Jack 内联耦合器][102]
+- [Vilros - Raspberry Pi 4 2GB 基本套件][103] - 运行[Unifi 控制器][104] 。
+- [Brume (GL-MV1000)][105] - [Edge Gateway + VPN (wireguard)][106] - 正在运行 [Unifi 控制器][104] 。
+- [Edgeswitch 10xp][107]
+- [StarTech.com 8 个插座水平 1U 机架安装 PDU 电源条][108]
+- [CyberPower SL700U 备用 UPS 系统，700VA/370W，8 个插座，2 个 USB][109]
 
 ![Whole Home VPN - Homelab](https://static.linuxblog.io/wp-content/uploads/2021/08/whole-home-VPN-homelab.jpg "Whole Home VPN - Homelab")
 
-_**Update – October 7th, 2022:** Added update on the AC Infinity CLOUDPLATE T7-N, Rack Mount Fan Panel 2U (Intake). Make sure to clean the dust from these units every couple of months. It took 2 years without any maintenance for 2 of the 4 fans to become disabled. I will update if they work again once cleaned._ 
+_**Update – October 7th, 2022:** 添加了关于 AC Infinity CLOUDPLATE T7-N、机架安装风扇面板 2U（进气口）的更新。确保每隔几个月清理一次这些设备上的灰尘。在 2 年未进行任何维护的情况下，4 个风扇中有 2 个瘫痪了。如果清洁后它们能重新工作，我会及时更新。_ 
 
-_**Update – December 13th, 2022:  
-**__We moved to a new home in February. So I removed the home lab – cables and all. Finally had the time to set up. I’ve made very small changes because I really like it as is._
+_**Update – December 13th, 2022:** _我们二月份搬到了新家。所以我搬走了家庭实验室--电缆和所有东西。终于有时间安装了。我只做了很小的改动，因为我真的很喜欢现在的样子。_
 
 _**Changes:**_
 
--   _Mounted at a more ergonomic height.  
-    _
--   _Flipped some devices around (for easier access to unplugging/power buttons)_
--   _Replaced the EdgeRouter with a new [Peplink Balance 20x][110] for ISP [load balanced using the “fastest response” method][111]._
+-   _安装高度更符合人体工学。_
+-   _将一些设备左右翻转（以便于拔出插头/按下电源按钮）_
+-   _用新的 [Peplink Balance 20x][110]更换了 ISP 的 EdgeRouter。[使用 "最快响应 "方法实现负载平衡][111]_
 
 _[![Peplink Balance 20x Router Review](https://static.linuxblog.io/wp-content/uploads/2023/02/Balance-20x-blog-article-image-868x580.png "Peplink Balance 20x Router Review")][112]_
 
 _**Update: May 3rd, 2023:**_
 
--   _Purchased a [1500VA Cyberpower UPS][113] and o__ffloaded 3 PC monitors and a gaming PC. So that the in-rack 1u UPS only connected to the servers and network devices. This allows for up to 3 hours of runtime on battery if needed._ 
-
+-  _我购买了一台[1500VA的CyberPower不间断电源（UPS）](https://www.cyberpowersystems.com/products/ups-systems/homeoffice-ups/pfsa1500g)，并拆下三个PC显示器和一个游戏用电脑。这样，机架内的1U UPS只连接服务器和网络设备。这使得在需要时电池供电的运行时间最长可达3小时_。
 **Update: Sept 24th, 2023:**
 
--   _Added information above on failure of the AC Infinity CLOUDPLATE T7-N, Rack Mount intake fans._ 
--   _Added a link to my [Peplink Balance 20x Router Review][114]._
+- _添加了有关AC Infinity CLOUDPLATE T7-N机架式进气风扇故障的信息。_
+
+- _添加了对Peplink Balance 20x路由器评测的链接。_
 
 _Published: Feb 25th, 2020 | Last updated: March 8th, 2024_
 
 **Additional related articles:** 
 
--   [5 Network Devices for work-from-home and Small Business][115].
--   [Finding Linux Compatible Printers][116].
--   [Home Lab inspiration – A letter from a reader.][117]
--   [After 10 Yrs of Linux, I Switched to Windows. What next?][118]
+-   [五种适用于居家办公和小企业的网络设备][115].
+-   [找到兼容Linux的打印机][116].
+-   [家庭实验室灵感 - 来自读者的信][117]
+-   [在使用了十年的Linux之后，我切换到了Windows。接下来会怎样？][118]
 
 [1]: https://linuxblog.io/home-lab-beginners-guide-hardware/ "Home Lab Beginners guide (Hardware)"
 [2]: https://linuxblog.io/about-me/ "Posts by Hayden James"
