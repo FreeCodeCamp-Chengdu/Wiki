@@ -1,45 +1,45 @@
-Modern Git Commands and Features You Should Be Using
+你应该使用的现代 Git 命令和功能
 MARTINMar 4, 2024
 
-All of us - software engineers - use git every day, however most people only ever touch the most basic of commands, such as add, commit, push or pull, like it's still 2005.
+我们所有软件工程师每天都在使用 `git`，但大多数人只接触过最基本的命令，如 `add`, `commit`, `push` 或者 `pull`, 好像还停留在 2005 年。
 
-Git however, introduced many features since then, and using them can make your life so much easier, so let's explore some of the recently added, modern git commands, that you should know about.
+不过，`Git` 从那时起引入了许多功能，使用它们能让你的生活变得更轻松，下面就让我们来了解一下最近添加的一些现代 git 命令。
 
-Switch
-New since 2019, or more precisely, introduced Git version 2.23, is git switch which we can use to switch branches:
+### Switch
+自 2019 年以来，或者更准确地说，自 Git 2.23 版引入以来，我们可以使用 `git switch` 来切换分支：
 
 ```bash
 git switch other-branch
-git switch -  # Switch back to previous branch, similar to "cd -"
-git switch remote-branch  # Directly switch to remote branch and start tracking it
+git switch -  # 切换回上一个分支，类似于 "cd -"
+git switch remote-branch  # 直接切换到远程分支并开始跟踪
 ```
-Well that's cool, but we've been switching branches in Git since ever using git checkout, why the need for a separate command? git checkout is a very versatile command - it can (among other things) check out or restore specific files or even specific commits, while the new git switch only switches the branch. Additionally, switch performs extra sanity checks that checkout doesn't, for example switch would abort operation if it would lead to loss of local changes.
+`git checkout` 是一个非常灵活的命令。它可以（除其他外）签出或恢复特定文件甚至特定提交，而新的 `git switch` 只能切换分支。此外，`switch` 还会执行额外的正确性检查，而 `checkout` 则不会，例如，如果会导致本地改动丢失，`switch` 就会中止操作。
 
-Restore
-Another new subcommand/feature added in Git version 2.23 is git restore, which we can use to restore a file to last committed version:
+### Restore
+Git 2.23 版新增的另一个子命令/功能是 `git restore`，我们可以用它将文件恢复到上次提交的版本：
 
 ```bash
-# Unstage changes made to a file, same as "git reset some-file.py"
+# 取消对文件的修改，与 "git reset some-file.py" 相同
 git restore --staged some-file.py
 
-# Unstage and discard changes made to a file, same as "git checkout some-file.py"
+# 取消并丢弃对文件所做的更改，与 "git checkout some-file.py" 相同
 git restore --staged --worktree some-file.py
 
-# Revert a file to some previous commit, same as "git reset commit -- some-file.py"
+# 将文件恢复到之前的某个提交，与 "git reset commit -- some-file.py" 相同
 git restore --source HEAD~2 some-file.py
 ```
-The comments in the above snippet explain the workings of various git restore. Generally speaking git restore replaces and simplifies some of the use cases of git reset and git checkout which are already overloaded features. See also this docs section for comparison of revert, restore and reset.
+上述代码段中的注释解释了各种 `git restore` 使用。一般来说， `git restore` 替换和简化 `git reset` 和 `git checkout` 的使用场景，它们的功能过于复杂。关于 `revert`、`restore` 和 `reset` 的比较，请参阅本文档。
 
-Sparse Checkout
-Next one is git sparse-checkout, a little more obscure feature that was added in Git 2.25, which was released on January 13, 2020.
+### Sparse Checkout
+下一个是 `git sparse-checkout`，这是在 2020 年 1 月 13 日发布的 Git 2.25 中添加的一个不起眼的功能。
 
-Let's say you have a large monorepo, with microservices separated into individual directories, and commands such as checkout or status are super slow because of the repository size, but maybe you really just need to work with single subtree/directory. Well, git sparse-checkout to the rescue:
+比方说，你有一个大的 `monorepo`，其中的微服务被分隔到各个目录中，由于版本库太大，`checkout` 或 `status` 等命令执行起来超级慢，但也许你真的只需要处理单个子树/目录。那么，`git sparse-checkout` 就能帮到你：
 
 ```bash
 $ git clone --no-checkout https://github.com/derrickstolee/sparse-checkout-example
 $ cd sparse-checkout-example
-$ git sparse-checkout init --cone  # Configure git to only match files in root directory
-$ git checkout main  # Checkout only files in root directory
+$ git sparse-checkout init --cone  # 配置 git， 只匹配根目录下的文件
+$ git checkout main  # 只检出根目录中的文件
 $ ls
 bootstrap.sh  LICENSE.md  README.md
 
@@ -60,16 +60,16 @@ $ tree .
     ... ...
 ```
 
-In the above example we first clone the repo without actually checking out all the files. We then use git sparse-checkout init --cone to configure git to only match files in the root of the repository. So, after running checkout we only have 3 files rather than whole tree. To then download/checkout particular directory, we use git sparse-checkout set ....
+在上面的例子中，我们首先 `clone repo`，但并没有 `checkout` 所有文件。然后使用 `git sparse-checkout init --cone` 配置 git 只匹配仓库根目录下的文件。这样，在运行签出后，我们只有 3 个文件，而不是整棵树。要下载/检出特定目录，我们使用 `git sparse-checkout set ....`
 
-As already mentioned, this can be very handy when working locally with huge repos, but it's equally useful in CI/CD for improving performance of a pipeline, when you only want to build/deploy part of the monorepo and there's no need to check out everything.
+如前所述，这在本地处理庞大的版本库时非常方便，但在 CI/CD 中，当你只想构建/部署 `monorepo` 的一部分，而不需要检出所有内容时，这对提高流水线性能同样有用。
 
-For detailed write-up about sparse-checkout see this article.
+有关 `sparse-checkout` 的详细介绍，请参阅本文。
 
-Worktree
-It's not uncommon, that one might have to work on multiple features in single application (repository) at the same time, or maybe a critical bug comes in while you're in the middle of working some feature request.
+### Worktree
+一个人可能需要同时在单个应用程序（版本库）中开发多个功能，或者当你正在处理某个功能请求时，可能会出现一个 `critical` 级别的错误，这种情况并不少见。
 
-In those situations, you either have to have multiple versions/branches of the repository cloned, or you need to stash/discard whatever you've been working on at the time. The answer to these situations is git worktree, released on September 24, 2018:
+在这种情况下，您要么需要克隆多个版本/分支的版本库，要么就需要隐藏/丢弃当时正在处理的内容。2018 年 9 月 24 日发布的 `git worktree` 就是解决这些情况的办法：
 
 ```bash
 git branch
@@ -81,45 +81,44 @@ git worktree list
 
 git worktree add -b hotfix ./hotfix master
 
-# Preparing worktree (new branch 'hotfix')
-# HEAD is now at 5ea9faa Signed commit.
+# 准备 worktree (new branch 'hotfix')
+# HEAD 现在是 5ea9faa 已签名提交。
 
 git worktree list
 # /.../test-repo         ews5ger [dev]
 # /.../test-repo/hotfix  5ea9faa [hotfix]
 
-cd hotfix/  # Clean worktree, where you can make your changes and push them
+cd hotfix/  # 干净的 worktree, 你可以在其中进行修改并推送
 ```
 
-This command allows us to have multiple branches of the same repository checked out at the same time. In the example above, we have 2 branches dev and master. Let's say we're working on feature in the dev branch, but we're told to make urgent bug fix. Rather than stashing the changes and resetting the branch, we create a new worktree in the ./hotfix subdirectory from the master branch. We can then move to that directory, do our changes, push them and return to the original worktree.
+该命令允许我们同时签出同一版本库的多个分支。在上面的例子中，我们有两个分支 dev 和 master。假设我们正在开发分支中开发功能，但有人告诉我们要进行紧急错误修复。与其将更改存储起来并重置分支，不如在主分支的 ./hotfix 子目录下创建一个新的 worktree。然后，我们就可以移动到该目录，进行修改、推送并返回到原始 worktree。
 
-For a more detailed write-up see this article.
+更多详细内容，请参阅本文。
 
-Bisect
-Last but not least, git bisect, which isn't so new (Git 1.7.14, released on May 13, 2012), but most people are using only git features from around 2005, so I think it's worth showing anyway.
+### Bisect
+最后但并非最不重要的是 `git bisect`，它并不新鲜（Git 1.7.14，2012 年 5 月 13 日发布），但大多数人只使用 2005 年左右的 git 功能，所以我觉得还是值得展示一下。
 
-As the docs page describes it: git-bisect - Use binary search to find the commit that introduced a bug:
+正如文档页面所描述的：`git bisect`，使用二进制搜索查找引入错误的提交：
 
 ```bash
 git bisect start
-git bisect bad HEAD  # Provide the broken commit
-git bisect good 479420e  # Provide a commit, that you know works
+git bisect bad HEAD  # 提供出问题的提交
+git bisect good 479420e  # 提供你知道正常运行的提交
 # Bisecting: 2 revisions left to test after this (roughly 1 step)
 # [3258487215718444a6148439fa8476e8e7bd49c8] Refactoring.
 
-# Test the current commit...
+# 测试当前提交...
 git bisect bad  # If the commit doesn't work
 git bisect good # If the commit works
 
-# Git bisects left or right half of range based on the last command
-# Continue testing until you find the culprit
+# 根据最后一条命令，Git 在 bad 与 good 之间进行二分查找
+# 继续测试直到找原因
 
-git bisect reset  # Reset to original commit
+git bisect reset  # 重置为初始提交
 ```
 
-We start by explicitly starting the bisection session with git bisect start, after which we provide the commit that doesn't work (most likely the HEAD) and the last known working commit or tag. With that information, git will check out a commit halfway between the "bad" and "good" commit. At which point we need to test whether that version has the bug or not, we then use git bisect good to tell git that it works or git bisect bad that it doesn't. We keep repeating the process until no commits are left and git will tell us which commit is the one that introduced the issue.
+我们先用 `git bisect start` 显式启动分段会话，然后提供不工作的提交（bad 的提交，很可能是 HEAD）和最后一次已知的正常运行提交或标记。有了这些信息，git 就会检查出介于 `bad` 和 `good` 提交之间的一个提交。这时，我们需要测试该版本是否存在漏洞，然后用 git bisect good 告诉 git 它能正常工作，或用 git bisect bad 告诉 git 它不能正常工作。我们不断重复这个过程，直到没有提交，git 就会告诉我们哪个提交引入了问题。
 
-I recommend checking out the docs page that shows couple more options for git bisect including visualizing, replaying or skipping commits.
+我建议你去文档页面看看，那里有更多关于 `git bisect` 的选项，包括可视化、重放或跳过提交。
 
-Conclusion
-If you search for some problem relating to git, you will most likely end up on StackOverflow question with answer that has couple thousand upvotes. While this answer will be mostly likely still valid, it very well might be outdated, because it was written 10 years ago. Therefore, there might be a better, simpler, easier way to do it. So, when faced with some git issue, I would recommend to check git docs for more recent commands, all of which have a lot of great examples, or to explore man pages for lots of flags and options that were added to the good old commands over the years.
+如果你搜索一些与 `git` 相关的问题，你很可能会在 `StackOverflow` 上找到有几千个向上投票的答案的问题。虽然这个答案很可能仍然有效，但很可能已经过时，因为它是 10 年前写的。因此，可能还有更好、更简单、更容易的方法。因此，当遇到一些 `git` 问题时，我建议查看 `git` 文档，了解最新的命令，这些命令都有很多很好的示例，或者浏览 `man` 页面，了解多年来添加到老命令中的很多标记（flags）和选项（options）。
