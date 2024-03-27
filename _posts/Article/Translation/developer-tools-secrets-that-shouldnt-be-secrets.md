@@ -129,16 +129,16 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 ## 4. 您可以向任何网站注入代码。片段（Snippets）和重写（Overrides）。
 (Chromium Browsers)
 
-[Snippets](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets) are a way in Developer Tools to run a script against the current web site. You can use the [Console Utilities](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities) in these scripts and it is a great way to write and store complex DOM manipulation scripts you normally execute in the Console. You can run your scripts in the window context of the current document either from the snippets editor or from the command menu. In the latter case, start your command with an ! and type the name of the snippet you want to run.
+[片段(Snippets)](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets) 是开发工具中针对当前网站运行脚本的一种方法。您可以在这些脚本中使用[控制台实用工具](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities)，它是编写和存储通常在控制台中执行的复杂 DOM 操作脚本的绝佳方法。您可以通过片段编辑器或命令菜单在当前文档的窗口上下文中运行脚本。在后一种情况下，以 ! 开头，然后键入要运行的代码段名称即可。
 
-[Overrides](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/overrides) allow you to store local copies of remote scripts and override them when the page loads. This is great if you have, for example, a slow build process for your whole application and you want to try something out. It is also a great tool to replace annoying scripts from third party web sites without having to use a browser extension.
+[重写(Overrides)](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/overrides) 允许你存储远程脚本的本地副本，并在页面加载时覆盖它们。举例来说，如果你的整个应用程序的构建过程很慢，而你又想试一试，这就非常好用。此外，它还是替代第三方网站恼人脚本的绝佳工具，而无需使用浏览器扩展。
 
-## 5. You can inspect and debug much more than you know!
+## 5. 你可以检查(inspect)和调试(debug)的东西比你知道的要多得多！
 (Chromium Browsers)
 
-You may know the Chromium developer tools from browsers like Google Chrome, Brave or Microsoft Edge, but they are available in a lot more environments. Any app that’s based on Electron can have them enabled and you can use the Tools to peek under the hood and see how the product was done. This works, for example, in GitHub Desktop, Visual Studio Code, or you can even debug the Developer Tools of the browser using Developer Tools!
+你可能从 Google Chrome、Brave 或 Microsoft Edge 等浏览器中了解到 Chromium 开发者工具，但它们在更多环境中可用。任何基于 Electron 的应用程序都可以启用这些工具，你可以使用这些工具窥探引擎盖下的内容，看看产品是如何完成的。例如，这可以在 GitHub Desktop、Visual Studio Code 中使用，你甚至可以使用开发者工具调试浏览器的开发者工具！
 
-If you inspect the Developer Tools, you will see that they are written in HTML, CSS and TypeScript. It is an exciting environment to use these technologies, as you you know the rendering engine your code will run in – something you never know on the web.
+如果你检查一下开发者工具，就会发现它们是用 HTML、CSS 和 TypeScript 编写的。使用这些技术是一个令人兴奋的环境，因为你知道你的代码将在哪个渲染引擎中运行,这在网络上是永远无法知道的。
 
 [![Inspecting the Chromium Developer tools with another instance of the developer tools](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)
 
