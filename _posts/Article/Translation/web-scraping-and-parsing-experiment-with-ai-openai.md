@@ -7,15 +7,11 @@ translator: ""
 reviewer: ""
 ---
 
-Parsing data from web scraping results can often be cumbersome. But what if there's a way to turn this painstaking process into a breeze? Let's experiment with new AI model by OpenAI
-
--   [![Hilman Ramadhan](/blog/content/images/size/w100/2023/10/profile-picture.png)](/blog/author/hilman/)
-
-<!-- more -->
+从网络搜索结果中解析数据往往是一件麻烦事。但如果有一种方法能让这一艰苦的过程变得轻而易举呢？让我们尝试一下 OpenAI 的新人工智能模型吧。
 
 #### [Hilman Ramadhan](/blog/author/hilman/)
 
-Nov 10, 2023 • 10 min read
+2023 年 11 月 10 日  10 分钟阅读时间
 
 I've always been surprised at how good chatGPT by OpenAI is on answering questions and the ability of Dall-e 3 to create stunning images. Now, with the new model, let's see how AI can handle our web scraping tasks, specifically on parsing search engine results. We all know the drill—parsing data from raw HTML can often be cumbersome. _But what if there's a way to turn this painstaking process into a breeze?_
 
