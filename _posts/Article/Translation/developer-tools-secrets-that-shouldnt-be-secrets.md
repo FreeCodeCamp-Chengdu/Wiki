@@ -84,7 +84,7 @@ console.log({height})
 
 复制和粘贴这些信息时，表格结构会保持不变，因此它是将数据导入 `Excel` 或 `Word` 等的绝佳工具。
 
-### 像jQuery一样 : $() and $$()
+### 像 jQuery 一样 : $() and $$()
 
 控制台自带了许多方便使用的方法，称为 [Console Utilities](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities) 。其中两个非常有用的方法是 `$()` 和 `$$()`，它们分别是 `document.querySelector()` 和 `document.querySelectorAll()` 的替代方法。它们不仅会返回您所期望的 `nodeList`，还会将结果转换为数组，这意味着您可以直接在结果上使用 `map()` 和 `filter()`。以下代码将抓取当前文档中的所有链接，并返回一个数组，数组中的对象仅包含每个链接的 `href` 和 `innerText` 属性，即 `url` 和 `text` 属性。
 
@@ -126,7 +126,7 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
   <source src="https://youtu.be/00MNtSzasSQ" type="video/mp4">
 </video>
 
-## 4. 您可以向任何网站注入代码。片段（Snippets）和重写（Overrides）。
+## 4. 您可以向任何网站注入代码。片段（Snippets）和重写（Overrides）
 (Chromium Browsers)
 
 [片段(Snippets)](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets) 是开发工具中针对当前网站运行脚本的一种方法。您可以在这些脚本中使用[控制台实用工具](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities)，它是编写和存储通常在控制台中执行的复杂 DOM 操作脚本的绝佳方法。您可以通过片段编辑器或命令菜单在当前文档的窗口上下文中运行脚本。在后一种情况下，以 ! 开头，然后键入要运行的代码段名称即可。
@@ -151,7 +151,7 @@ The embeddable nature of the tools also allowed us to offer you a way to use the
 
 [![Microsoft Edge Developer tools open in an instance of Visual Studio Code](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)
 
-## 6\. Some dirty secrets…
+## 6\. Some dirty secret………
 
 Working intimately with developer tools and getting feedback and usage information taught me a few dirty secrets. The first one is that whilst we are all super excited about all the amazing features of developer tools, users only use a very small percentage of them. Many things heralded as the best thing since sliced bread in presentations and video tutorials are hardly every opened, let alone used. I thought this was about a lack of documentation and we spent a massive amount of time to update the [DevTools documentation](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/) to ensure everything in them is described and explained, but that wasn’t it. Documentation is something people seem to go to as a last resort when they are stuck and Google/Stack Overflow/Social channels didn’t yield any results.
 
@@ -179,7 +179,7 @@ We’re currently working on two ways to make this easier. One is to replace the
 
 CSS Mirroring in Visual Studio Code:
 
-What if… Visual Studio Code became the editor of in-browser Developer Tools?
+What if…… Visual Studio Code became the editor of in-browser Developer Tools?
 
 ## 7\. You’re the audience and the clients of Developer Tools!
 (Applies to all browsers, but channels shown here are Microsoft Edge only)
@@ -200,7 +200,7 @@ It records automatically what URL the issue happened on, takes a screenshot to i
 
 [Share on Twitter](http://twitter.com/share?url=https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/&text=Developer Tools secrets that shouldn’t be secrets&via=codepo8)
 
-## My other work:
+## My other work
 
 -   [The Developer Advocacy Handbook](https://developer-advocacy.com)
     -   [Buy it on Amazon](https://www.amazon.com/dp/B0BKNTPDFJ/)
