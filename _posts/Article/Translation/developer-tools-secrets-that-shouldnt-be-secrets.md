@@ -142,80 +142,81 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 
 [![Inspecting the Chromium Developer tools with another instance of the developer tools](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)
 
-### Edge Developer Tools in Visual Studio Code
+### Edge 在 Visual Studio Code 的开发工具
 (Microsoft Edge via a VS Code extension)
 
-The embeddable nature of the tools also allowed us to offer you a way to use them outside the browser. The [Microsoft Edge Tools for Visual Studio Code](https://aka.ms/devtools-for-code) extension brings the tools to Visual Studio Code. That way you can use the visual debugging tools right next to your code editor and you don’t need to jump between the two all the time.This also ties in with the “Console in Visual Studio Code” trick mentioned earlier. When you start a debugging session and you click the Developer Tools icon, the tools will open or – the first time – you will be prompted to install the extension.
+这些工具的可嵌入性也使我们能够为您提供一种在浏览器之外使用它们的方法。[Microsoft Edge Tools for Visual Studio Code](https://aka.ms/devtools-for-code) 扩展将这些工具带到了 Visual Studio Code 中。这样，你就可以在代码编辑器旁边使用可视化调试工具，而不必总是在两者之间跳来跳去。当你开始调试会话并单击 "开发工具"（Developer Tools）图标时，工具就会打开，或者首次打开时，系统会提示你安装扩展。
 
 [![Inspect button in the debug bar of Visual Studio Code](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)
 
 [![Microsoft Edge Developer tools open in an instance of Visual Studio Code](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)
 
-## 6\. Some dirty secret………
+## 6. 肮脏的秘密
 
-Working intimately with developer tools and getting feedback and usage information taught me a few dirty secrets. The first one is that whilst we are all super excited about all the amazing features of developer tools, users only use a very small percentage of them. Many things heralded as the best thing since sliced bread in presentations and video tutorials are hardly every opened, let alone used. I thought this was about a lack of documentation and we spent a massive amount of time to update the [DevTools documentation](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/) to ensure everything in them is described and explained, but that wasn’t it. Documentation is something people seem to go to as a last resort when they are stuck and Google/Stack Overflow/Social channels didn’t yield any results.
+与开发工具进行亲密合作，并获得反馈和使用信息，这让我了解了一些 `肮脏的秘密`。第一个是，尽管我们所有人都对开发者工具的所有惊人功能感到非常兴奋，但用户只使用了其中的一小部分。许多在演示和视频教程中被誉为自切片面包以来最好的东西实际上很少被打开，更不用说被使用了。我以为这是因为缺乏文档记录，所以我们花费了大量的时间来更新[DevTools 文档](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/)，以确保其中的所有内容都被描述和解释，但这不是问题所在。文档似乎是人们在谷歌、Stack Overflow 或社交媒体渠道没有找到任何结果后的最后手段。
 
-### Developer tools have become complex and are overwhelming – a few ideas how to fix that
+### 开发人员的工具变得复杂不堪，如何解决这个问题？
 (Microsoft Edge)
 
-It might be that the plain fact is that the Developer Tools of browsers grew organically over the years and can be incredibly overwhelming to look at. And that bothers me and I think we should do better. Here’s my mantra when it comes to tools for developers:
+可能是因为浏览器的开发者工具在过去几年中有机地发展壮大，让人目不暇接。这让我很烦恼，我认为我们应该做得更好。说到开发者工具，我有一句口头禅：
 
-> Developer tools should not expect people to be experts but turn them into experts over time.
+> 开发工具不应期望人们成为专家，而应随着时间的推移把他们变成专家。
 
-We’re working on a few ideas to make that easier, and you will soon see those in Microsoft Edge. One idea we had is a “Focus Mode”. Instead of showing you all the tools and tabs we sorted the tools into different use cases, like “Elements/CSS debugging”, “Sources/JavaScript Debugging” or “Network inspection”. We then show only the relevant tools and hide all the ones that may be confusing or in the way.
+我们正在想办法让这一切变得更容易，你很快就会在 Microsoft Edge 中看到这些想法。我们的一个想法是 "聚焦模式(Focus Mode)"。我们不再向你显示所有工具和选项卡，而是将工具按不同的使用情况进行分类，如 "元素/CSS 调试(Elements/CSS debugging)"、"源代码/JavaScript 调试(Sources/JavaScript Debugging)"或 "网络检查(Network inspection)"。然后，我们只显示相关工具，隐藏所有可能会造成混淆或碍事的工具。
 
 [![Developer tools in focus mode, showing only what's needed in the current context](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)
 
-Another feature we are working on are “informational overlays”. You get a help button that allows you to turn on overlays for the developer tools, explaining what each of the tools is, how to use it and providing links to the documentation. We hope that this would make it easier for people to learn about more features.
+我们正在开发的另一项功能是 "信息覆盖(informational overlays)"。您可以获得一个帮助按钮，打开开发者工具的叠加信息，解释每个工具是什么、如何使用以及提供文档链接。我们希望这将使人们更容易了解更多的功能。
 
 [![Developer tools covered by overlays explaining what each of them are,](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)
 
-### There is still a disconnect between authoring code and debugging the outcome
+### 编写代码与调试结果之间仍然存在脱节现象
 (Microsoft Edge)
 
-Whilst it is amazing what tools provide us these days there is still a disconnect between authoring and debugging. Most of the time we write our code, create the app and then go to the browser to see what doesn’t work. We then use the browser developer tools to tweak and fix these issues. And then comes the big issue we still need to fix: how do you get the changes you created using the browser developer tools back into your code? Most of the time, the answer is “copy and paste or try to remember what needs changing”.
+尽管现在的工具令人惊叹，但编写和调试之间仍然存在脱节。大多数情况下，我们在编写代码、创建应用程序后，会在浏览器中查看哪些地方无法正常工作。然后，我们使用浏览器开发工具来调整和修复这些问题。然后，我们还需要解决一个大问题：如何将使用浏览器开发工具创建的更改返回到代码中？大多数情况下，答案是 "复制并粘贴，或者试着记住需要更改的内容"。
 
-We’re currently working on two ways to make this easier. One is to replace the in-devtools editor with Visual Studio Code when it is available and to change files on the hard drive as you use the browser developer tools. The other is part of the VS Code extension and changes the source code in the editor as you use the developer tools but still gives you the final say in changing the file on disk. I [described the problem and the possible solutions on the Edge blog](https://blogs.windows.com/msedgedev/2021/10/21/improved-authoring-debugging-devtools-visual-studio-code/) or you can watch the following two screencasts to see them in action.
 
-CSS Mirroring in Visual Studio Code:
+我们目前正在研究两种方法来简化这一过程。一种是在可用时用 Visual Studio Code 代替开发工具内的编辑器，并在使用浏览器开发工具时更改硬盘上的文件。另一种是 VS Code 扩展的一部分，可以在使用开发工具时更改编辑器中的源代码，但在更改磁盘上的文件时仍有最终决定权。我[在 Edge 博客上描述了问题和可能的解决方案](https://blogs.windows.com/msedgedev/2021/10/21/improved-authoring-debugging-devtools-visual-studio-code/)，你也可以观看以下两个截屏视频，了解它们的实际效果。
 
-What if…… Visual Studio Code became the editor of in-browser Developer Tools?
+Visual Studio 代码中的 CSS 镜像:
 
-## 7\. You’re the audience and the clients of Developer Tools!
+如果…… Visual Studio Code 成为浏览器内开发工具的编辑器，会发生什么？
+
+## 7. 你们是开发人员工具的受众和客户！
 (Applies to all browsers, but channels shown here are Microsoft Edge only)
 
-As a developer, you are the main audience for Developer Tools. We are open to your feedback and many of the recent changes to the tools are direct results from demands from outside developers. We try to make this as easy as possible by providing in-context ways to contact us directly. For example, the Visual Studio Code extension has prominent links and buttons for you to report issues and request features.
+作为开发人员，您是开发人员工具的主要受众。我们愿意听取您的反馈意见，最近对工具的许多更改都是外部开发人员要求的直接结果。我们通过提供直接与我们联系的上下文方式，尽可能地简化这一过程。例如，Visual Studio Code 扩展有显著的链接和按钮供你报告问题(report issues)和功能需求(request features)。
 
 [![Screenshot of the in-context links provided in the VS Code extension to demand new features, file bugs and learn abour experiments](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)
 
-The [source code of the extension](https://github.com/microsoft/vscode-edge-devtools) is also on GitHub and you can [file issues](https://github.com/microsoft/vscode-edge-devtools/issues) there.
+[扩展插件的源代码](https://github.com/microsoft/vscode-edge-devtools) 也在 GitHub 上，你可以在那里[提交 issues](https://github.com/microsoft/vscode-edge-devtools/issues)。
 
-The in-browser developer tools also have a direct button to give us feedback. To make it easier for you to provide actionable feedback, the button includes a lot of automatic information.
+浏览器内的开发者工具也有一个直接向我们提供反馈的按钮。为了便于您提供可操作的反馈，该按钮包含了大量自动信息。
 
 [![The feedback tool built into the browser developer tools of Microsoft Edge](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)
 
-It records automatically what URL the issue happened on, takes a screenshot to include and offers to send diagnostic data. We also ask for you to provide an email in case we need more information and you can add attachments and info how to recreate the issue. We check this feedback daily, and a lot of great inventions and bug fixes came from that source.
+它会自动记录发生问题的 URL、截图并发送诊断数据。我们还要求您提供电子邮件，以备我们需要更多信息，您还可以添加附件和如何重现问题的信息。我们每天都会检查这些反馈，很多伟大的发明和错误修复都来自于此。
 
-[Share on Mastodon (needs instance)](https://mastodon.social/share?text=Developer Tools secrets that shouldn’t be secrets https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/)
+[分享到 Mastodom](https://mastodon.social/share?text=Developer) 不应该是秘密的工具秘密 https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/)
 
-[Share on Twitter](http://twitter.com/share?url=https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/&text=Developer Tools secrets that shouldn’t be secrets&via=codepo8)
+[分享到 Twitter](http://twitter.com/share?url=https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/&text=Developer) 
 
-## My other work
+## 我的其它作品
 
--   [The Developer Advocacy Handbook](https://developer-advocacy.com)
-    -   [Buy it on Amazon](https://www.amazon.com/dp/B0BKNTPDFJ/)
-    -   [Buy it on Leanpub](https://leanpub.com/developer-advocacy-handbook)
--   Skillshare Classes:
-    -   [Tools and Tips to Optimize Your Workflow as a Developer](https://skl.sh/3uKu5G1)
-    -   [Tools for Improving Product Accessibility](https://skl.sh/3eCFWRR)
-    -   [The JavaScript Toolkit: Write Cleaner, Faster & Better Code](https://skl.sh/2CpiTGZ)
-    -   [Demystifying Artificial Intelligence: Understanding Machine Learning](https://skl.sh/2MHkYl1)
+-   [开发人员倡导手册](https://developer-advocacy.com)
+    -   [在 Amazon 购买](https://www.amazon.com/dp/B0BKNTPDFJ/)
+    -   [在 Leanpub 购买](https://leanpub.com/developer-advocacy-handbook)
+-   技能分享课程:
+    -   [优化开发人员工作流程的工具和技巧](https://skl.sh/3uKu5G1)
+    -   [改善产品无障碍环境的工具](https://skl.sh/3eCFWRR)
+    -   [JavaScript 工具包： 编写更简洁、更快速、更优秀的代码](https://skl.sh/2CpiTGZ)
+    -   [揭开人工智能的神秘面纱： 了解机器学习](https://skl.sh/2MHkYl1)
 
-[Skip to search](#s)
 
-[Christian Heilmann](http://christianheilmann.com) is the blog of Christian Heilmann [chris@christianheilmann.com](mailto:chris@christianheilmann.com?subject=NOT%20A%20GUEST%20POST%20REQUEST&body=I%20understand%20this%20blog%20does%20not%20do%20guest%20posts) (Please do not contact me about guest posts, I don't do those!) a Principal Program Manager living and working in Berlin, Germany.
+[Christian Heilmann 博客](http://christianheilmann.com)  
+[chris@christianheilmann.com 邮箱](mailto:chris@christianheilmann.com?subject=NOT%20A%20GUEST%20POST%20REQUEST&body=I%20understand%20this%20blog%20does%20not%20do%20guest%20posts) (请不要就客座文章与我联系，我不做这种事！) 
+我是一个首席项目经理，在德国柏林生活和工作。
 
-Theme by Chris Heilmann. SVG Icons by [Dan Klammer](https://github.com/danklammer/bytesize-icons) . Hosted by MediaTemple. Powered by Coffee and Spotify Radio.
+主题由 Chris Heilmann 制作。SVG 图标由 [Dan Klammer](https://github.com/danklammer/bytesize-icons) 制作。由 MediaTemple 主持。由 Coffee 和 Spotify Radio 提供技术支持。
 
-[Get the feed, all the cool kids use RSS!](https://christianheilmann.com/feed/)
-$$
+[获取订阅，所有酷孩子都在使用 RSS！](https://christianheilmann.com/feed/)
