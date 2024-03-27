@@ -6,7 +6,7 @@ translator: ""
 reviewer: ""
 ---
 
-## 无需从头到尾阅读一本书，就能掌握其要点。
+## 无需从头到尾阅读一本书，就能掌握其要点
 [![Alessandro Amenta](https://miro.medium.com/v2/resize:fill:88:88/1*eJmL2XsmvUfWxRbTJrfHvQ.png)](https://medium.com/@alessandroamenta1?source=post_page-----828680c1ceb4--------------------------------)
 
 
@@ -16,7 +16,7 @@ reviewer: ""
 [提升编码水平](https://levelup.gitconnected.com/?source=post_page-----828680c1ceb4--------------------------------)
 
 
-在本文中，我们将使用 Python、Langchain 和 OpenAI embeddings构建一个简单但功能强大的书籍摘要器。
+在本文中，我们将使用 Python、Langchain 和 OpenAI embeddings 构建一个简单但功能强大的书籍摘要器。
 
 ![](https://miro.medium.com/v2/resize:fit:640/format:webp/1*DFqc1P6PnOZ8S95puZqSEg.png)
 
