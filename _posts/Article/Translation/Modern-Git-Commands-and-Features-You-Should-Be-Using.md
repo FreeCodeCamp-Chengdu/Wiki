@@ -1,19 +1,18 @@
-
 title: 你应该使用的现代 Git 命令和功能  
 author: MARTINMa  
-authorURL:    https://martinheinz.dev/  
-originalURL:  https://martinheinz.dev/blog/109  
+authorURL: https://martinheinz.dev/  
+originalURL: https://martinheinz.dev/blog/109  
 translator:  
-reviewer:  
+reviewer:
 
 # 你应该使用的现代 Git 命令和功能
-
 
 我们所有软件工程师每天都在使用 `git`，但大多数人只接触过最基本的命令，如 `add`, `commit`, `push` 或者 `pull`, 好像还停留在 2005 年。
 
 不过，`Git` 从那时起引入了许多功能，使用它们能让你的生活变得更轻松，下面就让我们来了解一下最近添加的一些现代 git 命令。
 
 ### Switch
+
 自 2019 年以来，或者更准确地说，自 Git 2.23 版引入以来，我们可以使用 `git switch` 来切换分支：
 
 ```bash
@@ -21,9 +20,11 @@ git switch other-branch
 git switch -  # 切换回上一个分支，类似于 "cd -"
 git switch remote-branch  # 直接切换到远程分支并开始跟踪
 ```
+
 `git checkout` 是一个非常灵活的命令。它可以（除其他外）签出或恢复特定文件甚至特定提交，而新的 `git switch` 只能切换分支。此外，`switch` 还会执行额外的正确性检查，而 `checkout` 则不会，例如，如果会导致本地改动丢失，`switch` 就会中止操作。
 
 ### Restore
+
 Git 2.23 版新增的另一个子命令/功能是 `git restore`，我们可以用它将文件恢复到上次提交的版本：
 
 ```bash
@@ -36,9 +37,11 @@ git restore --staged --worktree some-file.py
 # 将文件恢复到之前的某个提交，与 "git reset commit -- some-file.py" 相同
 git restore --source HEAD~2 some-file.py
 ```
+
 上述代码段中的注释解释了各种 `git restore` 使用。一般来说， `git restore` 替换和简化 `git reset` 和 `git checkout` 的使用场景，它们的功能过于复杂。关于 `revert`、`restore` 和 `reset` 的比较，请参阅本文档。
 
 ### Sparse Checkout
+
 下一个是 `git sparse-checkout`，这是在 2020 年 1 月 13 日发布的 Git 2.25 中添加的一个不起眼的功能。
 
 比方说，你有一个大的 `monorepo`，其中的微服务被分隔到各个目录中，由于版本库太大，`checkout` 或 `status` 等命令执行起来超级慢，但也许你真的只需要处理单个子树/目录。那么，`git sparse-checkout` 就能帮到你：
@@ -75,6 +78,7 @@ $ tree .
 有关 `sparse-checkout` 的详细介绍，请参阅本文。
 
 ### Worktree
+
 一个人可能需要同时在单个应用程序（版本库）中开发多个功能，或者当你正在处理某个功能请求时，可能会出现一个 `critical` 级别的错误，这种情况并不少见。
 
 在这种情况下，您要么需要克隆多个版本/分支的版本库，要么就需要隐藏/丢弃当时正在处理的内容。2018 年 9 月 24 日发布的 `git worktree` 就是解决这些情况的办法：
@@ -104,6 +108,7 @@ cd hotfix/  # 干净的 worktree, 你可以在其中进行修改并推送
 更多详细内容，请参阅本文。
 
 ### Bisect
+
 最后但并非最不重要的是 `git bisect`，它并不新鲜（Git 1.7.14，2012 年 5 月 13 日发布），但大多数人只使用 2005 年左右的 git 功能，所以我觉得还是值得展示一下。
 
 正如文档页面所描述的：`git bisect`，使用二进制搜索查找引入错误的提交：
