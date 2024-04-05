@@ -13,43 +13,43 @@ reviewer: ""
 
 2023 年 11 月 10 日  10 分钟阅读时间
 
-I've always been surprised at how good chatGPT by OpenAI is on answering questions and the ability of Dall-e 3 to create stunning images. Now, with the new model, let's see how AI can handle our web scraping tasks, specifically on parsing search engine results. We all know the drill—parsing data from raw HTML can often be cumbersome. _But what if there's a way to turn this painstaking process into a breeze?_
+我一直很惊讶 OpenAI 的 chatGPT 在回答问题方面的表现，以及 Dall-e 3 制作精美图片的能力。现在，有了新的模型，让我们看看人工智能如何处理我们的网络搜索任务，特别是解析搜索引擎结果。我们都知道，从原始 HTML 中钻取解析数据通常会很麻烦。但是，如果有一种方法可以将这一艰苦的过程变得轻而易举呢？
 
-> Recently (November 2023), the OpenAI team had their [first developer conference: DevDay (Feel free to watch it first)](https://www.youtube.com/watch?v=U9mJuUkhUzk). One of the exciting announcements is a larger context for GPT-4. The new GPT-4 Turbo model is more capable, cheaper, and supports a 128K context window.
+> 最近（2023 年 11 月），OpenAI 团队召开了 [首次开发者大会：DevDay（请先随意观看）](https://www.youtube.com/watch?v=U9mJuUkhUzk)。其中一个令人兴奋的公告是 GPT-4 的更大背景。新的 GPT-4 Turbo 型号功能更强、更便宜，而且支持 128K 上下文窗口。
 
 ![](https://serpapi.com/blog/content/images/2023/11/web-scraping-search-results-with-AI-1.webp)
 
-Cover illustration for web scraping with AI from OpenAI.
+来自 OpenAI 的人工智能网络搜索封面插图。
 
-## Our little experiment
+## 我们的小实验
 
-In the past, we've [compared some open-source and paid LLMs' ability to scrape](https://serpapi.com/blog/llms-vs-serpapi/) "clean text" data into a simple format and developed an [AI powered parser](https://serpapi.com/blog/real-world-example-of-ai-powered-parsing/).
+在过去，我们[比较了一些开源和付费 LLM 将纯文本数据转换成简单格式的能力](https://serpapi.com/blog/llms-vs-serpapi/)，并开发了一个[人工智能驱动的解析器](https://serpapi.com/blog/real-world-example-of-ai-powered-parsing/)。
 
-This time, we'll level up the challenge.
+这一次，我们将提升挑战的难度。
 
--   Scrape directly from raw HTML data.
--   Turn into a specific JSON format that we need.
--   Use little development time.
+- 直接从原始 HTML 数据中抓取。
+- 转换成我们需要的特定 JSON 格式。
+- 只用很少的开发时间。
 
-**Our Target:**
+**我们的目标:**
 
--   Scrape a nice structured website (as a warm-up).
--   Return organic results from the Google search results page.
--   Return the people-also-ask (related questions) section from Google SERP.
--   Return local results data from Google MAPS.
+- 抓取一个结构良好的网站（作为热身）。
+- 从 Google 搜索结果页面返回有机结果。
+- 从谷歌 SERP 返回 "人们还问（相关问题）"部分。
+- 从 Google MAPS 返回本地结果数据。
 
-> Remember that the AI is only tasked with parsing the raw HTML data, not doing the `web scraping` itself.
+> 请记住，人工智能的任务只是解析原始 HTML 数据，而不是自己进行 `网络扫描`。
 
-## TLDR;
+## TLDR(简而言之)
 
-If you don't want to read the whole post, here is the summary of the pros and cons of our experiment using the OpenAI API (new GPT-4) model for web scraping:
+如果您不想阅读整篇文章，下面是我们使用 OpenAI API（新 GPT-4）模型进行网络搜刮实验的利弊总结：
 
-**Pros**
+**优势**
 
--   New model `gpt-4-1106-preview` is able to scrape raw HTML data perfectly. The larger token window makes it possible just to pass raw HTML to scrape.
--   OpenAI "function calling" can return the exact response format that we need.
--   OpenAI "multiple function calling" can return data from multiple data points.
--   The ability to scrape raw HTML definitely a huge plus compared to the development time when parsing manually.
+- 新模型 `gpt-4-1106-preview` 能够完美地抓取原始 `HTML` 数据。更大的令牌窗口使得只需传递原始 `HTML` 数据即可进行搜刮。
+- `OpenAI` 的 `函数调用` 可以准确返回我们需要的响应格式。
+- OpenAI 的 `多函数调用` 可以从多个数据点返回数据。
+- 与手动解析所需的开发时间相比，刮取原始 HTML 的能力无疑是一个巨大的优势。
 
 **Cons**
 
