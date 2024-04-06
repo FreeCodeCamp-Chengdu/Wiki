@@ -15,7 +15,7 @@ reviewer: ""
 
 我一直很惊讶 OpenAI 的 chatGPT 在回答问题方面的表现，以及 Dall-e 3 制作精美图片的能力。现在，有了新的模型，让我们看看人工智能如何处理我们的网络搜索任务，特别是解析搜索引擎结果。我们都知道，从原始 HTML 中提取解析数据通常会很麻烦。但是，如果有一种方法可以将这一艰苦的过程变得轻而易举呢？
 
-> 最近（2023 年 11 月），OpenAI 团队召开了 [首次开发者大会：DevDay（欢迎先观看）](https://www.youtube.com/watch?v=U9mJuUkhUzk)。其中一个令人兴奋的公告是 GPT-4 的更大背景。新的 GPT-4 Turbo 型号功能更强、更便宜，而且支持 128K 上下文窗口。
+> 最近（2023 年 11 月），OpenAI 团队召开了 [首次开发者大会：DevDay（欢迎先观看）](https://www.youtube.com/watch?v=U9mJuUkhUzk)。其中一个令人兴奋的公告是 GPT-4 的更大的上下文窗口。新的 GPT-4 Turbo 型号功能更强、更便宜，而且支持 128K 上下文窗口。
 
 ![](https://serpapi.com/blog/content/images/2023/11/web-scraping-search-results-with-AI-1.webp)
 
