@@ -103,7 +103,7 @@ html_text = response.text
 
 ![](https://serpapi.com/blog/content/images/2023/11/web-scraping-target-from-toscrape-books.webp)
 
-截图 toscrape books，是第一个网络搜索目标
+截图 toscrape books，是第一个网络抓取目标
 
 下面是我们的代码（下面有解释）
 
