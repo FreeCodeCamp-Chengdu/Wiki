@@ -291,9 +291,9 @@ for result in data:
 
 ![](https://serpapi.com/blog/content/images/2023/11/Google-maps-target-page.webp)
 
-Google Maps screenshot
+谷歌地图截图
 
-As you can see, each of the items includes many information. We'll scrape:  
+如您所见，每个项目都包含许多信息。我们将进行搜索：    
 \- Name  
 \- Rating average  
 \- Total rating  
@@ -304,25 +304,25 @@ As you can see, each of the items includes many information. We'll scrape:
 \- Additional service  
 \- Thumbnail image
 
-> **Warning!** It turns out, Google Maps load this data via Javascript, so I have to change my method to get the raw_html from using `requests` to `selenium` for python.
+> **警告！** 原来，谷歌地图是通过 Javascript 来加载这些数据的，所以我必须改变获取原始网页的方法，从使用 `requests` 改为使用 `selenium` 来获取。
 
-**Code**
+**代码**
 
-Install Selenium on Python. More instructions on installation are [here](https://selenium-python.readthedocs.io/installation.html#introduction).
+在 Python 上安装 Selenium。更多安装说明请参阅 [此处](https://selenium-python.readthedocs.io/installation.html#introduction)。
 
-```
+```shell
 pip install selenium
 ```
 
-Import Selenium
+导入 Selenium
 
-```
+```Python
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 ```
 
-Create a headless browser instance to surf the web
+创建一个无头浏览器实例来浏览网页
 
 ```python
 target_url = 'https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en'
@@ -333,15 +333,15 @@ driver.get(target_url)
 
 driver.implicitly_wait(1) # seconds
 
-# get raw html
+# 获取的原始网页
 html_text = driver.page_source
 
-# You can continue like previous method, where we trim only the body part first
+# 您可以继续使用之前的方法，先只修剪 body 部分
 ```
 
-I wait 1 second with `implicitly_wait` to make sure the data is already there to scrape.
+我使用 `implicitly_wait` 等待 1 秒钟，以确保数据已经在那里，可以进行抓取。
 
-Now, here's the OpenAI API function:
+下面是 OpenAI API 函数：
 
 ```python
 completion = client.chat.completions.create(
@@ -397,24 +397,24 @@ data = argument_dict['data']
 print(data)
 ```
 
-**Result:**
+**结果:**
 
 ![](https://serpapi.com/blog/content/images/2023/11/local-maps-AI-scraping-results.webp)
 
-local maps API scraping with AI results
+利用人工智能进行本地地图 API 搜索的结果
 
-It turns out perfect! I'm able to get the exact data for each of this local_results.
+结果很完美！我可以获得每个 local_results 的准确数据。
 
-**Time to finish with Selenium**: ~47s  
-**Time to finish (exclude Selenium time)**: ~34s
+**运行完 Selenium 时间**: ~47s  
+**运行时间 (除了 Selenium )**: ~34s
 
-## Level 4: Parsing two different data (organic results and people-also-ask section) from Google SERP with AI
+## 第 4 层次： 利用人工智能解析来自 Google SERP 的两种不同数据（自然搜索结果和人们询问相关问题的部分）
 
-As you might know, Google SERP doesn't just display organic results, but also other data like ads, people-also-ask (related questions), knowledge graphs, and so on.
+如您所知，谷歌 SERP 不仅显示自然搜索结果，还显示其他数据，如广告、people-also-ask（相关问题）、知识图谱等。
 
-_Let's see how to_ _target multiple data points with multiple functions calling features from OpenAI._
+_让我们来看看如何利用调用 OpenAI 的多个函数处理多个数据。_
 
-Here's the code
+代码如下
 
 ```python
 completion = client.chat.completions.create(
@@ -476,7 +476,7 @@ completion = client.chat.completions.create(
 )
 
 
-# Organic_results
+# Organic_results（自然搜索结果）
 argument_str = completion.choices[0].message.tool_calls[0].function.arguments
 argument_dict = json.loads(argument_str)
 organic_results = argument_dict['data']
@@ -490,7 +490,7 @@ for result in organic_results:
     print(result['position'])
     print('---')
 
-# People also ask
+# People also ask （相关问题）
 argument_str = completion.choices[0].message.tool_calls[1].function.arguments
 argument_dict = json.loads(argument_str)
 people_also_ask = argument_dict['data']
@@ -503,34 +503,34 @@ for result in people_also_ask:
     print('---')
 ```
 
-**Code Explanation:**
+**代码说明:**
 
--   Adjust the prompt to include specific information on what to scrape: "You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people_also_ask section from the Google search result page."
--   Adding and separating functions, one for organic results*,* and one for people-also-ask section.
--   Testing the output in two different formats.
+-   调整提示词，使其包含关于抓取内容的具体信息： `您是搜索 Google 结果数据的高手。搜索两样东西： 第一。抓取排名前 10 的自然搜索结果数据；第二。从 Google 搜索结果页面中抓取 _the_ people_also_ask 部分（You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people_also_ask section from the Google search result page）`。
+-   添加并分离函数（separating functions），一个用于自然搜索结果，另一个用于people-also-ask部分。
+-   测试两种不同格式的输出。
 
-Here's the result:
+结果如下:
 
 ![](https://serpapi.com/blog/content/images/2023/11/multiple-data-points-on-AI-scraping.webp)
 
-Scraping multiple data points with AI
+利用人工智能获取多个数据点
 
-**Success:**  
-I'm able to scrape both the organic_results and people_also_ask separately. Kudos to OpenAI!
+**成功:**  
+我可以分别搜索自然搜索结果和 people_also_ask。OpenAI 功不可没！
 
-**Problem:**  
-I'm not able to scrape the answer and original URL for the people*also_ask section. \_The reason is* that this information is hidden somewhere in the script tag. We could try this by providing that specific part of the script content, but I would consider it `cheating` for this experiment, as we want to pass the raw HTML without pinpointing or giving a hint.
+**问题:**  
+我无法为 people_also_ask 部分提取答案和原始网址。原因是这些信息隐藏在脚本标签的某处。我们可以通过提供脚本内容的特定部分来尝试，但我认为这对本实验来说是 `作弊`，因为我们要传递的是原始网页内容，而不是精确定位或给出提示。
 
-**Time to finish**: ~30s
+**运行时间**: ~30s
 
-If you want to learn how to scrape these data cheaper, faster, and more accurate. You can read these posts:
+如果您想了解如何更低代价、更快速、更准确地搜索这些数据。您可以阅读以下文章：
 
--   [Scrape Google search results using Python](https://serpapi.com/blog/how-to-scrape-google-search-results-with-python/)
--   [Scrape Google Maps places results using Python](https://serpapi.com/blog/using-google-maps-place-results-api-from-serpapi/)
+-   [使用 Python 对 Google 搜索结果进行抓取](https://serpapi.com/blog/how-to-scrape-google-search-results-with-python/)
+-   [使用 Python 抓取 Google 地图的地点结果](https://serpapi.com/blog/using-google-maps-place-results-api-from-serpapi/)
 
-## Table comparison with SerpApi
+## 与 SerpApi 的表格比较
 
-Here's the timetable comparison using OpenAI's new GPT-4 model for web scraping VS [SerpApi](https://serpapi.com/?ref=web-scraping-with-ai-experiment-blog) . We're comparing with the 'normal speed'; SerpApi has faster (roughly twice as fast) when using [Ludicrous Speed](https://serpapi.com/ludicrous-speed).
+以下是使用OpenAI新的GPT-4模型进行网络抓取与[SerpApi](https://serpapi.com/?ref=web-scraping-with-ai-experiment-blog)的时间表对比。我们使用 `正常速度` 进行比较；SerpApi在使用[Ludicrous Speed](https://serpapi.com/ludicrous-speed)时速度更快（大约是正常速度的两倍）。
 
 | Subject                                | gpt-4-1106-preview | SerpApi |
 | -------------------------------------- | ------------------ | ------- |
@@ -538,10 +538,10 @@ Here's the timetable comparison using OpenAI's new GPT-4 model for web scraping 
 | Organic results with Related questions | 30s                | 2.4s    |
 | Maps local results                     | 47s                | 2.7s    |
 
-## Conclusion
+## 结语
 
-OpenAI definitely improves a lot of over time. Now, it's possible to scrape a website and collect relevant data with the API. But based on the time it takes, it's not yet ready for production, commercial purpose, or scale. While the accuracy of the data and response format turns out perfect, it's still far behind in terms of cost and speed.
+随着时间的推移，OpenAI 肯定会有很大改进。现在，我们可以通过应用程序接口（API）抓取网站并收集相关数据。但从所花费的时间来看，它还不能用于生产、商业目的或规模化。虽然数据的准确性和响应格式都很完美，但在成本和速度方面还远远不够。
 
-Let me know if you have any thoughts, spot any mistakes, and other experiments you want to add that are relevant to this post to hilman(at)serpapi(dot)com.
+如果您有任何想法、发现任何错误，或想补充与本文章相关的其他实验，请发送邮件至 hilman@serpapi.com。
 
-Thank you for reading this post!
+感谢您阅读此文！
