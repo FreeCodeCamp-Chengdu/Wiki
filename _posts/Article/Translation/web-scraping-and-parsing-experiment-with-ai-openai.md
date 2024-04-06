@@ -95,6 +95,7 @@ targetUrl = 'https://books.toscrape.com/' # Target URL will always changes
 response = requests.get(targetUrl)
 html_text = response.text
 ```
+
 注：国内用户可能要设置 `base_url`，来使用代理或者第三方 API。
 
 ## 第 1 级：使用人工智能对漂亮/简单的结构化网页进行抓取
@@ -162,7 +163,7 @@ for book in data:
 -   在 `tools` 参数中，我们定义了用于解析原始数据的虚函数（imaginary function）。不要忘记调整参数的属性，以准确返回您想要的格式。
 
 **结果如下**  
-我们可以抓取每本书的标题、评分和价格 _（正是我们在上述__函数参数中定义的数据）_。
+我们可以抓取每本书的标题、评分和价格 _（正是我们在上述\_\_函数参数中定义的数据）_。
 
 **运行完成时间**: ~15s
 
@@ -189,32 +190,32 @@ messages: {"role": "system", "content": "You are a master at scraping and parsin
 
 ## 第 2 层：利用人工智能解析 Google SERP 中的自然搜索结果（Organic results）
 
-The Google search results page is not like the previous site. It has a more complicated structure, unclear CSS class names, and includes many unknown data in the raw HTML.
+谷歌搜索结果页面与之前的网站不同。它的结构更复杂，CSS 类名不清晰，原始 HTML 中包含许多未知数据。
 
-Target URL: 'https://www.google.com/search?q=coffee&gl=us'
+目标 URL: 'https://www.google.com/search?q=coffee&gl=us'
 
-> WARNING! At first, I just parse everything from Google raw HTML, it turns out it contains too many characters, which means more tokens and more costs!
+> 警告！起初，我只是解析 Google 原始 HTML 中的所有内容，结果发现其中包含太多字符，这意味着需要更多 token 和更多成本！
 
 ![](https://serpapi.com/blog/content/images/2023/11/openai-usage-billing.webp)
 
-Watchout your OpenAI billing usage
+注意您的 OpenAI 账单使用情况
 
-So, after few tries, I decided to trim only the body part and remove the `style` and `script` tag contents.
+因此，在尝试了几次之后，我决定只要 `body` 部分，并删除 `style` 和 `script` 标记的内容。
 
-I've adjusted the prompt and function parameters like this:
+我这样调整了提示词和功能参数：
 
 ```python
-import re #additional import for regex
+import re #导入 regex
 
 response = requests.get('https://www.google.com/search?q=coffee&gl=us')
 html_text = response.text
 
-# Remove unnecessary part to prevent HUGE TOKEN cost!
-# Remove everything between <head> and </head>
+# 删除不必要的部分，以避免巨额 TOKEN 费用！
+# 删除 <head> 和 </head> 之间的所有内容
 html_text = re.sub(r'<head.*?>.*?</head>', '', html_text, flags=re.DOTALL)
-# Remove all occurrences of content between <script> and </script>
+# 删除 <script> 和 </script> 之间出现的所有内容
 html_text = re.sub(r'<script.*?>.*?</script>', '', html_text, flags=re.DOTALL)
-# Remove all occurrences of content between <style> and </style>
+# 删除 <style> 和 </style> 之间的所有内容
 html_text = re.sub(r'<style.*?>.*?</style>', '', html_text, flags=re.DOTALL)
 
 completion = client.chat.completions.create(
@@ -267,26 +268,26 @@ for result in data:
     print('---')
 ```
 
--   First, we trim only the selected part.
--   Adjust the prompt to "You are a master at scraping Google results data. Scrape top 10 organic results data from Google search result page."
--   Adjust the function parameters to any format you need.
+-   首先，我们只修剪（trim）选中的部分。
+-   将提示词调整为 `您是 Google 搜索结果数据的高手。从 Google 搜索结果页面抓取前 10 条自然搜索结果数据（You are a master at scraping Google results data. Scrape top 10 organic results data from Google search result page.）`。
+-   将功能参数调整为所需的格式。
 
 ![](https://serpapi.com/blog/content/images/2023/11/basic-google-SERP-scraping-with-AI.webp)
 
-basic web scraping on Google SERP with AI
+利用人工智能对谷歌 SERP 进行基本的网络抓取
 
-Ta-da! we get exactly the data we need despite of the complicated format from Google raw HTML.
+哒哒哒！尽管谷歌原始 HTML 格式复杂，我们还是准确地获得了所需的数据。
 
-**Time to finish**: ~28s
+**运行完成时间**: ~28s
 
-> Notes: My original prompt was "Parse organic results from Google SERP raw HTML data nicely" It only returns the first 3-5 results, so I adjust the prompt to get more preices amount of results.
+> 备注： 我最初的提示词是 `很好地解析 Google SERP 原始 HTML 数据中的自然搜索结果(Parse organic results from Google SERP raw HTML data nicely)`，但只能返回前 3-5 个结果，因此我调整了提示词，以获得更多的结果。
 
-**Using gpt-3.5 model**  
-I'm not able to do this since the raw HTML data amount exceeds the token length.
+**使用 gpt-3.5 模型**  
+我无法做到这一点，因为原始 HTML 数据量超过了 token 窗口长度。
 
-## Level 3: Parse local place results from Google Maps with AI
+## 第 3 层：利用人工智能解析谷歌地图中的本地地点结果
 
-Now, let's scrape another Google product, which is Google Maps. This is our target page: [https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en&entry=ttu](https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en&entry=ttu)
+现在，让我们抓取另一个 Google 产品，即 Google 地图。这是我们的目标页面： [https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en&entry=ttu](https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en&entry=ttu)
 
 ![](https://serpapi.com/blog/content/images/2023/11/Google-maps-target-page.webp)
 
