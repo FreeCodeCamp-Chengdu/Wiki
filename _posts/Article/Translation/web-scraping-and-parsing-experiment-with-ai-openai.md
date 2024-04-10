@@ -14,7 +14,7 @@ reviewer: ""
 <!-- more -->
 
 
-**[Hilman Ramadhan](/blog/author/hilman/)**
+**[Hilman Ramadhan](https://serpapi.com/blog/web-scraping-and-parsing-experiment-with-ai-openai/)**
 
 2023 年 11 月 10 日 10 分钟阅读时间
 
