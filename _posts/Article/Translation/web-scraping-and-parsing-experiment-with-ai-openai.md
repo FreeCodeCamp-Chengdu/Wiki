@@ -7,83 +7,84 @@ translator: ""
 reviewer: ""
 ---
 
-Parsing data from web scraping results can often be cumbersome. But what if there's a way to turn this painstaking process into a breeze? Let's experiment with new AI model by OpenAI
+从网络搜索结果中解析数据往往是一件麻烦事。但如果有一种方法能让这一艰苦的过程变得轻而易举呢？让我们尝试一下 OpenAI 的新人工智能模型吧。
 
--   [![Hilman Ramadhan](/blog/content/images/size/w100/2023/10/profile-picture.png)](/blog/author/hilman/)
+- [![Hilman Ramadhan](/blog/content/images/size/w100/2023/10/profile-picture.png)](/blog/author/hilman/)
 
 <!-- more -->
 
-#### [Hilman Ramadhan](/blog/author/hilman/)
 
-Nov 10, 2023 • 10 min read
+**[Hilman Ramadhan]()**
 
-I've always been surprised at how good chatGPT by OpenAI is on answering questions and the ability of Dall-e 3 to create stunning images. Now, with the new model, let's see how AI can handle our web scraping tasks, specifically on parsing search engine results. We all know the drill—parsing data from raw HTML can often be cumbersome. _But what if there's a way to turn this painstaking process into a breeze?_
+2023 年 11 月 10 日 10 分钟阅读时间
 
-> Recently (November 2023), the OpenAI team had their [first developer conference: DevDay (Feel free to watch it first)](https://www.youtube.com/watch?v=U9mJuUkhUzk). One of the exciting announcements is a larger context for GPT-4. The new GPT-4 Turbo model is more capable, cheaper, and supports a 128K context window.
+我一直很惊讶 OpenAI 的 chatGPT 在回答问题方面的表现，以及 Dall-e 3 制作精美图片的能力。现在，有了新的模型，让我们看看人工智能如何处理我们的网络搜索任务，特别是解析搜索引擎结果。我们都知道，从原始 HTML 中提取解析数据通常会很麻烦。但是，如果有一种方法可以将这一艰苦的过程变得轻而易举呢？
+
+> 最近（2023 年 11 月），OpenAI 团队召开了 [首次开发者大会：DevDay（欢迎先观看）](https://www.youtube.com/watch?v=U9mJuUkhUzk)。其中一个令人兴奋的公告是 GPT-4 的更大的上下文窗口。新的 GPT-4 Turbo 型号功能更强、更便宜，而且支持 128K 上下文窗口。
 
 ![](https://serpapi.com/blog/content/images/2023/11/web-scraping-search-results-with-AI-1.webp)
 
-Cover illustration for web scraping with AI from OpenAI.
+封面插图：OpenAI 的 AI 网络爬虫。
 
-## Our little experiment
+## 我们的小实验
 
-In the past, we've [compared some open-source and paid LLMs' ability to scrape](https://serpapi.com/blog/llms-vs-serpapi/) "clean text" data into a simple format and developed an [AI powered parser](https://serpapi.com/blog/real-world-example-of-ai-powered-parsing/).
+在过去，我们[比较了一些开源和付费 LLM 将纯文本数据转换成简单格式的能力](https://serpapi.com/blog/llms-vs-serpapi/)，并开发了一个[人工智能驱动的解析器](https://serpapi.com/blog/real-world-example-of-ai-powered-parsing/)。
 
-This time, we'll level up the challenge.
+这一次，我们将提升挑战的难度。
 
--   Scrape directly from raw HTML data.
--   Turn into a specific JSON format that we need.
--   Use little development time.
+-   直接从原始 HTML 数据中抓取。
+-   转换成我们需要的特定 JSON 格式。
+-   只用很少的开发时间。
 
-**Our Target:**
+### 我们的目标
 
--   Scrape a nice structured website (as a warm-up).
--   Return organic results from the Google search results page.
--   Return the people-also-ask (related questions) section from Google SERP.
--   Return local results data from Google MAPS.
+-   抓取一个结构良好的网站（作为热身）。
+-   从 Google 搜索结果页面返回自然搜索结果（organic results）。
+-   从谷歌 SERP 返回 "人们还问（相关问题）"部分。
+-   从 Google MAPS 返回当地搜索结果。
 
-> Remember that the AI is only tasked with parsing the raw HTML data, not doing the `web scraping` itself.
+> 请记住，人工智能的任务只是解析原始 HTML 数据，而不是自己进行 `网页抓取`。
 
-## TLDR;
+## TLDR(简而言之)
 
-If you don't want to read the whole post, here is the summary of the pros and cons of our experiment using the OpenAI API (new GPT-4) model for web scraping:
+如果您不想阅读整篇文章，下面是我们使用 OpenAI API（新 GPT-4）模型进行网页抓取实验的利弊总结：
 
-**Pros**
+### 优点
 
--   New model `gpt-4-1106-preview` is able to scrape raw HTML data perfectly. The larger token window makes it possible just to pass raw HTML to scrape.
--   OpenAI "function calling" can return the exact response format that we need.
--   OpenAI "multiple function calling" can return data from multiple data points.
--   The ability to scrape raw HTML definitely a huge plus compared to the development time when parsing manually.
+-   新模型 `gpt-4-1106-preview` 能够完美地抓取原始 `HTML` 数据。更大的令牌窗口使得只需传递原始 `HTML` 数据即可进行抓取。
+-   `OpenAI` 的 `函数调用` 可以准确返回我们需要的响应格式。
+-   OpenAI 的 `多函数调用` 可以从多个数据点返回数据。
+-   与手动解析所需的开发时间相比，能够抓取原始 HTML 绝对是一个巨大优势。
 
-**Cons**
+### 缺点
 
--   The cost is still high compared to using other SERP API providers.
--   Watch out for the cost when passing the whole raw HTML. We still need to trim to scrape only relevant parts. Otherwise, you have to pay a lot for the token usage.
--   The speed is still too long to use it for production.
--   For "hidden data" that is normally found at the script tag, extra AJAX request, or upon performing an action (e.g., clicking, scrolling), we still need to do it manually.
+-   与使用其他 SERP API 提供商相比，成本很高。
+-   在传递整个原始 HTML 时要注意成本。我们仍然需要进行修剪 HTML，以便只抓取相关部分。否则，你必须为使用 token（口令）支付高额费用。.
+-   将其用于生产时，速度太慢。
+-   对于通常在脚本标签、额外的 AJAX 请求或执行操作（如点击、滚动）时发现的 "隐藏数据"，我们仍然需要手动操作。
 
-## Tools and Preparation
+## 工具和准备
 
--   Since we're going to use OpenAI's API, make sure to register and have your api_key first. You might need your OpenAI org ID as well.
--   I'm using Python for this experiment, but feel free to use any programming language you want.
--   Since we want to return a consistent JSON format, we'll be using [new function calling feature from OpenAI](https://platform.openai.com/docs/guides/function-calling), where we can define the response's keys and values with a nice format.
--   We're going to use this model `gpt-4-1106-preview .`
+-   由于我们要使用 OpenAI 的 API，因此请务必先注册并获得您的 api_key。您可能还需要 OpenAI 组织 ID。
+-   我在这个实验中使用的是 Python，但你也可以随意使用任何编程语言。
+-   由于我们希望返回统一的 JSON 格式，因此我们将使用 [OpenAI 的函数调用功能](https://platform.openai.com/docs/guides/function-calling)，在这里我们可以用顺眼的格式定义响应的键和值。
+-   我们将使用以下模型 `gpt-4-1106-preview .`
 
-**Basic Code**
+## 基础代码
 
-Make sure to install the [OpenAI library first](https://github.com/openai/openai-python). Since I'm using Python, I need
+确保先安装 [OpenAI 库](https://github.com/openai/openai-python)。由于我使用的是 Python，我需要
 
-```
+```shell
 pip install openai
 ```
 
-I'll also install `requests` package to get the raw HTML
+我还将安装 `requests` 包，以获取原始 HTML 代码
 
-```
+```shell
 pip install requests
 ```
 
-Here's what our code base will look like
+我们的代码库如下所示
 
 ```python
 import json
@@ -100,20 +101,22 @@ response = requests.get(targetUrl)
 html_text = response.text
 ```
 
-## Level 1: Scraping on nice/simple structured web page with AI
+注：国内用户可能要设置 `base_url`，来使用代理或者第三方 API。
 
-Let's warm up first. We'll target the [https://books.toscrape.com/](https://books.toscrape.com/) site first since it has a very clean structure that makes it easy to read.
+## 第 1 级：使用人工智能对漂亮/简单的结构化网页进行抓取
+
+让我们先热热身。我们首先针对 [https://books.toscrape.com/](https://books.toscrape.com/)网站，因为它的结构非常简洁，便于阅读。
 
 ![](https://serpapi.com/blog/content/images/2023/11/web-scraping-target-from-toscrape-books.webp)
 
-Screenshot toscrape books, first web scraping targets
+截图 toscrape books，是第一个网络抓取目标
 
-Here's what our code looks like (with explanations below)
+下面是我们的代码（下面有解释）
 
 ```python
-# Chat Completion API from OpenAI
+# 来自 OpenAI 的 ChatCompletion API
 completion = client.chat.completions.create(
-  model="gpt-4-1106-preview", # Feel free to change the model to gpt-3.5-turbo-1106
+  model="gpt-4-1106-preview", # 请将模型改为 gpt-3.5-turbo-1106
   messages=[
     {"role": "system", "content": "You are a master at scraping and parsing raw HTML."},
     {"role": "user", "content": html_text}
@@ -149,75 +152,75 @@ completion = client.chat.completions.create(
    }
 )
 
-# Calling the data results
+# 数据结果的调用
 argument_str = completion.choices[0].message.tool_calls[0].function.arguments
 argument_dict = json.loads(argument_str)
 data = argument_dict['data']
 
-# Print in a nice format
+# 打印格式化
 for book in data:
     print(book['title'], book['rating'], book['price'])
 ```
 
--   We're using the `ChatCompletion` API from OpenAI
--   Use model: gpt-4-1106-preview
--   Using the prompt "You are a master at scraping and parsing raw HTML" and passing the raw_html to be analyzed.
--   At `tools` parameter, we're defining our imaginary function to parse the raw data. Don't forget to adjust the properties of parameters to return the exact format you want.
+-   我们使用 OpenAI 的 `ChatCompletion` API
+-   使用模型: gpt-4-1106-preview
+-   使用提示语 `您是抓取和解析原始 HTML 的高手`，并传递要分析的 `raw_html`。
+-   在 `tools` 参数中，我们定义了用于解析原始数据的虚函数（imaginary function）。不要忘记调整参数的属性，以准确返回您想要的格式。
 
-**Here i**s **the result**  
-We're able to scrape the title, rating, and price _(exactly the data we defined in the_ _function parameters above)_ of each book.
+### 结果如下  
+我们可以抓取每本书的标题、评分和价格 _（正是我们在上述\_\_函数参数中定义的数据）_。
 
-**Time to finish**: ~15s
+### 运行完成时间: ~15s
 
 ![](https://serpapi.com/blog/content/images/2023/11/Compare-web-scraping-results.webp)
 
-Compare web scraping results
+比较网络抓取结果
 
-**Using gpt-3.5**  
-When switching to `gpt-3.5-turbo-1106` , I have to adjust the prompt to be more specific:
+### 使用 gpt-3.5  
+当切换到 `gpt-3.5-turbo-1106` 时，我必须调整提示词，使其更加具体：
 
-```
+```json
 messages: {"role": "system", "content": "You are a master at scraping and parsing raw HTML. Scrape ALL the book data results"},
 
-# And the function description
+#  function 描述
 "function": {
               "name": "parse_data",
               "description": "Get all books data from raw HTML data",
 }
 ```
 
-Without mentioning "scrape ALL book data," it will just get the first few results.
+如果不提及 "抓取所有图书数据"，就只能得到前几个结果。
 
-**Time to finish**: ~9s
+### 运行完成时间: ~9s
 
-## Level 2: Parse organic results from Google SERP with AI
+## 第 2 层：利用人工智能解析 Google SERP 中的自然搜索结果（Organic results）
 
-The Google search results page is not like the previous site. It has a more complicated structure, unclear CSS class names, and includes many unknown data in the raw HTML.
+谷歌搜索结果页面与之前的网站不同。它的结构更复杂，CSS 类名不清晰，原始 HTML 中包含许多未知数据。
 
-Target URL: 'https://www.google.com/search?q=coffee&gl=us'
+目标 URL: 'https://www.google.com/search?q=coffee&gl=us'
 
-> WARNING! At first, I just parse everything from Google raw HTML, it turns out it contains too many characters, which means more tokens and more costs!
+> 警告！起初，我只是解析 Google 原始 HTML 中的所有内容，结果发现其中包含太多字符，这意味着需要更多 token 和更多成本！
 
 ![](https://serpapi.com/blog/content/images/2023/11/openai-usage-billing.webp)
 
-Watchout your OpenAI billing usage
+注意您的 OpenAI 账单使用情况
 
-So, after few tries, I decided to trim only the body part and remove the `style` and `script` tag contents.
+因此，在尝试了几次之后，我决定只要 `body` 部分，并删除 `style` 和 `script` 标记的内容。
 
-I've adjusted the prompt and function parameters like this:
+我这样调整了提示词和功能参数：
 
 ```python
-import re #additional import for regex
+import re #导入 regex
 
 response = requests.get('https://www.google.com/search?q=coffee&gl=us')
 html_text = response.text
 
-# Remove unnecessary part to prevent HUGE TOKEN cost!
-# Remove everything between <head> and </head>
+# 删除不必要的部分，以避免巨额 TOKEN 费用！
+# 删除 <head> 和 </head> 之间的所有内容
 html_text = re.sub(r'<head.*?>.*?</head>', '', html_text, flags=re.DOTALL)
-# Remove all occurrences of content between <script> and </script>
+# 删除 <script> 和 </script> 之间出现的所有内容
 html_text = re.sub(r'<script.*?>.*?</script>', '', html_text, flags=re.DOTALL)
-# Remove all occurrences of content between <style> and </style>
+# 删除 <style> 和 </style> 之间的所有内容
 html_text = re.sub(r'<style.*?>.*?</style>', '', html_text, flags=re.DOTALL)
 
 completion = client.chat.completions.create(
@@ -270,32 +273,32 @@ for result in data:
     print('---')
 ```
 
--   First, we trim only the selected part.
--   Adjust the prompt to "You are a master at scraping Google results data. Scrape top 10 organic results data from Google search result page."
--   Adjust the function parameters to any format you need.
+-   首先，我们只修剪（trim）选中的部分。
+-   将提示词调整为 `您是 Google 搜索结果数据的高手。从 Google 搜索结果页面抓取前 10 条自然搜索结果数据（You are a master at scraping Google results data. Scrape top 10 organic results data from Google search result page.）`。
+-   将功能参数调整为所需的格式。
 
 ![](https://serpapi.com/blog/content/images/2023/11/basic-google-SERP-scraping-with-AI.webp)
 
-basic web scraping on Google SERP with AI
+利用人工智能对谷歌 SERP 进行基本的网络抓取
 
-Ta-da! we get exactly the data we need despite of the complicated format from Google raw HTML.
+哒哒哒！尽管谷歌原始 HTML 格式复杂，我们还是准确地获得了所需的数据。
 
-**Time to finish**: ~28s
+### 运行完成时间: ~28s
 
-> Notes: My original prompt was "Parse organic results from Google SERP raw HTML data nicely" It only returns the first 3-5 results, so I adjust the prompt to get more preices amount of results.
+> 备注： 我最初的提示词是 `很好地解析 Google SERP 原始 HTML 数据中的自然搜索结果(Parse organic results from Google SERP raw HTML data nicely)`，但只能返回前 3-5 个结果，因此我调整了提示词，以获得更多的结果。
 
-**Using gpt-3.5 model**  
-I'm not able to do this since the raw HTML data amount exceeds the token length.
+### 使用 gpt-3.5 模型  
+我无法做到这一点，因为原始 HTML 数据量超过了 token 窗口长度。
 
-## Level 3: Parse local place results from Google Maps with AI
+## 第 3 层：利用人工智能解析谷歌地图中的本地地点结果
 
-Now, let's scrape another Google product, which is Google Maps. This is our target page: [https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en&entry=ttu](https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en&entry=ttu)
+现在，让我们抓取另一个 Google 产品，即 Google 地图。这是我们的目标页面： [https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en&entry=ttu](https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en&entry=ttu)
 
 ![](https://serpapi.com/blog/content/images/2023/11/Google-maps-target-page.webp)
 
-Google Maps screenshot
+谷歌地图截图
 
-As you can see, each of the items includes many information. We'll scrape:  
+如您所见，每个项目都包含许多信息。我们将进行搜索：    
 \- Name  
 \- Rating average  
 \- Total rating  
@@ -306,25 +309,25 @@ As you can see, each of the items includes many information. We'll scrape:
 \- Additional service  
 \- Thumbnail image
 
-> **Warning!** It turns out, Google Maps load this data via Javascript, so I have to change my method to get the raw_html from using `requests` to `selenium` for python.
+> ### 警告！ 原来，谷歌地图是通过 Javascript 来加载这些数据的，所以我必须改变获取原始网页的方法，从使用 `requests` 改为使用 `selenium` 来获取
 
-**Code**
+### 代码
 
-Install Selenium on Python. More instructions on installation are [here](https://selenium-python.readthedocs.io/installation.html#introduction).
+在 Python 上安装 Selenium。更多安装说明请参阅 [此处](https://selenium-python.readthedocs.io/installation.html#introduction)。
 
-```
+```shell
 pip install selenium
 ```
 
-Import Selenium
+导入 Selenium
 
-```
+```Python
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 ```
 
-Create a headless browser instance to surf the web
+创建一个无头浏览器实例来浏览网页
 
 ```python
 target_url = 'https://www.google.com/maps/search/coffee/@40.7455096,-74.0083012,14z?hl=en'
@@ -335,15 +338,15 @@ driver.get(target_url)
 
 driver.implicitly_wait(1) # seconds
 
-# get raw html
+# 获取的原始网页
 html_text = driver.page_source
 
-# You can continue like previous method, where we trim only the body part first
+# 您可以继续使用之前的方法，先只修剪 body 部分
 ```
 
-I wait 1 second with `implicitly_wait` to make sure the data is already there to scrape.
+我使用 `implicitly_wait` 等待 1 秒钟，以确保数据已经在那里，可以进行抓取。
 
-Now, here's the OpenAI API function:
+下面是 OpenAI API 函数：
 
 ```python
 completion = client.chat.completions.create(
@@ -399,24 +402,24 @@ data = argument_dict['data']
 print(data)
 ```
 
-**Result:**
+### 结果
 
 ![](https://serpapi.com/blog/content/images/2023/11/local-maps-AI-scraping-results.webp)
 
-local maps API scraping with AI results
+利用人工智能进行本地地图 API 搜索的结果
 
-It turns out perfect! I'm able to get the exact data for each of this local_results.
+结果很完美！我可以获得每个 local_results 的准确数据。
 
-**Time to finish with Selenium**: ~47s  
-**Time to finish (exclude Selenium time)**: ~34s
+### 运行完 Selenium 时间: ~47s  
+### 运行时间 (除了 Selenium ): ~34s
 
-## Level 4: Parsing two different data (organic results and people-also-ask section) from Google SERP with AI
+## 第 4 层次： 利用人工智能解析来自 Google SERP 的两种不同数据（自然搜索结果和人们询问相关问题的部分）
 
-As you might know, Google SERP doesn't just display organic results, but also other data like ads, people-also-ask (related questions), knowledge graphs, and so on.
+如您所知，谷歌 SERP 不仅显示自然搜索结果，还显示其他数据，如广告、people-also-ask（相关问题）、知识图谱等。
 
-_Let's see how to_ _target multiple data points with multiple functions calling features from OpenAI._
+_让我们来看看如何利用调用 OpenAI 的多个函数处理多个数据。_
 
-Here's the code
+代码如下
 
 ```python
 completion = client.chat.completions.create(
@@ -478,7 +481,7 @@ completion = client.chat.completions.create(
 )
 
 
-# Organic_results
+# Organic_results（自然搜索结果）
 argument_str = completion.choices[0].message.tool_calls[0].function.arguments
 argument_dict = json.loads(argument_str)
 organic_results = argument_dict['data']
@@ -492,7 +495,7 @@ for result in organic_results:
     print(result['position'])
     print('---')
 
-# People also ask
+# People also ask （相关问题）
 argument_str = completion.choices[0].message.tool_calls[1].function.arguments
 argument_dict = json.loads(argument_str)
 people_also_ask = argument_dict['data']
@@ -505,34 +508,34 @@ for result in people_also_ask:
     print('---')
 ```
 
-**Code Explanation:**
+### 代码说明
 
--   Adjust the prompt to include specific information on what to scrape: "You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people_also_ask section from the Google search result page."
--   Adding and separating functions, one for organic results*,* and one for people-also-ask section.
--   Testing the output in two different formats.
+-   调整提示词，使其包含关于抓取内容的具体信息： `您是搜索 Google 结果数据的高手。搜索两样东西： 第一。抓取排名前 10 的自然搜索结果数据；第二。从 Google 搜索结果页面中抓取 _the_ people_also_ask 部分（You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people_also_ask section from the Google search result page）`。
+-   添加并分离函数（separating functions），一个用于自然搜索结果，另一个用于 people-also-ask 部分。
+-   测试两种不同格式的输出。
 
-Here's the result:
+结果如下:
 
 ![](https://serpapi.com/blog/content/images/2023/11/multiple-data-points-on-AI-scraping.webp)
 
-Scraping multiple data points with AI
+利用人工智能获取多个数据点
 
-**Success:**  
-I'm able to scrape both the organic_results and people_also_ask separately. Kudos to OpenAI!
+### 成功 
+我可以分别搜索自然搜索结果和 people_also_ask。OpenAI 功不可没！
 
-**Problem:**  
-I'm not able to scrape the answer and original URL for the people*also_ask section. \_The reason is* that this information is hidden somewhere in the script tag. We could try this by providing that specific part of the script content, but I would consider it `cheating` for this experiment, as we want to pass the raw HTML without pinpointing or giving a hint.
+### 问题:
+我无法为 people_also_ask 部分提取答案和原始网址。原因是这些信息隐藏在脚本标签的某处。我们可以通过提供脚本内容的特定部分来尝试，但我认为这对本实验来说是 `作弊`，因为我们要传递的是原始网页内容，而不是精确定位或给出提示。
 
-**Time to finish**: ~30s
+### 运行时间: ~30s
 
-If you want to learn how to scrape these data cheaper, faster, and more accurate. You can read these posts:
+如果您想了解如何更低代价、更快速、更准确地搜索这些数据。您可以阅读以下文章：
 
--   [Scrape Google search results using Python](https://serpapi.com/blog/how-to-scrape-google-search-results-with-python/)
--   [Scrape Google Maps places results using Python](https://serpapi.com/blog/using-google-maps-place-results-api-from-serpapi/)
+-   [使用 Python 对 Google 搜索结果进行抓取](https://serpapi.com/blog/how-to-scrape-google-search-results-with-python/)
+-   [使用 Python 抓取 Google 地图的地点结果](https://serpapi.com/blog/using-google-maps-place-results-api-from-serpapi/)
 
-## Table comparison with SerpApi
+## 与 SerpApi 的表格比较
 
-Here's the timetable comparison using OpenAI's new GPT-4 model for web scraping VS [SerpApi](https://serpapi.com/?ref=web-scraping-with-ai-experiment-blog) . We're comparing with the 'normal speed'; SerpApi has faster (roughly twice as fast) when using [Ludicrous Speed](https://serpapi.com/ludicrous-speed).
+以下是使用 OpenAI 新的 GPT-4 模型进行网络抓取与[SerpApi](https://serpapi.com/?ref=web-scraping-with-ai-experiment-blog)的时间表对比。我们使用 `正常速度` 进行比较；SerpApi 在使用[Ludicrous Speed](https://serpapi.com/ludicrous-speed)时速度更快（大约是正常速度的两倍）。
 
 | Subject                                | gpt-4-1106-preview | SerpApi |
 | -------------------------------------- | ------------------ | ------- |
@@ -540,10 +543,10 @@ Here's the timetable comparison using OpenAI's new GPT-4 model for web scraping 
 | Organic results with Related questions | 30s                | 2.4s    |
 | Maps local results                     | 47s                | 2.7s    |
 
-## Conclusion
+## 结语
 
-OpenAI definitely improves a lot of over time. Now, it's possible to scrape a website and collect relevant data with the API. But based on the time it takes, it's not yet ready for production, commercial purpose, or scale. While the accuracy of the data and response format turns out perfect, it's still far behind in terms of cost and speed.
+随着时间的推移，OpenAI 肯定会有很大改进。现在，我们可以通过应用程序接口（API）抓取网站并收集相关数据。但从所花费的时间来看，它还不能用于生产、商业目的或规模化。虽然数据的准确性和响应格式都很完美，但在成本和速度方面还远远不够。
 
-Let me know if you have any thoughts, spot any mistakes, and other experiments you want to add that are relevant to this post to hilman(at)serpapi(dot)com.
+如果您有任何想法、发现任何错误，或想补充与本文章相关的其他实验，请发送邮件至 hilman@serpapi.com。
 
-Thank you for reading this post!
+感谢您阅读此文！
