@@ -9,7 +9,12 @@ reviewer: ""
 
 从网络搜索结果中解析数据往往是一件麻烦事。但如果有一种方法能让这一艰苦的过程变得轻而易举呢？让我们尝试一下 OpenAI 的新人工智能模型吧。
 
-#### [Hilman Ramadhan](/blog/author/hilman/)
+- [![Hilman Ramadhan](/blog/content/images/size/w100/2023/10/profile-picture.png)](/blog/author/hilman/)
+
+<!-- more -->
+
+
+**[Hilman Ramadhan](/blog/author/hilman/)**
 
 2023 年 11 月 10 日 10 分钟阅读时间
 
@@ -31,7 +36,7 @@ reviewer: ""
 -   转换成我们需要的特定 JSON 格式。
 -   只用很少的开发时间。
 
-**我们的目标:**
+### 我们的目标
 
 -   抓取一个结构良好的网站（作为热身）。
 -   从 Google 搜索结果页面返回自然搜索结果（organic results）。
@@ -44,14 +49,14 @@ reviewer: ""
 
 如果您不想阅读整篇文章，下面是我们使用 OpenAI API（新 GPT-4）模型进行网页抓取实验的利弊总结：
 
-**优点**
+### 优点
 
 -   新模型 `gpt-4-1106-preview` 能够完美地抓取原始 `HTML` 数据。更大的令牌窗口使得只需传递原始 `HTML` 数据即可进行抓取。
 -   `OpenAI` 的 `函数调用` 可以准确返回我们需要的响应格式。
 -   OpenAI 的 `多函数调用` 可以从多个数据点返回数据。
 -   与手动解析所需的开发时间相比，能够抓取原始 HTML 绝对是一个巨大优势。
 
-**缺点**
+### 缺点
 
 -   与使用其他 SERP API 提供商相比，成本很高。
 -   在传递整个原始 HTML 时要注意成本。我们仍然需要进行修剪 HTML，以便只抓取相关部分。否则，你必须为使用 token（口令）支付高额费用。.
@@ -65,7 +70,7 @@ reviewer: ""
 -   由于我们希望返回统一的 JSON 格式，因此我们将使用 [OpenAI 的函数调用功能](https://platform.openai.com/docs/guides/function-calling)，在这里我们可以用顺眼的格式定义响应的键和值。
 -   我们将使用以下模型 `gpt-4-1106-preview .`
 
-**基础代码**
+## 基础代码
 
 确保先安装 [OpenAI 库](https://github.com/openai/openai-python)。由于我使用的是 Python，我需要
 
@@ -162,16 +167,16 @@ for book in data:
 -   使用提示语 `您是抓取和解析原始 HTML 的高手`，并传递要分析的 `raw_html`。
 -   在 `tools` 参数中，我们定义了用于解析原始数据的虚函数（imaginary function）。不要忘记调整参数的属性，以准确返回您想要的格式。
 
-**结果如下**  
+### 结果如下  
 我们可以抓取每本书的标题、评分和价格 _（正是我们在上述\_\_函数参数中定义的数据）_。
 
-**运行完成时间**: ~15s
+### 运行完成时间: ~15s
 
 ![](https://serpapi.com/blog/content/images/2023/11/Compare-web-scraping-results.webp)
 
 比较网络抓取结果
 
-**使用 gpt-3.5**  
+### 使用 gpt-3.5  
 当切换到 `gpt-3.5-turbo-1106` 时，我必须调整提示词，使其更加具体：
 
 ```json
@@ -186,7 +191,7 @@ messages: {"role": "system", "content": "You are a master at scraping and parsin
 
 如果不提及 "抓取所有图书数据"，就只能得到前几个结果。
 
-**运行完成时间**: ~9s
+### 运行完成时间: ~9s
 
 ## 第 2 层：利用人工智能解析 Google SERP 中的自然搜索结果（Organic results）
 
@@ -278,11 +283,11 @@ for result in data:
 
 哒哒哒！尽管谷歌原始 HTML 格式复杂，我们还是准确地获得了所需的数据。
 
-**运行完成时间**: ~28s
+### 运行完成时间: ~28s
 
 > 备注： 我最初的提示词是 `很好地解析 Google SERP 原始 HTML 数据中的自然搜索结果(Parse organic results from Google SERP raw HTML data nicely)`，但只能返回前 3-5 个结果，因此我调整了提示词，以获得更多的结果。
 
-**使用 gpt-3.5 模型**  
+### 使用 gpt-3.5 模型  
 我无法做到这一点，因为原始 HTML 数据量超过了 token 窗口长度。
 
 ## 第 3 层：利用人工智能解析谷歌地图中的本地地点结果
@@ -304,9 +309,9 @@ for result in data:
 \- Additional service  
 \- Thumbnail image
 
-> **警告！** 原来，谷歌地图是通过 Javascript 来加载这些数据的，所以我必须改变获取原始网页的方法，从使用 `requests` 改为使用 `selenium` 来获取。
+> ### 警告！ 原来，谷歌地图是通过 Javascript 来加载这些数据的，所以我必须改变获取原始网页的方法，从使用 `requests` 改为使用 `selenium` 来获取
 
-**代码**
+### 代码
 
 在 Python 上安装 Selenium。更多安装说明请参阅 [此处](https://selenium-python.readthedocs.io/installation.html#introduction)。
 
@@ -397,7 +402,7 @@ data = argument_dict['data']
 print(data)
 ```
 
-**结果:**
+### 结果
 
 ![](https://serpapi.com/blog/content/images/2023/11/local-maps-AI-scraping-results.webp)
 
@@ -405,8 +410,8 @@ print(data)
 
 结果很完美！我可以获得每个 local_results 的准确数据。
 
-**运行完 Selenium 时间**: ~47s  
-**运行时间 (除了 Selenium )**: ~34s
+### 运行完 Selenium 时间: ~47s  
+### 运行时间 (除了 Selenium ): ~34s
 
 ## 第 4 层次： 利用人工智能解析来自 Google SERP 的两种不同数据（自然搜索结果和人们询问相关问题的部分）
 
@@ -503,10 +508,10 @@ for result in people_also_ask:
     print('---')
 ```
 
-**代码说明:**
+### 代码说明
 
 -   调整提示词，使其包含关于抓取内容的具体信息： `您是搜索 Google 结果数据的高手。搜索两样东西： 第一。抓取排名前 10 的自然搜索结果数据；第二。从 Google 搜索结果页面中抓取 _the_ people_also_ask 部分（You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people_also_ask section from the Google search result page）`。
--   添加并分离函数（separating functions），一个用于自然搜索结果，另一个用于people-also-ask部分。
+-   添加并分离函数（separating functions），一个用于自然搜索结果，另一个用于 people-also-ask 部分。
 -   测试两种不同格式的输出。
 
 结果如下:
@@ -515,13 +520,13 @@ for result in people_also_ask:
 
 利用人工智能获取多个数据点
 
-**成功:**  
+### 成功 
 我可以分别搜索自然搜索结果和 people_also_ask。OpenAI 功不可没！
 
-**问题:**  
+###问题:
 我无法为 people_also_ask 部分提取答案和原始网址。原因是这些信息隐藏在脚本标签的某处。我们可以通过提供脚本内容的特定部分来尝试，但我认为这对本实验来说是 `作弊`，因为我们要传递的是原始网页内容，而不是精确定位或给出提示。
 
-**运行时间**: ~30s
+### 运行时间: ~30s
 
 如果您想了解如何更低代价、更快速、更准确地搜索这些数据。您可以阅读以下文章：
 
@@ -530,7 +535,7 @@ for result in people_also_ask:
 
 ## 与 SerpApi 的表格比较
 
-以下是使用OpenAI新的GPT-4模型进行网络抓取与[SerpApi](https://serpapi.com/?ref=web-scraping-with-ai-experiment-blog)的时间表对比。我们使用 `正常速度` 进行比较；SerpApi在使用[Ludicrous Speed](https://serpapi.com/ludicrous-speed)时速度更快（大约是正常速度的两倍）。
+以下是使用 OpenAI 新的 GPT-4 模型进行网络抓取与[SerpApi](https://serpapi.com/?ref=web-scraping-with-ai-experiment-blog)的时间表对比。我们使用 `正常速度` 进行比较；SerpApi 在使用[Ludicrous Speed](https://serpapi.com/ludicrous-speed)时速度更快（大约是正常速度的两倍）。
 
 | Subject                                | gpt-4-1106-preview | SerpApi |
 | -------------------------------------- | ------------------ | ------- |
