@@ -14,7 +14,7 @@ reviewer: ""
 <!-- more -->
 
 
-**[Hilman Ramadhan](https://serpapi.com/blog/web-scraping-and-parsing-experiment-with-ai-openai/)**
+**[Hilman Ramadhan]()**
 
 2023 年 11 月 10 日 10 分钟阅读时间
 
@@ -523,7 +523,7 @@ for result in people_also_ask:
 ### 成功 
 我可以分别搜索自然搜索结果和 people_also_ask。OpenAI 功不可没！
 
-###问题:
+### 问题:
 我无法为 people_also_ask 部分提取答案和原始网址。原因是这些信息隐藏在脚本标签的某处。我们可以通过提供脚本内容的特定部分来尝试，但我认为这对本实验来说是 `作弊`，因为我们要传递的是原始网页内容，而不是精确定位或给出提示。
 
 ### 运行时间: ~30s
