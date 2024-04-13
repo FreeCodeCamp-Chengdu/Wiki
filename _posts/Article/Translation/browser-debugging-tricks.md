@@ -100,7 +100,7 @@ Only break on a random sample of executions of the line, e.g. only break 1 out o
 
 ### [Never Pause Here](#never-pause-here)
 
-![Chrome](https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg)
+<img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
 When you right-click the gutter and select “Never Pause Here,” Chrome creates a conditional breakpoint that is `false` and never passes. This makes it so that the debugger will never pause on this line.
 
@@ -148,7 +148,7 @@ Then programmatically toggle the boolean, e.g.
 
 ## [monitor() class Calls](#monitor-class-calls)
 
-![Chrome](https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg)
+<img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
 You can use Chrome’s `monitor` command line method to easily trace all calls to class methods. E.g. given a class `Dog`
 
@@ -186,7 +186,7 @@ You can use `debug` instead of `monitor` if you want to pause execution on any m
 
 ### [From a Specific Instance](#from-a-specific-instance)
 
-![Chrome](https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg)
+<img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
 If you don’t know the class but you have an instance:
 
@@ -282,8 +282,8 @@ Useful when you’re passing in some configuration options to something and you�
 
 ## [Use copy()](#use-copy)
 
-![Chrome](https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg)
-![Firefox](https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg)
+<img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
+<img src="https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg" width="40" height="40">
 
 You can copy interesting information out of the browser directly to your clipboard without any string truncation using the `copy()` console API. Some interesting things you might want to copy:
 
@@ -425,8 +425,8 @@ Array.from($0.querySelectorAll("*")).filter(isBold);
 
 #### [Previous Elements](#previous-elements)
 
-![Chrome](https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg)
-![Edge](https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg)
+<img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
+<img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40">
 
 In Chrome and Edge you can access the element you last inspected with `$1`, the element before that with `$2`, etc.
 
@@ -440,7 +440,7 @@ In Chrome you can inspect the event listeners of the currently selected element:
 
 ### [Monitor Events for Element](#monitor-events-for-element)
 
-![Chrome](https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg)
+<img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
 Debug all events for selected element: `monitorEvents($0)`
 
