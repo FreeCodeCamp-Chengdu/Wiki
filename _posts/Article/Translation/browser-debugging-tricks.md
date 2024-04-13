@@ -6,7 +6,7 @@ translator: ""
 reviewer: ""
 ---
 
-一份实用而不显眼的黑客高手列表，让您充分利用浏览器的[1](#user-content-fn-1) 调试器。假设您对开发工具有中级或更高程度的了解。
+一份实用而不显眼的黑客高手列表，让您充分利用浏览器的[1](#user-content-fnref-1) 调试器。假设您对开发工具有中级或更高程度的了解。
 
 <!-- more -->
 
@@ -450,4 +450,4 @@ Debug specific events for selected element: `monitorEvents($0, ["control", "key"
 
 ## [Footnotes](#footnote-label)
 
-1.  Tips are supported in Chrome, Firefox, and Edge unless the browser logos say otherwise: ![Chrome](https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg) ![Firefox](https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg) ![Edge](https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg) [↩](#user-content-fnref-1)
+1.  Tips are supported in Chrome, Firefox, and Edge unless the browser logos say otherwise: <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40"> <img src="https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg" width="40" height="40">  <img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40"> [↩](#user-content-fnref-1)
