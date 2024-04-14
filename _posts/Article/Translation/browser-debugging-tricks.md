@@ -55,7 +55,7 @@ reviewer: ""
 
 ![Conditional Breakpoint - performance profile](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconsole-time-performance-profile.9b494665.gif&w=1920&q=75)
 
-### [Using Function Arity](#using-function-arity)
+### [利用函数的参数个数](#using-function-arity)
 
 #### [按参数个数中断](#break-on-number-of-arguments)
 
@@ -65,7 +65,7 @@ reviewer: ""
 
 ![Conditional Breakpoint - argument length](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-argument-length.eedb2e1c.gif&w=1920&q=75)
 
-#### [Break on Function Arity Mismatch](#break-on-function-arity-mismatch)
+#### [在函数参数个数不匹配时设置断点](#break-on-function-arity-mismatch)
 
 仅在调用当前函数时使用了错误的参数数时暂停：`(arguments.callee.length) != arguments.length`
 
@@ -73,33 +73,33 @@ reviewer: ""
 
 在查找函数调用站点中的错误时非常有用。
 
-### [Using Time](#using-time)
+### [运行时间](#using-time)
 
-#### [Skip Page Load](#skip-page-load)
+#### [跳过页面加载](#skip-page-load)
 
 页面加载 5 秒后才暂停：performance.now() > 5000
 
 当您想设置断点，但只想在初始页面加载后暂停执行时很有用。
 
-#### [Skip N Seconds](#skip-n-seconds)
+#### [跳过 N 秒](#skip-n-seconds)
 
-如果在接下来的 5 秒钟内遇到断点，则不暂停执行，而是暂停之后的任何时间：`window.baseline = window.baseline || Date.now(), (Date.now() - window.baseline) > 5000`。
+如果在接下来的 5 秒钟内遇到断点，则不暂停执行，但随时可以在之后暂停：`window.baseline = window.baseline || Date.now(), (Date.now() - window.baseline) > 5000`。
 
-随时从控制台 (console) 重置计数器：`window.baseline = Date.now()`
+可以随时从控制台 (console) 重置计数器：`window.baseline = Date.now()`
 
 ### [Using CSS](#using-css)
 
 根据计算的 CSS 值暂停执行，例如，仅在文档正文背景颜色为红色时暂停执行：`window.getComputedStyle(document.body).backgroundColor === "rgb(255,0,0)"`
 
-### [Even Calls Only](#even-calls-only)
+### [仅限偶数次调用](#even-calls-only)
 
 每执行一次后暂停一次：`window.counter = window.counter || 0, window.counter % 2 === 0`
 
-### [Break on Sample](#break-on-sample)
+### [根据采样暂停](#break-on-sample)
 
 仅在随机抽样执行该行时暂停，例如，仅在每执行 10 次该行时暂停 1 次：`Math.random() < 0.1`
 
-### [Never Pause Here](#never-pause-here)
+### [此处永不暂停](#never-pause-here)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
@@ -110,13 +110,13 @@ reviewer: ""
 
 当你想将某一行从 XHR 断点中排除、忽略正在抛出的异常等时，它就会派上用场。
 
-### [Automatic Instance IDs](#automatic-instance-ids)
+### [自动分配实例 ID](#automatic-instance-ids)
 
 通过在构造函数中设置以下条件断点，自动为类的每个实例分配唯一 ID：`(window.instances = window.instances || []).push(this)`
 
 然后检索唯一 ID：`window.instances.indexOf(instance)` (例如，在类方法中使用 `window.instances.indexOf(this)`)
 
-### [Programmatically Toggle](#programmatically-toggle)
+### [编程触发](#programmatically-toggle)
 
 使用全局布尔值选取一个或多个条件断点：
 
@@ -138,7 +138,7 @@ reviewer: ""
 
 -   等等
 
-## [monitor() class Calls](#monitor-class-calls)
+## [监视类（class）的调用](#monitor-class-calls)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
@@ -163,7 +163,7 @@ Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 
 如果想暂停任何方法调用的执行 (而不只是记录到控制台)，可以使用 `debug` 代替 `monitor`。
 
-### [From a Specific Instance](#from-a-specific-instance)
+### [从特定实例](#from-a-specific-instance)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
@@ -176,7 +176,7 @@ Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 
 当您想为任何类的任何实例 (而不仅仅是 `Dog` 类) 编写一个执行此操作的函数时，该函数非常有用。
 
-## [Call and Debug a Function](#call-and-debug-a-function)
+## [调用并调试一个函数](#call-and-debug-a-function)
 
 在调用要在控制台中调试的函数之前，调用 `debugger`。例如
 
@@ -197,7 +197,7 @@ debugger; fn(1);
 
 在 Chrome 浏览器中，您还可以选择在命令行中调用 `debug(fn)`，调试器会在每次调用 `fn` 时暂停执行。
 
-## [Pause Execution on URL Change](#pause-execution-on-url-change)
+## [在 URL 改变时暂停执行](#pause-execution-on-url-change)
 
 在单页面应用程序修改 URL (即发生路由事件) 之前暂停执行：
 
@@ -221,7 +221,7 @@ debug(window.location.replace);
 debug(window.location.assign);
 ```
 
-## [Debugging Property Reads](#debugging-property-reads)
+## [调试属性读取操作](#debugging-property-reads)
 
 如果你有一个对象，并想知道它的某个属性何时被读取，可以使用一个带有 `debugger` 调用的对象获取器。例如，将 `{configOption: true}` 转换为 `{get configOption() { debugger; return true; }}`（在原始源代码中或使用条件断点）。
 
@@ -244,11 +244,11 @@ debug(window.location.assign);
 
 JS 控制台有助于诊断 HTML/CSS 的问题。
 
-### [Inspect the DOM with JS Disabled](#inspect-the-dom-with-js-disabled)
+### [在禁用 JavaScript 的情况下检查 DOM](#inspect-the-dom-with-js-disabled)
 
 在 DOM 检查器中按下 `ctrl+\` (Chrome/Windows) 可以随时暂停 JS 的执行。这样您就可以检查 DOM 的快照，而不必担心 JS 会改变 DOM 或事件（如鼠标悬停）会导致 DOM 从您脚下发生变化。
 
-### [Inspect an Elusive Element](#inspect-an-elusive-element)
+### [检查一个难以捉摸的元素](#inspect-an-elusive-element)
 
 假设您要检查一个 DOM 元素，而该元素只有在有条件的情况下才会出现。检查该元素需要将鼠标移动到该元素上，但当您尝试移动时，该元素却消失了：
 
@@ -262,7 +262,7 @@ JS 控制台有助于诊断 HTML/CSS 的问题。
 
 在检查依赖于特定光标位置、焦点等的 DOM 时非常有用。
 
-### [Record Snapshots of the DOM](#record-snapshots-of-the-dom)
+### [记录 DOM 的快照](#record-snapshots-of-the-dom)
 
 复制当前状态下的 DOM :
 
@@ -289,7 +289,7 @@ setInterval(() => {
 }, 1000);
 ```
 
-### [Monitor Focused Element](#monitor-focused-element)
+### [监视焦点元素](#monitor-focused-element)
 
 ```javascript
 (function () {
@@ -305,7 +305,7 @@ setInterval(() => {
 
 ![Monitor focused element](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmonitor-focus.b9692b99.gif&w=1920&q=75)
 
-### [Find Bold Elements](#find-bold-elements)
+### [查找加粗元素](#find-bold-elements)
 
 ```javascript
 const isBold = (e) => {
@@ -315,7 +315,7 @@ const isBold = (e) => {
 Array.from(document.querySelectorAll("*")).filter(isBold);
 ```
 
-#### [Just Descendants](#just-descendants)
+#### [仅限后代元素](#just-descendants)
 
 或者只是检查器中当前所选元素的后代：
 
@@ -323,18 +323,18 @@ Array.from(document.querySelectorAll("*")).filter(isBold);
 Array.from($0.querySelectorAll("*")).filter(isBold);
 ```
 
-### [Reference Currently Selected Element](#reference-currently-selected-element)
+### [引用当前选定的元素](#reference-currently-selected-element)
 
 控制台中的 `$0` 是对元素检查器中当前选定元素的自动引用（automatic reference）。
 
-#### [Previous Elements](#previous-elements)
+#### [前面的元素](#previous-elements)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 <img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40">
 
 在 Chrome 和 Edge 中，你可以使用 `$1` 访问你上次检查的元素，使用 `$2` 访问上上次检查的元素，以此类推。
 
-#### [Get Event Listeners](#get-event-listeners)
+#### [查看事件监听器](#get-event-listeners)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
@@ -342,7 +342,7 @@ Array.from($0.querySelectorAll("*")).filter(isBold);
 
 ![getEventListeners](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FgetEventListeners.4ae6f43e.png&w=1920&q=75)
 
-### [Monitor Events for Element](#monitor-events-for-element)
+### [监视元素的事件](#monitor-events-for-element)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
@@ -352,6 +352,6 @@ Array.from($0.querySelectorAll("*")).filter(isBold);
 
 ![monitorEvents](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FmonitorEvents.a03f9e53.gif&w=1920&q=75)
 
-## [Footnotes](#footnote-label)
+## [脚注](#footnote-label)
 
 1.  除非浏览器标识另有说明，否则 Chrome、Firefox 和 Edge 浏览器均支持提示功能: <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40"> <img src="https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg" width="40" height="40">  <img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40"> [↩](#user-content-fnref-1)
