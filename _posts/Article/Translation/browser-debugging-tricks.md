@@ -6,97 +6,98 @@ translator: ""
 reviewer: ""
 ---
 
-一份实用而不显眼的黑客高手列表，让您充分利用浏览器的[1](#user-content-fnref-1) 调试器。假设您对开发工具有中级或更高程度的了解。
+一份实用而不显眼的黑客高手列表，让您充分利用浏览器的 [1](#user-content-fnref-1) 调试器。假设您对开发工具有中级或更高程度的了解。
 
 <!-- more -->
 
 ## [高级条件断点](#advanced-conditional-breakpoints)
 
-通过在您意想不到的地方使用会产生副作用的表达式（有预期之外的结果），我们可以从诸如条件断点等基本功能中榨取出更多的功能。
+通过在您意想不到的地方使用会产生副作用的表达式 (有预期之外的结果)，我们可以从诸如条件断点等基本功能中榨取出更多的功能。
 
-### [Logpoints（日志断点） / Tracepoints（跟踪断点）](#logpoints--tracepoints)
+### [Logpoints (日志断点) / Tracepoints (跟踪断点)](#logpoints--tracepoints)
 
-例如，我们可以在断点中使用 `console.log`。日志断点是指不会暂停执行并将日志记录到控制台的断点。尽管 Microsoft Edge 已经内置了日志断点有一段时间，Chrome 则是在 v73 版本中才添加了这个功能，但 Firefox 却没有。不过，我们可以使用条件断点（conditional breakpoints）在任何浏览器中模拟这一功能。
+例如，我们可以在断点中使用 `console.log`。日志断点是指不会暂停执行并将日志记录到控制台的断点。尽管 Microsoft Edge 已经内置了日志断点有一段时间，Chrome 则是在 v73 版本中才添加了这个功能，但 Firefox 却没有。不过，我们可以使用条件断点 (conditional breakpoints) 在任何浏览器中模拟这一功能。
 
 ![Conditional Breakpoint - console.log](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-console-log.2d18d3e4.gif&w=828&q=75)
 
 如果您还想记录该行代码的执行次数，请使用 `console.count` 代替 `console.log`。
 
-更新（2020 年 5 月）: 所有主流浏览器现在都直接支持日志断点/跟踪断点 ([Chrome Logpoints](https://developers.google.com/web/updates/2019/01/devtools#logpoints), [Edge Tracepoints](https://docs.microsoft.com/en-us/microsoft-edge/devtools-guide/debugger#breakpoints), [Firefox Logpoints](https://developer.mozilla.org/en-US/docs/Tools/Debugger/Set_a_logpoint))
+更新 (2020 年 5 月)：所有主流浏览器现在都直接支持日志断点/跟踪断点 ([Chrome Logpoints](https://developers.google.com/web/updates/2019/01/devtools#logpoints)，[Edge Tracepoints](https://docs.microsoft.com/en-us/microsoft-edge/devtools-guide/debugger#breakpoints)，[Firefox Logpoints](https://developer.mozilla.org/en-US/docs/Tools/Debugger/Set_a_logpoint))
 
 #### [Watch Pane](#watch-pane)
 
-You can also use `console.log` in the watch pane. For example, to dump a snapshot of `localStorage` everytime your application pauses in the debugger, you can create a `console.table(localStorage)` watch:
+您还可以在监视窗格中使用 `console.log`。例如，要在调试器中每次暂停应用程序时转储 `localStorage` 的快照，可以创建一个 `console.table(localStorage)` watch Pane：
 
 ![console.table in watch pane](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconsole-table-in-watch.03919d55.png&w=1080&q=75)
 
-Or to execute an expression after DOM mutation, set a DOM mutation breakpoint (in the Element Inspector): ![DOM Mutation Breakpoint](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-DOM-mutation-chrome.27f07619.png&w=1920&q=75)
+或者，要在 DOM 突变后执行表达式，请设置 DOM 变化断点 (在元素检查器 Element Inspector 中)：
+ ![DOM Mutation Breakpoint](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-DOM-mutation-chrome.27f07619.png&w=1920&q=75)
 
-And then add your watch expression, e.g. to record a snapshot of the DOM: `(window.doms = window.doms || []).push(document.documentElement.outerHTML)`. Now, after any DOM subtree modification, the debugger will pause execution and the new DOM snapshot will be at the end of the `window.doms` array. (There is no way to create a DOM mutation breakpoint that doesn’t pause execution.)
+然后添加观察表达式 (watch expression)，例如记录 DOM 的快照：`(window.doms = window.doms || []).push(document.documentElement.outerHTML)`。现在，在修改任何 DOM 子树之后，调试器将暂停执行，新的 DOM 快照将位于 `window.doms` 数组的最后一个。(没有办法创建不暂停执行的 DOM 突变断点)。
 
-#### [Tracing Callstacks](#tracing-callstacks)
+#### [跟踪调用堆栈 (Tracing Callstacks)](#tracing-callstacks)
 
-Let’s say you have a function that shows a loading spinner and a function that hides it, but somewhere in your code you’re calling the show method without a matching hide call. How can you find the source of the unpaired show call? Use `console.trace` in a conditional breakpoint in the show method, run your code, find the last stack trace for the show method and click the caller to go to the code:
+举个例子，你有一个 showSpinner 的函数和一个 hideSpinner 的函数，但在代码的某个地方，你调用 show 方法时没有调用匹配的 hide 方法。如何找到未配对显示调用的来源？在 show 方法的条件断点中使用 `console.trace`，运行代码，找到 show 方法的最后一次堆栈跟踪，然后点击调用者进入代码：
 
 ![console.trace in conditional breakpoint](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconsole-trace-find-stack.d107e89c.gif&w=1920&q=75)
 
-### [Changing Program Behavior](#changing-program-behavior)
+### [改变程序行为 (Changing Program Behavior)](#changing-program-behavior)
 
-By using expressions that have side effects on program behavior, we can change program behavior on the fly, right in the browser.
+通过使用对程序行为有副作用的表达式，我们可以在浏览器中即时更改程序行为。
 
-For example, you can override the param to the `getPerson` function, `id`. Since `id=1` evaluates to true, this conditional breakpoint would pause the debugger. To prevent that, append `, false` to the expression.
+例如，你可以覆盖 `getPerson` 函数的参数 `id`。由于 `id=1` 的值为 true，这个条件断点会暂停调试器。为避免这种情况，可在表达式中添加 `, false`。
 
 ![Conditional Breakpoint - parameter override](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-parameter-override.375af5d5.gif&w=1920&q=75)
 
-### [Quick and Dirty Performance Profiling](#quick-and-dirty-performance-profiling)
+### [快速、简单的性能分析 (Quick and Dirty Performance Profiling)](#quick-and-dirty-performance-profiling)
 
-You shouldn’t muddy your performance profiling with things like conditional breakpoint evaluation time, but if you want a quick and dirty measurement of how long something takes to run, you can use the console timing API in conditional breakpoints. In your starting point set a breakpoint with the condition `console.time('label')` and at the end point set a breakpoint with the condition `console.timeEnd('label')`. Everytime the thing you’re measuring runs, the browser will log to the console how long it takes.
+您不应该用条件断点 (conditional breakpoint) 评估时间之类的东西来性能分析，但如果您想快速而又肮脏地测量某个程序运行所需的时间，可以在条件断点中使用控制台计时 API。在起点设置一个条件为 `console.time('label')` 的断点，在终点设置一个条件为 `console.timeEnd('label')` 的断点。每次运行要测量的内容时，浏览器都会在控制台中记录运行时间。
 
 ![Conditional Breakpoint - performance profile](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconsole-time-performance-profile.9b494665.gif&w=1920&q=75)
 
 ### [Using Function Arity](#using-function-arity)
 
-#### [Break on Number of Arguments](#break-on-number-of-arguments)
+#### [按参数个数中断](#break-on-number-of-arguments)
 
-Only pause when the current function is called with 3 arguments: `arguments.callee.length === 3`
+只有在当前函数被调用并包含 3 个参数时才暂停：`arguments.callee.length === 3`
 
-Useful when you have an overloaded function that has optional parameters.
+在重载函数 (overloaded function) 有可选参数时非常有用。
 
 ![Conditional Breakpoint - argument length](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-argument-length.eedb2e1c.gif&w=1920&q=75)
 
 #### [Break on Function Arity Mismatch](#break-on-function-arity-mismatch)
 
-Only pause when the current function is called with the wrong number of arguments: `(arguments.callee.length) != arguments.length`
+仅在调用当前函数时使用了错误的参数数时暂停：`(arguments.callee.length) != arguments.length`
 
 ![Conditional Breakpoint - arity check](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-arity-check.70c0a60c.gif&w=1920&q=75)
 
-Useful when finding bugs in function call sites.
+在查找函数调用站点中的错误时非常有用。
 
 ### [Using Time](#using-time)
 
 #### [Skip Page Load](#skip-page-load)
 
-Don’t pause until 5 seconds after page load: `performance.now() > 5000`
+页面加载 5 秒后才暂停：performance.now() > 5000
 
-Useful when you want to set a breakpoint but you’re only interested in pausing execution after initial page load.
+当您想设置断点，但只想在初始页面加载后暂停执行时很有用。
 
 #### [Skip N Seconds](#skip-n-seconds)
 
-Don’t pause execution if the breakpoint is hit in the next 5 seconds, but pause anytime after: `window.baseline = window.baseline || Date.now(), (Date.now() - window.baseline) > 5000`
+如果在接下来的 5 秒钟内遇到断点，则不暂停执行，而是暂停之后的任何时间：`window.baseline = window.baseline || Date.now(), (Date.now() - window.baseline) > 5000`。
 
-Reset the counter from the console anytime you’d like: `window.baseline = Date.now()`
+随时从控制台 (console) 重置计数器：`window.baseline = Date.now()`
 
 ### [Using CSS](#using-css)
 
-Pause based on computed CSS values, e.g. only pause execution when the document body has a red background color: `window.getComputedStyle(document.body).backgroundColor === "rgb(255,0,0)"`
+根据计算的 CSS 值暂停执行，例如，仅在文档正文背景颜色为红色时暂停执行：`window.getComputedStyle(document.body).backgroundColor === "rgb(255,0,0)"`
 
 ### [Even Calls Only](#even-calls-only)
 
-Only pause every other time the line is executed: `window.counter = window.counter || 0, window.counter % 2 === 0`
+每执行一次后暂停一次：`window.counter = window.counter || 0, window.counter % 2 === 0`
 
 ### [Break on Sample](#break-on-sample)
 
-Only break on a random sample of executions of the line, e.g. only break 1 out of every 10 times the line is executed: `Math.random() < 0.1`
+仅在随机抽样执行该行时暂停，例如，仅在每执行 10 次该行时暂停 1 次：`Math.random() < 0.1`
 
 ### [Never Pause Here](#never-pause-here)
 
@@ -174,11 +175,11 @@ Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 
 and you’ll get output in the console:
 
-```
+```plain
 > function bark called with arguments: 2
 ```
 
-```
+```plain
 > function bark called with arguments: 2
 ```
 
