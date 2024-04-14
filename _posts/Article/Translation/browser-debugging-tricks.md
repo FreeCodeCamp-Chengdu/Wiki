@@ -129,17 +129,8 @@ reviewer: ""
     ```javascript
     window.enableBreakpoints = true;
     ```
-
-    ```javascript
-    window.enableBreakpoints = true;
-    ```
-
 -   从其他断点 ![Boolean gate - enable from other breakpoint](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-gated-enable-from-breakpoint.1c568b6e.png&w=1920&q=75)
 -   从控制台上的计时器
-
-    ```javascript
-    setTimeout(() => (window.enableBreakpoints = true), 5000);
-    ```
 
     ```javascript
     setTimeout(() => (window.enableBreakpoints = true), 5000);
@@ -157,10 +148,6 @@ reviewer: ""
 class Dog {2  bark(count) {3    /* ... */4  }5}
 ```
 
-```javascript
-class Dog {2  bark(count) {3    /* ... */4  }5}
-```
-
 如果我们想知道对 “Dog” 的所有实例的所有调用，请将此内容粘贴到命令行中：
 
 ```javascript
@@ -168,16 +155,7 @@ var p = Dog.prototype;
 Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 ```
 
-```javascript
-var p = Dog.prototype;
-Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
-```
-
 就会在控制台中得到输出结果：
-
-```javascript
-> function bark called with arguments: 2
-```
 
 ```javascript
 > function bark called with arguments: 2
@@ -196,22 +174,11 @@ var p = instance.constructor.prototype;
 Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 ```
 
-```javascript
-var p = instance.constructor.prototype;
-Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
-```
-
 当您想为任何类的任何实例 (而不仅仅是 `Dog` 类) 编写一个执行此操作的函数时，该函数非常有用。
 
 ## [Call and Debug a Function](#call-and-debug-a-function)
 
 在调用要在控制台中调试的函数之前，调用 `debugger`。例如
-
-```javascript
-function fn() {
-    /* ... */
-}
-```
 
 ```javascript
 function fn() {
@@ -244,15 +211,6 @@ window.onhashchange = dbg;
 window.onpopstate = dbg;
 ```
 
-```javascript
-const dbg = () => {
-    debugger;
-};
-history.pushState = dbg;
-history.replaceState = dbg;
-window.onhashchange = dbg;
-window.onpopstate = dbg;
-```
 
 至于如何创建一个能在不中断导航的情况下暂停执行的 `dbg` 版本，读者可自行决定。
 
