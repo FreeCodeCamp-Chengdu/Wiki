@@ -103,39 +103,39 @@ reviewer: ""
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
-When you right-click the gutter and select “Never Pause Here,” Chrome creates a conditional breakpoint that is `false` and never passes. This makes it so that the debugger will never pause on this line.
+右键单击边栏位置并选择 `Never Pause Here（此处永不暂停）`，Chrome 浏览器会创建一个条件断点，`false`，永远不会触发。这样调试器就不会在这一行暂停。
 
 ![Never Pause Here](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnever-pause-here.a4010ee4.png&w=640&q=75) 
 ![Never Pause Here Result](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fnever-pause-here-result.32dc71c3.png&w=750&q=75)
 
-Useful when you want to exempt a line from XHR breakpoints, ignore an exception that is being thrown, etc.
+当你想将某一行从 XHR 断点中排除、忽略正在抛出的异常等时，它就会派上用场。
 
 ### [Automatic Instance IDs](#automatic-instance-ids)
 
-Automatically assign a unique ID to every instance of a class by setting this conditional breakpoint in the constructor: `(window.instances = window.instances || []).push(this)`
+通过在构造函数中设置以下条件断点，自动为类的每个实例分配唯一 ID：`(window.instances = window.instances || []).push(this)`
 
-Then to retrieve the unique ID: `window.instances.indexOf(instance)` (e.g. `window.instances.indexOf(this)` when in a class method)
+然后检索唯一 ID：`window.instances.indexOf(instance)` (例如，在类方法中使用 `window.instances.indexOf(this)`)
 
 ### [Programmatically Toggle](#programmatically-toggle)
 
-Use a global boolean to gate one or more conditional breakpoints:
+使用全局布尔值选取一个或多个条件断点：
 
 ![Boolean gate](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-gated.d32764ce.png&w=1920&q=75)
 
-Then programmatically toggle the boolean, e.g.
+然后通过编程切换布尔值，例如
 
--   manually, from the console
-
-    ```javascript
-    window.enableBreakpoints = true;
-    ```
+-   从控制台手动输入
 
     ```javascript
     window.enableBreakpoints = true;
     ```
 
--   from other breakpoints ![Boolean gate - enable from other breakpoint](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-gated-enable-from-breakpoint.1c568b6e.png&w=1920&q=75)
--   from a timer on the console
+    ```javascript
+    window.enableBreakpoints = true;
+    ```
+
+-   从其他断点 ![Boolean gate - enable from other breakpoint](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fconditional-breakpoint-gated-enable-from-breakpoint.1c568b6e.png&w=1920&q=75)
+-   从控制台上的计时器
 
     ```javascript
     setTimeout(() => (window.enableBreakpoints = true), 5000);
@@ -145,13 +145,13 @@ Then programmatically toggle the boolean, e.g.
     setTimeout(() => (window.enableBreakpoints = true), 5000);
     ```
 
--   etc
+-   等等
 
 ## [monitor() class Calls](#monitor-class-calls)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
-You can use Chrome’s `monitor` command line method to easily trace all calls to class methods. E.g. given a class `Dog`
+您可以使用 Chrome 浏览器的 `monitor` 命令行方法轻松跟踪对类方法的所有调用。例如，给定一个类 `Dog`
 
 ```javascript
 class Dog {2  bark(count) {3    /* ... */4  }5}
@@ -161,7 +161,7 @@ class Dog {2  bark(count) {3    /* ... */4  }5}
 class Dog {2  bark(count) {3    /* ... */4  }5}
 ```
 
-If we want to know all calls made to all instances of `Dog`, paste this into the command line:
+如果我们想知道对 “Dog” 的所有实例的所有调用，请将此内容粘贴到命令行中：
 
 ```javascript
 var p = Dog.prototype;
@@ -173,23 +173,23 @@ var p = Dog.prototype;
 Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 ```
 
-and you’ll get output in the console:
+就会在控制台中得到输出结果：
 
-```plain
+```javascript
 > function bark called with arguments: 2
 ```
 
-```plain
+```javascript
 > function bark called with arguments: 2
 ```
 
-You can use `debug` instead of `monitor` if you want to pause execution on any method calls (instead of just logging to the console).
+如果想暂停任何方法调用的执行 (而不只是记录到控制台)，可以使用 `debug` 代替 `monitor`。
 
 ### [From a Specific Instance](#from-a-specific-instance)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
-If you don’t know the class but you have an instance:
+如果您不知道该类，但有一个实例：
 
 ```javascript
 var p = instance.constructor.prototype;
@@ -201,11 +201,11 @@ var p = instance.constructor.prototype;
 Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 ```
 
-Useful when you’d like to write a function that does this for any instance of any class (instead of just `Dog`)
+当您想为任何类的任何实例 (而不仅仅是 `Dog` 类) 编写一个执行此操作的函数时，该函数非常有用。
 
 ## [Call and Debug a Function](#call-and-debug-a-function)
 
-Before calling the function you want to debug in the console, call `debugger`. E.g. given:
+在调用要在控制台中调试的函数之前，调用 `debugger`。例如
 
 ```javascript
 function fn() {
@@ -219,27 +219,20 @@ function fn() {
 }
 ```
 
-From your console:
-
+从您的控制台：
 ```js
-debugger;
-fn(1);
+debugger; fn(1);
 ```
 
-```js
-debugger;
-fn(1);
-```
+然后 `进入下一个函数调用(Step into next function call)`，以调试 `fn` 的实现。
 
-And then “Step into next function call” to debug the implementation of `fn`.
+当你不想查找 `fn` 的定义并手动添加断点时，或者当 `fn` 与函数动态绑定，而你不知道源代码在哪里时，这种调试器就很有用。
 
-Useful when you don’t feel like finding the definition of `fn` and adding a breakpoint manually or if `fn` is dynamically bound to a function and you don’t know where the source is.
-
-In Chrome you can also optionally call `debug(fn)` on the command line and the debugger will pause execution inside `fn` every time it is called.
+在 Chrome 浏览器中，您还可以选择在命令行中调用 `debug(fn)`，调试器会在每次调用 `fn` 时暂停执行。
 
 ## [Pause Execution on URL Change](#pause-execution-on-url-change)
 
-To pause execution before a single-page application modifies the URL (i.e. some routing event happens):
+在单页面应用程序修改 URL (即发生路由事件) 之前暂停执行：
 
 ```javascript
 const dbg = () => {
@@ -261,14 +254,9 @@ window.onhashchange = dbg;
 window.onpopstate = dbg;
 ```
 
-Creating a version of `dbg` that pauses execution without breaking navigation is an exercise left up to the reader.
+至于如何创建一个能在不中断导航的情况下暂停执行的 `dbg` 版本，读者可自行决定。
 
-Also, note that this doesn’t handle when code calls `window.location.replace/assign` directly because the page will immediately unload after the assignment, so there is nothing to debug. If you still want to see the source of these redirects (and debug your state at the time of redirect), in Chrome you can `debug` the relevant methods:
-
-```javascript
-debug(window.location.replace);
-debug(window.location.assign);
-```
+另外，请注意，这种方法无法处理直接调用 `window.location.replace/assign` 的情况，因为页面在赋值后会立即销毁，所以没有任何调试内容。如果你仍然想要查看这些重定向的原网址 (并在重定向时调试你的状态)，在 Chrome 中你可以使用 `debug` 来调试相关的方法：
 
 ```javascript
 debug(window.location.replace);
