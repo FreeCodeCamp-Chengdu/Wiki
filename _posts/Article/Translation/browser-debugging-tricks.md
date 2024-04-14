@@ -6,7 +6,7 @@ translator: ""
 reviewer: ""
 ---
 
-一份实用而不显眼的黑客高手列表，让您充分利用浏览器的 [1](#user-content-fnref-1) 调试器。假设您对开发工具有中级或更高程度的了解。
+一份实用而不显眼的黑客高手列表，让您充分利用浏览器的调试器。假设您对开发工具有中级或更高程度的了解。
 
 <!-- more -->
 
@@ -138,7 +138,7 @@ reviewer: ""
 
 -   等等
 
-## [监视类（class）的调用](#monitor-class-calls)
+## [监视类 (class) 的调用](#monitor-class-calls)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
@@ -223,7 +223,7 @@ debug(window.location.assign);
 
 ## [调试属性读取操作](#debugging-property-reads)
 
-如果你有一个对象，并想知道它的某个属性何时被读取，可以使用一个带有 `debugger` 调用的对象获取器。例如，将 `{configOption: true}` 转换为 `{get configOption() { debugger; return true; }}`（在原始源代码中或使用条件断点）。
+如果你有一个对象，并想知道它的某个属性何时被读取，可以使用一个带有 `debugger` 调用的对象获取器。例如，将 `{configOption: true}` 转换为 `{get configOption() { debugger; return true; }}` (在原始源代码中或使用条件断点)。
 
 当你向某个程序传递一些配置选项，并希望查看这些选项的使用情况时，它就会派上用场。
 
@@ -234,10 +234,10 @@ debug(window.location.assign);
 
 您可以使用 `copy()` 控制台 API 将浏览器中有趣的信息直接复制到剪贴板，而无需截断任何字符串。您可能想复制一些有趣的内容：
 
--   当前 DOM 的快照: `copy(document.documentElement.outerHTML)`
--   资源的元数据（如图像）: `copy(performance.getEntriesByType("resource"))`
--   格式化后的大型 JSON blob: `copy(JSON.parse(blob))`
--   本地存储的转储: `copy(localStorage)`
+-   当前 DOM 的快照：`copy(document.documentElement.outerHTML)`
+-   资源的元数据 (如图像)：`copy(performance.getEntriesByType("resource"))`
+-   格式化后的大型 JSON blob：`copy(JSON.parse(blob))`
+-   本地存储的转储：`copy(localStorage)`
 -   等等。
 
 ## [Debugging HTML/CSS](#debugging-htmlcss)
@@ -246,7 +246,7 @@ JS 控制台有助于诊断 HTML/CSS 的问题。
 
 ### [在禁用 JavaScript 的情况下检查 DOM](#inspect-the-dom-with-js-disabled)
 
-在 DOM 检查器中按下 `ctrl+\` (Chrome/Windows) 可以随时暂停 JS 的执行。这样您就可以检查 DOM 的快照，而不必担心 JS 会改变 DOM 或事件（如鼠标悬停）会导致 DOM 从您脚下发生变化。
+在 DOM 检查器中按下 `ctrl+\` (Chrome/Windows) 可以随时暂停 JS 的执行。这样您就可以检查 DOM 的快照，而不必担心 JS 会改变 DOM 或事件 (如鼠标悬停) 会导致 DOM 从您脚下发生变化。
 
 ### [检查一个难以捉摸的元素](#inspect-an-elusive-element)
 
@@ -254,7 +254,7 @@ JS 控制台有助于诊断 HTML/CSS 的问题。
 
 ![Elusive element](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felusive-element.495b0945.gif&w=1920&q=75)
 
-为了检查元素，您可以将以下内容粘贴到控制台中： `setTimeout(function(){debugger; }, 5000);`。这将为您提供 5 秒钟的时间来触发用户界面，一旦 5 秒计时器计时结束，JS 的执行就会暂停，元素也不会消失。您可以自由地将鼠标移到开发工具上，而不会丢失元素：
+为了检查元素，您可以将以下内容粘贴到控制台中：`setTimeout(function(){debugger; }, 5000);`。这将为您提供 5 秒钟的时间来触发用户界面，一旦 5 秒计时器计时结束，JS 的执行就会暂停，元素也不会消失。您可以自由地将鼠标移到开发工具上，而不会丢失元素：
 
 ![Elusive element - inspected](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felusive-element-inspected.f5f036b4.gif&w=1920&q=75)
 
@@ -264,7 +264,7 @@ JS 控制台有助于诊断 HTML/CSS 的问题。
 
 ### [记录 DOM 的快照](#record-snapshots-of-the-dom)
 
-复制当前状态下的 DOM :
+复制当前状态下的 DOM：
 
 ```javascript
 copy(document.documentElement.outerHTML);
@@ -280,7 +280,7 @@ setInterval(() => {
 }, 1000);
 ```
 
-或者直接转存（dump）到控制台：
+或者直接转存 (dump) 到控制台：
 
 ```javascript
 setInterval(() => {
@@ -325,7 +325,7 @@ Array.from($0.querySelectorAll("*")).filter(isBold);
 
 ### [引用当前选定的元素](#reference-currently-selected-element)
 
-控制台中的 `$0` 是对元素检查器中当前选定元素的自动引用（automatic reference）。
+控制台中的 `$0` 是对元素检查器中当前选定元素的自动引用 (automatic reference)。
 
 #### [前面的元素](#previous-elements)
 
@@ -346,12 +346,12 @@ Array.from($0.querySelectorAll("*")).filter(isBold);
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
-调试选定元素的所有事件： `monitorEvents($0)`
+调试选定元素的所有事件：`monitorEvents($0)`
 
-调试选定元素的特定事件： `monitorEvents($0, ["control", "key"])`
+调试选定元素的特定事件：`monitorEvents($0, ["control", "key"])`
 
 ![monitorEvents](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FmonitorEvents.a03f9e53.gif&w=1920&q=75)
 
 ## [脚注](#footnote-label)
 
-1.  除非浏览器标识另有说明，否则 Chrome、Firefox 和 Edge 浏览器均支持提示功能: <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40"> <img src="https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg" width="40" height="40">  <img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40"> [↩](#user-content-fnref-1)
+1.  除非浏览器标识另有说明，否则 Chrome、Firefox 和 Edge 浏览器均支持提示功能： <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40"><img src="https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg" width="40" height="40"><img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40">
