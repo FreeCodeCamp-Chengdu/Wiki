@@ -265,58 +265,54 @@ debug(window.location.assign);
 
 ## [Debugging Property Reads](#debugging-property-reads)
 
-If you have an object and want to know whenever a property is read on it, use an object getter with a `debugger` call. For example, convert `{configOption: true}` to `{get configOption() { debugger; return true; }}` (either in the original source code or using a conditional breakpoint).
+如果你有一个对象，并想知道它的某个属性何时被读取，可以使用一个带有 `debugger` 调用的对象获取器。例如，将 `{configOption: true}` 转换为 `{get configOption() { debugger; return true; }}`（在原始源代码中或使用条件断点）。
 
-Useful when you’re passing in some configuration options to something and you’d like to see how they get used.
+当你向某个程序传递一些配置选项，并希望查看这些选项的使用情况时，它就会派上用场。
 
 ## [Use copy()](#use-copy)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 <img src="https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg" width="40" height="40">
 
-You can copy interesting information out of the browser directly to your clipboard without any string truncation using the `copy()` console API. Some interesting things you might want to copy:
+您可以使用 `copy()` 控制台 API 将浏览器中有趣的信息直接复制到剪贴板，而无需截断任何字符串。您可能想复制一些有趣的内容：
 
--   Snapshot of the current DOM: `copy(document.documentElement.outerHTML)`
--   Metadata about resources (e.g. images): `copy(performance.getEntriesByType("resource"))`
--   A large JSON blob, formatted: `copy(JSON.parse(blob))`
--   A dump of your localStorage: `copy(localStorage)`
--   Etc.
+-   当前 DOM 的快照: `copy(document.documentElement.outerHTML)`
+-   资源的元数据（如图像）: `copy(performance.getEntriesByType("resource"))`
+-   格式化后的大型 JSON blob: `copy(JSON.parse(blob))`
+-   本地存储的转储: `copy(localStorage)`
+-   等等。
 
 ## [Debugging HTML/CSS](#debugging-htmlcss)
 
-The JS console can be helpful when diagnosing problems with your HTML/CSS.
+JS 控制台有助于诊断 HTML/CSS 的问题。
 
 ### [Inspect the DOM with JS Disabled](#inspect-the-dom-with-js-disabled)
 
-When in the DOM inspector press ctrl+\\ (Chrome/Windows) to pause JS execution at any time. This allows you to inspect a snapshot of the DOM without worrying about JS mutating the DOM or events (e.g. mouseover) causing the DOM to change from underneath you.
+在 DOM 检查器中按下 `ctrl+\` (Chrome/Windows) 可以随时暂停 JS 的执行。这样您就可以检查 DOM 的快照，而不必担心 JS 会改变 DOM 或事件（如鼠标悬停）会导致 DOM 从您脚下发生变化。
 
 ### [Inspect an Elusive Element](#inspect-an-elusive-element)
 
-Let’s say you want to inspect a DOM element that only conditionally appears. Inspecting said element requires moving your mouse to it, but when you try to, it disappears:
+假设您要检查一个 DOM 元素，而该元素只有在有条件的情况下才会出现。检查该元素需要将鼠标移动到该元素上，但当您尝试移动时，该元素却消失了：
 
 ![Elusive element](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felusive-element.495b0945.gif&w=1920&q=75)
 
-To inspect the element you can paste this into your console: `setTimeout(function() { debugger; }, 5000);`. This gives you 5 seconds to trigger the UI, and then once the 5 second timer is up, JS execution will pause and nothing will make your element disappear. You are free to move your mouse to the dev tools without losing the element:
+为了检查元素，您可以将以下内容粘贴到控制台中： `setTimeout(function(){debugger; }, 5000);`。这将为您提供 5 秒钟的时间来触发用户界面，一旦 5 秒计时器计时结束，JS 的执行就会暂停，元素也不会消失。您可以自由地将鼠标移到开发工具上，而不会丢失元素：
 
 ![Elusive element - inspected](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felusive-element-inspected.f5f036b4.gif&w=1920&q=75)
 
-While JS execution is paused you can inspect the element, edit its CSS, execute commands in the JS console, etc.
+在暂停执行 JS 时，您可以检查元素、编辑 CSS、在 JS 控制台中执行命令等。
 
-Useful when inspecting DOM that is dependent on specific cursor position, focus, etc.
+在检查依赖于特定光标位置、焦点等的 DOM 时非常有用。
 
 ### [Record Snapshots of the DOM](#record-snapshots-of-the-dom)
 
-To grab a copy of the DOM in its current state:
+复制当前状态下的 DOM :
 
 ```javascript
 copy(document.documentElement.outerHTML);
 ```
 
-```javascript
-copy(document.documentElement.outerHTML);
-```
-
-To record a snapshot of the DOM every second:
+每秒记录一次 DOM 的快照：
 
 ```javascript
 doms = [];
@@ -326,22 +322,7 @@ setInterval(() => {
 }, 1000);
 ```
 
-```javascript
-doms = [];
-setInterval(() => {
-    const domStr = document.documentElement.outerHTML;
-    doms.push(domStr);
-}, 1000);
-```
-
-Or just dump it to the console:
-
-```javascript
-setInterval(() => {
-    const domStr = document.documentElement.outerHTML;
-    console.log("snapshotting DOM: ", domStr);
-}, 1000);
-```
+或者直接转存（dump）到控制台：
 
 ```javascript
 setInterval(() => {
@@ -351,18 +332,6 @@ setInterval(() => {
 ```
 
 ### [Monitor Focused Element](#monitor-focused-element)
-
-```javascript
-(function () {
-    let last = document.activeElement;
-    setInterval(() => {
-        if (document.activeElement !== last) {
-            last = document.activeElement;
-            console.log("Focus changed to: ", last);
-        }
-    }, 100);
-})();
-```
 
 ```javascript
 (function () {
@@ -388,21 +357,9 @@ const isBold = (e) => {
 Array.from(document.querySelectorAll("*")).filter(isBold);
 ```
 
-```javascript
-const isBold = (e) => {
-    let w = window.getComputedStyle(e).fontWeight;
-    return w === "bold" || w === "700";
-};
-Array.from(document.querySelectorAll("*")).filter(isBold);
-```
-
 #### [Just Descendants](#just-descendants)
 
-Or just descendants of the element currently selected in the inspector:
-
-```javascript
-Array.from($0.querySelectorAll("*")).filter(isBold);
-```
+或者只是检查器中当前所选元素的后代：
 
 ```javascript
 Array.from($0.querySelectorAll("*")).filter(isBold);
@@ -410,20 +367,20 @@ Array.from($0.querySelectorAll("*")).filter(isBold);
 
 ### [Reference Currently Selected Element](#reference-currently-selected-element)
 
-`$0` in the console is an automatic reference to the currently selected element in the element inspector.
+控制台中的 `$0` 是对元素检查器中当前选定元素的自动引用（automatic reference）。
 
 #### [Previous Elements](#previous-elements)
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 <img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40">
 
-In Chrome and Edge you can access the element you last inspected with `$1`, the element before that with `$2`, etc.
+在 Chrome 和 Edge 中，你可以使用 `$1` 访问你上次检查的元素，使用 `$2` 访问上上次检查的元素，以此类推。
 
 #### [Get Event Listeners](#get-event-listeners)
 
-![Chrome](https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg)
+<img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
-In Chrome you can inspect the event listeners of the currently selected element: `getEventListeners($0)`, e.g.
+在 Chrome 浏览器中，您可以使用 `getEventListeners($0)` 检查当前选定元素的事件监听器，例如
 
 ![getEventListeners](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FgetEventListeners.4ae6f43e.png&w=1920&q=75)
 
@@ -431,12 +388,12 @@ In Chrome you can inspect the event listeners of the currently selected element:
 
 <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40">
 
-Debug all events for selected element: `monitorEvents($0)`
+调试选定元素的所有事件： `monitorEvents($0)`
 
-Debug specific events for selected element: `monitorEvents($0, ["control", "key"])`
+调试选定元素的特定事件： `monitorEvents($0, ["control", "key"])`
 
 ![monitorEvents](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FmonitorEvents.a03f9e53.gif&w=1920&q=75)
 
 ## [Footnotes](#footnote-label)
 
-1.  Tips are supported in Chrome, Firefox, and Edge unless the browser logos say otherwise: <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40"> <img src="https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg" width="40" height="40">  <img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40"> [↩](#user-content-fnref-1)
+1.  除非浏览器标识另有说明，否则 Chrome、Firefox 和 Edge 浏览器均支持提示功能: <img src="https://alan.norbauer.com/_next/static/media/chrome.2d2a19fd.svg" width="40" height="40"> <img src="https://alan.norbauer.com/_next/static/media/firefox.583d9a58.svg" width="40" height="40">  <img src="https://alan.norbauer.com/_next/static/media/edge.c22c90ce.svg" width="40" height="40"> [↩](#user-content-fnref-1)
