@@ -2,13 +2,13 @@
 title: Hello Hexo-Wiki !
 date: 2019-03-25 21:21:12
 categories:
-  - Open-Source
+    - Open-Source
 tags:
-  - Web
-  - Hexo
-  - Wiki
+    - Web
+    - Hexo
+    - Wiki
 authors:
-  - TechQuery
+    - TechQuery
 ---
 
 [![](images/Hexo.png)](https://tech-query.me/create-hexo-wiki/ "create-hexo-wiki")
