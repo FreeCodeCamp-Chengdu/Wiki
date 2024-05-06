@@ -7,4 +7,6 @@ labels:
     - Translation
 ---
 
+@FreeCodeCamp-Chengdu 我添加了一篇想翻译的新文章：
+
 https://example.com/replace/this/with/your/original/article/URL

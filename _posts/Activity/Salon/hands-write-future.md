@@ -175,19 +175,19 @@ workers:
 
 全球最大的**公益编程学习平台** freeCodeCamp
 
-[![](./FCC-learning.png)](https://learn.freecodecamp.one/)
+[![](./FCC-learning.png)](https://www.freecodecamp.org/chinese/learn/)
 
 ---
 
 ### 中文社区
 
-[![](./FCC-China.png)](https://www.freecodecamp.one/volunteer)
+[![](./FCC-China.png)](https://chinese.fcc-cd.dev/volunteer)
 
 ---
 
 ### 成都社区
 
-[![](./FCC-ChengDu.png)](https://china.freecodecamp.one/?city=chengdu)
+[![](./FCC-ChengDu.png)](https://chinese.fcc-cd.dev/city/chengdu)
 
 ---
 

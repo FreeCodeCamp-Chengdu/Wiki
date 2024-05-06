@@ -1,22 +1,23 @@
 ---
 title: Web scraping experiment with AI (Parsing HTML with GPT-4)
-author: ""
-authorURL: https://serpapi.com/blog/author/hilman/
-originalURL: https://serpapi.com/blog/web-scraping-and-parsing-experiment-with-ai-openai/
-translator: ""
-reviewer: ""
+date: 2023-11-10
+updated: 2023-11-12 10:31:00
+authors:
+    - luojiyin1987
+original: https://serpapi.com/blog/web-scraping-and-parsing-experiment-with-ai-openai/
+categories:
+    - Article
+    - Translation
+toc: true
 ---
 
 从网络搜索结果中解析数据往往是一件麻烦事。但如果有一种方法能让这一艰苦的过程变得轻而易举呢？让我们尝试一下 OpenAI 的新人工智能模型吧。
 
-- [![Hilman Ramadhan](/blog/content/images/size/w100/2023/10/profile-picture.png)](/blog/author/hilman/)
+[![Hilman Ramadhan](/blog/content/images/size/w100/2023/10/profile-picture.png)](https://serpapi.com/blog/author/hilman/)
+
+**Hilman Ramadhan**
 
 <!-- more -->
-
-
-**[Hilman Ramadhan]()**
-
-2023 年 11 月 10 日 10 分钟阅读时间
 
 我一直很惊讶 OpenAI 的 chatGPT 在回答问题方面的表现，以及 Dall-e 3 制作精美图片的能力。现在，有了新的模型，让我们看看人工智能如何处理我们的网络搜索任务，特别是解析搜索引擎结果。我们都知道，从原始 HTML 中提取解析数据通常会很麻烦。但是，如果有一种方法可以将这一艰苦的过程变得轻而易举呢？
 
@@ -167,7 +168,8 @@ for book in data:
 -   使用提示语 `您是抓取和解析原始 HTML 的高手`，并传递要分析的 `raw_html`。
 -   在 `tools` 参数中，我们定义了用于解析原始数据的虚函数（imaginary function）。不要忘记调整参数的属性，以准确返回您想要的格式。
 
-### 结果如下  
+### 结果如下
+
 我们可以抓取每本书的标题、评分和价格 _（正是我们在上述\_\_函数参数中定义的数据）_。
 
 ### 运行完成时间: ~15s
@@ -176,7 +178,8 @@ for book in data:
 
 比较网络抓取结果
 
-### 使用 gpt-3.5  
+### 使用 gpt-3.5
+
 当切换到 `gpt-3.5-turbo-1106` 时，我必须调整提示词，使其更加具体：
 
 ```json
@@ -287,7 +290,8 @@ for result in data:
 
 > 备注： 我最初的提示词是 `很好地解析 Google SERP 原始 HTML 数据中的自然搜索结果(Parse organic results from Google SERP raw HTML data nicely)`，但只能返回前 3-5 个结果，因此我调整了提示词，以获得更多的结果。
 
-### 使用 gpt-3.5 模型  
+### 使用 gpt-3.5 模型
+
 我无法做到这一点，因为原始 HTML 数据量超过了 token 窗口长度。
 
 ## 第 3 层：利用人工智能解析谷歌地图中的本地地点结果
@@ -298,7 +302,7 @@ for result in data:
 
 谷歌地图截图
 
-如您所见，每个项目都包含许多信息。我们将进行搜索：    
+如您所见，每个项目都包含许多信息。我们将进行搜索：  
 \- Name  
 \- Rating average  
 \- Total rating  
@@ -410,7 +414,8 @@ print(data)
 
 结果很完美！我可以获得每个 local_results 的准确数据。
 
-### 运行完 Selenium 时间: ~47s  
+### 运行完 Selenium 时间: ~47s
+
 ### 运行时间 (除了 Selenium ): ~34s
 
 ## 第 4 层次： 利用人工智能解析来自 Google SERP 的两种不同数据（自然搜索结果和人们询问相关问题的部分）
@@ -520,10 +525,12 @@ for result in people_also_ask:
 
 利用人工智能获取多个数据点
 
-### 成功 
+### 成功
+
 我可以分别搜索自然搜索结果和 people_also_ask。OpenAI 功不可没！
 
 ### 问题:
+
 我无法为 people_also_ask 部分提取答案和原始网址。原因是这些信息隐藏在脚本标签的某处。我们可以通过提供脚本内容的特定部分来尝试，但我认为这对本实验来说是 `作弊`，因为我们要传递的是原始网页内容，而不是精确定位或给出提示。
 
 ### 运行时间: ~30s
