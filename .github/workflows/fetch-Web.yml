@@ -11,7 +11,7 @@ jobs:
             contents: write
             issues: write
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
 
             - uses: freeCodeCamp-China/article-webpage-to-markdown-action@v1
               with:
@@ -22,3 +22,24 @@ jobs:
             - uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "${{ github.event.issue.title }}"
+
+            - name: Lark notification
+              uses: foxundermoon/feishu-action@v2
+              with:
+                  url: ${{ secrets.LARK_CHATBOT_HOOK_URL }}
+                  msg_type: post
+                  content: |
+                      post:
+                        en_us:
+                          title: 技术文章翻译计划 - GitHub 文章爬取
+                          content:
+                            - - tag: text
+                                text: 提交人：
+                              - tag: a
+                                text: ${{ github.event.issue.user.login }}
+                                href: ${{ github.server_url }}/${{ github.event.issue.user.login }}
+                            - - tag: text
+                                text: 任务卡：
+                              - tag: a
+                                text: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.issue.number }}
+                                href: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.issue.number }}

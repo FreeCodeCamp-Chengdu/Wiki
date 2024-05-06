@@ -1,12 +1,15 @@
 ---
-title: 你应该使用的现代 Git 命令和功能  
-author: MARTINMa  
-authorURL: https://martinheinz.dev/  
-originalURL: https://martinheinz.dev/blog/109  
-translator:  luojiyin1987
+title: 你应该使用的现代 Git 命令和功能
+updated: 2024-04-05 19:25:00
+authors:
+    - luojiyin1987
+original: https://martinheinz.dev/blog/109
 reviewer: TechQuery
+categories:
+    - Article
+    - Translation
+toc: true
 ---
-
 
 我们所有软件工程师每天都在使用 `git`，但大多数人只接触过最基本的命令，如 `add`、`commit`、`push` 或者 `pull`, 好像还停留在 2005 年。
 

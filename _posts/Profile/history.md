@@ -73,5 +73,5 @@ slidehtml: true
 - **王波**、**佳琪**的 **UI 设计沙龙**也在筹划……
 - **水歌**一直向往的【JavaScript 全栈技术大会】也获得了 NodeParty 创始人 **小芋头君** ([@xinyu198736](https://github.com/xinyu198736))的授权
 
-[1]: https://www.freecodecamp.one/
+[1]: https://chinese.fcc-cd.dev/
 [2]: https://www.weibo.com/5899630894/GipPz9cZm
