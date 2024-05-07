@@ -219,7 +219,7 @@ window.onpopstate = dbg;
 
 至于如何创建一个能在不中断导航的情况下暂停执行的 `dbg` 版本，读者可自行决定。
 
-另外，请注意，这种方法无法处理直接调用 `window.location.replace/assign` 的情况，因为页面在赋值后会立即销毁，所以没有任何调试内容。如果你仍然想要查看这些重定向的原网址 （并在重定向时调试你的状态），在 Chrome 中你可以使用 `debug` 来调试相关的方法：
+另外，请注意，这种方法无法处理直接调用 `window.location.replace/assign` 的情况，因为页面在赋值后会立即销毁，所以没有任何调试内容。如果你仍然想要查看这些重定向的原网址（并在重定向时调试你的状态），在 Chrome 中你可以使用 `debug` 来调试相关的方法：
 
 ```javascript
 debug(window.location.replace);
@@ -251,7 +251,7 @@ JS 控制台有助于诊断 HTML/CSS 的问题。
 
 ### [在禁用 JavaScript 的情况下检查 DOM](#inspect-the-dom-with-js-disabled)
 
-在 DOM 检查器中按下 <kbd>ctrl</kbd> + <kbd>\\</kbd> (Chrome/Windows) 可以随时暂停 JS 的执行。这样您就可以检查 DOM 的快照，而不必担心 JS 会改变 DOM 或事件 （如鼠标悬停） 会导致 DOM 从您脚下发生变化。
+在 DOM 检查器中按下 <kbd>ctrl</kbd> + <kbd>\\</kbd> (Chrome/Windows) 可以随时暂停 JS 的执行。这样您就可以检查 DOM 的快照，而不必担心 JS 会改变 DOM 或事件（如鼠标悬停）会导致 DOM 从您脚下发生变化。
 
 ### [检查一个难以捉摸的元素](#inspect-an-elusive-element)
 
