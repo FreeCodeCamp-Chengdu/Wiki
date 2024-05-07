@@ -145,7 +145,11 @@ reviewer: ""
 您可以使用 Chrome 浏览器的 `monitor` 命令行方法轻松跟踪对类方法的所有调用。例如，给定一个类 `Dog`
 
 ```javascript
-class Dog {2  bark(count) {3    /* ... */4  }5}
+class Dog {
+  bark(count)  {   //计数
+    /* ... */   
+  }
+}
 ```
 
 如果我们想知道对 “Dog” 的所有实例的所有调用，请将此内容粘贴到命令行中：
