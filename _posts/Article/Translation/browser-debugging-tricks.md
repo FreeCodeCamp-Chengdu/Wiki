@@ -161,7 +161,7 @@ Object.getOwnPropertyNames(p).forEach((k) => monitor(p[k]));
 
 就会在控制台中得到输出结果：
 
-```javascript
+```text
 > function bark called with arguments: 2
 ```
 
@@ -192,10 +192,11 @@ function fn() {
 
 从您的控制台：
 ```js
-debugger; fn(1);
+debugger; 
+fn(1);
 ```
 
-然后 `进入下一个函数调用(Step into next function call)`，以调试 `fn` 的实现。
+然后 “进入下一个函数调用(Step into next function call)”，以调试 `fn` 的实现。
 
 当你不想查找 `fn` 的定义并手动添加断点时，或者当 `fn` 与函数动态绑定，而你不知道源代码在哪里时，这种调试器就很有用。
 
@@ -218,7 +219,7 @@ window.onpopstate = dbg;
 
 至于如何创建一个能在不中断导航的情况下暂停执行的 `dbg` 版本，读者可自行决定。
 
-另外，请注意，这种方法无法处理直接调用 `window.location.replace/assign` 的情况，因为页面在赋值后会立即销毁，所以没有任何调试内容。如果你仍然想要查看这些重定向的原网址 (并在重定向时调试你的状态)，在 Chrome 中你可以使用 `debug` 来调试相关的方法：
+另外，请注意，这种方法无法处理直接调用 `window.location.replace/assign` 的情况，因为页面在赋值后会立即销毁，所以没有任何调试内容。如果你仍然想要查看这些重定向的原网址 （并在重定向时调试你的状态），在 Chrome 中你可以使用 `debug` 来调试相关的方法：
 
 ```javascript
 debug(window.location.replace);
@@ -227,7 +228,7 @@ debug(window.location.assign);
 
 ## [调试属性读取操作](#debugging-property-reads)
 
-如果你有一个对象，并想知道它的某个属性何时被读取，可以使用一个带有 `debugger` 调用的对象获取器。例如，将 `{configOption: true}` 转换为 `{get configOption() { debugger; return true; }}` (在原始源代码中或使用条件断点)。
+如果你有一个对象，并想知道它的某个属性何时被读取，可以使用一个带有 `debugger` 调用的对象获取器。例如，将 `{configOption: true}` 转换为 `{get configOption() { debugger; return true; }}` （在原始源代码中或使用条件断点）。
 
 当你向某个程序传递一些配置选项，并希望查看这些选项的使用情况时，它就会派上用场。
 
@@ -239,7 +240,7 @@ debug(window.location.assign);
 您可以使用 `copy()` 控制台 API 将浏览器中有趣的信息直接复制到剪贴板，而无需截断任何字符串。您可能想复制一些有趣的内容：
 
 -   当前 DOM 的快照：`copy(document.documentElement.outerHTML)`
--   资源的元数据 (如图像)：`copy(performance.getEntriesByType("resource"))`
+-   资源的元数据（如图像）：`copy(performance.getEntriesByType("resource"))`
 -   格式化后的大型 JSON blob：`copy(JSON.parse(blob))`
 -   本地存储的转储：`copy(localStorage)`
 -   等等。
@@ -250,7 +251,7 @@ JS 控制台有助于诊断 HTML/CSS 的问题。
 
 ### [在禁用 JavaScript 的情况下检查 DOM](#inspect-the-dom-with-js-disabled)
 
-在 DOM 检查器中按下 `ctrl+\` (Chrome/Windows) 可以随时暂停 JS 的执行。这样您就可以检查 DOM 的快照，而不必担心 JS 会改变 DOM 或事件 (如鼠标悬停) 会导致 DOM 从您脚下发生变化。
+在 DOM 检查器中按下 <kbd>ctrl</kbd> + <kbd>\\</kbd> (Chrome/Windows) 可以随时暂停 JS 的执行。这样您就可以检查 DOM 的快照，而不必担心 JS 会改变 DOM 或事件 （如鼠标悬停） 会导致 DOM 从您脚下发生变化。
 
 ### [检查一个难以捉摸的元素](#inspect-an-elusive-element)
 
@@ -258,7 +259,7 @@ JS 控制台有助于诊断 HTML/CSS 的问题。
 
 ![Elusive element](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felusive-element.495b0945.gif&w=1920&q=75)
 
-为了检查元素，您可以将以下内容粘贴到控制台中：`setTimeout(function(){debugger; }, 5000);`。这将为您提供 5 秒钟的时间来触发用户界面，一旦 5 秒计时器计时结束，JS 的执行就会暂停，元素也不会消失。您可以自由地将鼠标移到开发工具上，而不会丢失元素：
+为了检查元素，您可以将以下内容粘贴到控制台中：`setTimeout(function () {debugger; }, 5000);`。这将为您提供 5 秒钟的时间来触发用户界面，一旦 5 秒计时器计时结束，JS 的执行就会暂停，元素也不会消失。您可以自由地将鼠标移到开发工具上，而不会丢失元素：
 
 ![Elusive element - inspected](https://alan.norbauer.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Felusive-element-inspected.f5f036b4.gif&w=1920&q=75)
 
