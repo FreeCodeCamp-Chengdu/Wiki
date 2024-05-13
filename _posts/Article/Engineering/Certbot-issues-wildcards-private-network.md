@@ -72,7 +72,7 @@ If you like Certbot, please consider supporting our work by:
 src="Certbot-issues-wildcards-private-network/6af9d79b7229c6957b734c0920e4c1753af89b3a.png"
 title="wikilink" alt="../posts/assets/Pastedimage20240513082444.png" />
 <figcaption
-aria-hidden="true">../posts/assets/Pastedimage20240513082444.png</figcaption>
+aria-hidden="true"></figcaption>
 </figure>
 
 因为这个证书是有 90 天的有效期， 需要把 cerbot 加入定时任务。先验证 Cerbot 续签是否可以成功
