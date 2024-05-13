@@ -13,7 +13,6 @@ tags:
   - devops
   - Docker
 toc: true
-thumbnail: https://perfectacle.github.io/images/js-001-es/thumb.png
 ---
 ## 使用 Caddy 和 cloudflare 在内网自动签发 https 证书
 
