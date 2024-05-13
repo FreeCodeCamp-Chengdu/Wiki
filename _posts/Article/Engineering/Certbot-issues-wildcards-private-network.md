@@ -1,3 +1,17 @@
+---
+title: 使用 Certbot 在内网签发 wildcards（通配符证书）
+date: 2024-05-13 22:52:58
+authors:
+  - luojiyin
+categories:
+  - Article
+  - Engineering
+tags:
+  - https
+  - privatenetwork
+  - devops
+toc: true
+---
 ## 使用 Certbot 在内网签发 wildcards（通配符证书）
 
 ### 前置条件
