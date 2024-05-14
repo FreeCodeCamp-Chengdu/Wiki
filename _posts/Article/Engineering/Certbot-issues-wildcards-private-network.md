@@ -12,7 +12,7 @@ tags:
   - devops
 toc: true
 ---
-## 使用 Certbot 在内网签发 wildcards（通配符证书）
+# 使用 Certbot 在内网签发 wildcards（通配符证书）
 
 ### 前置条件
 
