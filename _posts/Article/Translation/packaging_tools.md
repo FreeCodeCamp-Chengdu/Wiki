@@ -10,54 +10,57 @@ reviewer: ""
 
 Anna-Lena Popkes
 
-August 24, 2023
+8月24, 2023
 
-## Motivation
+## 动机
 
-When I started with Python and created my first package I was confused. Creating and managing a package seemed much harder than I expected. In addition, multiple tools existed and I wasn’t sure which one to use. I’m sure most of you had the very same problem in the past. Python has a zillion tools to manage virtual environments and create packages and it can be hard (or almost impossible) to understand which one fits your needs. Several talks and blog post on the topic exist, but none of them gives a complete overview or evaluates the tools in a structured fashion. This is what this post is about. I want to give you a truly unbiased evaluation of existing packaging and environment management tools. In case you’d rather watch a talk, take a look at the recording of [PyCon DE 2023](https://www.youtube.com/watch?v=MsJjzVIVs6M) or [EuroPython 2023](https://www.youtube.com/watch?v=3-drZY3u5vo).
-
+当我开始使用 Python 并创建我的第一个包时，我感到困惑。创建和管理一个包比我预期的要困难得多。此外，存在多种工具，我不确定该使用哪一个。我相信你们中的大多数人过去也遇到过同样的问题。Python 有大量的工具来管理虚拟环境和创建包，要理解哪一个最适合你的需求可能很难（或几乎不可能）。关于这个话题存在多个演讲和博客文章，但没有一个提供完整的概览或以结构化的方式评估这些工具。这就是本文的目的。我想给你一个真正无偏见的评价，关于现有的打包和环境管理工具。如果你宁愿观看一个演讲，可以看看 [PyCon DE 2023](https://www.youtube.com/watch?v=MsJjzVIVs6M) 或 [EuroPython 2023](https://www.youtube.com/watch?v=3-drZY3u5vo) 的录像。
 <!-- more -->
 
-## Categorization
+## 分类
 
-For the purpose of this article I identified five main categories that are important when it comes to environment and package management:
+为了撰写本文，我确定了环境和软件包管理的五大重要类别：
 
--   Environment management (which is mostly concerned with virtual environments)
--   Package management
--   Python version management
--   Package building
--   Package publishing
+- 环境管理（主要涉及虚拟环境）
+- 软件包管理
+- Python 版本管理
+- 软件包构建
+- 软件包发布
 
-As you can see in the Venn diagram below, lots of tools exist. Some can do a single thing (i.e. they are single-purpose), others can perform multiple tasks (hence I call them multi-purpose tools).
+正如你在下面的维恩图中所看到的，存在大量的工具。有些可以做一件事（即它们是单一用途的），而其他工具可以执行多个任务（因此我称它们为多用途工具）。
 
 ![](/posts/python/figures/venn_diagram.png)
 
-Let’s walk through the categories keeping a developers perspective in mind. Let’s say you are working on a personal project alongside your work projects. At work you’re using Python 3.7 whereas your personal project should be using the newest Python version (currently 3.11). In other words: you want to be able to install different Python versions and switch between them. That’s what our first category, **Python version management** is about.  
-Within your projects you are using other packages (e.g. `pandas` or `sklearn` for data science). These are dependencies of your project that you have to install and manage (e.g. upgrade when new versions are released). This is what **package management** is about.  
-Because different projects might require different versions of the same package you need to create (and manage) virtual environments to avoid dependency conflicts. Tools for this are collected in the category **environment management**. Most tools use virtual environments, but some use another concept called “local packages” which we will look at later.  
-Once your code is in a proper state you might want to share it with fellow developers. For this you first have to build your package (**package building**) before you can publish it to PyPI or another index (**package publishing**).
+让我们从开发者的角度来逐一介绍这些类别。假设您除了工作项目之外，还在进行个人项目。在工作中，您使用的是 Python 3.7，而您的个人项目应该使用最新的 Python 版本（目前是 3.11）。换句话说：您希望能够安装不同的 Python 版本并在它们之间切换。这就是我们的第一个类别，**Python 版本管理**的意义所在。
 
-In the following we will look at each of the categories in more detail, including a short definition, motivation and the available tools. I will present some single-purpose tools in more detail and several multi-purpose tools in a separate section at the end. Let’s get started with the first category: Python version management.
+在您的项目中，您会使用其他软件包（例如用于数据科学的 `pandas` 或 `sklearn`）。这些是您项目的依赖项，您必须安装和管理它们（例如，在新版本发布时进行升级）。这就是**软件包管理**的意义所在。
 
-## Python version management
+由于不同的项目可能需要相同软件包的不同版本，因此您需要创建（和管理）虚拟环境以避免依赖项冲突。用于此目的的工具被归类在**环境管理**类别中。大多数工具使用虚拟环境，但有些工具使用另一种称为**本地软件包**的概念，我们将在后面介绍。
 
-### Definition
+一旦您的代码处于适当的状态，您可能希望与其他开发人员共享它。为此，您必须先构建您的软件包（**软件包构建**），然后才能将其发布到 PyPI 或其他索引（**软件包发布**）。 
 
-A tool that can perform Python version management allows you to install Python versions and switch between them easily.
 
-### Motivation
+接下来，我们将更详细地了解每个类别，包括简短的定义、动机和可用工具。我将更详细地介绍一些单一用途的工具，并在最后的部分单独介绍几种多用途工具。让我们从第一个类别开始：Python 版本管理。 
 
-Why would we want to use different Python versions? There are several reasons. For example, you might be working of several projects where each projects requires a different Python version. Or you might develop a project that supports several Python versions and you want to test all of them. Besides that it can be nice to check out what the newest Python version has to offer, or test a pre-release version of Python for bugs.
+## Python 版本管理 
 
-### Tools
+### 定义
 
-Our Venn diagram displays the available tools for Python version management: `pyenv, conda, rye` and `PyFlow`. We will first look at `pyenv` and consider the multi-purpose tools in a separate section.
+能够控制 Python 版本管理的工具，允许您安装 Python 版本并轻松地在它们之间切换。
+
+### 动机
+
+我们为什么要使用不同的 Python 版本？ 有几个原因。 例如，您可能正在处理多个项目，其中每个项目都需要不同的 Python 版本。 或者您可能正在开发一个支持多个 Python 版本的项目，并且您想要测试所有这些版本。 除此之外，查看最新的 Python 版本提供了什么，或者测试 Python 的预发布版本是否存在错误也是一件好事。 
+
+### 工具
+
+我们的维恩图显示了可用于 Python 版本管理的工具：`pyenv`、`conda`、`rye` 和 `PyFlow`。我们将首先看看 `pyenv`，并在单独的部分中考虑多用途工具。 
 
 ![](/posts/python/figures/python_version_management.png)
 
 ### pyenv
 
-Python has one single-purpose tool that lets you install and manage Python versions: [pyenv](https://github.com/pyenv/pyenv)! Pyenv is easy to use. The most important commands are the following:
+Python 有一个单一用途的工具可以让您安装和管理 Python 版本：[pyenv](https://github.com/pyenv/pyenv)！ Pyenv 易于使用。 最重要的命令如下： 
 
 ```bash
 # Install specific Python version
@@ -69,25 +72,25 @@ pyenv local <version> # automatically select version whenever you are in the cur
 pyenv global <version> # select version globally for your user account
 ```
 
-## (Virtual) environment management
+## (Virtual) environment management（虚拟环境管理）
 
-### Definition
+### 定义
 
-A tool that can perform environment management allows you to create and manage (virtual) environments.
+环境管理工具可以创建和管理（虚拟）环境。
 
-### Motivation
+### 动机
 
-Why do we want to use environments in the first place? As mentioned in the beginning, projects have specific requirements (i.e. they depend on other packages). It’s often the case that different projects require different versions of the same package. This can cause dependency conflicts. In addition, problems can occur when using `pip install` to install a package because the package is placed with your system-wide Python installation. Some of these problems can be solved by using the `--user` flag in the `pip` command. However, this option might not be known to everyone, especially beginners.
+我们为什么首先要使用环境？ 正如开头所提到的，项目有特定的要求（即它们依赖于其他包）。 通常情况下，不同的项目需要相同包的不同版本。 这会导致依赖冲突。 此外，使用 `pip install` 安装包时可能会出现问题，因为该包与您的系统范围内的 Python 安装放在一起。 其中一些问题可以通过在 `pip` 命令中使用 `--user` 标志来解决。 但是，这个选项可能不是每个人都知道，尤其是初学者。 
 
-### Tools
+### 工具
 
-Many tools allow users to create and manage environments. These are: `venv, virtualenv, pipenv, conda, pdm, poetry, hatch, rye` and `PyFlow`. Only two of them are single-purpose tools: `venv` and `virtualenv`. Let’s look at both of them in more detail.
+许多工具允许用户创建和管理环境。 它们是：`venv、virtualenv、pipenv、conda、pdm、poetry、hatch、rye` 和 `PyFlow`。 其中只有两个是单一用途的工具：`venv` 和 `virtualenv`。 让我们更详细地了解它们。 
 
 ![](/posts/python/figures/env_management.png)
 
 ### venv
 
-[Venv](https://docs.python.org/3/library/venv.html) is the built-in Python package for creating virtual environments. This means that it is shipped with Python and does not have to be installed by the user. The most important commands are the following:
+[Venv](https://docs.python.org/3/library/venv.html) 是用于创建虚拟环境的内置 Python 包。 这意味着它随 Python 一起提供，用户无需安装。 最重要的命令如下：
 
 ```bash
 # Create new environment
@@ -102,7 +105,7 @@ deactivate
 
 ### virtualenv
 
-[Virtualenv](https://virtualenv.pypa.io/en/latest/) tries to improve `venv`. It offers more features than `venv` and is faster and more powerful. The most important commands are similar to the ones of `venv`, only creating a new environment is cleaner:
+[Virtualenv](https://virtualenv.pypa.io/en/latest/) 试图改进 `venv`。 它提供了比 `venv` 更多的功能，并且速度更快、功能更强大。 最重要的命令与 `venv` 的命令类似，只是创建一个新环境更简洁：
 
 ```bash
 # Create new environment
@@ -117,54 +120,52 @@ deactivate
 
 ## Recap I - `pyproject.toml`
 
-Before we can talk about packaging I want to make sure that you are aware of the most important file for packaging: `pyproject.toml`.
+在讨论打包之前，我想确保你了解打包最重要的文件：`pyproject.toml`。
 
-Packaging in Python has come a long way. Until [PEP 518](https://peps.python.org/pep-0518/) `setup.py` files where used for packaging, using `setuptools` as a build tool. [PEP 518](https://peps.python.org/pep-0518/) introduced the usage of a `pyproject.toml` file. As a consequence, you always need a `pyproject.toml` file when creating a package. `pyproject.toml` is used to define the settings of a project, define metadata and lots of other things. If you would like to see an example check out the [`pyproject.toml` file of the pandas library](https://github.com/pandas-dev/pandas/blob/main/pyproject.toml). With the knowledge on `pyproject.toml` we can go on at take a look at package management.
+Python 中的打包已经走过了漫长的道路。直到 [PEP 518](https://peps.python.org/pep-0518/) `setup.py` 文件被用于打包，使用 `setuptools` 作为构建工具。[PEP 518](https://peps.python.org/pep-0518/) 引入了 `pyproject.toml` 文件的使用。因此，在创建包时，你始终需要一个 `pyproject.toml` 文件。`pyproject.toml` 用于定义项目的设置、定义元数据以及许多其他内容。如果你想查看示例，请查看 [pandas 库的 `pyproject.toml` 文件](https://github.com/pandas-dev/pandas/blob/main/pyproject.toml)。了解了 `pyproject.toml` 后，我们可以继续看看包管理。
 
-## Package management
+## 包管理
 
-### Definition
+### 定义
+能够执行包管理的工具能够下载和安装库及其依赖项。
 
-A tool that can perform package management is able to download and install libraries and their dependencies.
+### 动机
 
-### Motivation
+为什么我们关心包？包允许我们定义模块的层次结构，并使用点语法（`from package.module import my_function`）轻松访问模块。此外，它们使得与其他开发者共享代码变得容易。由于每个包都包含一个定义其依赖项的 `pyproject.toml` 文件，其他开发者不必单独安装所需的包，而是可以直接从其 `pyproject.toml` 文件安装包。
 
-Why do we care about packages? Packages allow us to define a hierarchy of modules and to access modules easily using the dot-syntax (`from package.module import my_function`). In addition, they make it easy to share code with other developers. Since each package contains a `pyproject.toml` file which defines its dependencies, other developers don’t have to install the required packages separately but can simply install the package from its `pyproject.toml` file.
+### 工具
 
-### Tools
-
-Lots of tools can perform package management: `pip, pipx, pipenv, conda, pdm, poetry, rye` and `PyFlow`. The single-purpose tool for package management is `pip` which is well known in the Python community.
-
+许多工具都可以执行包管理：`pip`、`pipx`、`pipenv`、`conda`、`pdm`、`poetry`、`rye` 和 `PyFlow`。`pip` 是 Python 社区中众所周知的专用包管理工具。
 ![](/posts/python/figures/package_management.png)
 
 #### pip
 
-The standard package manager for Python is [`pip`](https://pip.pypa.io/en/stable/). It’s shipped with Python and allows you to install packages from PyPI and other indexes. The main command (probably one of the first commands a Python developer learns) is `pip install <package_name>`. Of course, `pip` offers lots of other options. Check out [the documentation](https://pip.pypa.io/en/stable/) for more information about available flags, etc.
+Python 的标准包管理器是 [`pip`](https://pip.pypa.io/en/stable/)。它随 Python 一起提供，允许你从 PyPI 和其他索引安装软件包。主要命令（可能是 Python 开发人员学习的第一个命令之一）是 `pip install <package_name>`。当然，`pip` 还提供了许多其他选项。查看[文档](https://pip.pypa.io/en/stable/)以获取有关可用标志等的更多信息。
 
 ## Recap II - Lock file
 
-Before we go on to the multi-purpose tools, there is one more file that’s important for packaging: the lock file. While `pyproject.toml` contains abstract dependencies, a lock file contains concrete dependencies. It records exact versions of all dependencies installed for a project (e.g. `pandas==2.0.3`). This enables reproducibility of projects across multiple platforms. If you have never seen a lock file before, take a look at [this one from `poetry`](https://github.com/python-poetry/poetry/blob/master/poetry.lock):
+在我们继续讨论多用途工具之前，还有一个对打包很重要的文件：锁文件。`pyproject.toml` 包含抽象依赖项，而锁文件包含具体依赖项。它记录了为项目安装的所有依赖项的确切版本（例如 `pandas==2.0.3`）。这使得项目能够在多个平台上重现。如果你以前从未见过锁文件，请查看[这个来自 `poetry` 的文件](https://github.com/python-poetry/poetry/blob/master/poetry.lock)：
 
 ![](/posts/python/figures/poetry_lock.png)
 
-## Multi-purpose tools
+## 多用途的工具
 
-Knowing about lock files we can start looking at tools that perform several tasks. We will start with `pipenv` and `conda` before we transition to packaging tools like `poetry` and `pdm`.
+了解了锁文件之后，我们可以开始研究执行多用途的工具。我们将从 `pipenv` 和 `conda` 开始，然后再过渡到 `poetry` 和 `pdm` 等打包工具。
 
 ### Pipenv
 
-As the name suggests, [`pipenv`](https://pipenv.pypa.io/en/latest/) combines `pip` and `virtualenv`. It allows you to perform virtual environment management and package management as we can see in our Venn diagram:
+顾名思义，[`pipenv`](https://pipenv.pypa.io/en/latest/) 结合了 `pip` 和 `virtualenv`。正如我们在维恩图中看到的，它允许你执行虚拟环境管理和包管理：
 
 ![](/posts/python/figures/pipenv.png)
 
-`pipenv` introduces two additional files:
+`pipenv` 引入了两个额外的文件：
 
 -   `Pipfile`
 -   `Pipfile.lock`
 
-`Pipfile` is a TOML file (similar to `pyproject.toml`) used to define project dependencies. It is managed by the developer when she invokes `pipenv` commands (like `pipenv install`). `Pipfile.lock` allows for deterministic builds. It eliminates the need for a `requirements.txt` file and is managed automatically through locking actions .
+`Pipfile` 是一个 TOML 文件（类似于 `pyproject.toml`），用于定义项目依赖项。当开发者调用 `pipenv` 命令（如 `pipenv install`）时，它由开发者管理。`Pipfile.lock` 允许确定性构建。它消除了对 `requirements.txt` 文件的需求，并通过锁定操作自动管理。
 
-The most important `pipenv` commands are:
+最重要的 `pipenv` 命令是：
 
 ```bash
 # Install package
