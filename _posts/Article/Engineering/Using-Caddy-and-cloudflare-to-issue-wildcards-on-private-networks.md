@@ -16,7 +16,7 @@ tags:
 toc: true
 ---
 
-# 使用 Caddy 和 cloudflare 在内网自动签发 https 证书
+# 使用 Caddy 和 CloudFlare 在内网自动签发 https 证书
 
 ## 前置条件
 
@@ -57,7 +57,7 @@ services:
 ## 获取用户 API 令牌
 
 -   登录到 Cloudflare Dashboard 。
--   前往 "My Profile" \> "API Tokens" 。
+-   前往 "My Profile" > "[API Tokens](https://dash.cloudflare.com/profile/api-tokens)" 。
 -   确认你的 API 令牌具有所需的权限（Zone.Zone:Read 和 Zone.DNS:Edit），并且选择要使用的域名。
     在 docker compose 同一层 文件夹里 创建一个 `.env` 文件
 
@@ -68,7 +68,7 @@ CLOUDFLARE_API_TOKEN = your token
 然后修改文件权限，只允许本用户读写。
 
 ```shell
-chmod  600  .env
+chmod  600 .env
 ```
 
 ## 编写 Caddyfile 文件
@@ -77,16 +77,16 @@ chmod  600  .env
 
 ```yaml
 caddy.luojiyin.top {
-tls {
-dns cloudflare {env.CLOUDFLARE_API_TOKEN}
-}
-respond / "Hello, world! This is a static response from Caddy." 200
+  tls {
+       dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+  }
+  respond / "Hello, world! This is a static response from Caddy." 200
 }
 ```
 
 Caddy 直接输出一个静态页面，验证签发是否成功。
 
-## 完整的 docker compose 文件
+## 完整的 Docker compose 文件
 
 ```yaml
 version: "3.7"
@@ -125,8 +125,9 @@ networks:
 
 ```shell
 ├── Caddyfile
-
-├── config                                                               │   └── caddy  [error opening dir]                                       ├── data
+├── config                                                               
+│   └── caddy  [error opening dir]                                       
+├── data
 │   └── caddy  [error opening dir]
 ├── docker-compose.yml
 └── Dockerfile
@@ -140,7 +141,7 @@ docker compose up
 
 没加 `-d` , 第一次启动查看日志， 会读取 `Dockerfile` 文件构建镜像，加入 cloudflare 插件， 从 `.env` 文件 获取 `CLOUDFLARE_API_TOKEN` 。
 
-```shell
+```text
 caddy  | {"level":"info","ts":1715595177.3236513,"logger":"tls.obtain","msg":"obtaining certificate","identifier":"caddy.luojiyin.top"}
 caddy  | {"level":"info","ts":1715595177.32397,"logger":"tls","msg":"finished cleaning storage units"}
 caddy  | {"level":"info","ts":1715595179.2300568,"logger":"tls.issuance.acme","msg":"waiting on internal rate limiter","identifiers":["caddy.luojiyin.top"],"ca":"https://acme-v02.api.letsencrypt.org/directory","account":""}
@@ -160,9 +161,9 @@ caddy  | {"level":"info","ts":1715595199.1766984,"logger":"tls.obtain","msg":"re
 <figure>
 <img
 src="Using-Caddy-and-cloudflare-to-issue-wildcards-on-private-networks/e280d22c8bd57a59b01707b2b37e02156862500a.png"
-title="wikilink" alt="../posts/assets/Pastedimage20240513183554.png" />
+title="wikilink">
 <figcaption
-aria-hidden="true"></figcaption>
+aria-hidden="true">配置内网域名解析</figcaption>
 </figure>
 
 打开浏览器验证
