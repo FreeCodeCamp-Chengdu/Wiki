@@ -8,7 +8,8 @@ categories:
     - Engineering
 tags:
     - https
-    - private-network
+    - 内网
+    - SSL
     - caddy
     - devops
     - Docker
@@ -17,7 +18,7 @@ toc: true
 
 # 使用 Caddy 和 cloudflare 在内网自动签发 https 证书
 
-#### 前置条件
+## 前置条件
 
 1.  Caddy 和 dns-cloudflare 插件，需要构建自己的 Docker 镜像
 2.  域名的 NS 服务器设置为 cloudflare， 配置好，大概一天后生效（保守估计）
@@ -25,7 +26,7 @@ toc: true
 4.  内网 Ubuntu 服务器
 5.  Ubuntu 安装 Docker
 
-#### 构建 Docker 镜像
+## 构建 Docker 镜像
 
 在 docker compose 同一层 文件夹里，创建一个 Dockerfile
 
@@ -53,7 +54,7 @@ services:
             dockerfile: Dockerfile
 ```
 
-#### 获取用户 API 令牌
+## 获取用户 API 令牌
 
 -   登录到 Cloudflare Dashboard 。
 -   前往 "My Profile" \> "API Tokens" 。
@@ -70,7 +71,7 @@ CLOUDFLARE_API_TOKEN = your token
 chmod  600  .env
 ```
 
-#### 编写 Caddyfile 文件
+## 编写 Caddyfile 文件
 
 在 docker compose 同一层 文件夹里，创建一个 Caddyfile 文件
 
@@ -85,7 +86,7 @@ respond / "Hello, world! This is a static response from Caddy." 200
 
 Caddy 直接输出一个静态页面，验证签发是否成功。
 
-#### 完整的 docker compose 文件
+## 完整的 docker compose 文件
 
 ```yaml
 version: "3.7"
@@ -154,7 +155,7 @@ caddy  | {"level":"info","ts":1715595199.1766984,"logger":"tls.obtain","msg":"re
 
 没有报错信息， 基本成功了。
 
-#### 配置内网 DNS
+## 配置内网 DNS
 
 <figure>
 <img
@@ -168,7 +169,7 @@ aria-hidden="true"></figcaption>
 
 ![../posts/assets/Pasted image 20240513183657.png](Using-Caddy-and-cloudflare-to-issue-wildcards-on-private-networks/f404c970e9c6ef366ba580dfa9c97e4ede61ff0e.png "wikilink")
 
-#### 总结
+## 总结
 
 一图胜千言
 ![../posts/assets/Pasted image 20240513183733.png](Using-Caddy-and-cloudflare-to-issue-wildcards-on-private-networks/fb21bae7a9d180c97a00fef82bdc4abc9fe83cbc.png "wikilink")
