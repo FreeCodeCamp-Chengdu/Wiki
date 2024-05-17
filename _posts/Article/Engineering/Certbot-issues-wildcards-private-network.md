@@ -103,6 +103,7 @@ Ubuntu 和 Debian 使用了 `systemd` ， 在安装 Certbot 过程中已经设�
 ```shell
 systemctl status certbot.timer
 ```
+
 ```shell
 ● certbot.timer - Run certbot twice daily
 Loaded: loaded (/lib/systemd/system/certbot.timer; enabled; preset: enabled)
@@ -112,7 +113,8 @@ Triggers: ● certbot.service
 May 12 22:49:11 traefik systemd[1]: Started certbot.timer - Run certbot twice daily.
 ```
 
-如果发行版没有使用 `systemd`  ， 运行命令， 编辑定时任务。
+如果发行版没有使用 `systemd` ， 运行命令， 编辑定时任务。
+
 ```shell
 crontab -e
 ```
@@ -124,6 +126,7 @@ crontab -e
 ```
 
 每天 0 点， 12 点运行一次， `--quiet`  参数确保只有在发生错误时才会有输出。 更详细的日志可以通过下面的命令查看
+
 ```shell
 less /var/log/letsencrypt/letsencrypt.log
 ```
@@ -178,12 +181,12 @@ sudo systemctl reload nginx
 dig gpt.luojiyin.top
 ```
 
-```text                                                      
-<<>> DiG 9.18.18-0ubuntu2.1-Ubuntu 
-<<>> gpt.luojiyin.top               ;; global options: +cmd                                                  
-;; Got answer:       
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 50327                
-;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1     
+```text
+<<>> DiG 9.18.18-0ubuntu2.1-Ubuntu
+<<>> gpt.luojiyin.top               ;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 50327
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
 ;; OPT PSEUDOSECTION:                  ; EDNS: version: 0, flags:; udp: 65494
 ;; QUESTION SECTION: ;gpt.luojiyin.top.              IN      A
 
