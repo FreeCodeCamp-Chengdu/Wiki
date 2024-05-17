@@ -30,7 +30,7 @@ toc: true
 sudo apt install -y certbot
 ```
 
-因为域名的 NS 服务器在 cloudflare， 需要使用 `certbot-dns-cloudflare` 插件
+因为域名的 NS 服务器在 CloudFlare， 需要使用 `certbot-dns-cloudflare` 插件
 
 ```shell
 sudo apt-get install python3-certbot-dns-cloudflare
@@ -88,8 +88,7 @@ If you like Certbot, please consider supporting our work by:
 <img
 src="Certbot-issues-wildcards-private-network/6af9d79b7229c6957b734c0920e4c1753af89b3a.png"
 title="wikilink"  />
-<figcaption
-aria-hidden="true">几分钟后应该收到 CloudFlare 和 Certbot 的邮件</figcaption>
+<figcaption>几分钟后应该收到 CloudFlare 和 Certbot 的邮件</figcaption>
 </figure>
 
 因为这个证书是有 90 天的有效期， 需要把 cerbot 加入定时任务。先验证 Cerbot 续签是否可以成功。
@@ -104,7 +103,7 @@ Ubuntu 和 Debian 使用了 `systemd` ， 在安装 Certbot 过程中已经设�
 systemctl status certbot.timer
 ```
 
-```shell
+```text
 ● certbot.timer - Run certbot twice daily
 Loaded: loaded (/lib/systemd/system/certbot.timer; enabled; preset: enabled)
 Active: active (waiting) since Sun 2024-05-12 22:49:11 CST; 53min ago
@@ -121,7 +120,7 @@ crontab -e
 
 加入如下内容
 
-```shell
+```text
 0 0,12 * * *  sudo certbot renew --quiet
 ```
 
