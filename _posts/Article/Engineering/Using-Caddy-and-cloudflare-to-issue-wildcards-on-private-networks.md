@@ -28,7 +28,7 @@ toc: true
 
 ## 构建 Docker 镜像
 
-在 Docker compose 同一层文件夹里，创建一个 Dockerfile
+在 Docker compose 同一层文件夹里，创建一个 Dockerfile。
 
 ```yaml
 FROM  caddy:builder AS builder
