@@ -10,7 +10,7 @@ tags:
     - https
     - 内网
     - SSL
-    - caddy
+    - Caddy
     - DevOps
     - Docker
 toc: true
@@ -21,27 +21,26 @@ toc: true
 ## 前置条件
 
 1.  Caddy 和 dns-cloudflare 插件，需要构建自己的 Docker 镜像
-2.  域名的 NS 服务器设置为 cloudflare， 配置好，大概一天后生效（保守估计）
+2.  域名的 NS 服务器设置为 CloudFlare， 配置好，大概一天后生效（保守估计）
 3.  内网 DNS 服务器， 如果路由器支持定义局域网域名，可以不安装，我用的是 adguard
 4.  内网 Ubuntu 服务器
 5.  Ubuntu 安装 Docker
 
 ## 构建 Docker 镜像
 
-在 docker compose 同一层 文件夹里，创建一个 Dockerfile
+在 Docker compose 同一层文件夹里，创建一个 Dockerfile
 
 ```yaml
 FROM  caddy:builder AS builder
 
-RUN caddy-builder \
-github.com/caddy-dns/cloudflare
+RUN caddy-builder github.com/caddy-dns/cloudflare
 
 FROM caddy:latest
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 ```
 
-在 docker compose 使用 Dockerfile
+在 Docker compose 使用 Dockerfile
 
 ```yaml
 version: "3.7"
@@ -61,7 +60,7 @@ services:
 -   确认你的 API 令牌具有所需的权限（Zone.Zone:Read 和 Zone.DNS:Edit），并且选择要使用的域名。
     在 docker compose 同一层 文件夹里 创建一个 `.env` 文件
 
-```yaml
+```ini
 CLOUDFLARE_API_TOKEN = your token
 ```
 
@@ -91,6 +90,10 @@ Caddy 直接输出一个静态页面，验证签发是否成功。
 ```yaml
 version: "3.7"
 
+networks:
+    caddy:
+        name: caddy
+
 services:
     caddy:
         container_name: caddy
@@ -116,14 +119,11 @@ services:
             - "./Caddyfile:/etc/caddy/Caddyfile"
         restart: unless-stopped
 
-networks:
-    caddy:
-        name: caddy
 ```
 
 完整的文件夹目录
 
-```shell
+```text
 ├── Caddyfile
 ├── config                                                               
 │   └── caddy  [error opening dir]                                       
@@ -162,8 +162,7 @@ caddy  | {"level":"info","ts":1715595199.1766984,"logger":"tls.obtain","msg":"re
 <img
 src="Using-Caddy-and-cloudflare-to-issue-wildcards-on-private-networks/e280d22c8bd57a59b01707b2b37e02156862500a.png"
 title="wikilink">
-<figcaption
-aria-hidden="true">配置内网域名解析</figcaption>
+<figcaption>配置内网域名解析</figcaption>
 </figure>
 
 打开浏览器验证
