@@ -10,22 +10,23 @@ reviewer: ""
 
 Anna-Lena Popkes
 
-8月24, 2023
+8 月 24, 2023
 
 ## 动机
 
 当我开始使用 Python 并创建我的第一个包时，我感到困惑。创建和管理一个包比我预期的要困难得多。此外，存在多种工具，我不确定该使用哪一个。我相信你们中的大多数人过去也遇到过同样的问题。Python 有大量的工具来管理虚拟环境和创建包，要理解哪一个最适合你的需求可能很难（或几乎不可能）。关于这个话题存在多个演讲和博客文章，但没有一个提供完整的概览或以结构化的方式评估这些工具。这就是本文的目的。我想给你一个真正无偏见的评价，关于现有的打包和环境管理工具。如果你宁愿观看一个演讲，可以看看 [PyCon DE 2023](https://www.youtube.com/watch?v=MsJjzVIVs6M) 或 [EuroPython 2023](https://www.youtube.com/watch?v=3-drZY3u5vo) 的录像。
+
 <!-- more -->
 
 ## 分类
 
 为了撰写本文，我确定了环境和软件包管理的五大重要类别：
 
-- 环境管理（主要涉及虚拟环境）
-- 软件包管理
-- Python 版本管理
-- 软件包构建
-- 软件包发布
+-   环境管理（主要涉及虚拟环境）
+-   软件包管理
+-   Python 版本管理
+-   软件包构建
+-   软件包发布
 
 正如你在下面的维恩图中所看到的，存在大量的工具。有些可以做一件事（即它们是单一用途的），而其他工具可以执行多个任务（因此我称它们为多用途工具）。
 
@@ -37,12 +38,11 @@ Anna-Lena Popkes
 
 由于不同的项目可能需要相同软件包的不同版本，因此您需要创建（和管理）虚拟环境以避免依赖项冲突。用于此目的的工具被归类在**环境管理**类别中。大多数工具使用虚拟环境，但有些工具使用另一种称为**本地软件包**的概念，我们将在后面介绍。
 
-一旦您的代码处于适当的状态，您可能希望与其他开发人员共享它。为此，您必须先构建您的软件包（**软件包构建**），然后才能将其发布到 PyPI 或其他索引（**软件包发布**）。 
+一旦您的代码处于适当的状态，您可能希望与其他开发人员共享它。为此，您必须先构建您的软件包（**软件包构建**），然后才能将其发布到 PyPI 或其他索引（**软件包发布**）。
 
+接下来，我们将更详细地了解每个类别，包括简短的定义、动机和可用工具。我将更详细地介绍一些单一用途的工具，并在最后的部分单独介绍几种多用途工具。让我们从第一个类别开始：Python 版本管理。
 
-接下来，我们将更详细地了解每个类别，包括简短的定义、动机和可用工具。我将更详细地介绍一些单一用途的工具，并在最后的部分单独介绍几种多用途工具。让我们从第一个类别开始：Python 版本管理。 
-
-## Python 版本管理 
+## Python 版本管理
 
 ### 定义
 
@@ -50,17 +50,17 @@ Anna-Lena Popkes
 
 ### 动机
 
-我们为什么要使用不同的 Python 版本？ 有几个原因。 例如，您可能正在处理多个项目，其中每个项目都需要不同的 Python 版本。 或者您可能正在开发一个支持多个 Python 版本的项目，并且您想要测试所有这些版本。 除此之外，查看最新的 Python 版本提供了什么，或者测试 Python 的预发布版本是否存在错误也是一件好事。 
+我们为什么要使用不同的 Python 版本？ 有几个原因。 例如，您可能正在处理多个项目，其中每个项目都需要不同的 Python 版本。 或者您可能正在开发一个支持多个 Python 版本的项目，并且您想要测试所有这些版本。 除此之外，查看最新的 Python 版本提供了什么，或者测试 Python 的预发布版本是否存在错误也是一件好事。
 
 ### 工具
 
-我们的维恩图显示了可用于 Python 版本管理的工具：`pyenv`、`conda`、`rye` 和 `PyFlow`。我们将首先看看 `pyenv`，并在单独的部分中考虑多用途工具。 
+我们的维恩图显示了可用于 Python 版本管理的工具：`pyenv`、`conda`、`rye` 和 `PyFlow`。我们将首先看看 `pyenv`，并在单独的部分中考虑多用途工具。
 
 ![](/posts/python/figures/python_version_management.png)
 
 ### pyenv
 
-Python 有一个单一用途的工具可以让您安装和管理 Python 版本：[pyenv](https://github.com/pyenv/pyenv)！ Pyenv 易于使用。 最重要的命令如下： 
+Python 有一个单一用途的工具可以让您安装和管理 Python 版本：[pyenv](https://github.com/pyenv/pyenv)！ Pyenv 易于使用。 最重要的命令如下：
 
 ```bash
 # Install specific Python version
@@ -80,11 +80,11 @@ pyenv global <version> # select version globally for your user account
 
 ### 动机
 
-我们为什么首先要使用环境？ 正如开头所提到的，项目有特定的要求（即它们依赖于其他包）。 通常情况下，不同的项目需要相同包的不同版本。 这会导致依赖冲突。 此外，使用 `pip install` 安装包时可能会出现问题，因为该包与您的系统范围内的 Python 安装放在一起。 其中一些问题可以通过在 `pip` 命令中使用 `--user` 标志来解决。 但是，这个选项可能不是每个人都知道，尤其是初学者。 
+我们为什么首先要使用环境？ 正如开头所提到的，项目有特定的要求（即它们依赖于其他包）。 通常情况下，不同的项目需要相同包的不同版本。 这会导致依赖冲突。 此外，使用 `pip install` 安装包时可能会出现问题，因为该包与您的系统范围内的 Python 安装放在一起。 其中一些问题可以通过在 `pip` 命令中使用 `--user` 标志来解决。 但是，这个选项可能不是每个人都知道，尤其是初学者。
 
 ### 工具
 
-许多工具允许用户创建和管理环境。 它们是：`venv、virtualenv、pipenv、conda、pdm、poetry、hatch、rye` 和 `PyFlow`。 其中只有两个是单一用途的工具：`venv` 和 `virtualenv`。 让我们更详细地了解它们。 
+许多工具允许用户创建和管理环境。 它们是：`venv、virtualenv、pipenv、conda、pdm、poetry、hatch、rye` 和 `PyFlow`。 其中只有两个是单一用途的工具：`venv` 和 `virtualenv`。 让我们更详细地了解它们。
 
 ![](/posts/python/figures/env_management.png)
 
@@ -127,6 +127,7 @@ Python 中的打包已经走过了漫长的道路。直到 [PEP 518](https://pep
 ## 包管理
 
 ### 定义
+
 能够执行包管理的工具能够下载和安装库及其依赖项。
 
 ### 动机
@@ -180,54 +181,54 @@ pipenv shell
 
 ### Conda
 
-[`Conda`](https://conda.io/projects/conda/en/latest/index.html) is a general-purpose package management system. That means that it’s not limited to Python packages. Conda is a huge tool with lots of capabilities. Lot’s of tutorials and blog posts exist (for example [the official one](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python)) so I won’t go into more detail here. However, I want to mention one thing: while it is possible to build and publish a package with `conda` I did not include the tool in the appropriate categories. That’s because packaging with `conda` works a little differently and the resulting packages will be `conda` packages.
+[`Conda`](https://conda.io/projects/conda/en/latest/index.html) 是一个通用的包管理系统。这意味着它不局限于 Python 包。Conda 是一个功能强大的工具，拥有许多功能。有许多教程和博客文章（例如[官方教程](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python)），因此我在这里不再赘述。但是，我想提一点：虽然可以使用 `conda` 构建和发布包，但我没有将该工具包含在相应的类别中。这是因为使用 `conda` 打包的工作方式略有不同，生成的包将是 `conda` 包。
 
 ![](/posts/python/figures/conda.png)
 
-### Feature evaluation
+### 功能评估
 
-Last but not least I want to present multi-purpose tools for packaging. I promised an unbiased evaluation. For this purpose I created a list of features that I consider important when comparing different tools. The features are:
+最后但同样重要的是，我想介绍一些用于打包的多功能工具。我承诺进行公正的评估。为此，我创建了一个我认为在比较不同工具时很重要的功能列表。这些功能包括：
 
-|                                              |     |
-| -------------------------------------------- | --- |
-| Does the tool manage dependencies?           | ?   |
-| Does it resolve/lock dependencies?           | ?   |
-| Is there a clean build/publish flow?         | ?   |
-| Does it allow to use plugins?                | ?   |
-| Does it support PEP 660 (editable installs)? | ?   |
-| Does it support PEP 621 (project metadata)?  | ?   |
+|                                    |     |
+| ---------------------------------- | --- |
+| 该工具是否管理依赖项？             | ?   |
+| 它是否解析/锁定依赖项？            | ?   |
+| 是否有干净的构建/发布流程？        | ?   |
+| 它是否允许使用插件？               | ?   |
+| 它是否支持 PEP 660（可编辑安装）？ | ?   |
+| 它是否支持 PEP 621（项目元数据）？ | ?   |
 
-Regarding the two PEPs: Python has a lot of open and closed PEPs on packaging. For a full overview take a look at [this page](https://peps.python.org/topic/packaging/). I only included PEP 660 and PEP 621 for specific reasons:
+关于这两个 PEP：Python 在打包方面有很多开放和关闭的 PEP。有关完整概述，请查看[此页面](https://peps.python.org/topic/packaging/)。我仅出于特定原因包含了 PEP 660 和 PEP 621：
 
--   [PEP 660](https://peps.python.org/pep-0660/) is about editable installs for `pyproject.toml` based builds. When you install a package using `pip` you have the option to install it in editable mode using `pip install -e package_name`. This is an important features to have when you are developing a package and want your changes to be directly reflected in your environment.
--   [PEP 621](https://peps.python.org/pep-0621/) specifies how to write a project’s core metadata in a `pyproject.toml` file. I added it because one package (spoiler: it’s `poetry`) currently does not support this PEP but uses its own way for declaring metadata.
+-   [PEP 660](https://peps.python.org/pep-0660/) 是关于基于 `pyproject.toml` 构建的可编辑安装。当你使用 `pip` 安装软件包时，你可以选择使用 `pip install -e package_name` 以可编辑模式安装它。当你正在开发一个软件包并希望你的更改直接反映在你的环境中时，这是一个非常重要的功能。
+-   [PEP 621](https://peps.python.org/pep-0621/) 指定了如何在 `pyproject.toml` 文件中写入项目的核心元数据。我添加它是为了说明，目前有一个软件包（剧透：它是 `poetry`）不支持此 PEP，而是使用自己的方式声明元数据。
 
 ### Flit
 
-[Flit](https://flit.pypa.io/en/stable/) tries to create a simple way to put Python packages and modules on PyPI. It has a very specific use case: it’s meant to be used for packaging pure Python packages (that is, packages without a build step). It doesn’t care about any of the other tasks:
+[Flit](https://flit.pypa.io/en/stable/) 试图创建一个将 Python 包和模块放到 PyPI 上的简单方法。它有一个非常具体的用例：它旨在用于打包纯 Python 包（即没有构建步骤的包）。它不关心任何其他任务：
 
--   Python version management: ❌
--   Package management: ❌
--   Environment management: ❌
--   Building a package: ✅
--   Publishing a package: ✅
+-   Python 版本管理：❌
+-   包管理：❌
+-   环境管理：❌
+-   构建包：✅
+-   发布包：✅
 
-This is also reflected in our Venn diagram:
+这也反映在我们的维恩图中：
 
 ![](/posts/python/figures/flit.png)
 
-#### Feature evaluation
+#### 功能评估
 
-|                                              |     |
-| -------------------------------------------- | --- |
-| Does the tool manage dependencies?           | ❌  |
-| Does it resolve/lock dependencies?           | ❌  |
-| Is there a clean build/publish flow?         | ✅  |
-| Does it allow to use plugins?                | ❌  |
-| Does it support PEP 660 (editable installs)? | ✅  |
-| Does it support PEP 621 (project metadata)?  | ✅  |
+|                                    |     |
+| ---------------------------------- | --- |
+| 该工具是否管理依赖项？             | ❌  |
+| 它是否解析/锁定依赖项？            | ❌  |
+| 是否有干净的构建/发布流程？        | ✅  |
+| 它是否允许使用插件？               | ❌  |
+| 它是否支持 PEP 660（可编辑安装）？ | ✅  |
+| 它是否支持 PEP 621（项目元数据）？ | ✅  |
 
-#### Main commands
+#### 主要命令
 
 ```bash
 # Create new pyproject.toml
@@ -239,30 +240,30 @@ flit publish
 
 ### Poetry
 
-[Poetry](https://python-poetry.org/) is a well known tool in the packaging world. As visible in the Venn diagram it can do everything except for Python version management:
+[Poetry](https://python-poetry.org/) 是打包界中一个众所周知的工具。正如维恩图所示，除了 Python 版本管理之外，它可以做任何事情：
 
--   Python version management: ❌
--   Package management: ✅
--   Environment management: ✅
--   Building a package: ✅
--   Publishing a package: ✅
+-   Python 版本管理：❌
+-   包管理：✅
+-   环境管理：✅
+-   构建包：✅
+-   发布包：✅
 
 ![](/posts/python/figures/poetry.png)
 
-Taking a look at the feature evaluation below you will see than Poetry does **not** support PEP 621. There has been an open issue about this on GitHub for about 1.5 years, but it hasn’t been integrated into the main code base (yet).
+查看下面的功能评估，您会发现 Poetry **不**支持 PEP 621。在 GitHub 上有一个关于此的开放问题大约 1.5 年了，但它还没有被集成到主代码库中（还）。
 
-#### Feature evaluation
+#### 功能评估
 
-|                                              |     |
-| -------------------------------------------- | --- |
-| Does the tool manage dependencies?           | ✅  |
-| Does it resolve/lock dependencies?           | ✅  |
-| Is there a clean build/publish flow?         | ✅  |
-| Does it allow to use plugins?                | ✅  |
-| Does it support PEP 660 (editable installs)? | ✅  |
-| Does it support PEP 621 (project metadata)?  | ❌  |
+|                                    |     |
+| ---------------------------------- | --- |
+| 该工具是否管理依赖项？             | ✅  |
+| 它是否解析/锁定依赖项？            | ✅  |
+| 是否有干净的构建/发布流程？        | ✅  |
+| 它是否允许使用插件？               | ✅  |
+| 它是否支持 PEP 660（可编辑安装）？ | ✅  |
+| 它是否支持 PEP 621（项目元数据）？ | ❌  |
 
-#### Main commands
+#### 主要命令
 
 ```bash
 # Create directory structure and pyproject.toml
@@ -275,7 +276,7 @@ poetry init
 poetry install
 ```
 
-#### Dependency management
+#### 依赖管理
 
 ```bash
 # Add dependency
@@ -285,7 +286,7 @@ poetry add <package_name>
 poetry show --tree
 ```
 
-#### Running code
+#### 运行代码
 
 ```bash
 # Activate virtual env
@@ -295,11 +296,11 @@ poetry shell
 poetry run python <script_name.py>
 ```
 
-#### Lock file
+#### Lock file（锁定文件）
 
-When installing a package for the first time, Poetry resolves all dependencies listed in your `pyproject.toml` file and downloads the latest version of the packages. Once Poetry has finished installing, it writes all the packages and the exact versions that it downloaded to a `poetry.lock` file, locking the project to those specific versions. It’s recommended to commit the lock file to your project repo so that all people working on the project are locked to the same versions of dependencies. To update your dependencies to the latest versions, use the `poetry update` command.
+首次安装软件包时，Poetry 会解析 `pyproject.toml` 文件中列出的所有依赖项，并下载软件包的最新版本。Poetry 完成安装后，它会将所有软件包及其下载的确切版本写入 `poetry.lock` 文件，将项目锁定到这些特定版本。建议将锁定文件提交到项目仓库，以便所有参与项目的人员都锁定到相同版本的依赖项。要将依赖项更新到最新版本，请使用 `poetry update` 命令。
 
-#### Build/publish flow
+#### Build/publish flow（构建/发布流程）
 
 ```bash
 # Package code (creates `.tar.gz` and `.whl` files)
@@ -311,33 +312,34 @@ poetry publish
 
 ### PDM
 
-[PDM](https://pdm.fming.dev/latest/) is a relatively new package and dependency manager (started in 2019) that is strongly inspired by Poetry and PyFlow. You will notice that I’m not talking about PyFlow in this article. That’s because PyFlow is not actively developed anymore - a must in the quickly evolving landscape of packaging. Being a new(er) tool, PDM requires Python 3.7 or higher. Another difference to other tools is that PDM allows users to choose a build backend.  
-PDM is the only tool (apart from PyFlow) that implements [PEP 582](https://peps.python.org/pep-0582/) on local packages, an alternative way of implementing environment management. Note that this PEP was recently rejected.
+[PDM](https://pdm.fming.dev/latest/) 是一个相对较新的包和依赖管理器（始于 2019 年），它很大程度上受到 Poetry 和 PyFlow 的启发。您会注意到，我在这篇文章中没有谈论 PyFlow。这是因为 PyFlow 不再积极开发——在快速发展的打包领域中，这是一个必须的条件。作为一个更新的工具，PDM 需要 Python 3.7 或更高版本。与其他工具的另一个区别是 PDM 允许用户选择构建后端。
 
-As visible in the Venn diagram, PDM sits right next to Poetry. That means that it can do everything except for Python version management:
+PDM 是唯一一个（除了 PyFlow）在本地包上实现 [PEP 582](https://peps.python.org/pep-0582/) 的工具，这是一种实现环境管理的替代方法。请注意，此 PEP 最近被拒绝。
 
--   Python version management: ❌
--   Package management: ✅
--   Environment management: ✅
--   Building a package: ✅
--   Publishing a package: ✅
+如维恩图所示，PDM 位于 Poetry 旁边。这意味着它可以做除 Python 版本管理之外的所有事情：
 
-The main commands of PDM are similar to Poetry. However, less commands exist. For example, there is no `pdm shell` or `pdm new` at the moment.
+-   Python 版本管理：❌
+-   包管理：✅
+-   环境管理：✅
+-   构建包：✅
+-   发布包：✅
+
+PDM 的主要命令与 Poetry 类似。但是，存在的命令较少。例如，目前没有 `pdm shell` 或 `pdm new`。
 
 ![](/posts/python/figures/pdm.png)
 
-#### Feature evaluation
+#### 功能评估
 
-|                                              |     |
-| -------------------------------------------- | --- |
-| Does the tool manage dependencies?           | ✅  |
-| Does it resolve/lock dependencies?           | ✅  |
-| Is there a clean build/publish flow?         | ✅  |
-| Does it allow to use plugins?                | ✅  |
-| Does it support PEP 660 (editable installs)? | ✅  |
-| Does it support PEP 621 (project metadata)?  | ✅  |
+|                                    |     |
+| ---------------------------------- | --- |
+| 该工具是否管理依赖项？             | ✅  |
+| 它是否解析/锁定依赖项？            | ✅  |
+| 是否有干净的构建/发布流程？        | ✅  |
+| 它是否允许使用插件？               | ✅  |
+| 它是否支持 PEP 660（可编辑安装）？ | ✅  |
+| 它是否支持 PEP 621（项目元数据）？ | ✅  |
 
-#### Creating a new project
+#### 创建新项目
 
 ```bash
 # Create pyproject.toml interactively
@@ -347,7 +349,7 @@ pdm init
 pdm install
 ```
 
-#### Dependency management
+#### 依赖管理
 
 ```bash
 # Add dependency
@@ -357,7 +359,7 @@ pdm add <package_name>
 pdm list --graph
 ```
 
-#### Running code
+#### 运行代码
 
 ```bash
 # No pdm shell command
@@ -366,11 +368,11 @@ pdm list --graph
 pdm run python <script_name.py>
 ```
 
-#### Lock file
+#### Lock file（锁定文件）
 
-The locking functionality of PDM is similar to Poetry. When installing a package for the first time, PDM resolves all dependencies listed in your `pyproject.toml` file and downloads the latest version of the packages. Once PDM has finished installing, it writes all packages and the exact versions that it downloaded to a `pdm.lock` file, locking the project to those specific versions. It’s recommended to commit the lock file to your project repo so that all people working on the project are locked to the same versions of dependencies. To update your dependencies to the latest versions, use the `pdm update` command.
+PDM 的锁定功能类似于 Poetry。首次安装软件包时，PDM 会解析 `pyproject.toml` 文件中列出的所有依赖项，并下载软件包的最新版本。PDM 完成安装后，会将所有软件包及其下载的确切版本写入 `pdm.lock` 文件，将项目锁定到这些特定版本。建议将锁定文件提交到项目仓库，以便所有参与项目的人员都锁定到相同版本的依赖项。要将依赖项更新到最新版本，请使用 `pdm update` 命令。
 
-#### Build/publish flow
+#### Build/publish flow（构建/发布流程）
 
 ```bash
 # Package code (creates `.tar.gz` and `.whl` files)
@@ -382,30 +384,30 @@ pdm publish
 
 ### Hatch
 
-[Hatch](https://hatch.pypa.io/latest/) can perform the following tasks:
+[Hatch](https://hatch.pypa.io/latest/) 可以执行以下任务：
 
--   Python version management: ❌
--   Package management: ❌
--   Environment management: ✅
--   Building a package: ✅
--   Publishing a package: ✅
+-   Python 版本管理：❌
+-   软件包管理：❌
+-   环境管理：✅
+-   构建软件包：✅
+-   发布软件包：✅
 
-It should be noted that the author of Hatch promised that locking functionality will be added soon, which should also enable package management. Please make sure to check the latest version of Hatch to see if this has been implemented when you read this article.
+需要注意的是，Hatch 的作者承诺很快就会添加锁定功能，这也应该能够实现软件包管理。 在阅读本文时，请务必查看最新版本的 Hatch，以了解是否已实现此功能。
 
 ![](/posts/python/figures/hatch.png)
 
-#### Feature evaluation
+#### 功能评估
 
-|                                              |     |
-| -------------------------------------------- | --- |
-| Does the tool manage dependencies?           | ❌  |
-| Does it resolve/lock dependencies?           | ❌  |
-| Is there a clean build/publish flow?         | ✅  |
-| Does it allow to use plugins?                | ✅  |
-| Does it support PEP 660 (editable installs)? | ✅  |
-| Does it support PEP 621 (project metadata)?  | ✅  |
+|                                    |     |
+| ---------------------------------- | --- |
+| 该工具是否管理依赖项？             | ❌  |
+| 它是否解析/锁定依赖项？            | ❌  |
+| 是否有干净的构建/发布流程？        | ✅  |
+| 它是否允许使用插件？               | ✅  |
+| 它是否支持 PEP 660（可编辑安装）？ | ✅  |
+| 它是否支持 PEP 621（项目元数据）？ | ✅  |
 
-#### Creating a new project
+#### 创建一个新项目
 
 ```bash
 # Create directory structure and pyproject.toml
@@ -418,7 +420,7 @@ hatch new -i <project_name>
 hatch new --init
 ```
 
-#### Dependency management
+#### 依赖管理
 
 ```python
 # Packages are added manually to pyproject.toml
@@ -428,7 +430,7 @@ hatch add <package_name> # This command doesn't exist!
 hatch dep show table
 ```
 
-#### Running code
+#### 运行代码
 
 ```bash
 # Activate virtual env
@@ -438,7 +440,7 @@ hatch shell
 hatch run python <script_name.py>
 ```
 
-#### Build/publish flow
+#### Build/publish flow（构建/发布流程）
 
 ```bash
 # Package code (creates `.tar.gz` and `.whl` files)
@@ -448,36 +450,36 @@ hatch build
 hatch publish
 ```
 
-#### Declarative environment management
+#### Declarative environment management（声明式环境管理）
 
-Special about Hatch is that it allows you to configure your virtual environments within the `pyproject.toml` file. In addition it lets you define scripts specifically for an environment. And example use case for this is [code formatting](https://hatch.pypa.io/1.1/config/environment/#scripts).
+Hatch 的特别之处在于它允许您在 `pyproject.toml` 文件中配置您的虚拟环境。此外，它还允许您专门为某个环境定义脚本。这方面的一个示例用例是 [代码格式化](https://hatch.pypa.io/1.1/config/environment/#scripts)。
 
 ### Rye
 
-[Rye](https://rye-up.com/) was recently developed by Armin Ronacher (first release May 2023), the creator of the Flask framework. It is strongly inspired by `rustup` and `cargo`, the packaging tools of the programming language Rust. Rye is written in Rust and is able to perform all tasks in our Venn diagram:
+[Rye](https://rye-up.com/) 是由 Flask 框架的创建者 Armin Ronacher 最近开发的（第一个版本于 2023 年 5 月发布）。它的灵感很大程度上来自于 `rustup` 和 `cargo`，这两个都是 Rust 编程语言的打包工具。Rye 是用 Rust 编写的，并且能够执行我们维恩图中的所有任务：
 
--   Python version management: ✅
--   Package management: ✅
--   Environment management: ✅
--   Building a package: ✅
--   Publishing a package: ✅
+-   Python 版本管理：✅
+-   软件包管理：✅
+-   环境管理：✅
+-   构建软件包：✅
+-   发布软件包：✅
 
-Currently, Rye does not have a plugin interface. However, since new releases are published on a regular basis, this might be added in the future.
+目前，Rye 没有插件接口。但是，由于新版本会定期发布，因此将来可能会添加此功能。
 
 ![](/posts/python/figures/rye.png)
 
-#### Feature evaluation
+#### 功能评估
 
-|                                              |     |
-| -------------------------------------------- | --- |
-| Does the tool manage dependencies?           | ✅  |
-| Does it resolve/lock dependencies?           | ✅  |
-| Is there a clean build/publish flow?         | ✅  |
-| Does it allow to use plugins?                | ❌  |
-| Does it support PEP 660 (editable installs)? | ✅  |
-| Does it support PEP 621 (project metadata)?  | ✅  |
+|                                    |     |
+| ---------------------------------- | --- |
+| 该工具是否管理依赖项？             | ✅  |
+| 它是否解析/锁定依赖项？            | ✅  |
+| 是否有干净的构建/发布流程？        | ✅  |
+| 它是否允许使用插件？               | ❌  |
+| 它是否支持 PEP 660（可编辑安装）？ | ✅  |
+| 它是否支持 PEP 621（项目元数据）？ | ✅  |
 
-#### Creating a new project
+#### 创建一个新项目
 
 ```bash
 # Create directory structure and pyproject.toml
@@ -487,7 +489,7 @@ rye init <project_name>
 rye pin 3.10
 ```
 
-#### Dependency management
+#### 依赖管理
 
 ```python
 # Add dependency - this does not install the package!
@@ -498,7 +500,7 @@ rye add <package_name>
 rye sync
 ```
 
-#### Running code
+#### 运行代码
 
 ```bash
 # Activate virtual env
@@ -508,7 +510,7 @@ rye shell
 rye run python <script_name.py>
 ```
 
-#### Build/publish flow
+#### Build/publish flow（构建/发布流程）
 
 ```bash
 # Package code (creates `.tar.gz` and `.whl` files)
@@ -518,29 +520,29 @@ rye build
 rye publish
 ```
 
-### Overview
+### 概述
 
-|                                              | Flit | Poetry | PDM | Hatch | Rye |
-| -------------------------------------------- | ---- | ------ | --- | ----- | --- |
-| Does the tool manage dependencies?           | ❌   | ✅     | ✅  | ❌    | ✅  |
-| Does it resolve/lock dependencies?           | ❌   | ✅     | ✅  | ❌    | ✅  |
-| Is there a clean build/publish flow?         | ✅   | ✅     | ✅  | ✅    | ✅  |
-| Does it allow to use plugins?                | ❌   | ✅     | ✅  | ✅    | ❌  |
-| Does it support PEP 660 (editable installs)? | ✅   | ✅     | ✅  | ✅    | ✅  |
-| Does it support PEP 621 (project metadata)?  | ✅   | ❌     | ✅  | ✅    | ✅  |
+|                                    | Flit | Poetry | PDM | Hatch | Rye |
+| ---------------------------------- | ---- | ------ | --- | ----- | --- |
+| 该工具是否管理依赖项？             | ❌   | ✅     | ✅  | ❌    | ✅  |
+| 它是否解析/锁定依赖项？            | ❌   | ✅     | ✅  | ❌    | ✅  |
+| 是否有干净的构建/发布流程？        | ✅   | ✅     | ✅  | ✅    | ✅  |
+| 它是否允许使用插件？               | ❌   | ✅     | ✅  | ✅    | ❌  |
+| 它是否支持 PEP 660（可编辑安装）？ | ✅   | ✅     | ✅  | ✅    | ✅  |
+| 它是否支持 PEP 621（项目元数据）？ | ✅   | ❌     | ✅  | ✅    | ✅  |
 
-## Tools that do not fit the categories
+## 不属于这些类别的工具
 
-Some tools exist which don’t fit into any of my categories. These are:
+有些工具不属于我的任何类别。它们是：
 
--   [pip-tools](https://pip-tools.readthedocs.io/en/latest/) which helps to keep the versions of your `pip`\-based packages up-to-date.
--   [tox](https://tox.wiki/) and [nox](https://nox.thea.codes/) which are mainly used for testing but also handles virtual environments.
+-   [pip-tools](https://pip-tools.readthedocs.io/en/latest/) 帮助您保持基于 `pip` 的软件包版本最新。
+-   [tox](https://tox.wiki/) 和 [nox](https://nox.thea.codes/) 主要用于测试，但也处理虚拟环境。
 
-[Improve this page](https://github.com/zotroneneis/zotroneneis.github.io/edit/main/content/posts/python/packaging_tools.md)
+[改进此页面](https://github.com/zotroneneis/zotroneneis.github.io/edit/main/content/posts/python/packaging_tools.md)
 
 ---
 
-[Next  
-Principal component analysis (PCA)](/posts/machine_learning/principal_component_analysis/)
+[下一个
+主成分分析 (PCA)](/posts/machine_learning/principal_component_analysis/)
 
 ---
