@@ -74,7 +74,7 @@ chmod  600 .env
 
 在 docker compose 同一层 文件夹里，创建一个 Caddyfile 文件
 
-```caddy
+```caddyfile
 caddy.luojiyin.top {
   tls {
        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
@@ -118,15 +118,14 @@ services:
             - "./config:/config"
             - "./Caddyfile:/etc/caddy/Caddyfile"
         restart: unless-stopped
-
 ```
 
 完整的文件夹目录
 
 ```text
 ├── Caddyfile
-├── config                                                               
-│   └── caddy  [error opening dir]                                       
+├── config
+│   └── caddy  [error opening dir]
 ├── data
 │   └── caddy  [error opening dir]
 ├── docker-compose.yml
