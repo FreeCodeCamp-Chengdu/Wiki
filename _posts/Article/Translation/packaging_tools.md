@@ -6,7 +6,7 @@ translator: ""
 reviewer: ""
 ---
 
-![](/images/author/image_al.jpg)
+![](https://alpopkes.com/images/author/image_al_hu6aa485cfd64a98f54b411e3a0324b396_178285_120x120_fit_q75_box.jpg)
 
 Anna-Lena Popkes
 
@@ -30,7 +30,7 @@ Anna-Lena Popkes
 
 正如你在下面的维恩图中所看到的，存在大量的工具。有些可以做一件事（即它们是单一用途的），而其他工具可以执行多个任务（因此我称它们为多用途工具）。
 
-![](/posts/python/figures/venn_diagram.png)
+![](https://alpopkes.com/posts/python/figures/venn_diagram.png)
 
 让我们从开发者的角度来逐一介绍这些类别。假设您除了工作项目之外，还在进行个人项目。在工作中，您使用的是 Python 3.7，而您的个人项目应该使用最新的 Python 版本（目前是 3.11）。换句话说：您希望能够安装不同的 Python 版本并在它们之间切换。这就是我们的第一个类别，**Python 版本管理**的意义所在。
 
@@ -56,7 +56,7 @@ Anna-Lena Popkes
 
 我们的维恩图显示了可用于 Python 版本管理的工具：`pyenv`、`conda`、`rye` 和 `PyFlow`。我们将首先看看 `pyenv`，并在单独的部分中考虑多用途工具。
 
-![](/posts/python/figures/python_version_management.png)
+![](https://alpopkes.com/posts/python/figures/python_version_management.png)
 
 ### pyenv
 
@@ -86,7 +86,7 @@ pyenv global <version> # select version globally for your user account
 
 许多工具允许用户创建和管理环境。 它们是：`venv、virtualenv、pipenv、conda、pdm、poetry、hatch、rye` 和 `PyFlow`。 其中只有两个是单一用途的工具：`venv` 和 `virtualenv`。 让我们更详细地了解它们。
 
-![](/posts/python/figures/env_management.png)
+![](https://alpopkes.com/posts/python/figures/env_management.png)
 
 ### venv
 
@@ -137,7 +137,7 @@ Python 中的打包已经走过了漫长的道路。直到 [PEP 518](https://pep
 ### 工具
 
 许多工具都可以执行包管理：`pip`、`pipx`、`pipenv`、`conda`、`pdm`、`poetry`、`rye` 和 `PyFlow`。`pip` 是 Python 社区中众所周知的专用包管理工具。
-![](/posts/python/figures/package_management.png)
+![](https://alpopkes.com/posts/python/figures/package_management.png)
 
 #### pip
 
@@ -147,7 +147,7 @@ Python 的标准包管理器是 [`pip`](https://pip.pypa.io/en/stable/)。它随
 
 在我们继续讨论多用途工具之前，还有一个对打包很重要的文件：锁文件。`pyproject.toml` 包含抽象依赖项，而锁文件包含具体依赖项。它记录了为项目安装的所有依赖项的确切版本（例如 `pandas==2.0.3`）。这使得项目能够在多个平台上重现。如果你以前从未见过锁文件，请查看[这个来自 `poetry` 的文件](https://github.com/python-poetry/poetry/blob/master/poetry.lock)：
 
-![](/posts/python/figures/poetry_lock.png)
+![](https://alpopkes.com/posts/python/figures/poetry_lock.png)
 
 ## 多用途的工具
 
@@ -157,7 +157,7 @@ Python 的标准包管理器是 [`pip`](https://pip.pypa.io/en/stable/)。它随
 
 顾名思义，[`pipenv`](https://pipenv.pypa.io/en/latest/) 结合了 `pip` 和 `virtualenv`。正如我们在维恩图中看到的，它允许你执行虚拟环境管理和包管理：
 
-![](/posts/python/figures/pipenv.png)
+![](https://alpopkes.com/posts/python/figures/pipenv.png)
 
 `pipenv` 引入了两个额外的文件：
 
@@ -183,7 +183,7 @@ pipenv shell
 
 [`Conda`](https://conda.io/projects/conda/en/latest/index.html) 是一个通用的包管理系统。这意味着它不局限于 Python 包。Conda 是一个功能强大的工具，拥有许多功能。有许多教程和博客文章（例如[官方教程](https://conda.io/projects/conda/en/latest/user-guide/getting-started.html#managing-python)），因此我在这里不再赘述。但是，我想提一点：虽然可以使用 `conda` 构建和发布包，但我没有将该工具包含在相应的类别中。这是因为使用 `conda` 打包的工作方式略有不同，生成的包将是 `conda` 包。
 
-![](/posts/python/figures/conda.png)
+![](https://alpopkes.com/posts/python/figures/conda.png)
 
 ### 功能评估
 
@@ -215,7 +215,7 @@ pipenv shell
 
 这也反映在我们的维恩图中：
 
-![](/posts/python/figures/flit.png)
+![](https://alpopkes.com/posts/python/figures/flit.png)
 
 #### 功能评估
 
@@ -248,7 +248,7 @@ flit publish
 -   构建包：✅
 -   发布包：✅
 
-![](/posts/python/figures/poetry.png)
+![](https://alpopkes.com/posts/python/figures/poetry.png)
 
 查看下面的功能评估，您会发现 Poetry **不**支持 PEP 621。在 GitHub 上有一个关于此的开放问题大约 1.5 年了，但它还没有被集成到主代码库中（还）。
 
@@ -326,7 +326,7 @@ PDM 是唯一一个（除了 PyFlow）在本地包上实现 [PEP 582](https://pe
 
 PDM 的主要命令与 Poetry 类似。但是，存在的命令较少。例如，目前没有 `pdm shell` 或 `pdm new`。
 
-![](/posts/python/figures/pdm.png)
+![](https://alpopkes.com/posts/python/figures/pdm.png)
 
 #### 功能评估
 
@@ -394,7 +394,7 @@ pdm publish
 
 需要注意的是，Hatch 的作者承诺很快就会添加锁定功能，这也应该能够实现软件包管理。 在阅读本文时，请务必查看最新版本的 Hatch，以了解是否已实现此功能。
 
-![](/posts/python/figures/hatch.png)
+![](https://alpopkes.com/posts/python/figures/hatch.png)
 
 #### 功能评估
 
@@ -466,7 +466,7 @@ Hatch 的特别之处在于它允许您在 `pyproject.toml` 文件中配置您�
 
 目前，Rye 没有插件接口。但是，由于新版本会定期发布，因此将来可能会添加此功能。
 
-![](/posts/python/figures/rye.png)
+![](https://alpopkes.com/posts/python/figures/rye.png)
 
 #### 功能评估
 
@@ -538,11 +538,4 @@ rye publish
 -   [pip-tools](https://pip-tools.readthedocs.io/en/latest/) 帮助您保持基于 `pip` 的软件包版本最新。
 -   [tox](https://tox.wiki/) 和 [nox](https://nox.thea.codes/) 主要用于测试，但也处理虚拟环境。
 
-[改进此页面](https://github.com/zotroneneis/zotroneneis.github.io/edit/main/content/posts/python/packaging_tools.md)
-
----
-
-[下一个
-主成分分析 (PCA)](/posts/machine_learning/principal_component_analysis/)
-
----
+[给本博文提供建议](https://github.com/zotroneneis/zotroneneis.github.io/edit/main/content/posts/python/packaging_tools.md)
