@@ -74,7 +74,7 @@ chmod  600 .env
 
 在 docker compose 同一层 文件夹里，创建一个 Caddyfile 文件
 
-```yaml
+```caddy
 caddy.luojiyin.top {
   tls {
        dns cloudflare {env.CLOUDFLARE_API_TOKEN}
