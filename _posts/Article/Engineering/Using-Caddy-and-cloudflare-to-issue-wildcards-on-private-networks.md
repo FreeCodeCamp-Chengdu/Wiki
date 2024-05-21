@@ -1,37 +1,40 @@
 ---
-title: 使用 Caddy 和 cloudflare 在内网自动签发 https 证书
+title: 使用 Caddy 和 CloudFlare 在内网自动签发 https 证书
 date: 2024-05-13 22:52:58
+updated: 2024-5-21 01:43:27
 authors:
-    - luojiyin
+  - luojiyin1987
 categories:
-    - Article
-    - Engineering
+  - Article
+  - Engineering
 tags:
-    - https
-    - 内网
-    - SSL
-    - Caddy
-    - DevOps
-    - Docker
+  - https
+  - 内网
+  - SSL
+  - Caddy
+  - DevOps
+  - Docker
+photos:
+  - https://i.ytimg.com/vi/F26ba_RGaWM/maxresdefault.jpg
 toc: true
 ---
 
-# 使用 Caddy 和 CloudFlare 在内网自动签发 https 证书
-
 ## 前置条件
 
-1.  Caddy 和 dns-cloudflare 插件，需要构建自己的 Docker 镜像
+1.  Caddy 和 `dns-cloudflare` 插件，需要构建自己的 Docker 镜像
 2.  域名的 NS 服务器设置为 CloudFlare， 配置好，大概一天后生效（保守估计）
 3.  内网 DNS 服务器， 如果路由器支持定义局域网域名，可以不安装，我用的是 adguard
 4.  内网 Ubuntu 服务器
 5.  Ubuntu 安装 Docker
 
+<!-- more -->
+
 ## 构建 Docker 镜像
 
 在 Docker compose 同一层文件夹里，创建一个 Dockerfile。
 
-```yaml
-FROM  caddy:builder AS builder
+```dockerfile
+FROM caddy:builder AS builder
 
 RUN caddy-builder github.com/caddy-dns/cloudflare
 
@@ -46,19 +49,19 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 version: "3.7"
 
 services:
-    caddy:
-        container_name: caddy
-        build:
-            context: .
-            dockerfile: Dockerfile
+  caddy:
+    container_name: caddy
+    build:
+      context: .
+      dockerfile: Dockerfile
 ```
 
 ## 获取用户 API 令牌
 
--   登录到 Cloudflare Dashboard 。
--   前往 "My Profile" > "[API Tokens](https://dash.cloudflare.com/profile/api-tokens)" 。
--   确认你的 API 令牌具有所需的权限（Zone.Zone:Read 和 Zone.DNS:Edit），并且选择要使用的域名。
-    在 docker compose 同一层 文件夹里 创建一个 `.env` 文件
+- 登录到 CloudFlare Dashboard。
+- 前往 "My Profile" > ["API Tokens"](https://dash.cloudflare.com/profile/api-tokens)。
+- 确认你的 API 令牌具有所需的权限（Zone.Zone:Read 和 Zone.DNS:Edit），并且选择要使用的域名。
+  在 `docker-compose.yml` 同一层文件夹里创建一个 `.env` 文件
 
 ```ini
 CLOUDFLARE_API_TOKEN = your token
@@ -66,13 +69,13 @@ CLOUDFLARE_API_TOKEN = your token
 
 然后修改文件权限，只允许本用户读写。
 
-```shell
-chmod  600 .env
+```bash
+chmod 600 .env
 ```
 
 ## 编写 Caddyfile 文件
 
-在 docker compose 同一层 文件夹里，创建一个 Caddyfile 文件
+在 `docker-compose.yml` 同一层文件夹里，创建一个 `Caddyfile` 文件
 
 ```caddyfile
 caddy.luojiyin.top {
@@ -91,33 +94,33 @@ Caddy 直接输出一个静态页面，验证签发是否成功。
 version: "3.7"
 
 networks:
-    caddy:
-        name: caddy
+  caddy:
+    name: caddy
 
 services:
-    caddy:
-        container_name: caddy
-        build:
-            context: .
-            dockerfile: Dockerfile
-        ports:
-            - "80:80" # Remember that Caddy does HTTP to HTTPS redirections automatically.
-            - "443:443"
-        environment:
-            - CADDY_INGRESS_NETWORK=caddy
-            # If you don't want to write your token here, remember that Docker Compose picks up
-            # variables from an .env file if present in the same directory as the compose file.
-            - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
-        networks:
-            - caddy
-        volumes:
-            - "/var/run/docker.sock:/var/run/docker.sock"
-            # It is important to have these to conserve data after the container restarts
-            - "./data:/data"
-            # Unless we want to SSH to our server every time it restarts.
-            - "./config:/config"
-            - "./Caddyfile:/etc/caddy/Caddyfile"
-        restart: unless-stopped
+  caddy:
+    container_name: caddy
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80" # Remember that Caddy does HTTP to HTTPS redirections automatically.
+      - "443:443"
+    environment:
+      - CADDY_INGRESS_NETWORK=caddy
+      # If you don't want to write your token here, remember that Docker Compose picks up
+      # variables from an .env file if present in the same directory as the compose file.
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+    networks:
+      - caddy
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      # It is important to have these to conserve data after the container restarts
+      - "./data:/data"
+      # Unless we want to SSH to our server every time it restarts.
+      - "./config:/config"
+      - "./Caddyfile:/etc/caddy/Caddyfile"
+    restart: unless-stopped
 ```
 
 完整的文件夹目录
@@ -134,11 +137,11 @@ services:
 
 启动服务
 
-```shell
+```bash
 docker compose up
 ```
 
-没加 `-d` , 第一次启动查看日志， 会读取 `Dockerfile` 文件构建镜像，加入 cloudflare 插件， 从 `.env` 文件 获取 `CLOUDFLARE_API_TOKEN` 。
+没加 `-d` , 第一次启动查看日志， 会读取 `Dockerfile` 文件构建镜像，加入 CloudFlare 插件， 从 `.env` 文件 获取 `CLOUDFLARE_API_TOKEN` 。
 
 ```text
 caddy  | {"level":"info","ts":1715595177.3236513,"logger":"tls.obtain","msg":"obtaining certificate","identifier":"caddy.luojiyin.top"}
@@ -158,18 +161,20 @@ caddy  | {"level":"info","ts":1715595199.1766984,"logger":"tls.obtain","msg":"re
 ## 配置内网 DNS
 
 <figure>
-<img
-src="Using-Caddy-and-cloudflare-to-issue-wildcards-on-private-networks/e280d22c8bd57a59b01707b2b37e02156862500a.png"
-title="wikilink">
-<figcaption>配置内网域名解析</figcaption>
+    <img
+        src="./e280d22c8bd57a59b01707b2b37e02156862500a.png"
+    >
+    <figcaption>配置内网域名解析</figcaption>
 </figure>
 
 打开浏览器验证
 
-![../posts/assets/Pasted image 20240513183657.png](Using-Caddy-and-cloudflare-to-issue-wildcards-on-private-networks/f404c970e9c6ef366ba580dfa9c97e4ede61ff0e.png "wikilink")
+![](./f404c970e9c6ef366ba580dfa9c97e4ede61ff0e.png)
 
 ## 总结
 
 一图胜千言
-![../posts/assets/Pasted image 20240513183733.png](Using-Caddy-and-cloudflare-to-issue-wildcards-on-private-networks/fb21bae7a9d180c97a00fef82bdc4abc9fe83cbc.png "wikilink")
+
+![](./fb21bae7a9d180c97a00fef82bdc4abc9fe83cbc.png)
+
 是不是比用 Nginx 简单多了。

@@ -2,18 +2,22 @@
 title: 你应该使用的现代 Git 命令和功能
 updated: 2024-04-05 19:25:00
 authors:
-    - luojiyin1987
+  - luojiyin1987
 original: https://martinheinz.dev/blog/109
 reviewer: TechQuery
 categories:
-    - Article
-    - Translation
+  - Article
+  - Translation
+photos:
+  - https://codehangar.io/content/images/2017/02/gui-vs-cli-lg.png
 toc: true
 ---
 
-我们所有软件工程师每天都在使用 `git`，但大多数人只接触过最基本的命令，如 `add`、`commit`、`push` 或者 `pull`, 好像还停留在 2005 年。
+我们所有软件工程师每天都在使用 `git`，但大多数人只接触过最基本的命令，如 `add`、`commit`、`push` 或者 `pull`，好像还停留在 2005 年。
 
 不过，Git 从那时起引入了许多功能，使用它们能让你的生活变得更轻松，下面就让我们来了解一下最近添加的一些现代 Git 命令。
+
+<!-- more -->
 
 ## Switch
 

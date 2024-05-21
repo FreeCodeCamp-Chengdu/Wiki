@@ -2,7 +2,7 @@
 
 本仓库通过 [Git 子模块][1]链接到 Hexo 网站的 `source` 文件夹
 
-[![Build Status](https://travis-ci.com/FreeCodeCamp-Chengdu/Wiki.svg?branch=master)][2]
+[![CI & CD](https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/main.yml/badge.svg)][2]
 [![Fetch Web pages](https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/fetch-Web.yml/badge.svg)][3]
 [![Format Markdown files](https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/formatter.yml/badge.svg)][4]
 
@@ -35,7 +35,7 @@ https://github.com/FreeCodeCamp-Chengdu/Wiki
 上的作品创作。
 
 [1]: https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A8%A1%E5%9D%97
-[2]: https://travis-ci.com/FreeCodeCamp-Chengdu/Wiki
+[2]: https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/main.yml
 [3]: https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/fetch-Web.yml
 [4]: https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/formatter.yml
 [5]: http://creativecommons.org/licenses/by-nc-sa/4.0/

@@ -1,13 +1,13 @@
 ---
-title: Web scraping experiment with AI (Parsing HTML with GPT-4)
+title: AI 网页爬虫实验（用 GPT-4 解析 HTML）
 date: 2023-11-10
 updated: 2023-11-12 10:31:00
 authors:
-    - luojiyin1987
+  - luojiyin1987
 original: https://serpapi.com/blog/web-scraping-and-parsing-experiment-with-ai-openai/
 categories:
-    - Article
-    - Translation
+  - Article
+  - Translation
 toc: true
 ---
 
@@ -33,16 +33,16 @@ toc: true
 
 这一次，我们将提升挑战的难度。
 
--   直接从原始 HTML 数据中抓取。
--   转换成我们需要的特定 JSON 格式。
--   只用很少的开发时间。
+- 直接从原始 HTML 数据中抓取。
+- 转换成我们需要的特定 JSON 格式。
+- 只用很少的开发时间。
 
 ### 我们的目标
 
--   抓取一个结构良好的网站（作为热身）。
--   从 Google 搜索结果页面返回自然搜索结果（organic results）。
--   从谷歌 SERP 返回 "人们还问（相关问题）"部分。
--   从 Google MAPS 返回当地搜索结果。
+- 抓取一个结构良好的网站（作为热身）。
+- 从 Google 搜索结果页面返回自然搜索结果（organic results）。
+- 从谷歌 SERP 返回 "人们还问（相关问题）"部分。
+- 从 Google MAPS 返回当地搜索结果。
 
 > 请记住，人工智能的任务只是解析原始 HTML 数据，而不是自己进行 `网页抓取`。
 
@@ -52,24 +52,24 @@ toc: true
 
 ### 优点
 
--   新模型 `gpt-4-1106-preview` 能够完美地抓取原始 `HTML` 数据。更大的令牌窗口使得只需传递原始 `HTML` 数据即可进行抓取。
--   `OpenAI` 的 `函数调用` 可以准确返回我们需要的响应格式。
--   OpenAI 的 `多函数调用` 可以从多个数据点返回数据。
--   与手动解析所需的开发时间相比，能够抓取原始 HTML 绝对是一个巨大优势。
+- 新模型 `gpt-4-1106-preview` 能够完美地抓取原始 `HTML` 数据。更大的令牌窗口使得只需传递原始 `HTML` 数据即可进行抓取。
+- `OpenAI` 的 `函数调用` 可以准确返回我们需要的响应格式。
+- OpenAI 的 `多函数调用` 可以从多个数据点返回数据。
+- 与手动解析所需的开发时间相比，能够抓取原始 HTML 绝对是一个巨大优势。
 
 ### 缺点
 
--   与使用其他 SERP API 提供商相比，成本很高。
--   在传递整个原始 HTML 时要注意成本。我们仍然需要进行修剪 HTML，以便只抓取相关部分。否则，你必须为使用 token（口令）支付高额费用。.
--   将其用于生产时，速度太慢。
--   对于通常在脚本标签、额外的 AJAX 请求或执行操作（如点击、滚动）时发现的 "隐藏数据"，我们仍然需要手动操作。
+- 与使用其他 SERP API 提供商相比，成本很高。
+- 在传递整个原始 HTML 时要注意成本。我们仍然需要进行修剪 HTML，以便只抓取相关部分。否则，你必须为使用 token（口令）支付高额费用。.
+- 将其用于生产时，速度太慢。
+- 对于通常在脚本标签、额外的 AJAX 请求或执行操作（如点击、滚动）时发现的 "隐藏数据"，我们仍然需要手动操作。
 
 ## 工具和准备
 
--   由于我们要使用 OpenAI 的 API，因此请务必先注册并获得您的 api_key。您可能还需要 OpenAI 组织 ID。
--   我在这个实验中使用的是 Python，但你也可以随意使用任何编程语言。
--   由于我们希望返回统一的 JSON 格式，因此我们将使用 [OpenAI 的函数调用功能](https://platform.openai.com/docs/guides/function-calling)，在这里我们可以用顺眼的格式定义响应的键和值。
--   我们将使用以下模型 `gpt-4-1106-preview .`
+- 由于我们要使用 OpenAI 的 API，因此请务必先注册并获得您的 api_key。您可能还需要 OpenAI 组织 ID。
+- 我在这个实验中使用的是 Python，但你也可以随意使用任何编程语言。
+- 由于我们希望返回统一的 JSON 格式，因此我们将使用 [OpenAI 的函数调用功能](https://platform.openai.com/docs/guides/function-calling)，在这里我们可以用顺眼的格式定义响应的键和值。
+- 我们将使用以下模型 `gpt-4-1106-preview .`
 
 ## 基础代码
 
@@ -163,10 +163,10 @@ for book in data:
     print(book['title'], book['rating'], book['price'])
 ```
 
--   我们使用 OpenAI 的 `ChatCompletion` API
--   使用模型: gpt-4-1106-preview
--   使用提示语 `您是抓取和解析原始 HTML 的高手`，并传递要分析的 `raw_html`。
--   在 `tools` 参数中，我们定义了用于解析原始数据的虚函数（imaginary function）。不要忘记调整参数的属性，以准确返回您想要的格式。
+- 我们使用 OpenAI 的 `ChatCompletion` API
+- 使用模型: gpt-4-1106-preview
+- 使用提示语 `您是抓取和解析原始 HTML 的高手`，并传递要分析的 `raw_html`。
+- 在 `tools` 参数中，我们定义了用于解析原始数据的虚函数（imaginary function）。不要忘记调整参数的属性，以准确返回您想要的格式。
 
 ### 结果如下
 
@@ -276,9 +276,9 @@ for result in data:
     print('---')
 ```
 
--   首先，我们只修剪（trim）选中的部分。
--   将提示词调整为 `您是 Google 搜索结果数据的高手。从 Google 搜索结果页面抓取前 10 条自然搜索结果数据（You are a master at scraping Google results data. Scrape top 10 organic results data from Google search result page.）`。
--   将功能参数调整为所需的格式。
+- 首先，我们只修剪（trim）选中的部分。
+- 将提示词调整为 `您是 Google 搜索结果数据的高手。从 Google 搜索结果页面抓取前 10 条自然搜索结果数据（You are a master at scraping Google results data. Scrape top 10 organic results data from Google search result page.）`。
+- 将功能参数调整为所需的格式。
 
 ![](https://serpapi.com/blog/content/images/2023/11/basic-google-SERP-scraping-with-AI.webp)
 
@@ -515,9 +515,9 @@ for result in people_also_ask:
 
 ### 代码说明
 
--   调整提示词，使其包含关于抓取内容的具体信息： `您是搜索 Google 结果数据的高手。搜索两样东西： 第一。抓取排名前 10 的自然搜索结果数据；第二。从 Google 搜索结果页面中抓取 _the_ people_also_ask 部分（You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people_also_ask section from the Google search result page）`。
--   添加并分离函数（separating functions），一个用于自然搜索结果，另一个用于 people-also-ask 部分。
--   测试两种不同格式的输出。
+- 调整提示词，使其包含关于抓取内容的具体信息： `您是搜索 Google 结果数据的高手。搜索两样东西： 第一。抓取排名前 10 的自然搜索结果数据；第二。从 Google 搜索结果页面中抓取 _the_ people_also_ask 部分（You are a master at scraping Google results data. Scrape two things: 1st. Scrape top 10 organic results data and 2nd. Scrape the _the_ people_also_ask section from the Google search result page）`。
+- 添加并分离函数（separating functions），一个用于自然搜索结果，另一个用于 people-also-ask 部分。
+- 测试两种不同格式的输出。
 
 结果如下:
 
@@ -537,8 +537,8 @@ for result in people_also_ask:
 
 如果您想了解如何更低代价、更快速、更准确地搜索这些数据。您可以阅读以下文章：
 
--   [使用 Python 对 Google 搜索结果进行抓取](https://serpapi.com/blog/how-to-scrape-google-search-results-with-python/)
--   [使用 Python 抓取 Google 地图的地点结果](https://serpapi.com/blog/using-google-maps-place-results-api-from-serpapi/)
+- [使用 Python 对 Google 搜索结果进行抓取](https://serpapi.com/blog/how-to-scrape-google-search-results-with-python/)
+- [使用 Python 抓取 Google 地图的地点结果](https://serpapi.com/blog/using-google-maps-place-results-api-from-serpapi/)
 
 ## 与 SerpApi 的表格比较
 
