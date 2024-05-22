@@ -32,7 +32,7 @@ reviewer: ""
 ## [error: `git push` on a diverged branch][3]
 
 ```shell
-$ git push
+git push
 ```
 
 ```text
@@ -46,7 +46,7 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```
 
 ```shell
-$ git status
+git status
 ```
 
 ```text
@@ -68,7 +68,9 @@ and have 2 and 1 different commits each, respectively.
 ## [error: `git pull` on a diverged branch][4]
 
 ```shell
-$ git pull
+git pull
+```
+```text
 hint: You have divergent branches and need to specify how to reconcile them.
 hint: You can do so by running one of the following commands sometime before
 hint: your next pull:
@@ -106,7 +108,9 @@ fatal: Need to specify how to reconcile divergent branches.
 ## [error: `git checkout asdf` (a branch that doesn't exist)][5]
 
 ```shell
-$ git checkout asdf
+git checkout asdf
+```
+```text
 error: pathspec 'asdf' did not match any file(s) known to git
 ```
 
@@ -122,7 +126,10 @@ error: pathspec 'asdf' did not match any file(s) known to git
 ## [error: `git switch asdf` (a branch that doesn't exist)][6]
 
 ```shell
-$ git switch asdf
+git switch asdf
+```
+
+```text
 fatal: invalid reference: asdf
 ```
 
@@ -131,7 +138,10 @@ fatal: invalid reference: asdf
 我认为原因在于，在内部，`git switch` 试图在其错误信息中提供帮助：如果你运行 `git switch v0.1` 来切换到一个标签，它会说：
 
 ```shell
-$ git switch v0.1
+git switch v0.1
+```
+
+```text
 fatal: a branch is expected, got tag 'v0.1'`
 ```
 
@@ -144,7 +154,10 @@ fatal: a branch is expected, got tag 'v0.1'`
 ## error: [`git checkout HEAD^`][8]
 
 ```shell
-$ git checkout HEAD^
+git checkout HEAD^
+```
+
+```text
 Note: switching to 'HEAD^'.
 ```
 
@@ -179,7 +192,7 @@ HEAD 现在的位置是 `182cd3f`，添加 `swap byte order` 按键
 这不是一条错误信息，但我还是觉得它本身有点令人困惑:
 
 ```shell
-$ git status
+git status
 ```
 
 ```text
@@ -212,7 +225,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ## [error: `git rebase` when a file has been deleted][10]
 
 ```shell
-$ git rebase main
+git rebase main
 ```
 
 ```text
@@ -231,7 +244,7 @@ CONFLICT (modify/delete): index.html deleted on `main` and modified on `mybranch
 ## [error: `git status` during a merge or rebase (who is “them”?)][11]
 
 ```shell
-$ git status
+git status
 ```
 
 ```
@@ -261,7 +274,10 @@ no changes added to commit (use “git add” and/or “git commit -a”)
 ## [error: `git clean`][12]
 
 ```shell
-$ git clean
+git clean
+```
+
+```text
 fatal: clean.requireForce defaults to true and neither -i, -n, nor -f given; refusing to clean
 ```
 
@@ -279,14 +295,5 @@ fatal: clean.requireForce defaults to true and neither -i, -n, nor -f given; ref
 
 [1]: https://lwn.net/Articles/959768/
 [2]: https://github.com/git/git/tree/master/po
-[3]: #git-push-on-a-diverged-branch
-[4]: #git-pull-on-a-diverged-branch
-[5]: #git-checkout-asdf
-[6]: #git-switch-asdf
 [7]: https://jvns.ca/blog/2024/03/28/git-poll-results/
-[8]: #detached-head
-[9]: #rebase-in-progress
-[10]: #merge-deleted
-[11]: #merge-ours
-[12]: #git-clean
 [13]: https://jvns.ca/blog/2024/04/01/making-crochet-cacti/ "Previous Post: Making crochet cacti"
