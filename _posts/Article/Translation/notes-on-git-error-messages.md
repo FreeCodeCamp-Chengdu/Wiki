@@ -29,7 +29,7 @@ reviewer: ""
 
 也就是说，如果你觉得这些消息令人困惑，希望这些注释能够在一定程度上帮助澄清它们。
 
-## [error: `git push` on a diverged branch][3]
+## error: `git push` on a diverged branch
 
 ```shell
 git push
@@ -65,11 +65,12 @@ and have 2 and 1 different commits each, respectively.
 -   我会运行 `git status` 来了解当前分支的状态。
 -   我想我几乎从来没有尝试过一次推送多个分支，所以我通常会完全忽略 Git 关于哪个分支推送失败的说明 - 我只是假设它就是我的当前分支
 
-## [error: `git pull` on a diverged branch][4]
+## error: `git pull` on a diverged branch
 
 ```shell
 git pull
 ```
+
 ```text
 hint: You have divergent branches and need to specify how to reconcile them.
 hint: You can do so by running one of the following commands sometime before
@@ -105,11 +106,12 @@ fatal: Need to specify how to reconcile divergent branches.
 -   通常会运行 `git pull --rebase` 来解决它
 -   如果我想丢弃本地提交（local work）或远程提交（remote work ），有时会运行 `git push --force` 或 `git reset --hard origin/main`（例如，因为我不小心提交到了错误的分支，或者因为我在一个只有我在用的个人分支上运行了 `git commit --amend` 并想强制推送）。
 
-## [error: `git checkout asdf` (a branch that doesn't exist)][5]
+## error: `git checkout asdf` (a branch that doesn't exist)
 
 ```shell
 git checkout asdf
 ```
+
 ```text
 error: pathspec 'asdf' did not match any file(s) known to git
 ```
@@ -123,7 +125,7 @@ error: pathspec 'asdf' did not match any file(s) known to git
 -   理论上，用 `git switch` 代替会更好，切换分支，但我还是一直用 `git checkout`。
 -   一般来说，我只记得我需要把它理解为分支 `asdf` 不存在。
 
-## [error: `git switch asdf` (a branch that doesn't exist)][6]
+## error: `git switch asdf` (a branch that doesn't exist)
 
 ```shell
 git switch asdf
@@ -145,7 +147,7 @@ git switch v0.1
 fatal: a branch is expected, got tag 'v0.1'`
 ```
 
-所以，git 试图通过 `fatal: invalid reference: asdf` 传达的意思是“`asdf`不是一个分支，但也不是一个标签，或者其他任何引用”。从我的各种[git polls][7]来看，我的印象是很多 git 用户根本不知道什么是 git 中的 `reference（引用）`，所以我不确定他们是否理解了这一点。
+所以，git 试图通过 `fatal: invalid reference: asdf` 传达的意思是“`asdf`不是一个分支，但也不是一个标签，或者其他任何引用”。从我的各种[git polls][3]来看，我的印象是很多 git 用户根本不知道什么是 git 中的 `reference（引用）`，所以我不确定他们是否理解了这一点。
 
 **我喜欢在这里做:**
 
@@ -187,7 +189,7 @@ HEAD 现在的位置是 `182cd3f`，添加 `swap byte order` 按键
 -   我的 shell 提示会告诉我是否处于分离的 HEAD 状态，一般来说，在这种状态下我不会提交新的内容。
 -   当我看完我想看的旧提交后，我会运行 `git checkout main` 或其他命令返回到某个分支
 
-## [message: `git status` when a rebase is in progress][9]
+## message: `git status` when a rebase is in progress
 
 这不是一条错误信息，但我还是觉得它本身有点令人困惑:
 
@@ -271,7 +273,7 @@ no changes added to commit (use “git add” and/or “git commit -a”)
 -   努力回忆我做过的事
 -   如果我不记得了，运行 `git show main --stat` 或别的什么，看看我在 `main` 分支上做了什么
 
-## [error: `git clean`][12]
+## error: `git clean`
 
 ```shell
 git clean
@@ -291,9 +293,9 @@ fatal: clean.requireForce defaults to true and neither -i, -n, nor -f given; ref
 
 希望这些内容对您有所帮助！
 
-[编织仙人掌][13]
+[编织仙人掌][4]
 
 [1]: https://lwn.net/Articles/959768/
 [2]: https://github.com/git/git/tree/master/po
-[7]: https://jvns.ca/blog/2024/03/28/git-poll-results/
-[13]: https://jvns.ca/blog/2024/04/01/making-crochet-cacti/ "Previous Post: Making crochet cacti"
+[3]: https://jvns.ca/blog/2024/03/28/git-poll-results/
+[4]: https://jvns.ca/blog/2024/04/01/making-crochet-cacti/ "Previous Post: Making crochet cacti"
