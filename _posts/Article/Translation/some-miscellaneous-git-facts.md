@@ -15,7 +15,7 @@ reviewer: ""
 事实是:
 
 - [一些杂七杂八的 git 知识](#一些杂七杂八的-git-知识)
-    - [`index`, `staging area` 和 `–cached` 都是一回事](#index-staging-area-和-cached-都是一回事)
+  - [`index`， `staging area` 和 `–cached` 都是一回事](#index-staging-area-和-cached-都是一回事)
     - [储藏包含多个提交](#储藏包含多个提交)
     - [并非所有引用都是分支或标签](#并非所有引用都是分支或标签)
     - [merge commits（合并提交）不是空的](#merge-commits合并提交不是空的)
@@ -25,7 +25,7 @@ reviewer: ""
 
 <!-- more -->
 
-### `index`, `staging area` 和 `–cached` 都是一回事
+## `index`， `staging area` 和 `–cached` 都是一回事
 
 运行 `git add file.txt`，然后运行 `git status`，就会看到这样的内容：
 
