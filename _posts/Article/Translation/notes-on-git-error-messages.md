@@ -34,6 +34,7 @@ reviewer: ""
 ```shell
 $ git push
 ```
+
 ```text
 To github.com:jvns/int-exposed
 ! [rejected]        main -> main (non-fast-forward)
