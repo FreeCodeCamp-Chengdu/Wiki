@@ -6,58 +6,72 @@ translator: ""
 reviewer: ""
 ---
 
-# Notes on git's error messages
+# 关于 git 错误信息的说明
 
 <!-- more -->
 
-While writing about Git, I’ve noticed that a lot of folks struggle with Git’s error messages. I’ve had many years to get used to these error messages so it took me a really long time to understand _why_ folks were confused, but having thought about it much more, I’ve realized that:
+在写关于 Git 的文章时，我注意到很多人都在纠结 Git 的错误信息。我已经习惯这些错误信息很多年了，所以花了很长时间才明白大家为什么会困惑：
 
-1.  sometimes I actually _am_ confused by the error messages, I’m just used to being confused
-2.  I have a bunch of strategies for getting more information when the error message git gives me isn’t very informative
+1.  有时我确实被错误信息弄糊涂了，我只是习惯了被弄糊涂而已
+2.  当 Git 给我的错误信息不是很有参考价值时，我有很多策略来获取更多信息。
 
-So in this post, I’m going to go through a bunch of Git’s error messages, list a few things that I think are confusing about them for each one, and talk about what I do when I’m confused by the message.
+所以，在这篇文章里，我将逐一分析 Git 的错误信息，列出每条信息中我认为容易混淆的地方，并谈谈当我被错误信息弄糊涂时该怎么做。
 
-### improving error messages isn’t easy
+### 改进错误信息并不容易
 
-Before we start, I want to say that trying to think about why these error messages are confusing has given me a lot of respect for how difficult maintaining Git is. I’ve been thinking about Git for months, and for some of these messages I really have no idea how to improve them.
+在开始之前，我想说的是，通过思考这些错误信息令人困惑的原因，让我对维护 Git 的难度肃然起敬。几个月来我一直在思考 Git 的问题，但对于其中一些错误信息，我真的不知道该如何改进。
 
-Some things that seem hard to me about improving error messages:
+在我看来，改进错误信息有以下几点困难：
 
--   if you come up with an idea for a new message, it’s hard to tell if it’s actually better!
--   work like improving error messages often [isn’t funded][1]
--   the error messages have to be translated (git’s error messages are translated into [19 languages][2]!)
+-   如果你想出一个新信息的创意，很难说它是否真的更好！
+-   改进错误信息之类的工作经常[得不到资助][1]
+-   错误信息必须翻译（Git 的错误信息被翻译成 [19 种语言][2]）
 
-That said, if you find these messages confusing, hopefully some of these notes will help clarify them a bit.
+也就是说，如果你觉得这些消息令人困惑，希望这些注释能够在一定程度上帮助澄清它们。
 
-## [error: `git push` on a diverged branch][3]
+## error: `git push` on a diverged branch
 
-$ git push
+```shell
+git push
+```
+
+```text
 To github.com:jvns/int-exposed
-! \[rejected\]        main -> main (non-fast-forward)
+! [rejected]        main -> main (non-fast-forward)
 error: failed to push some refs to 'github.com:jvns/int-exposed'
 hint: Updates were rejected because the tip of your current branch is behind
 hint: its remote counterpart. Integrate the remote changes (e.g.
 hint: 'git pull ...') before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
 
-$ git status
+```shell
+git status
+```
+
+```text
 On branch main
 Your branch and 'origin/main' have diverged,
 and have 2 and 1 different commits each, respectively.
+```
 
-Some things I find confusing about this:
+我觉得有些事情令人困惑:
 
-1.  You get the exact same error message whether the branch is just **behind** or the branch has **diverged**. There’s no way to tell which it is from this message: you need to run `git status` or `git pull` to find out.
-2.  It says `failed to push some refs`, but it’s not totally clear _which_ references it failed to push. I believe everything that failed to push is listed with `! [rejected]` on the previous line– in this case just the `main` branch.
+1.  无论分支是 **behind（落后）** 还是 **diverged（偏离）**，您都会收到完全相同的错误信息。从这条信息中无法判断是哪个分支：您需要运行 `git status` 或 `git pull` 才能知道。
+2.  它说 `failed to push some refs（推送某些引用失败）`，但并不完全清楚推送失败的是哪些引用。我相信所有推送失败的引用都会以 `！[rejected]`在前一行，在本例中，只有 `main` 分支。
 
-**What I like to do if I’m confused:**
+**困惑时我喜欢做的事:**
 
--   I’ll run `git status` to figure out what the state of my current branch is.
--   I think I almost never try to push more than one branch at a time, so I usually totally ignore git’s notes about which specific branch failed to push – I just assume that it’s my current branch
+-   我会运行 `git status` 来了解当前分支的状态。
+-   我想我几乎从来没有尝试过一次推送多个分支，所以我通常会完全忽略 Git 关于哪个分支推送失败的说明 - 我只是假设它就是我的当前分支
 
-## [error: `git pull` on a diverged branch][4]
+## error: `git pull` on a diverged branch
 
-$ git pull
+```shell
+git pull
+```
+
+```text
 hint: You have divergent branches and need to specify how to reconcile them.
 hint: You can do so by running one of the following commands sometime before
 hint: your next pull:
@@ -71,92 +85,119 @@ hint: preference for all repositories. You can also pass --rebase, --no-rebase,
 hint: or --ff-only on the command line to override the configured default per
 hint: invocation.
 fatal: Need to specify how to reconcile divergent branches.
-
-The main thing I think is confusing here is that git is presenting you with a kind of overwhelming number of options: it’s saying that you can either:
-
-1.  configure `pull.rebase false`, `pull.rebase true`, or `pull.ff only` locally
-2.  or configure them globally
-3.  or run `git pull --rebase` or `git pull --no-rebase`
-
-It’s very hard to imagine how a beginner to git could easily use this hint to sort through all these options on their own.
-
-If I were explaining this to a friend, I’d say something like “you can use `git pull --rebase` or `git pull --no-rebase` to resolve this with a rebase or merge _right now_, and if you want to set a permanent preference, you can do that with `git config pull.rebase false` or `git config pull.rebase true`.
-
-`git config pull.ff only` feels a little redundant to me because that’s git’s default behaviour anyway (though it wasn’t always).
-
-**What I like to do here:**
-
--   run `git status` to see the state of my current branch
--   maybe run `git log origin/main` or `git log` to see what the diverged commits are
--   usually run `git pull --rebase` to resolve it
--   sometimes I’ll run `git push --force` or `git reset --hard origin/main` if I want to throw away my local work or remote work (for example because I accidentally commited to the wrong branch, or because I ran `git commit --amend` on a personal branch that only I’m using and want to force push)
-
-## [error: `git checkout asdf` (a branch that doesn't exist)][5]
-
-$ git checkout asdf
-error: pathspec 'asdf' did not match any file(s) known to git
-
-This is a little weird because we my intention was to check out a **branch**, but `git checkout` is complaining about a **path** that doesn’t exist.
-
-This is happening because `git checkout`’s first argument can be either a branch or a path, and git has no way of knowing which one you intended. This seems tricky to improve, but I might expect something like “No such branch, commit, or path: asdf”.
-
-**What I like to do here:**
-
--   in theory it would be good to use `git switch` instead, but I keep using `git checkout` anyway
--   generally I just remember that I need to decode this as “branch `asdf` doesn’t exist”
-
-## [error: `git switch asdf` (a branch that doesn't exist)][6]
-
-$ git switch asdf
-fatal: invalid reference: asdf
-
-`git switch` only accepts a branch as an argument (unless you pass `-d`), so why is it saying `invalid reference: asdf` instead of `invalid branch: asdf`?
-
-I think the reason is that internally, `git switch` is trying to be helpful in its error messages: if you run `git switch v0.1` to switch to a tag, it’ll say:
-
 ```
-$ git switch v0.1
+
+我认为这里最令人困惑的是，git 给你提供了大量的选项：它说，你可以任选其一：
+
+1.  在本地配置 `pull.rebase false`, `pull.rebase true`, 或者 `pull.ff only`
+2.  或全局配置
+3.  或运行 `git pull --rebase` 或者 `git pull --no-rebase`
+
+很难想象一个初学 git 的人如何能轻松地利用这个提示，自己整理出所有这些选项。
+
+如果我向朋友解释这个问题，我会说 "你可以用`git pull --rebase` 或`git pull --no-rebase` 来解决这个问题。如果你想设置一个永久的偏好，你可以用`git config pull.rebase false` 或`git config pull.rebase true`。
+
+我觉得 `git config pull.ff only` 有点多余，因为这是 git 的默认行为（虽然并不总是这样）。
+
+**我喜欢在这里做:**
+
+-   运行 `git status` 查看当前分支的状态
+-   也许运行 `git log origin/main` 或 `git log` 查看分支提交的情况
+-   通常会运行 `git pull --rebase` 来解决它
+-   如果我想丢弃本地提交（local work）或远程提交（remote work ），有时会运行 `git push --force` 或 `git reset --hard origin/main`（例如，因为我不小心提交到了错误的分支，或者因为我在一个只有我在用的个人分支上运行了 `git commit --amend` 并想强制推送）。
+
+## error: `git checkout asdf` (a branch that doesn't exist)
+
+```shell
+git checkout asdf
+```
+
+```text
+error: pathspec 'asdf' did not match any file(s) known to git
+```
+
+这有点奇怪，因为我的意图是检出一个**分支**，但`git checkout`却在抱怨一个不存在的**文件路径（path）**。
+
+出现这种情况是因为 `git checkout` 的第一个参数既可以是分支也可以是文件路径，而 git 无法知道你的意图是哪个。要改进这一点似乎很棘手，但我可能会期待类似 `No such branch, commit, or path: asdf（没有这样的分支、提交或路径：asdf）`这样的提示。
+
+**我喜欢在这里做:**
+
+-   理论上，用 `git switch` 代替会更好，切换分支，但我还是一直用 `git checkout`。
+-   一般来说，我只记得我需要把它理解为分支 `asdf` 不存在。
+
+## error: `git switch asdf` (a branch that doesn't exist)
+
+```shell
+git switch asdf
+```
+
+```text
+fatal: invalid reference: asdf
+```
+
+`git switch` 只接受分支作为参数（除非你传递了 `-d`），那它为什么会说 `invalid reference: asdf` 而不是 `invalid branch: asdf` 呢？
+
+我认为原因在于，在内部，`git switch` 试图在其错误信息中提供帮助：如果你运行 `git switch v0.1` 来切换到一个标签，它会说：
+
+```shell
+git switch v0.1
+```
+
+```text
 fatal: a branch is expected, got tag 'v0.1'`
 ```
 
-So what git is trying to communicate with `fatal: invalid reference: asdf` is “`asdf` isn’t a branch, but it’s not a tag either, or any other reference”. From my various [git polls][7] my impression is that a lot of git users have literally no idea what a “reference” is in git, so I’m not sure if that’s coming across.
+所以，git 试图通过 `fatal: invalid reference: asdf` 传达的意思是“`asdf`不是一个分支，但也不是一个标签，或者其他任何引用”。从我的各种[git polls][3]来看，我的印象是很多 git 用户根本不知道什么是 git 中的 `reference（引用）`，所以我不确定他们是否理解了这一点。
 
-**What I like to do here:**
+**我喜欢在这里做:**
 
-90% of the time when a git error message says `reference` I just mentally replace it with `branch` in my head.
+90% 的情况下，当 git 错误信息中出现 `reference` 时，我都会在脑海中把它替换成 `branch`。
 
 ## error: [`git checkout HEAD^`][8]
 
-$ git checkout HEAD^
+```shell
+git checkout HEAD^
+```
+
+```text
 Note: switching to 'HEAD^'.
+```
 
-You are in 'detached HEAD' state. You can look around, make experimental
-changes and commit them, and you can discard any commits you make in this
-state without impacting any branches by switching back to a branch.
+您处于 `detached HEAD（分离的 HEAD）`状态。您可以四处看看，进行试验性改动并提交，还可以通过切换回分支来放弃在此状态下所做的任何提交，而不会影响任何分支。
+状态下的任何提交，而不会影响任何分支。
 
-If you want to create a new branch to retain commits you create, you may
-do so (now or later) by using -c with the switch command. Example:
+如果你想创建一个新的分支来保留你创建的提交，可以在 switch 命令中使用 -c 来实现（现在或以后）。示例
 
-  git switch -c Or undo this operation with:
+```shell
+git switch -c
+```
 
-  git switch -
+或者使用:
 
-Turn off this advice by setting config variable advice.detachedHead to false
+```shell
+git switch -
+```
 
-HEAD is now at 182cd3f add "swap byte order" button
+通过将配置变量 `advice.detachedHead` 设为 `false` 关闭该建议
 
-This is a tough one. Definitely a lot of people are confused about this message, but obviously there's been a lot of effort to improve it too. I don't have anything smart to say about this one.
+HEAD 现在的位置是 `182cd3f`，添加 `swap byte order` 按键
 
-**What I like to do here:**
+这是一个难题。肯定有很多人对这条信息感到困惑，但显然也有很多人在努力改进它。对于这个问题，我没什么好说的。
 
--   my shell prompt tells me if I’m in detached HEAD state, and generally I can remember not to make new commits while in that state
--   when I’m done looking at whatever old commits I wanted to look at, I’ll run `git checkout main` or something to go back to a branch
+**我喜欢在这里做:**
 
-## [message: `git status` when a rebase is in progress][9]
+-   我的 shell 提示会告诉我是否处于分离的 HEAD 状态，一般来说，在这种状态下我不会提交新的内容。
+-   当我看完我想看的旧提交后，我会运行 `git checkout main` 或其他命令返回到某个分支
 
-This isn’t an error message, but I still find it a little confusing on its own:
+## message: `git status` when a rebase is in progress
 
-$ git status
+这不是一条错误信息，但我还是觉得它本身有点令人困惑:
+
+```shell
+git status
+```
+
+```text
 interactive rebase in progress; onto c694cf8
 Last command done (1 command done):
    pick 0a9964d wip
@@ -172,33 +213,43 @@ Unmerged paths:
   both modified:   index.html
 
 no changes added to commit (use "git add" and/or "git commit -a")
+```
 
-Two things I think could be clearer here:
+我认为有两点可以说得更清楚:
 
-1.  I think it would be nice if `You are currently rebasing branch 'main' on 'c694cf8'.` were on the first line instead of the 5th line – right now the first line doesn’t say which branch you’re rebasing.
-2.  In this case, `c694cf8` is actually `origin/main`, so I feel like `You are currently rebasing branch 'main' on 'origin/main'` might be even clearer.
+1.  如果把 `You are currently rebasing branch 'main' on 'c694cf8'.（您正在重定向 ‘c694cf8’ 上的分支main）` 放在第一行而不是第五行，我觉得会更好。现在第一行并没有说明您正在重定向哪个分支。
+2.  在本例中， `c694cf8` 实际在 `origin/main`， 所以我觉得 `You are currently rebasing branch 'main' on 'origin/main'（您正在‘origin/main’上重定向分支‘main’）`可能更清楚。
 
-**What I like to do here:**
+**我喜欢在这里做:**
 
-My shell prompt includes the branch that I’m currently rebasing, so I rely on that instead of the output of `git status`.
+我的 shell 提示包括了当前正在重置（rebasing）的分支，所以我依赖它而不是 `git status` 的输出。
 
 ## [error: `git rebase` when a file has been deleted][10]
 
-$ git rebase main
+```shell
+git rebase main
+```
+
+```text
 CONFLICT (modify/delete): index.html deleted in 0ce151e (wip) and modified in HEAD.  Version HEAD of index.html left in tree.
 error: could not apply 0ce151e… wip
-
-The thing I still find confusing about this is – `index.html` was modified in `HEAD`. But what is `HEAD`? Is it the commit I was working on when I started the merge/rebase, or is it the commit from the other branch? (the answer is “`HEAD` is your branch if you’re doing a merge, and it’s the “other branch” if you’re doing a rebase, but I always find that hard to remember)
-
-I think I would personally find it easier to understand if the message listed the branch names if possible, something like this:
-
 ```
+
+我仍然感到困惑的是，`index.html` 是在 `HEAD` 中修改的。但什么是 `HEAD`？是我开始合并（merge）/重置（rebase）时的提交，还是另一个分支的提交？ 答案是如果是合并，`HEAD` 就是你的分支，如果是重置，它就是 `另一个分支`，但我总觉得很难记住。
+
+我个人认为，如果能在信息中列出分支名称，会更容易理解，就像这样：
+
+```text
 CONFLICT (modify/delete): index.html deleted on `main` and modified on `mybranch`
 ```
 
 ## [error: `git status` during a merge or rebase (who is “them”?)][11]
 
-$ git status
+```shell
+git status
+```
+
+```
 On branch master
 You have unmerged paths.
   (fix conflicts and run “git commit”)
@@ -209,45 +260,42 @@ Unmerged paths:
     deleted by them: the\_file
 
 no changes added to commit (use “git add” and/or “git commit -a”)
+```
 
-I find this one confusing in exactly the same way as the previous message: it says `deleted by them:`, but what “them” refers to depends on whether you did a merge or rebase or cherry-pick.
+我觉得这条信息和上一条信息一样让人困惑：上面写着 `deleted by them:`，但 `they` 指的是什么，取决于你是进行了合并（merge）、重置（rebase）还是 `cherry-pick`。
 
--   for a merge, `them` is the other branch you merged in
--   for a rebase, `them` is the branch that you were on when you ran `git rebase`
--   for a cherry-pick, I guess it’s the commit you cherry-picked
+-   对于 merge，`them` 是您合并进来的另一个分支
+-   对于 rebase，`them` 是您运行 `git rebase` 时所在的分支
+-   对于 cherry-pick， 我猜这是你 cherry-picked 的提交
 
-**What I like to do if I’m confused:**
+**困惑时我喜欢做的事:**
 
--   try to remember what I did
--   run `git show main --stat` or something to see what I did on the `main` branch if I can’t remember
+-   努力回忆我做过的事
+-   如果我不记得了，运行 `git show main --stat` 或别的什么，看看我在 `main` 分支上做了什么
 
-## [error: `git clean`][12]
+## error: `git clean`
 
-$ git clean
+```shell
+git clean
+```
+
+```text
 fatal: clean.requireForce defaults to true and neither -i, -n, nor -f given; refusing to clean
+```
 
-I just find it a bit confusing that you need to look up what `-i`, `-n` and `-f` are to be able to understand this error message. I’m personally way too lazy to do that so even though I’ve probably been using `git clean` for 10 years I still had no idea what `-i` stood for (`interactive`) until I was writing this down.
+我只是觉得这有点令人困惑，你需要查一下 `-i`、`-n` 和 `-f` 是什么意思才能理解这个错误信息。我个人太懒了，所以即使我用了 10 年的 `git clean` 也不知道 `-i` 代表什么（`interactive`），直到我写下这篇文章。
 
-**What I like to do if I’m confused:**
+**困惑时我喜欢做的事:**
 
-Usually I just chaotically run `git clean -f` to delete all my untracked files and hope for the best, though I might actually switch to `git clean -i` now that I know what `-i` stands for. Seems a lot safer.
+通常，我只是胡乱运行 `git clean -f` 来删除所有未跟踪的文件，并寄希望于最好的结果，不过现在我知道了 `-i` 代表什么，也许会改用 `git clean -i`。看起来安全多了。
 
-### that’s all!
+### 就这样!
 
-Hopefully some of this is helpful!
+希望这些内容对您有所帮助！
 
-[Making crochet cacti][13]
+[编织仙人掌][4]
 
 [1]: https://lwn.net/Articles/959768/
 [2]: https://github.com/git/git/tree/master/po
-[3]: #git-push-on-a-diverged-branch
-[4]: #git-pull-on-a-diverged-branch
-[5]: #git-checkout-asdf
-[6]: #git-switch-asdf
-[7]: https://jvns.ca/blog/2024/03/28/git-poll-results/
-[8]: #detached-head
-[9]: #rebase-in-progress
-[10]: #merge-deleted
-[11]: #merge-ours
-[12]: #git-clean
-[13]: https://jvns.ca/blog/2024/04/01/making-crochet-cacti/ "Previous Post: Making crochet cacti"
+[3]: https://jvns.ca/blog/2024/03/28/git-poll-results/
+[4]: https://jvns.ca/blog/2024/04/01/making-crochet-cacti/ "Previous Post: Making crochet cacti"
