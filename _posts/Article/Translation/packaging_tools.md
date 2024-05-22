@@ -4,13 +4,12 @@ authorURL: ""
 originalURL: https://alpopkes.com/posts/python/packaging_tools/
 translator: ""
 reviewer: ""
+date: 8月24, 2023
 ---
 
 ![](https://alpopkes.com/images/author/image_al_hu6aa485cfd64a98f54b411e3a0324b396_178285_120x120_fit_q75_box.jpg)
 
 Anna-Lena Popkes
-
-8 月 24, 2023
 
 ## 动机
 
@@ -58,7 +57,7 @@ Anna-Lena Popkes
 
 ![](https://alpopkes.com/posts/python/figures/python_version_management.png)
 
-### pyenv
+ ### pyEnv
 
 Python 有一个单一用途的工具可以让您安装和管理 Python 版本：[pyenv](https://github.com/pyenv/pyenv)！ Pyenv 易于使用。 最重要的命令如下：
 
@@ -103,7 +102,7 @@ python3 -m venv <env_name>
 deactivate
 ```
 
-### virtualenv
+ ### virtualEnv
 
 [Virtualenv](https://virtualenv.pypa.io/en/latest/) 试图改进 `venv`。 它提供了比 `venv` 更多的功能，并且速度更快、功能更强大。 最重要的命令与 `venv` 的命令类似，只是创建一个新环境更简洁：
 
