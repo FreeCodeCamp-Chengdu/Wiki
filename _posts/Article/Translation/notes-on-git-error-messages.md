@@ -212,6 +212,9 @@ no changes added to commit (use "git add" and/or "git commit -a")
 
 ```shell
 $ git rebase main
+```
+
+```text
 CONFLICT (modify/delete): index.html deleted in 0ce151e (wip) and modified in HEAD.  Version HEAD of index.html left in tree.
 error: could not apply 0ce151e… wip
 ```
@@ -220,7 +223,7 @@ error: could not apply 0ce151e… wip
 
 我个人认为，如果能在信息中列出分支名称，会更容易理解，就像这样：
 
-```
+```text
 CONFLICT (modify/delete): index.html deleted on `main` and modified on `mybranch`
 ```
 
@@ -228,6 +231,9 @@ CONFLICT (modify/delete): index.html deleted on `main` and modified on `mybranch
 
 ```shell
 $ git status
+```
+
+```
 On branch master
 You have unmerged paths.
   (fix conflicts and run “git commit”)
