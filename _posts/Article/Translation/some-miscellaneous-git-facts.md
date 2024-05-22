@@ -60,6 +60,9 @@ Changes to be committed:
 
 ```shell
 $ git log stash --oneline
+```
+
+```text
 6cb983fe (refs/stash) WIP on main: c6ee55ed wip
 2ff2c273 index on main: c6ee55ed wip
 ... some more stuff
@@ -69,6 +72,9 @@ $ git log stash --oneline
 
 ```shell
 $ git show 2ff2c273  --stat
+```
+
+```text
 commit 2ff2c273357c94a0087104f776a8dd28ee467769
 Author: Julia Evans <julia@jvns.ca>
 Date:   Fri Oct 20 14:49:20 2023 -0400
@@ -141,9 +147,11 @@ $ git diff 0931e45 96a8afb   --stat
 ```text
  x.txt | 1 +
  1 file changed, 1 insertion(+)
+```
 
 ```shell
 $ git diff 1d8bd2d 96a8afb   --stat
+```
 
 ```text
  y.txt | 1 +
