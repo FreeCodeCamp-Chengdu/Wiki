@@ -16,10 +16,10 @@ reviewer: ""
 
 - [一些杂七杂八的 git 知识](#一些杂七杂八的-git-知识)
   - [`index`， `staging area` 和 `–cached` 都是一回事](#index-staging-area-和-cached-都是一回事)
-    - [储藏包含多个提交](#储藏包含多个提交)
-    - [并非所有引用都是分支或标签](#并非所有引用都是分支或标签)
-    - [merge commits（合并提交）不是空的](#merge-commits合并提交不是空的)
-    - [就这样](#就这样)
+  - [储藏包含多个提交](#储藏包含多个提交)
+  - [并非所有引用都是分支或标签](#并非所有引用都是分支或标签)
+  - [merge commits（合并提交）不是空的](#merge-commits合并提交不是空的)
+  - [就这样](#就这样)
 
 让我们来谈谈它们！
 
@@ -32,6 +32,9 @@ reviewer: ""
 ```shell
 $ git add content/post/2023-10-20-some-miscellaneous-git-facts.markdown
 $ git status
+```
+
+```text
 Changes to be committed:
   (use "git restore --staged <file>..." to unstage)
 	new file:   content/post/2023-10-20-some-miscellaneous-git-facts.markdown
@@ -49,7 +52,7 @@ Changes to be committed:
 
 我觉得我应该早点意识到这一点，但我没有，所以就这样了。
 
-### 储藏包含多个提交
+## 储藏包含多个提交
 
 当我运行 `git stash` 来储藏我的更改时，我一直对这些更改的去向感到困惑。事实证明，当你运行 `git stash` 时，git 会用你的更改创建一些提交，并用一个名为 `stash` 的引用标记它们（位于 `.git/refs/stash` 中）。 
 
@@ -81,7 +84,7 @@ Date:   Fri Oct 20 14:49:20 2023 -0400
 
 显然，stash 中的旧提交会保存在 reflog 中。
 
-### 并非所有引用都是分支或标签
+## 并非所有引用都是分支或标签
 
 Git 文档中经常泛泛地提到 `references（引用）`，有时我觉得有点混乱。就我个人而言，在 Git 中，99% 的情况下，`references（引用）`指的是`branch（分支）`或 `HEAD`，而另外 1% 的情况下，`references（引用）`指的是 `tags（标签）`。实际上，我以前并不知道有什么引用不是分支、标签或 `HEAD` 的例子。
 
@@ -91,6 +94,9 @@ Git 文档中经常泛泛地提到 `references（引用）`，有时我觉得有
 
 ```shell
 $ find .git/refs -type f
+```
+
+```text
 .git/refs/heads/main
 .git/refs/remotes/origin/HEAD
 .git/refs/remotes/origin/main
@@ -99,12 +105,15 @@ $ find .git/refs -type f
 
 显然，还有一个名为 [`git notes`](https://tylercipriani.com/blog/2022/11/19/git-notes-gits-coolest-most-unloved-feature/) 的 git 命令，它可以在 `.git/refs/notes` 下创建引用。 
 
-### merge commits（合并提交）不是空的
+## merge commits（合并提交）不是空的
 
 下面是我创建的两个分支 `x` 和 `y`，每个分支都有一个文件（`x.txt` 和 `y.txt`），并将它们合并。让我们看看合并提交。
 
 ```shell
 $ git log --oneline
+```
+
+```text
 96a8afb (HEAD -> y) Merge branch 'x' into y
 0931e45 y
 1d8bd2d (x) x
@@ -114,6 +123,8 @@ $ git log --oneline
 
 ```shell
 git show 96a8afb
+```
+```text
 commit 96a8afbf776c2cebccf8ec0dba7c6c765ea5d987 (HEAD -> y)
 Merge: 0931e45 1d8bd2d
 Author: Julia Evans <julia@jvns.ca>
@@ -126,9 +137,15 @@ Date:   Fri Oct 20 14:07:00 2023 -0400
 
 ```shell
 $ git diff 0931e45 96a8afb   --stat
+```
+```text
  x.txt | 1 +
  1 file changed, 1 insertion(+)
+
+```shell
 $ git diff 1d8bd2d 96a8afb   --stat
+
+```text
  y.txt | 1 +
  1 file changed, 1 insertion(+)
 ```
@@ -139,6 +156,9 @@ $ git diff 1d8bd2d 96a8afb   --stat
 
 ```shell
 $ git show HEAD
+```
+
+```text
 commit 3bfe8311afa4da867426c0bf6343420217486594
 Merge: 782b3d5 ac7046d
 Author: Julia Evans <julia@jvns.ca>
@@ -160,6 +180,6 @@ index 975fbec,587be6b..b680253
 
 （感谢 Jordi 告诉我合并差异是如何工作的） 
 
-### 就这样
+## 就这样
 
 我会尽量保持这篇博文的简短，也许等我学到更多 Git 知识后会再写一篇博文。
