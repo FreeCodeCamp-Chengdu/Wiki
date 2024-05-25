@@ -7,11 +7,11 @@ reviewer: ""
 date: "2019-3-1"
 ---
 
+# Everything I know about SSDs
+
 Solid State Devices using NAND Flash, how they differ from Hard Drives, and how they affect file deletion and recovery
 
-**March 2019:**
-
-**Introduction:**
+## Introduction
 
 I started writing this rather long page for my own benefit, when I acquired a upgrade from my old 2006 Win 8 250 gb HDD PC to a Dell Optiflex 3010 with a 128 gb SSD. I never used more than 30 or 40 gb of the system drive, and I'm not a gamer or an avid film or music collector either. Not on a PC anyway. As I played with my new kit the further I went I realised that I knew very little about NAND flash in SSDs, just how SSDs work, how do they read and write and store data, and what sort of trickery do they employ? I can visualise an HDD, writing tiny magnetic patterns on a rotating surface, but SSDs are different, vastly different.
 
@@ -23,7 +23,7 @@ I am obliged to those I have borrowed from, and will also be obliged to those wh
 
 The first misconception might be the plural of SSD: gramatically it should be, so I'm told, SSDs, but SSD's is almost as commonplace. Here I will stick to one SSD, many SSDs.
 
-**Software and hardware:**
+## Software and hardware
 
 This article was written in 2019 onwards and deals almost exclusively with NAND flash in the form of pc or laptop storage devices we know as SSDs. I shan't complicate things even more by referring to the ubiquitous flash drive or other NAND flash devices. If significant differences exist I shall try to note them as and when that occurs, but the default is the internal drive. Nowhere here is there anything about flash storage in phones, etc.
 
@@ -33,11 +33,11 @@ The only additional software applications I have used are Piriform's excellent R
 
 All the conclusions and opinions here are entirely my own work, and any data taken from my own pc. It would be wise to verify, or at least agree with my reasoning, before accepting these words as the truth. Much of this is a simplified explanation of a very complex subject.
 
-**SSD Physical Internals:**
+## SSD Physical Internals
 
 Poking inside an SSD is something of a disappointment, a small pc board with a few NAND flash chips and a controller chip, lightweight and a little flimsy. As for the software inside the controller, I can only summarise the basic tasks. It seems commonplace that controllers are bought in from external manufacturers, as indeed are the memory chips. SSD controller software is proprietary, very complex and highly guarded, but all controllers have to do basic tasks, even if we don't quite know how. Only those tasks can be discussed here, the very clever tweaks and tricks will have to remain known only to the manufacturer. I'll start with a little groundwork.
 
-**NAND Flash:**
+## NAND Flash
 
 I wasn't going to delve into the internals of NAND flash, there are enough frankly bemusing articles on Wikipedia for all that. All you really need to know is that NAND (NOT-AND) flash memory stores information in arrays of cells made from floating-gate transistors. The floating gate can either have no charge of electrons, and be in an 'empty' logical state, or be charged with electrons at various voltage thresholds and be in a logical state which represents a value. NAND flash is non-volatile and retains its state even when the SSD is not powered up. Oh yes, it's called flash because a large chunk of cells can be erased (flashed) at a time.
 
@@ -59,17 +59,17 @@ Upon system boot the controller scans the spare area of each page in the entire 
 
 Since flash does not support in-place updates, a page needs to be erased before its contents can be programmed; but unlike a program or a read operation which work at a page granularity, the erase operation is performed at a block granularity.
 
-**2D and 3D, and Layers:**
+## 2D and 3D, and Layers
 
 In flash architecture a block of planar flash, a two-dimensional array of cells, is rather unsurprisingly called 2D flash. If one (or more) array is stacked on top of each other then it's 3D flash. 3D NAND flash is built on one chip, up to 32 layers, and was devised to drive costs down when planar flash reached its scaling limit: 3D flash costs little more than 2D to produce, but multiplies the storage capacity immensely. In both 2D and 3D the cells in each page (the rows) are connected by Word Lines, and the cells at each offset within a page (the columns) are connected with a Bit Line (to put it very simply).
 
 3D flash is not the same as layered flash, where separate very thin chips are arranged in a stack. This is prohibitively expensive. Most modern consumer SSDs (in the 2010's) use 3D TLC flash.
 
-**Can I see one?**
+## Can I see one?
 
 The cell size on end-user flash is minute, with 15nm being common, and ranges from 43nm down to 12nm. Actually cell size, or cell diameter, is misleading, as the stated size is not a measurement of any dimension of a cell but a measure of the distance between discrete components on the chip. The silicon layers on the chip are approximately 0.5 to 3nm thick: by comparison a hydrogen atom is 0.1nm in diameter, and the silicon atoms used in chip manufacture 0.2nm. A nanometre (nm) is indeed exceedingly small, a billionth of a metre, and as an analogy if one mn were the size of a standard marble (about 13mm) then one metre would be the size of the earth. The power of a billion is impressive.
 
-**SLC, MLC, TLC, QLC and Beyond:**
+## SLC, MLC, TLC, QLC and Beyond
 
 A Single-Level Cell (SLC) has one threshold of electron charge to indicate the state of one bit, one or zero. A Multi-Level Cell (MLC) holds a voltage denoting the state of two bits, with three different thresholds representing 11, 10, 00 and 01. A Triple-Level Cell (TLC) holds the state of three bits, 111, 110, 100, 101, 001, 000, 010, and 011. The 15 thresholds used in Quad-level cells (QLC) can be deduced if anyone is at all interested. (I have seen other variations of what these threshold values represent in bit terms.)
 
@@ -87,27 +87,27 @@ Anyone still following this may have noticed a common factor in both single and 
 
 Ever since Fibonacci introduced the Hindu-Arabic numeral system with its concept of zero into European mathematics in 1202, the human mind associates zero with empty and one with full. To be empty and represent one is rather perplexing, and appears to be mainly from convention (an empty state _could_ represent zero but would required inverters on the data lines). Possibly the circuitry is less complex, and possibly the ability of an empty cell to conduct a charge implies that it is a one.
 
-**They're all SLC anyway:**
+## They're all SLC anyway
 
 After all this it's perhaps worth emphasising that NAND flash, whatever its intended use, is all physically SLC. If you could look into a TLC cell you wouldn't see 101, or 011, or whatever. There can only ever be one quantity of electrons in a cell, no matter how that quantity is interpreted. The SSD controller knows whether the cells are to be treated as SLC, MLC etc and programs them accordingly, measures the electron count, and determines what logical value it represents. But even quad cells can only contain one value, just as do SLC cells.
 
-**The Myths and Misconceptions:**
+## The Myths and Misconceptions
 
 And now we come to the myths, misconceptions and the real reason for writing this article, what happens when an SSD page is read, written and rewritten, and how does this affect deleted file recovery? On one hand we have NTFS, designed specifically for HDDs way before SSDs became easily available, NAND flash with its own unique way of operating, and several billion humans with years of ingrained HDD use and expectations. And here, if I haven't already, I shall use SSD interchangeably if incorrectly for NAND flash.
 
-**Storage Device Controllers:**
+## Storage Device Controllers
 
 All HDDs, SSDs and flash drives have an internal controller. It's the way that the storage device can be, in the words of Microsoft, abstracted from the host. That abstraction is done by logical block addressing, where each cluster capable of being addressed on the storage device is known to the host by an ascending number (the LBA). The storage device controller maps that number to the sectors or pages on the device. To the host this mapping is constant - a cluster remains mapped to the same LBA until the host changes it. On an HDD this relationship is physical and fixed: in its simplist deconstruction an HDD controller just reads and writes whatever sectors the host asks it to. It doesn't have to think about what was there before, it just does what it's told and writes new data on top of the old. It does that because it can, there's nothing preventing a new cluster being written directly on top of the same sectors of an old one. On an SSD it's different.
 
 With an SSD the host still uses the LBA addressing system with the constant reconciliation between LBA and cluster number. It knows that the device is a SSD and has a few tricks to accommodate this, but they will come later. The SSD controller however has many tricks to reconcile the host's file system, written for HDDs, with the demands of NAND flash.
 
-**Flash Translation Layer:**
+## Flash Translation Layer
 
 The host still uses LBA addressing to address the SSD for read and writes, as it knows no other. These commands are intercepted by the Flash Translation Layer on the SSD controller. The FTL maintains a map of LBAs to physical block addresses, and and passes the translated PBA to the controller. This map is required because unlike an HDD the LBA to PBA relationship is volatile. It's volatile because of the way data is written to NAND flash.
 
 An empty page, with all cells uncharged, contains by default all ones. If a hex editor is used to look at an SSD's empty sectors however, it will be presented with clusters of zeroes. This is because empty pages are not allocated to the LBA/PBA mapping table. Instead, if a read request is issued for an empty page a default page of zeroes is returned. This applies to both unallocated clusters and those which are part of a file: the SSD does not allocate a page and change all its cells from ones to zeroes.
 
-**Floating Gate Transistors:**
+## Floating Gate Transistors
 
 This section might be helpful before plunging into reads and writes, and here cell and (FG)transistor become interchangable (a cell is a transistor). For more, much more, about floating gate MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistors) there is always Wikipedia.
 
@@ -117,7 +117,7 @@ The charge in the floating gate alters the voltage threshold of the transistor, 
 
 If the floating gate has no charge then a low voltage applied to the gate closes the gate and allows current to flow from source to drain. If the floating gate has a charge then a higher voltage needs to be applied to the gate for it to close and current to flow. The charge in the floating gate changes how much voltage must be applied to the gate in order for it to close and conduct.
 
-**SSD Reads:**
+## SSD Reads
 
 There's nothing inherent in the design of NAND flash that prevents reading and writing to and from individual cells. However in line with NAND flash's design goal to be simple and small the standard commands that NAND chips accept are structured such that a page is the smallest addressable unit. This eliminates space that would be needed to hold additional instructions and cell-to-page maps.
 
@@ -131,7 +131,7 @@ The word line for the page being read is given a reference voltage, and all the 
 
 It can be seen from this that to read one page in a block requires that all transistors in every page in the block receive either a pass-through or one or more reference voltages. It also appears that this will still apply even if some or all of the other pages in the block are empty. This becomes significant in Read Disturbance below.
 
-**Interpreting the results:**
+## Interpreting the results
 
 It is quite easy to grasp the concept behind reading an SLC. Only one threshold applies to SLC flash so only one test voltage is required - the floating gate either will or will not close. if the threshold voltage closes the gate then the bit line current passes to the sense amplifier and the stored value is one. If it doesn't then it's zero.
 
@@ -141,7 +141,7 @@ The bit combinations in TLC cells are 111, 110, 100, 101, 001, 000, 010, and 011
 
 All multi-cell pages based on the MSB (l/h) are treated as SLC, with only one read required to determine the user bit value.
 
-**SSD Writes:**
+## SSD Writes
 
 The most significant aspect of NAND flash, the widest fork in the HDD/SSD path, and the fundamental, pivotal factor in what follows, is that data can only be written to an empty SSD page. This is not new, nor is it in any way unknown, but it has the greatest implications for data security and recovery.
 
@@ -153,13 +153,13 @@ Whilst it's easy to grasp writing to SLC pages, multi-level cell pages are more 
 
 It's apparent that if NAND flash handles data writes in this way - and it does - the SSD will eventually become full of valid and invalid pages, and performance will gradually slow to a crawl. Although an individual SSD page can't be erased a block can, and this method is used to return blocks to a writable state. To expedite this, and to ensure that a pool of empty blocks is always available for writes, the SSD controller uses Garbage Collection.
 
-**Garbage Collection:**
+## Garbage Collection
 
 Garbage Collection is enabled on the humblest up to the highest capacity SSD: without it NAND flash would be unusable. Garbage Collection is part of the SSD controller and its work is unknown to the host. In its simplest form GC takes a block holding valid and invalid pages, copies the valid pages to a new empty block, updates the LBA mapping tables, and consigns the old block to the invalid block pool. There the block and its pages are reset to empty state, and the block added to the available block pool. Thus a pool of available blocks should always be available for write activity. As long as there is power to the SSD GC will do its work, it cannot be stopped. There are various sophisticated techniques for GC routines, all proprietary and mainly known only to the manufacturers.
 
 When an SSD arrives new from the factory writes will gradually fill the drive in a progressive, linear pattern until the addressable storage space has been entirely written. However once garbage collection begins, the method by which the data is written - sequential vs random - affects performance. Sequentially written data writes whole blocks, and when the data is replaced the whole block is marked as invalid. During garbage collection nothing needs to be moved to another block. This is the fastest possible garbage collection - i.e. no garbage to collect. When data is written randomly invalid pages are scattered throughout the SSD. When garbage collection acts on a block containing randomly written data, more data must be moved to a new block before the block can be erased.
 
-**The Garbage Collection Conundrum:**
+## The Garbage Collection Conundrum
 
 Garbage Collection can either take place in the background, when the host is idle, or the foreground, as and when it is needed for a write. Whilst background GC may seem to be preferrable, it has drawbacks. If the host uses a power-saving mode when idle, GC will either wait for the device to restart with a consequent user delay for GC to complete, or wake the device up and reduce battery life whilst the host is 'idle'. Furthermore GC has no knowledge of the data it is collecting. Inevitably some data will be subject to GC and then be deleted shortly afterwards, incurring another bout of GC and consequent additional and unnecessary writes (write amplification, the ratio of actual writes to data writes). Foreground GC, seemingly the antithesis of performance, avoids the power-saving problems, only incurs writes when they are actually required, and with fast cache and highly developed GC algorithms presents no noticeable performance penalty to the user. The trend in modern GC appears to be foreground collection, or a combination of foreground and background collection.
 
@@ -167,23 +167,23 @@ Based on foreground garbage collection, and that most user activity is random, t
 
 However there is another potential problem with SSDs, and that is to do with a historical event: the way that file systems were designed.
 
-**File Systems - What you see isn't what you get:**
+## File Systems - What you see isn't what you get
 
 Host file systems were designed in the days when HDDs reigned supreme, simply because SSDs had yet to arrive in an available and affordable form. The file system does not take into account the needs of NAND flash. Files are constantly being updated: they get allocated, moved and deleted, and grow and shrink in size. The way the file system handles this is incompatible with the workings of NAND flash.
 
 It's worth emphasising that storage devices are abstracted from the host operating system. Whilst an array of folders and files are displayed by Explorer in a form wholly comprehensible to a human, it's all an illusion. What Explorer is showing is a logical construct created entirely from metadata held within the file system's tables. The storage device controller knows nothing about files or folders, or tables or operating systems: all an HDD or SDD sees are commands to read or write specific sectors, which it does faithfully. An SSD has one advantage over an HDD however, it knows that some pages hold data, and are mapped to an LBA, and some pages are empty, hold no valid data, and are not mapped to an LBA. Conversely an HDD does not need to know this, to an HDD all sectors are the same.
 
-**File Deletion:**
+## File Deletion
 
 In NTFS, when a file is deleted the entry in the Master File Table is flagged as such, and the cluster bitmap is amended to flag the file's clusters as available for reuse. The delete process takes place entirely within the MFT and the cluster bitmap. This is perfectly adequate for an HDD, as NTFS can simply reuse the MFT entry and the clusters whenever it wishes. On an SSD the process from NTFS's point is exactly the same, as NTFS has no other way of deleting files. However all the SSD sees is exactly what an HDD would see, updates to a few pages. Neither an HDD nor an SSD knows that it's the MFT and cluster bit map being updated, as they have no knowledge of such things. As there is no activity on the deleted file's clusters, the SSD's pages holding the clusters remain mapped to their LBAs in the FTL. The SSD's FTL has no way of knowing that these pages are no longer allocated by NTFS: to the SSD the pages are still valid and will not be cleaned up by garbage collection.
 
 As these 'dead' pages are allocated to an LBA they could be released when files are allocated or extended and the host uses that LBA. In this case the page will be flagged as invalid and a new page used. However it is inevitable that eventually a significant amount of unused and unwanted baggage which is not flagged for garbage collection will be pointlessly maintained by the SSD controller and be unavailable for reuse. To overcome this, and to correlate the hosts view of allocated and unallocated pages with the SSD's, NTFS from Windows 7 onwards acquired the TRIM command.
 
-**SSD Detection:**
+## SSD Detection
 
 Although the storage device is abstracted from the File System, to enable some of the file system's SSD tweaks it needs to know whether the device is an HDD or SSD. There are various ways to do this, including querying the rotational speed of the device, which on an SSD should be zero (or perhaps one). This seems the most widely used and most proficient method.
 
-**TRIM:**
+## TRIM
 
 TRIM (it isn't an acronym) is a SATA command sent by the file system to the SSD controller to indicate that particular pages no longer contain live data, and are therfore candidates for garbage collection. TRIM is only supported in Windows on NTFS volumes. It is invoked on file deletion, partition deletion, and disk formatting. TRIM has to be supported by the SSD and enabled in NTFS to take effect. The command 'fsutil behavior query disabledeletenotify' returns 0 if TRIM is enabled in the operating system. It does not mean that the SSD supports it (or even if an SSD is actually installed) but all modern SSDs support a version of it.
 
@@ -195,27 +195,27 @@ TRIM tells the FTL that the pages allocated to specific LBAs are to be classed a
 
 TRIM is an asynchronous command that is queued for low-priority operation. It does not need or send a response. The size of the TRIM queue is limited and in times of high activity some TRIM commands may be dropped. There is no indication that this takes place, so some unwanted pages may escape garbage collection.
 
-**RETRIM:**
+## RETRIM
 
 Windows Defragger - now called Storage Optimiser - has an option to Optimise SSDs. This does not defrag the SSD but sends a series of TRIM commands to all unallocated pages identified in NTFS's cluster bitmap. This global TRIM (or RETRIM) command is run at a granularity that the TRIM queue will never exceed its permitted size and no RETRIM commands will be dropped. A RETRIM is run automatically once a month by the storage optimiser.
 
-**Over-provisioning:**
+## Over-provisioning
 
 All NAND flash devices use over-provisioning, additional capacity for extra write operations, controller firmware, failed block replacements, and other features utilised by the SSD controller. This capacity is not physically separate from the user capacity but is simply an amount of space in excess of that which can be allocated by the host. The specific pages within this excess space will vary dynamically as the SSD is used. According to Seagate, the minimum reserve is the difference between binary and decimal naming conventions. An SSD is marketed as a storage device and its capacity is measured in gigabytes (1,000,000,000 Bytes). NAND flash however is memory and is measured in gibibytes (1,073,741,824 bytes), making the minimum overprovisioning percentage just over 7.37%. Even if an SSD appears to the host to be full, it will still have 7.37% of available space with which to keep functioning and performing writes (although write performance will be diabolical). Manufacturers may further reduce the amount of capacity available to the user and set it aside as additional over-provisioning, in addition to the built-in 7.37%. Additional over-provisioning can also be created by the host by allocating a partition that does not use the drive's full capacity. The unallocated space will automatically be used by the controller as dynamic over-provisioning.
 
 My humble WD SSD has four 32 gb chips but a specified capacity of 120 gb, meaning that it has 8 gb set aside as additional over-provisioning. Add this to the 7.37% minimum (9.4 gb) and the 17.4 gb equates to almost 15% over-provisioning space.
 
-**Wear Levelling:**
+## Wear Levelling
 
 Some files are written once and remain untouched for the rest of their life. Others have few updates, some very many. As a consequence some blocks will hardly ever see the invalid block pool and have a very low erase/write count, and some will be in the pool every few minutes and have a very heavy count. To spread the wear so that all blocks are subject to erase/writes equally, and the performance of the SSD is maintained over its life, wear levelling is used. Wear levelling uses algorithms to indentify blocks with the lowest erase count and move the contents to high erase count blocks; and to select low erase count blocks for new allocations. As with garbage collection, wear levelling is far more complex than I could possibly deduce, let alone explain.
 
-**Read Disturbance:**
+## Read Disturbance
 
 SSD reads are not quite free, there is a price to pay. As described above, a read of one page generates a pass-through voltage on all other cells in the block. This voltage is likely to be below the highest threshold value that could be held by the cell, but it still generates a weak programming effect on the cells, which can unintentionally shift their threshold voltages. The pass-through voltage induces electric tunnelling that can shift the voltages of the unread cells to a higher value, disturbing the cell contents. As the size of flash cells is reduced the transistor oxide becomes thinner and in turn increases this tunnelling effect, with fewer read operations required to neighbouring pages for the unread flash cells to become disturbed, and move into a different logical state. Cells holding lower threshold values are more susceptible to read disturbance.
 
 Thus each read can cause the threshold voltages of other unread cells in the same block to shift to a higher value. After a significant amount of reads this can cause read errors for those cells. A read count is kept for each block and if it is exceeded the block is rewritten. The count is high for SLC cells, around 1m, lower for 25 nm MLC at around 40,000, and much lower for 15 nm TLC cells.
 
-**File Recovery:**
+## File Recovery
 
 And now we come to deleted file recovery. NTFS goes through exactly the same process to delete a file on an SSD as it does on an HDD, with the exception of the additional TRIM command. And the TRIM command (assuming it's executed) and a few SSD quirks destroys any practicable chance of deleted file recovery.
 
@@ -227,15 +227,15 @@ Deleted file recovery on a modern SSD is next to impossible for the end user, an
 
 After a session of file deletion, such as running Piriform's CCleaner, run Recuva on the SSD. The headers of the deleted files found (and presumably the rest of the file) will all be zeroes. This is TRIM and DZAT doing their work in a few seconds, killing any chance of deleted file recovery. Of course TRIM can be disabled, at the cost of performance, but it's probably better to be a little less cavalier when deleting files that might be wanted later.
 
-**Deletd File Security:**
+## Deletd File Security
 
 The notion of secure file deletion - overwriting a file's data before deletion - is irrelevant, and if any other pattern except zeroes is chosen is just additional and pointless wear on the SSD. Even overwriting with zeroes will cause transaction log and other files to be written, so secure file deletion on an SSD should never be used. Wiping Free Space is far worse for pointless writes, and is even more futile than secure file deletion. The deleted files just aren't there any more.
 
-**The OCZ Myth:**
+## The OCZ Myth
 
 Some years ago (as a little light relief to all these acres of text) the OCZ forums were buzzing with the latest method of regaining performance on their SSDs: run Piriform's CCleaner Wipe Free Space, with one overwrite pass of zeroes. Although performance may have been regained, logic, and common sense, went out of the window. The theory was that overwriting the pages with zeroes was equivalent to erasing blocks (this was before the days of TRIM). This was nonsense, and should have been apparent from the start. The default state of an empty page is all ones, not zeroes, and how could a piece of software possibly erase NAND flash?. The real reason was that as CCleaner was filling the pages with zeroes the SSD controller simply unmapped the pages and showed default pages of zeroes to the host. The invalid pages were then candidates for garbage collection, which gave a much greater pool of blocks to call upon on writes, and hence a better performance. A sort of RETRIM before that was invented.
 
-**SSD Defragmentation:**
+## SSD Defragmentation
 
 One of the SSD mantras is that an SSD should never be defragged. Whilst there is little (there is a little) to be gained from rearranging clusters into adjacent pages - an SSD has no significant overhead in random reads - an SSD defrag is not entirely verboten. In fact from Windows 8 onwards the Storage Optimiser will defrag an SSD if certain conditions are met. If System Restore is enabled, the fragmentation level is above 10%, and at least one month has passed since the last defrag, Windows Storage Optimiser Scheduled Maintenance will defrag the SSD. This is what Microsoft calls a Traditional Defrag, it is not an Optimise (RETRIM). The defrag is required to reduce the extents on the volume snapshot files when system restore is enabled.
 
@@ -243,14 +243,14 @@ There is nothing to be afraid of in a monthly defrag. Most users won't hit the 1
 
 **SSD Lifetime:** There are many users worried about the life expectancy of their SSDs. Yes, continuous write/erase cycles, and the added and unseen write amplification, do take a toll on the life of NAND flash. Using an SSD does wear it out. My WD Green 120 gb SSD, a TLC SSD from a reputable manufacturer but at the very lowest cost, has an estimated life of 1 million+ hours and a write limit if 40 terabytes. One million hours is 114 years, so we can forget that. As for writes, at 1 gb a day - far more than my current rate of data use - it would take the same 114 years to reach 40 tb. Even with massive write overhead this SSD is not going to wear out in the forseeable future. If all 128 gib of available flash is used equally, the 40 tb equates to 312 writes per cell, a very conservative number.
 
-**The End:**
+## The End
 
 The only thing to add is that NAND flash, SSDs, and especially SSD controllers, are far more sophisticated, complex and incomprehensible than what has been written here, what I know, what I could possibly comprehend, and what I could possibly explain. I should also add secret, as their software is proprietary. Whilst an HDD is a marvel of complex electro-mechanical engineering at a ridiculously low cost, the SSD is an equally marvellous and complex piece of electronics and software at a minimally higher cost. We should be thankful for both.
 
-You can return to my home page [_here_](http://kcall.co.uk/)
+You can return to my home page [_here_][1]
 
 If you have any questions, comments or criticisms at all then I'd be pleased to hear them: please email me at kes at kcall dot co dot uk.
 
 © Webmaster. All rights reserved.
 
-\[1\]: http://kcall.co.uk/
+[1]: http://kcall.co.uk/
