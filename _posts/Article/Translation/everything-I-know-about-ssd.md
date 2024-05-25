@@ -7,57 +7,57 @@ reviewer: ""
 date: "2019-3-1"
 ---
 
-# Everything I know about SSDs
+# 我所知道的关于固态硬盘的一切
 
-Solid State Devices using NAND Flash, how they differ from Hard Drives, and how they affect file deletion and recovery
+使用 NAND 闪存的固态硬盘，它们与机械硬盘的区别，以及它们如何影响文件删除和恢复
 
-## Introduction
+## 介绍
 
-I started writing this rather long page for my own benefit, when I acquired a upgrade from my old 2006 Win 8 250 gb HDD PC to a Dell Optiflex 3010 with a 128 gb SSD. I never used more than 30 or 40 gb of the system drive, and I'm not a gamer or an avid film or music collector either. Not on a PC anyway. As I played with my new kit the further I went I realised that I knew very little about NAND flash in SSDs, just how SSDs work, how do they read and write and store data, and what sort of trickery do they employ? I can visualise an HDD, writing tiny magnetic patterns on a rotating surface, but SSDs are different, vastly different.
+我开始写这篇相当长的文章是为了自己的学习收益，当时我从 2006 年的旧款 Win 8 250GB 硬盘驱动的电脑升级到了一台带有 128GB SSD 的戴尔 Optiflex 3010。在系统盘上，我从未使用过超过 30 或 40GB 的空间，而且我既不是游戏玩家，也不是狂热的电影或音乐收藏家。至少在电脑上不是。随着我对我的新设备的不断摸索，我越来越意识到我对 SSD 中的 NAND 闪存了解甚少，不知道 SSD 是如何工作的，它们是如何读取、写入和存储数据的，以及它们使用了哪些技巧？我可以想象硬盘驱动器（HDD）在旋转的表面上写入微小的磁性记录，但 SSD 完全不同，差别巨大。
 
-There's also quite a few misconceptions about SSDs which seem persistent, and it would be nice to examine them if not perhaps quash a few of them. Perhaps I was guilty of harbouring quite a few misconceptions myself. However it started, this article grew into, shall we say, a mid-level technical discussion. If all you need to know is that SSDs are quiet, reliable, fast, and will work for years, then there's no need to read any further. If however, you think that knowing how to read a 3D TLC NAND flash cell is interesting, then you have little option but to plough on.
+关于 SSD，还有一些长期的误解，如果能够有些思考，甚至消除其中一些，那将是很好的。也许我自己也曾怀有不少误解。不管它是如何开始的，这篇文章逐渐发展成了一篇中级技术讨论。如果你只需要知道 SSD 安静、可靠、快速，并且能够使用多年，那么就没必要再读下去了。然而，如果你认为了解如何读取 3D TLC NAND 闪存单元是有趣的，那么你别无选择，只能继续深入了解。
 
-As much of the detailed information as possible has been sourced from corporate and private technical articles, with quite a lot from Seagate and WD, and the wonderfully named Flash Memory Summit. Some of the conclusions I've made are from just trying to apply what logic I can along with common sense. Such is the complexity of NAND flash controllers, the variance in their methods of operation, and the speed of their development, that trying to comprehend let alone keep up with them is difficult to say the least. I can't say whether what I've written isn't confusing or is even true, but it's more of a guide than a bible. There'll be some repetition too. And it will soon be out of date.
+尽可能多的详细信息来源于企业和私人技术文章，特别是来自希捷(Seagate)和西部数据(WD)，以及名字很有趣的 Flash Memory Summit（闪存峰会）。我所做的一些结论是尝试运用我能理解的逻辑和常识。NAND 闪存控制器的复杂性，它们操作方法的多样性，以及它们发展的速度，使得理解它们，更不用说跟上它们的步伐，至少可以说是困难的。我不能说我写的内容没有混淆或者完全正确，但它更像是一本指南而不是圣经。也会有一些重复的内容。而且很快它就会过时。
 
-I am obliged to those I have borrowed from, and will also be obliged to those who point out any errors without any reward apart from that of contribution. I've tried to explain what is different with SSDs, and why it is so hard to grasp with our ingrained HDD minds.
+我感激那些我借鉴的人，也将感激那些无需任何回报（除了贡献的满足感）就指出任何错误的人。我试图解释固态硬盘（SSD）与众不同的地方，以及为什么我们根深蒂固的硬盘驱动器（HDD）思维很难理解它。
 
-The first misconception might be the plural of SSD: gramatically it should be, so I'm told, SSDs, but SSD's is almost as commonplace. Here I will stick to one SSD, many SSDs.
+第一个误解可能是 SSD 的复数：从语法上讲，应该是 SSDs，但 SSD's 几乎同样常见。在这里，我将坚持使用 SSD、SSDs。
 
-## Software and hardware
+## 软件和硬件
 
-This article was written in 2019 onwards and deals almost exclusively with NAND flash in the form of pc or laptop storage devices we know as SSDs. I shan't complicate things even more by referring to the ubiquitous flash drive or other NAND flash devices. If significant differences exist I shall try to note them as and when that occurs, but the default is the internal drive. Nowhere here is there anything about flash storage in phones, etc.
+本文写于 2019 年及之后，几乎完全围绕以个人电脑或笔记本电脑存储设备形式出现的 NAND 闪存展开，我们将其称为固态硬盘 (SSD)。我不会通过提及无处不在的闪存驱动器或其他 NAND 闪存设备来使事情变得更加复杂。如果存在显著差异，我将尝试在发生差异时进行说明，但默认情况下指的是内置驱动器。**本文不涉及手机等设备中的闪存存储**。
 
-Most of the detail was produced whilst my PC was running Windows 10 Home, with a fairly modest internal 2.5" WD Green 120 gb SSD. This uses a Silicon Motion SM2258XT controller and four 32 GiB SanDisk 05497 032G 15nm 3D TLC memory chips with an inbuilt SLC cache of unknown capacity. As this article tries to discuss the behaviour of SSDs as a whole it shouldn't matter what host operating or file system is used, but in my case it's Windows and NTFS. Nothing here is specific to a particular brand or type of SSD, it should all be generic. We're really dealing with the principles of SSD operation.
+本文的大部分细节内容是在我的电脑运行 Windows 10 家庭版系统时编写的，该系统配备了一个相当普通的内置 2.5 英寸西部数据 Green 120 GB 固态硬盘。该硬盘使用慧荣科技 SM2258XT 主控和四个 32 GB 的闪迪 05497 032G 15nm 3D TLC 闪存芯片，并内置了容量未知的 SLC 缓存。由于本文试图讨论固态硬盘作为一个整体的行为，因此使用什么主机操作系统或文件系统应该无关紧要，但在我的例子中是 Windows 和 NTFS。本文中的内容并非针对特定品牌或类型的固态硬盘，而应该是通用的。我们真正要讨论的是固态硬盘的工作原理。
 
-The only additional software applications I have used are Piriform's excellent Recuva, which can list both live and deleted files and their cluster allocations, and HexDen (HxD), a very usable and capable hex editor. Recuva is free from www.piriform.com, and HexDen is also free from www.mh-nexus.de. I use the portable versions of both pieces of software.
+我唯一使用的额外软件应用程序是 Recuvae（Piriform 出品），HexDen (HxD)。Recuva 可以列出活动文件和已删除文件及其簇分配，而 HexDen 是一款非常实用且功能强大的十六进制编辑器。Recuva 可从 www.piriform.com（现在是https://www.ccleaner.com/） 免费获取，HexDen 也可从 www.mh-nexus.de 免费获取。我使用这两款软件的便携版（portable versions）。
 
-All the conclusions and opinions here are entirely my own work, and any data taken from my own pc. It would be wise to verify, or at least agree with my reasoning, before accepting these words as the truth. Much of this is a simplified explanation of a very complex subject.
+所有的结论和观点完全是来自我个人的工作经历，以及从我自己的电脑上获取的任何数据。在接受这些话作为真理之前，最好验证或至少同意我的推理。这里的很多内容是对一个非常复杂主题的简化解释。
 
-## SSD Physical Internals
+## SSD 物理内部结构
 
-Poking inside an SSD is something of a disappointment, a small pc board with a few NAND flash chips and a controller chip, lightweight and a little flimsy. As for the software inside the controller, I can only summarise the basic tasks. It seems commonplace that controllers are bought in from external manufacturers, as indeed are the memory chips. SSD controller software is proprietary, very complex and highly guarded, but all controllers have to do basic tasks, even if we don't quite know how. Only those tasks can be discussed here, the very clever tweaks and tricks will have to remain known only to the manufacturer. I'll start with a little groundwork.
+打开固态硬盘，你会有些失望，只有一块小型印刷电路板，上面有几颗 NAND 闪存芯片和一颗主控芯片，重量轻，而且有点脆弱。至于主控内部的软件，我只能概括其基本任务。主控和内存芯片一样，通常都是从外部制造商处购买的，这似乎是司空见惯的事情。固态硬盘主控软件是专有的，非常复杂，而且受到高度保护，但所有主控都必须执行基本任务，即使我们不太清楚它是如何实现的。这里只能讨论这些任务，真正聪明的调整和技巧只能由制造商知晓。我将从一些基础知识开始。
 
-## NAND Flash
+## NAND 闪存
 
-I wasn't going to delve into the internals of NAND flash, there are enough frankly bemusing articles on Wikipedia for all that. All you really need to know is that NAND (NOT-AND) flash memory stores information in arrays of cells made from floating-gate transistors. The floating gate can either have no charge of electrons, and be in an 'empty' logical state, or be charged with electrons at various voltage thresholds and be in a logical state which represents a value. NAND flash is non-volatile and retains its state even when the SSD is not powered up. Oh yes, it's called flash because a large chunk of cells can be erased (flashed) at a time.
+我不打算深入探讨 NAND 闪存的内部结构，在维基百科上已经有足够多令人困惑的文章了。你真正需要知道的是，NAND（非与门）闪存利用浮动栅晶体管阵列来存储信息。浮动栅可以没有电子的充电状态，处于`空（empty）`逻辑状态，或者在不同的电压阈值下充满电子，处于表示某个值的逻辑状态。NAND 闪存是非易失性的，即使 SSD 没有通电，它也能保持其状态。哦，对了，之所以称之为 flash（闪存），是因为可以同时擦除（flashed）大量的单元。
 
-But if you want to know more, go ahead. Here the term cell and transistor refer to the same physical entity and are used interchangeably, and I won't keep saying NAND all the time.
+但如果你想了解更多，继续吧。这里的术语`单元（cell）`和`晶体管（transistor）`指的是同一物理实体，可以互换使用，我不会一直重复使用 NAND 这个词。
 
-Flash memory comprises multiple two-dimensional arrays of transistors, and supports three basic operations, read, program (write) and erase. Apart from the flash arrays, the flash chip includes command and status registers, a control unit, decoders, analogue circuits, buffers, and address and data buses. A separate chip holding the SSD controller sends read, program, or erase commands to the flash chip. In a read operation the controller passes the physical address to the flash chip which locates the data and sends it back to the controller. in a program operation the data and physical address are passed to the chip. In an erase operation, only the physical address is passed to the chip.
+闪存包含多个二维晶体管阵列，并支持三种基本操作：读取、编程（写入）和擦除。除了闪存阵列外，闪存芯片还包括命令和状态寄存器、控制单元、解码器、模拟电路、缓冲器以及地址和数据总线。一个单独的芯片承载着 SSD 控制器，它向闪存芯片发送读取、编程或擦除命令。在读取操作中，控制器将物理地址传递给闪存芯片，闪存芯片定位数据并将其发送回控制器。在编程操作中，数据和物理地址都会传递给芯片。在擦除操作中，只有物理地址会传递给芯片。
 
-The ﬂash chip's latches store data transferred to and from the flash arrays, and the sense ampliﬁers detect bit line voltages during read operations. The controller monitors the command sent to the chip using the status register. The controller also includes Error Checking and Correction (EEC) algorithms to manage error and reliability issues in the chip and to ensure that correct data is read or written.
+闪存芯片的锁存器存储从闪存阵列传输到芯片和从芯片传输出的数据，而在读取操作期间，感应放大器用于检测比特线上的电压。控制器使用状态寄存器监控发送到芯片的命令。控制器还包括错误检查和纠正（EEC）算法，来管理芯片中的错误和可靠性问题，并确保读取或写入的数据是正确的。
 
-Each row of an array is connected by a Word line, and each column by a Bit line. At the intersection of a row and column is a Floating Gate Transistor, or cell, where the logical data is stored. Word lines are connected to the transistors in parallel, and bit lines in series. The ends of the bit lines are connected to sense amplifiers.
+阵列的每一行通过字线（Word line）连接，每一列通过比特线（Bit line）连接。在行和列的交叉点是一个浮动栅晶体管，或称为单元，逻辑数据就存储在这里。字线并行连接到晶体管，比特线串行连接。比特线的端部连接到感应放大器。
 
-Flash arrays are partitioned into blocks, and blocks are divided into pages. Within a block the cells connected to each word line constitute a page. The cells connected to the bit lines give the number of pages in a block. Common page sizes are 4k, 8k or 16k, with 128 to 256 pages making a block size between 512k and 4mb. A page is the smallest granularity of data that can be addressed by the chip control unit.
+闪存阵列被划分为块，块又被划分为页。在一个块内，与每条字线相连的单元构成一个页。与位线相连的单元则表示块中的页数。常见的页面大小为 4k、8k 或 16k，128 到 256 个页面组成一个 512k 到 4mb 大小的块。页是芯片控制单元可寻址的最小数据粒度。
 
-Read or program operations involve the chip controller selecting the relevant block using the block decoder, then selecting a page in the block using the page decoder. The chip controller is also responsible for activating the correct analogue circuitry to generate the voltages needed for program and erase operations.
+读取或编程操作涉及芯片控制器使用块解码器选择相关块，然后使用页解码器选择块中的页。芯片控制器还负责激活正确的模拟电路，以产生编程和擦除操作所需的电压。
 
-Although the number of cells in each row is nominally equivalent to the page size, the actual number of cells in each row is higher than the stated capacity of each page. This is because each page contains a set of spare cells as well as data cells. The spare cells store the ECC bits for that page as well as the physical to logical address mapping for the page. The controller may also save additional metadata information about the page in the spare area. During a read operation, the entire page (including the bits in the spare area) is transmitted to the controller. The ECC logic in the controller checks and correct the read data. During a program operation the controller transmits both the user data and the ECC bits to the flash memory.
+虽然每行的单元格数名义上与页面大小相等，但每行的实际单元格数却高于每页的标称容量。这是因为每个页面都包含一组备用单元和数据单元。备用单元存储该页面的 ECC 位以及页面的物理地址到逻辑地址映射。控制器还可在备用区中保存有关页面的其他元数据信息。在读取操作过程中，整个页面（包括备用区中的位）都会传输到控制器。控制器中的 ECC 逻辑会检查并纠正读取的数据。在编程操作期间，控制器会将用户数据和 ECC 位传送到闪存。
 
-Upon system boot the controller scans the spare area of each page in the entire flash array to load the logical to physical address mapping into its own memory (there may be other techiques for holding mapping data in the controller). The controller holds the logical to physical address mapping in the Flash Translation Layer (FTL). The FTL also performs garbage collection to clear invalid pages following writes, and performs wear-leveling to ensure that all the ﬂash blocks are used, evenly.
+系统启动时，控制器会扫描整个闪存阵列中每个页面的空闲区域，将逻辑地址到物理地址的映射加载到自己的内存中（控制器中可能有其他保存映射数据的技术）。控制器在闪存转换层（FTL）中保存逻辑地址到物理地址的映射。FTL 还执行垃圾回收，清除写入后的无效页面，并执行损耗均衡，确保所有闪存块都得到均衡使用。
 
-Since flash does not support in-place updates, a page needs to be erased before its contents can be programmed; but unlike a program or a read operation which work at a page granularity, the erase operation is performed at a block granularity.
+由于闪存不支持原地更新，所以在内容可以被编程之前，页面需要被擦除；但不同于以页面粒度进行的编程或读取操作，擦除操作是以块粒度执行的。
 
 ## 2D and 3D, and Layers
 
@@ -97,7 +97,7 @@ And now we come to the myths, misconceptions and the real reason for writing thi
 
 ## Storage Device Controllers
 
-All HDDs, SSDs and flash drives have an internal controller. It's the way that the storage device can be, in the words of Microsoft, abstracted from the host. That abstraction is done by logical block addressing, where each cluster capable of being addressed on the storage device is known to the host by an ascending number (the LBA). The storage device controller maps that number to the sectors or pages on the device. To the host this mapping is constant - a cluster remains mapped to the same LBA until the host changes it. On an HDD this relationship is physical and fixed: in its simplist deconstruction an HDD controller just reads and writes whatever sectors the host asks it to. It doesn't have to think about what was there before, it just does what it's told and writes new data on top of the old. It does that because it can, there's nothing preventing a new cluster being written directly on top of the same sectors of an old one. On an SSD it's different.
+All HDDs, SSDs and flash drives have an internal controller. It's the way that the storage device can be, in the words of Microsoft, abstracted from the host. That abstraction is done by logical block addressing, where each cluster capable of being addressed on the storage device is known to the host by an ascending number (the LBA). The storage device controller maps that number to the sectors or pages on the device. To the host this mapping is constant - a cluster remains mapped to the same LBA until the host changes it. On an HDD this relationship is physical and fixed: in its simplest deconstruction an HDD controller just reads and writes whatever sectors the host asks it to. It doesn't have to think about what was there before, it just does what it's told and writes new data on top of the old. It does that because it can, there's nothing preventing a new cluster being written directly on top of the same sectors of an old one. On an SSD it's different.
 
 With an SSD the host still uses the LBA addressing system with the constant reconciliation between LBA and cluster number. It knows that the device is a SSD and has a few tricks to accommodate this, but they will come later. The SSD controller however has many tricks to reconcile the host's file system, written for HDDs, with the demands of NAND flash.
 
@@ -109,7 +109,7 @@ An empty page, with all cells uncharged, contains by default all ones. If a hex 
 
 ## Floating Gate Transistors
 
-This section might be helpful before plunging into reads and writes, and here cell and (FG)transistor become interchangable (a cell is a transistor). For more, much more, about floating gate MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistors) there is always Wikipedia.
+This section might be helpful before plunging into reads and writes, and here cell and (FG)transistor become interchangeable (a cell is a transistor). For more, much more, about floating gate MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistors) there is always Wikipedia.
 
 A FGMOS transistor has three terminals, gate, drain, and source. When a voltage is applied to the gate a current can flow from the source to the drain. Low voltages applied to the gate cause the voltage flowing from source to drain to vary proportionally to the gate voltage. At a higher voltage the proportional response stops and the gate closes regardless.
 
@@ -147,7 +147,7 @@ The most significant aspect of NAND flash, the widest fork in the HDD/SSD path, 
 
 While SSDs can read and write to individual pages, they cannot overwrite pages, as the voltages required to revert a zero to a one would damage adjacent cells. All writes and rewrites need an empty page. Unlike HDDs, where a compete cluster is written to the disk whatever was there previously, the act of writing an SSD page allocates an empty page with its default of all ones, and an electrical charge is applied to the cells that require changing to zeroes. This is as true for multi-level cells as it is for SLCs, as the no-charge all-ones pattern is either replaced with a charge representing another pattern, or is left alone. This is a once-only process.
 
-When a write request is issued an empty page is allocated, usually within the same block, and the data written. The LBA/PBA map in the FTL is updated to allocate the new page to the relevant LBA. The LBA will always remain the same to the host: no matter which page is allocated the host will never know. This is the same process if the user data is being rewritten or if it is a new file allocation: the only difference is that the rewrite will have slightly more work to do. The old page will be flagged as invalid and will be inacessible to the host, but will still take up space within its block as it cannot be reused.
+When a write request is issued an empty page is allocated, usually within the same block, and the data written. The LBA/PBA map in the FTL is updated to allocate the new page to the relevant LBA. The LBA will always remain the same to the host: no matter which page is allocated the host will never know. This is the same process if the user data is being rewritten or if it is a new file allocation: the only difference is that the rewrite will have slightly more work to do. The old page will be flagged as invalid and will be inaccessible to the host, but will still take up space within its block as it cannot be reused.
 
 Whilst it's easy to grasp writing to SLC pages, multi-level cell pages are more difficult to visualise. The controller accumulates new writes in the SSD cache until enough logical pages to fill a physical page are gathered, and then writes the physical page. This entails the fewest writes to the page. If a logical page in a multi-level page is amended it would require a new page to be allocated and all logical pages rewritten, as the individual values in the physical page can't be altered. If a logical page is deleted then I surmise that the deleted logical page is flagged as invalid, and when the block becomes a candidate for garbage collection any valid logical pages are consolidated before writing. In other words a multi-level page, or at least the majority of them, will always contain a full compliment of logical pages.
 
@@ -161,7 +161,7 @@ When an SSD arrives new from the factory writes will gradually fill the drive in
 
 ## The Garbage Collection Conundrum
 
-Garbage Collection can either take place in the background, when the host is idle, or the foreground, as and when it is needed for a write. Whilst background GC may seem to be preferrable, it has drawbacks. If the host uses a power-saving mode when idle, GC will either wait for the device to restart with a consequent user delay for GC to complete, or wake the device up and reduce battery life whilst the host is 'idle'. Furthermore GC has no knowledge of the data it is collecting. Inevitably some data will be subject to GC and then be deleted shortly afterwards, incurring another bout of GC and consequent additional and unnecessary writes (write amplification, the ratio of actual writes to data writes). Foreground GC, seemingly the antithesis of performance, avoids the power-saving problems, only incurs writes when they are actually required, and with fast cache and highly developed GC algorithms presents no noticeable performance penalty to the user. The trend in modern GC appears to be foreground collection, or a combination of foreground and background collection.
+Garbage Collection can either take place in the background, when the host is idle, or the foreground, as and when it is needed for a write. Whilst background GC may seem to be preferable, it has drawbacks. If the host uses a power-saving mode when idle, GC will either wait for the device to restart with a consequent user delay for GC to complete, or wake the device up and reduce battery life whilst the host is 'idle'. Furthermore GC has no knowledge of the data it is collecting. Inevitably some data will be subject to GC and then be deleted shortly afterwards, incurring another bout of GC and consequent additional and unnecessary writes (write amplification, the ratio of actual writes to data writes). Foreground GC, seemingly the antithesis of performance, avoids the power-saving problems, only incurs writes when they are actually required, and with fast cache and highly developed GC algorithms presents no noticeable performance penalty to the user. The trend in modern GC appears to be foreground collection, or a combination of foreground and background collection.
 
 Based on foreground garbage collection, and that most user activity is random, then the inevitable conclusion is that the SSD will spend most of its life at full capacity, if by that we mean available blocks, even though the allocated space appears to the host to be low.
 
@@ -185,9 +185,9 @@ Although the storage device is abstracted from the File System, to enable some o
 
 ## TRIM
 
-TRIM (it isn't an acronym) is a SATA command sent by the file system to the SSD controller to indicate that particular pages no longer contain live data, and are therfore candidates for garbage collection. TRIM is only supported in Windows on NTFS volumes. It is invoked on file deletion, partition deletion, and disk formatting. TRIM has to be supported by the SSD and enabled in NTFS to take effect. The command 'fsutil behavior query disabledeletenotify' returns 0 if TRIM is enabled in the operating system. It does not mean that the SSD supports it (or even if an SSD is actually installed) but all modern SSDs support a version of it.
+TRIM (it isn't an acronym) is a SATA command sent by the file system to the SSD controller to indicate that particular pages no longer contain live data, and are therefore candidates for garbage collection. TRIM is only supported in Windows on NTFS volumes. It is invoked on file deletion, partition deletion, and disk formatting. TRIM has to be supported by the SSD and enabled in NTFS to take effect. The command 'fsutil behavior query disabledeletenotify' returns 0 if TRIM is enabled in the operating system. It does not mean that the SSD supports it (or even if an SSD is actually installed) but all modern SSDs support a version of it.
 
-There are three different types of TRIM defined in the SATA protocol and implemented in SSD drives. Non-deterministic TRIM: where each read command after a TRIM may return different data; Deterministic TRIM (DRAT): where all read commands after a TRIM return the same data (i.e. become determinate) and do not change until new data is written; and Deterministic Read Zero after TRIM (DZAT): where all read commands after a TRIM return zeroes until the page is written with new data. By the way whilst DRAT returns data on a read it is not the userdata that was ptrviously there bafore the TRIM: it is random.
+There are three different types of TRIM defined in the SATA protocol and implemented in SSD drives. Non-deterministic TRIM: where each read command after a TRIM may return different data; Deterministic TRIM (DRAT): where all read commands after a TRIM return the same data (i.e. become determinate) and do not change until new data is written; and Deterministic Read Zero after TRIM (DZAT): where all read commands after a TRIM return zeroes until the page is written with new data. By the way whilst DRAT returns data on a read it is not the userdata that was ptrviously there before the TRIM: it is random.
 
 Fortunately Non-Deterministic TRIM is rarely used, and Windows does not support DRAT, so a read of a trimmed page - which is easily done with a hex aditor - invokes DZAT and returns zeroes immediately after the TRIM command is issued. The physical pages may not have been cleaned immediately following the TRIM command, but the SSD controller knows that there is no valid data held at the trimmed page address.
 
@@ -207,7 +207,7 @@ My humble WD SSD has four 32 gb chips but a specified capacity of 120 gb, meanin
 
 ## Wear Levelling
 
-Some files are written once and remain untouched for the rest of their life. Others have few updates, some very many. As a consequence some blocks will hardly ever see the invalid block pool and have a very low erase/write count, and some will be in the pool every few minutes and have a very heavy count. To spread the wear so that all blocks are subject to erase/writes equally, and the performance of the SSD is maintained over its life, wear levelling is used. Wear levelling uses algorithms to indentify blocks with the lowest erase count and move the contents to high erase count blocks; and to select low erase count blocks for new allocations. As with garbage collection, wear levelling is far more complex than I could possibly deduce, let alone explain.
+Some files are written once and remain untouched for the rest of their life. Others have few updates, some very many. As a consequence some blocks will hardly ever see the invalid block pool and have a very low erase/write count, and some will be in the pool every few minutes and have a very heavy count. To spread the wear so that all blocks are subject to erase/writes equally, and the performance of the SSD is maintained over its life, wear levelling is used. Wear levelling uses algorithms to identify blocks with the lowest erase count and move the contents to high erase count blocks; and to select low erase count blocks for new allocations. As with garbage collection, wear levelling is far more complex than I could possibly deduce, let alone explain.
 
 ## Read Disturbance
 
@@ -227,7 +227,7 @@ Deleted file recovery on a modern SSD is next to impossible for the end user, an
 
 After a session of file deletion, such as running Piriform's CCleaner, run Recuva on the SSD. The headers of the deleted files found (and presumably the rest of the file) will all be zeroes. This is TRIM and DZAT doing their work in a few seconds, killing any chance of deleted file recovery. Of course TRIM can be disabled, at the cost of performance, but it's probably better to be a little less cavalier when deleting files that might be wanted later.
 
-## Deletd File Security
+## Deleted File Security
 
 The notion of secure file deletion - overwriting a file's data before deletion - is irrelevant, and if any other pattern except zeroes is chosen is just additional and pointless wear on the SSD. Even overwriting with zeroes will cause transaction log and other files to be written, so secure file deletion on an SSD should never be used. Wiping Free Space is far worse for pointless writes, and is even more futile than secure file deletion. The deleted files just aren't there any more.
 
@@ -241,7 +241,7 @@ One of the SSD mantras is that an SSD should never be defragged. Whilst there is
 
 There is nothing to be afraid of in a monthly defrag. Most users won't hit the 10% fragmented criteria so a simple RETRIM will be run, and Windows 10 users won't get defragged anyway (System Restore is disabled in Widows 10 by default). The reduction in life of an SSD will not be noticed. Furthermore, although SSDs are not fazed by random reads, files do get fragmented and that means a significant increase in I/Os. An occasional clearup is a boon.
 
-**SSD Lifetime:** There are many users worried about the life expectancy of their SSDs. Yes, continuous write/erase cycles, and the added and unseen write amplification, do take a toll on the life of NAND flash. Using an SSD does wear it out. My WD Green 120 gb SSD, a TLC SSD from a reputable manufacturer but at the very lowest cost, has an estimated life of 1 million+ hours and a write limit if 40 terabytes. One million hours is 114 years, so we can forget that. As for writes, at 1 gb a day - far more than my current rate of data use - it would take the same 114 years to reach 40 tb. Even with massive write overhead this SSD is not going to wear out in the forseeable future. If all 128 gib of available flash is used equally, the 40 tb equates to 312 writes per cell, a very conservative number.
+**SSD Lifetime:** There are many users worried about the life expectancy of their SSDs. Yes, continuous write/erase cycles, and the added and unseen write amplification, do take a toll on the life of NAND flash. Using an SSD does wear it out. My WD Green 120 gb SSD, a TLC SSD from a reputable manufacturer but at the very lowest cost, has an estimated life of 1 million+ hours and a write limit if 40 terabytes. One million hours is 114 years, so we can forget that. As for writes, at 1 gb a day - far more than my current rate of data use - it would take the same 114 years to reach 40 tb. Even with massive write overhead this SSD is not going to wear out in the foreseeable future. If all 128 gib of available flash is used equally, the 40 tb equates to 312 writes per cell, a very conservative number.
 
 ## The End
 
