@@ -114,7 +114,7 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
   <source src="https://youtu.be/DRRezUZvZ6I" type="video/mp4">
 </video>
 
-## 3. 你可以在浏览器外登录 - VS code 调试器
+## 3. 你可以在浏览器外部登录 - VS code 调试器
 (Chromium Browsers and VS Code)
 
 在 Visual Studio Code 中启动调试会话时，可以生成一个浏览器实例，调试控制台就会变成浏览器开发工具中的控制台。我曾在七月份的博客中详细介绍过这一点，所以你可以[阅读如何做到这一点](https://christianheilmann.com/2021/07/30/using-console-log-debugging-in-visual-studio-code/)。[官方文档](https://docs.microsoft.com/microsoft-edge/visual-studio-code/microsoft-edge-devtools-extension#browser-debugging-with-microsoft-edge-devtools-integration-in-visual-studio-code) 中也有更多内容。
