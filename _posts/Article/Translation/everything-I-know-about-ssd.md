@@ -29,7 +29,7 @@ date: "2019-3-1"
 
 本文的大部分细节内容是在我的电脑运行 Windows 10 家庭版系统时编写的，该系统配备了一个相当普通的内置 2.5 英寸西部数据 Green 120 GB 固态硬盘。该硬盘使用慧荣科技 SM2258XT 主控和四个 32 GB 的闪迪 05497 032G 15nm 3D TLC 闪存芯片，并内置了容量未知的 SLC 缓存。由于本文试图讨论固态硬盘作为一个整体的行为，因此使用什么主机操作系统或文件系统应该无关紧要，但在我的例子中是 Windows 和 NTFS。本文中的内容并非针对特定品牌或类型的固态硬盘，而应该是通用的。我们真正要讨论的是固态硬盘的工作原理。
 
-我唯一使用的额外软件应用程序是 Recuvae（Piriform 出品），HexDen (HxD)。Recuva 可以列出活动文件和已删除文件及其簇分配，而 HexDen 是一款非常实用且功能强大的十六进制编辑器。Recuva 可从 www.piriform.com（现在是https://www.ccleaner.com/） 免费获取，HexDen 也可从 www.mh-nexus.de 免费获取。我使用这两款软件的便携版（portable versions）。
+我唯一使用的额外软件应用程序是 Recuvae（Piriform 出品），HexDen (HxD)。Recuva 可以列出活动文件和已删除文件及其簇分配，而 HexDen 是一款非常实用且功能强大的十六进制编辑器。Recuva 可从 www.piriform.com（现在是 https://www.ccleaner.com/） 免费获取，HexDen 也可从 www.mh-nexus.de 免费获取。我使用这两款软件的便携版（portable versions）。
 
 所有的结论和观点完全是来自我个人的工作经历，以及从我自己的电脑上获取的任何数据。在接受这些话作为真理之前，最好验证或至少同意我的推理。这里的很多内容是对一个非常复杂主题的简化解释。
 
