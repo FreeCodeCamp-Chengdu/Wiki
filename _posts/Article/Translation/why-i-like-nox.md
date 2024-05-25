@@ -51,10 +51,6 @@ def tests(session):
 
 您可能会注意到命名上的差异：_tox_ 所称的 _environments_ 在 Nox 中称为 _sessions_。 
 
----
-
-Now, if you call `tox` or `nox`, they both:
-
 现在，如果您调用 `tox` 或 `nox`，它们都会：
 
 1. 为 Python 3.10 和 Python 3.11 创建虚拟环境，
@@ -87,9 +83,9 @@ commands = pytest {posargs}
 但是，尽管 _tox_ 确实首先安装了 _attrs_ 17.4.0，但在安装项目时，它会用最新版本覆盖它。为什么？我从来没有弄清楚，但我 99.9% 确定它曾经[工作过][2]。其他依赖项都不需要更新的版本，在我看来它仍然是正确的。 
 
 
-## INI Inheritance 对比 Python Functions
+## INI 继承 对比 Python 函数
 
-如果你足够仔细地观察，你会发现——抛开语法不谈——这两种配置原则分别是**code sharing via subclassing（通过子类化共享代码）**与 **code sharing via functions（通过函数共享代码）** 的情况。在 _tox_ 中，你定义了一个基础 `testenv`，所有其他环境都继承自它，但可以覆盖任何字段。仅此行为就足以让我偶尔挠头。
+如果你足够仔细地观察，你会发现，抛开语法不谈——这两种配置原则分别是**code sharing via subclassing（通过子类化共享代码）**与 **code sharing via functions（通过函数共享代码）** 的情况。在 _tox_ 中，你定义了一个基础 `testenv`，所有其他环境都继承自它，但可以覆盖任何字段。仅此行为就足以让我偶尔挠头。
 
 在 _tox_ 中，子环境之间的重用（例如 `py37` 和 `py38` 之间）是使用因子相关的语句（如上面的 `oldestAttrs:`）或替换（如 `{[testenv:py37]commands}`）完成的，我永远记不住它们的语法，并且总是让我在其他项目中寻找例子。
 
@@ -155,13 +151,13 @@ def docs(session: nox.Session) -> None:
     session.run("python", "-m", "doctest", "README.md")
 ```
 
-但是，考虑到 shell 包装的问题（参见 [Docker][14] 或 [变量名净化][15]），这可能仍然是一个净收益。即使我不得不关闭 [Black][16] (`# fmt: off`) 以免它变得_太_糟糕。 
+但是，考虑到 shell 封装的问题（参见 [Docker][14] 或 [变量名净化][15]），这可能仍然是一个净收益。即使我不得不关闭 [Black][16] (`# fmt: off`) 以免它变得糟糕。 
 
-## Bonus Tip: Python Versions as First-Class Selectors
+## 额外提示： 将 Python 版本作为一等公民，优先选择
 
-正如 [James Bennett][17] 精辟地 [观察到的][18]，Nox 的一个很酷的特性是 Python 版本是会话的第一类选择器——而对于 _tox_ 来说，它只是像其他任何因素一样的因素。
+正如 [James Bennett][17] 精辟地 [观察到的][18]，Nox 的一个很酷的特性是 Python 版本是会话的第一类选择器。而对于 _tox_ 来说，它只是像其他任何因素一样的因素。
 
-这意味着你可以调用 `nox --python 3.10`，_所有_ 标记为 Python 3.10 的会话都会运行。这在 CI 中_非常_有用，你不需要将 [`setup-python`][19] 的版本号（“3.11”）映射到 _tox_ 的环境（`py311`——无论是手动还是使用 [_tox-gh_][20] 或 [_tox-gh-actions_][21]）。例如，使用 GitHub Actions，你可以编写： 
+这意味着你可以调用 `nox --python 3.10`，所有标记为 Python 3.10 的会话都会运行。这在 CI 中非常有用，你不需要将 [`setup-python`][19] 的版本号（“3.11”）映射到 _tox_ 的环境（`py311`——无论是手动还是使用 [_tox-gh_][20] 或 [_tox-gh-actions_][21]）。例如，使用 GitHub Actions，你可以编写： 
 
 ```yaml
 jobs:
