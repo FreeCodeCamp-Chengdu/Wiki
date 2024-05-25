@@ -57,7 +57,7 @@ Anna-Lena Popkes
 
 ![版本管理工具对比图][5]
 
-### pyEnv
+### pyenv
 
 Python 有一个单一用途的工具可以让您安装和管理 Python 版本：[pyenv](https://github.com/pyenv/pyenv)！ Pyenv 易于使用。 最重要的命令如下：
 
@@ -71,7 +71,7 @@ pyenv local <version> # automatically select version whenever you are in the cur
 pyenv global <version> # select version globally for your user account
 ```
 
-## (Virtual) environment management（虚拟环境管理）
+## Virtual environment management（虚拟环境管理）
 
 ### 定义
 
@@ -102,7 +102,7 @@ python3 -m venv <env_name>
 deactivate
 ```
 
-### virtualEnv
+### virtualenv
 
 [Virtualenv][8] 试图改进 `venv`。 它提供了比 `venv` 更多的功能，并且速度更快、功能更强大。 最重要的命令与 `venv` 的命令类似，只是创建一个新环境更简洁：
 
@@ -117,7 +117,7 @@ virtualenv <env_name>
 deactivate
 ```
 
-## Recap I - `pyproject.toml`
+## 回顾 1 - `pyproject.toml`
 
 在讨论打包之前，我想确保你了解打包最重要的文件：`pyproject.toml`。
 
@@ -142,7 +142,7 @@ Python 中的打包已经走过了漫长的道路。直到 [PEP 518][9] `setup.p
 
 Python 的标准包管理器是 [`pip`][12]。它随 Python 一起提供，允许你从 PyPI 和其他索引安装软件包。主要命令（可能是 Python 开发人员学习的第一个命令之一）是 `pip install <package_name>`。当然，`pip` 还提供了许多其他选项。查看[文档][12]以获取有关可用标志等的更多信息。
 
-## Recap II - Lock file
+## 回顾 2 - Lock file
 
 在我们继续讨论多用途工具之前，还有一个对打包很重要的文件：锁文件。`pyproject.toml` 包含抽象依赖项，而锁文件包含具体依赖项。它记录了为项目安装的所有依赖项的确切版本（例如 `pandas==2.0.3`）。这使得项目能够在多个平台上重现。如果你以前从未见过锁文件，请查看[这个来自 `poetry` 的文件][13]：
 
@@ -295,7 +295,7 @@ poetry shell
 poetry run python <script_name.py>
 ```
 
-#### Lock file（锁定文件）
+#### Lock file
 
 首次安装软件包时，Poetry 会解析 `pyproject.toml` 文件中列出的所有依赖项，并下载软件包的最新版本。Poetry 完成安装后，它会将所有软件包及其下载的确切版本写入 `poetry.lock` 文件，将项目锁定到这些特定版本。建议将锁定文件提交到项目仓库，以便所有参与项目的人员都锁定到相同版本的依赖项。要将依赖项更新到最新版本，请使用 `poetry update` 命令。
 
@@ -367,7 +367,7 @@ pdm list --graph
 pdm run python <script_name.py>
 ```
 
-#### Lock file（锁定文件）
+#### Lock file
 
 PDM 的锁定功能类似于 Poetry。首次安装软件包时，PDM 会解析 `pyproject.toml` 文件中列出的所有依赖项，并下载软件包的最新版本。PDM 完成安装后，会将所有软件包及其下载的确切版本写入 `pdm.lock` 文件，将项目锁定到这些特定版本。建议将锁定文件提交到项目仓库，以便所有参与项目的人员都锁定到相同版本的依赖项。要将依赖项更新到最新版本，请使用 `pdm update` 命令。
 
