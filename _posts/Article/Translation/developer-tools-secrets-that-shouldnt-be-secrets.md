@@ -1,5 +1,5 @@
 ---
-title: 揭开浏览器开发者工具的秘密
+title: 浏览器开发者工具中不应该再有秘密
 authorURL: ""
 originalURL: https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/
 translator: ""
