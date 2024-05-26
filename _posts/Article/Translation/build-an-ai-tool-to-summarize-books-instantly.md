@@ -7,14 +7,12 @@ reviewer: ""
 ---
 
 ## 无需从头到尾阅读一本书，就能掌握其要点
-[![Alessandro Amenta](https://miro.medium.com/v2/resize:fill:88:88/1*eJmL2XsmvUfWxRbTJrfHvQ.png)](https://medium.com/@alessandroamenta1?source=post_page-----828680c1ceb4--------------------------------)
 
+[![Alessandro Amenta](https://miro.medium.com/v2/resize:fill:88:88/1*eJmL2XsmvUfWxRbTJrfHvQ.png)](https://medium.com/@alessandroamenta1?source=post_page-----828680c1ceb4--------------------------------)
 
 [关注我](https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2F_%2Fsubscribe%2Fuser%2Ff39ff33c76d2&operation=register&redirect=https%3A%2F%2Flevelup.gitconnected.com%2Fbuild-an-ai-tool-to-summarize-books-instantly-828680c1ceb4&user=Alessandro+Amenta&userId=f39ff33c76d2&source=post_page-f39ff33c76d2----828680c1ceb4---------------------post_header-----------)
 
-
 [提升编码水平](https://levelup.gitconnected.com/?source=post_page-----828680c1ceb4--------------------------------)
-
 
 在本文中，我们将使用 Python、Langchain 和 OpenAI embeddings 构建一个简单但功能强大的书籍摘要器。
 
@@ -34,8 +32,8 @@ GPT-3 和 GPT-4 等人工智能模型功能强大，但也有其局限性。其�
 
 以下是我们如何将长篇大论的书籍转化为简明扼要的摘要：
 
-1.  **拆分（Splitting）与嵌入（Embeddings）**： 我们将图书分解成小块，并将其转换为嵌入式。这一步的成本出奇地低。
-2.  **聚类（Clustering）:** 接下来，我们对这些嵌入式内容进行聚类，找出书中最具代表性的部分。
+1.  **拆分（Splitting）与嵌入（Embeddings）**： 我们将图书分解成小块，并将其转换为嵌入。这一步的成本出奇地低。
+2.  **聚类（Clustering）:** 接下来，我们对这些嵌入内容进行聚类，找出书中最具代表性的部分。
 3.  **摘要（Summarization）:** 然后，我们使用更具成本效益的 GPT-3.5 模型对这些关键部分进行摘要。
 4.  **合并摘要（Combining Summaries）:** 最后，我们使用 GPT-4 将这些摘要拼接成一个流畅的叙述。
 
@@ -43,11 +41,11 @@ GPT-3 和 GPT-4 等人工智能模型功能强大，但也有其局限性。其�
 
 现在，让我们来分析一下代码和每个步骤背后的原理。
 
-让我们深入代码，一步步构建我们的摘要。
+让我们深入代码，一步步构建我们的摘要器。
 
 # 步骤 1: 加载图书
 
-首先，我们需要阅读图书内容。我们将支持 PDF 和 EPUB 格式。
+首先，我们需要读取图书内容。我们将支持 PDF 和 EPUB 格式。
 
 ```python
 import os
@@ -73,11 +71,12 @@ def load_book(file_obj, file_extension):
     text = text.replace('\t', ' ')
     return text
 ```
+
 # 步骤 2: 分割和嵌入文本
 
-人工智能模型有代币限制，这意味着它们无法一次性处理一整本书。通过将文本分割成块，我们可以确保人工智能可以消化每一部分。
+人工智能模型有消耗 token 限制，这意味着它们无法一次性处理一整本书。通过将文本分割成块，我们可以确保人工智能可以摘要每一部分。
 
-我们将文本分割成块，然后将它们转换成嵌入式。嵌入式将文本快速转换为紧凑的数字形式，计算量极小，因此整个过程既快速又经济。
+我们将文本分割成块，然后将它们转换成嵌入。嵌入将文本快速转换为紧凑的数字形式，计算量极小，因此整个过程既快速又经济。
 
 ```python
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -90,6 +89,7 @@ def split_and_embed(text, openai_api_key):
     vectors = embeddings.embed_documents([x.page_content for x in docs])
     return docs, vectors
 ```
+
 # 步骤 3: 聚类嵌入
 
 我们使用 KMeans 聚类对相似的内容块进行分组。在我的版本中，正如你在下面看到的，我发现 11 个聚类（clusters）对于大多数书籍来说都很有效。但你也可以根据自己的实际情况进行调整。
@@ -105,11 +105,12 @@ def cluster_embeddings(vectors, num_clusters):
     closest_indices = [np.argmin(np.linalg.norm(vectors - center, axis=1)) for center in kmeans.cluster_centers_]
     return sorted(closest_indices)
 ```
-# 步骤 4: 总结具有代表性的大块内容
 
-我们将使用 GPT-3.5 只汇总选定的数据块。
+# 步骤 4: 总结具有代表性的内容
 
-```python
+我们将使用 GPT-3.5 摘要选定的数据块。
+
+````python
 from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
 
@@ -127,15 +128,15 @@ def summarize_chunks(docs, selected_indices, openai_api_key):
     for doc in selected_docs:
         chunk_summary = load_summarize_chain(llm=llm3_turbo, chain_type="stuff", prompt=map_prompt_template).run([doc])
         summary_list.append(chunk_summary)
-    
+
     return "\n".join(summary_list)
-```
+````
 
 # 步骤 5: 创建最终摘要
 
 我们使用 GPT-4 将各个摘要合并成一个最终的、有内涵的摘要。
 
-```python
+````python
 from langchain.schema import Document
 from langchain.chat_models import ChatOpenAI
 
@@ -150,7 +151,7 @@ def create_final_summary(summaries, openai_api_key):
     reduce_chain = load_summarize_chain(llm=llm4, chain_type="stuff", prompt=combine_prompt_template)
     final_summary = reduce_chain.run([Document(page_content=summaries)])
     return final_summary
-```
+````
 
 # 将一切汇集在一起
 
@@ -169,9 +170,9 @@ def generate_summary(uploaded_file, openai_api_key, num_clusters=11, verbose=Fal
     return final_summary
 ```
 
-# 测试摘要
+# 测试摘要器
 
-最后，我们可以用一个图书文件来测试我们的摘要。
+最后，我们可以用一个图书文件来测试我们的摘要器。
 
 ```python
 # Testing the summarizer
