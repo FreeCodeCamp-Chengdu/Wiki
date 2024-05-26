@@ -37,7 +37,7 @@ extras = tests
 commands = pytest {posargs}
 ```
 
-...在 `noxfile.py`中会是这样：
+在 `noxfile.py`中会是这样：
 
 ```python
 import nox
@@ -87,7 +87,7 @@ commands = pytest {posargs}
 
 在 _tox_ 中，子环境之间的重用（例如 `py37` 和 `py38` 之间）是使用因子相关的语句（如上面的 `oldestAttrs:`）或替换（如 `{[testenv:py37]commands}`）完成的，我永远记不住它们的语法，并且总是让我在其他项目中寻找例子。
 
-在 Nox 中，如果你想重用，你写函数。没有其他语言需要学习，[只有一个 API][9]。例如，为了在 [_Coverage.py_][10] 下运行最旧和最新的 Python 版本，其余的没有[3][11]，另外还要运行带有固定 _attrs_ 依赖项的最旧版本，我想出了以下内容： 
+在 Nox 中，如果你想重用，你写函数。没有其他语言需要学习，[只有一个 API][9]。例如，为了在 [_Coverage.py_][10] 下运行最旧和最新的 Python 版本，其余的没有，另外还要运行带有固定 _attrs_ 依赖项的最旧版本，我想出了以下内容： 
 
 
 ```python
@@ -223,13 +223,10 @@ _tox_ 4 引入了使用 `-f` 选择单个因素的概念；因此，你可以使
 [2]: https://nox.thea.codes/
 [3]: https://en.wikipedia.org/wiki/Domain-specific_language
 [4]: https://en.wikipedia.org/wiki/INI_file
-[5]: #fn:1
 [6]: https://github.com/hynek/environ-config
 [7]: https://www.attrs.org/
-[8]: #fn:2
 [9]: https://nox.thea.codes/en/stable/config.html
 [10]: https://coverage.readthedocs.io/
-[11]: #fn:3
 [12]: https://github.com/pypa/hatch/issues/701
 [13]: https://docs.python.org/3/library/subprocess.html#subprocess.run
 [14]: https://hynek.me/articles/docker-signals/
@@ -243,9 +240,6 @@ _tox_ 4 引入了使用 `-f` 选择单个因素的概念；因此，你可以使
 [22]: https://fosstodon.org/@adamchainz/109717334764977122
 [23]: https://hynek.me/articles/turbo-charge-tox/
 [24]: https://ruudvanasseldonk.com/2023/01/11/the-yaml-document-from-hell
-[25]: #fnref:1
-[26]: #fnref:2
-[27]: #fnref:3
 [28]: https://hynek.me/say-thanks/
 [29]: https://buttondown.email/hynek
 [30]: https://hynek.me/about/
