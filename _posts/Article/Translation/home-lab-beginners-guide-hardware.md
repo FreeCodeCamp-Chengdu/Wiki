@@ -331,7 +331,7 @@ _**更新 – 2021.8.19:**_
 - [AC Infinity 通风悬臂式 1U 通用机架，10 英寸深][100]
 - [C2G 12 端口跳线板][101]
 - [VCE UL 认证的 CAT6 RJ45 Keystone Jack 内联耦合器][102]
-- [Vilros - Raspberry Pi 4 2GB 基本套件][103] - 运行[Unifi 控制器][104] 。
+- [Vilros - Raspberry Pi 4 2GB 基本套件][103] - 运行 [Unifi 控制器][104] 。
 - [Brume (GL-MV1000)][105] - [Edge Gateway + VPN (wireguard)][106] - 正在运行 [Unifi 控制器][104] 。
 - [Edgeswitch 10xp][107]
 - [StarTech.com 8 个插座水平 1U 机架安装 PDU 电源条][108]
