@@ -218,14 +218,14 @@ _**更新 3：** 截至 2023 年 9 月，4 个风扇中有 3 个再次出现故�
 
 **路由器**
 
--   **Multi-WAN Load balancing:** [Peplink Balance 20X \[CAT 7\] | Futureproof Gigabit Dual WAN Router][59] – $500 – Simultaneous Dual-Band (2.4GHz / 5GHz), Wi-Fi 5 1x WAN Port, 4 x LAN Port, 1x Embedded Cellular Modem with Redundant SIM Slots, 1x USB Interface 1 Gbps Router Throughput.
--   **Small Biz features:** [Ubiquiti EdgeRouter ER-10X, 10 Port Gigabit Router with PoE Flexibility][60] – $220 ([specs][61]) – (10) Gigabit RJ45 Ports, PoE Passthrough on Port 10, Dual-Core, 880 MHz, MIPS1004Kc Processor, 512 MB DDR3 RAM, 512 MB NAND Flash Storage, Internal Switch, Serial Console Port.
--   **Home lab Value:** [TP-Link ER7206 Multi-WAN VPN Router][62] – $150 (specs) – 1 Gigabit SFP WAN Port + 1 Gigabit WAN Port + 2 Gigabit WAN/LAN Ports plus1 Gigabit LAN Port. Supports up to 100× LAN-to-LAN IPsec, 50× OpenVPN, 50× L2TP, and 50× PPTP VPN connections.
+-   **多广域网负载平衡:** [Peplink Balance 20X \[CAT 7\] | Futureproof Gigabit Dual WAN Router][59] – $500 – Simultaneous Dual-Band (2.4GHz / 5GHz), Wi-Fi 5 1x WAN Port, 4 x LAN Port, 1x Embedded Cellular Modem with Redundant SIM Slots, 1x USB Interface 1 Gbps Router Throughput.
+-   **小型企业用途:** [Ubiquiti EdgeRouter ER-10X, 10 Port Gigabit Router with PoE Flexibility][60] – $220 ([specs][61]) – (10) Gigabit RJ45 Ports, PoE Passthrough on Port 10, Dual-Core, 880 MHz, MIPS1004Kc Processor, 512 MB DDR3 RAM, 512 MB NAND Flash Storage, Internal Switch, Serial Console Port.
+-   **家庭实验室:** [TP-Link ER7206 Multi-WAN VPN Router][62] – $150 (specs) – 1 Gigabit SFP WAN Port + 1 Gigabit WAN Port + 2 Gigabit WAN/LAN Ports plus1 Gigabit LAN Port. Supports up to 100× LAN-to-LAN IPsec, 50× OpenVPN, 50× L2TP, and 50× PPTP VPN connections.
 
 **交换机**
 
--   **Enterprise features:** [Ubiquiti EdgeSwitch ES-10XP, Managed 10-Port Gigabit Switch with PoE][63] – $215 ([specs][64]) – (8) Gigabit RJ45 Ports, (2) SFP ports, 24V passive PoE output on all RJ45 ports, 10 Gbps Total Non-Blocking Throughput, 20 Gbps Switching Capacity.
--   **Home lab Value:** [TP-Link 8-Port Gigabit Ethernet Easy Smart Switch (TL-SG108E)][65] – $40 ([specs][66]) Unmanaged Pro, Plug and Play, Shielded Ports.
+-   **企业用途:** [Ubiquiti EdgeSwitch ES-10XP, Managed 10-Port Gigabit Switch with PoE][63] – $215 ([specs][64]) – (8) Gigabit RJ45 Ports, (2) SFP ports, 24V passive PoE output on all RJ45 ports, 10 Gbps Total Non-Blocking Throughput, 20 Gbps Switching Capacity.
+-   **家庭实验室:** [TP-Link 8-Port Gigabit Ethernet Easy Smart Switch (TL-SG108E)][65] – $40 ([specs][66]) Unmanaged Pro, Plug and Play, Shielded Ports.
 
 还有 [Netgear][67]、[pfSense][68]，以及很多很多其他选择，但你希望我完成这篇文章，不是吗？当然，这意味着您仍需自行研究这些推荐产品，因为并非我推荐的所有产品都符合您的要求。
 
