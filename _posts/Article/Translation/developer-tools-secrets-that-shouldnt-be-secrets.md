@@ -13,7 +13,7 @@ reviewer: ""
 
 这是我今年 9 月在 [CityJS](https://cityjsconf.org/) 上发表的演讲。我是 `Microsoft Edge` 开发者人员工具的首席产品经理，这些都是我在开发工具、记录工具和查看用户反馈时遇到的问题。
 
-您可以在 Youtube 上观看[演讲视频](https://www.youtube.com/watch?v=q_qzHzIVxw4)。
+你可以在 Youtube 上观看[演讲视频](https://www.youtube.com/watch?v=q_qzHzIVxw4)。
 
 下面是我所写的所有内容：
 
@@ -23,7 +23,7 @@ reviewer: ""
 
 毫无疑问，除了元素工具，控制台是浏览器开发者工具中使用最多的部分。特别是，人们喜欢通过在代码中添加 "console.log()/"来调试，以了解发生了什么。虽然这样做存在一些问题，也有更好的调试脚本的方法，但既然人们都这么做了，那我们就来谈谈如何让这种体验变得更好。
 
-第一个问题是产品上线后未删除的日志信息塞满了控制台。查找所需的信息变得令人望而生畏，而解决这个问题的最好办法就是了解 [控制台过滤选项](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/console-filters) 。使用这些选项，您可以将控制台的报告过滤为您所关心的内容，并屏蔽掉大量杂音。
+第一个问题是产品上线后未删除的日志信息塞满了控制台。查找所需的信息变得令人望而生畏，而解决这个问题的最好办法就是了解 [控制台过滤选项](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/console-filters) 。使用这些选项，你可以将控制台的报告过滤为你所关心的内容，并屏蔽掉大量杂音。
 
 [![filtering options in the console tool](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_-1024x510.png)](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_.png)
 
@@ -50,11 +50,11 @@ console.log({height})
 
 [![Using curly braces around variables in log messages logs their name and their value](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)
 
-### 添加到您的控制台词汇
+### 添加到你的控制台词汇
 
 [![Examples of warn, info and error messages and how they are displayed in the console](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)
 
-除了 `console.log()` 之外，您还可以使用 [更多方法](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/console-log) 。例如，`console.warn()` 记录警告，`console.info()` 记录信息，`console.error()` 记录错误信息。这不仅会使控制台的显示略有不同，而且还会使信息具有不同的日志级别，这意味着更容易对其进行过滤。
+除了 `console.log()` 之外，你还可以使用 [更多方法](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/console-log) 。例如，`console.warn()` 记录警告，`console.info()` 记录信息，`console.error()` 记录错误信息。这不仅会使控制台的显示略有不同，而且还会使信息具有不同的日志级别，这意味着更容易对其进行过滤。
 
 ### 控制台中的错误和断言
 
@@ -70,23 +70,23 @@ console.log({height})
 
 ### 将控制台信息分组
 
-如果要记录的内容很多，可以使用 `console.group('name')` 和 `console.groupEnd('name')` 在控制台中以可折叠和可展开的方式封装信息。您甚至可以定义组默认是展开还是折叠。
+如果要记录的内容很多，可以使用 `console.group('name')` 和 `console.groupEnd('name')` 在控制台中以可折叠和可展开的方式封装信息。你甚至可以定义组默认是展开还是折叠。
 
 [![An example of defining groups in the console](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)
 
 ### 在控制台中以表格形式显示和过滤大量信息
 
-如果您想以日志形式显示大量信息，那么阅读这些信息可能会令人望而生畏。`console.table()` 方法会在控制台中以表格形式显示类似数组的数据，你可以通过给它一个数组来过滤你想显示的属性。
+如果你想以日志形式显示大量信息，那么阅读这些信息可能会令人望而生畏。`console.table()` 方法会在控制台中以表格形式显示类似数组的数据，你可以通过给它一个数组来过滤你想显示的属性。
 
-例如，您可以使用 `let elms = document.querySelectorAll(':is(h1,p,script')` 从文档中获取所有 H1、段落和脚本元素，并使用 `console.table(elms)` 以表格形式显示这些信息。由于不同的元素有大量的属性和属性，因此生成的表格非常难读。如果使用`console.table(elms,['nodeName', 'innerText', 'offsetHeight'])` 过滤出你感兴趣的内容，你就会得到一个只有这些属性及其值的表格。
+例如，你可以使用 `let elms = document.querySelectorAll(':is(h1,p,script')` 从文档中获取所有 H1、段落和脚本元素，并使用 `console.table(elms)` 以表格形式显示这些信息。由于不同的元素有大量的属性和属性，因此生成的表格非常难读。如果使用`console.table(elms,['nodeName', 'innerText', 'offsetHeight'])` 过滤出你感兴趣的内容，你就会得到一个只有这些属性及其值的表格。
 
 [![Code example using console.table() and its filtering options](https://christianheilmann.com/wp-content/uploads/2021/11/Slide14.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide14.png)
 
 复制和粘贴这些信息时，表格结构会保持不变，可以轻松地将数据导入到 Excel 或 Word 中
 
-### 像 jQuery 一样 : $() and $$()
+### 像 jQuery 一样锋利 : $() and $$()
 
-控制台自带了许多方便使用的方法，称为 [Console Utilities](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities) 。其中两个非常有用的方法是 `$()` 和 `$$()`，它们分别是 `document.querySelector()` 和 `document.querySelectorAll()` 的替代方法。它们不仅会返回您所期望的 `nodeList`，还会将结果转换为数组，这意味着您可以直接在结果上使用 `map()` 和 `filter()`。以下代码将抓取当前文档中的所有链接，并返回一个数组，数组中的对象仅包含每个链接的 `href` 和 `innerText` 属性，即 `url` 和 `text` 属性。
+控制台自带了许多方便使用的方法，称为 [Console Utilities](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities) 。其中两个非常有用的方法是 `$()` 和 `$$()`，它们分别是 `document.querySelector()` 和 `document.querySelectorAll()` 的替代方法。它们不仅会返回你所期望的 `nodeList`，还会将结果转换为数组，这意味着你可以直接在结果上使用 `map()` 和 `filter()`。以下代码将抓取当前文档中的所有链接，并返回一个数组，数组中的对象仅包含每个链接的 `href` 和 `innerText` 属性，即 `url` 和 `text` 属性。
 
 <table><tbody><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$$<span style="color: #009900;">(</span><span style="color: #3366CC;">'a'</span><span style="color: #009900;">)</span>.<span style="color: #660066;">map</span><span style="color: #009900;">(</span>a <span style="color: #339933;">=&gt;</span> <span style="color: #009900;">{</span>
   <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #009900;">{</span>url<span style="color: #339933;">:</span> a.<span style="color: #660066;">href</span><span style="color: #339933;">,</span> text<span style="color: #339933;">:</span> a.<span style="color: #660066;">innerText</span><span style="color: #009900;">}</span>
@@ -98,7 +98,7 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 
 [![An example how the $$ function returns a collection of HTML elements that you can filter like any other array](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)
 
-## 2. 您可以在没有源访问权限的情况下进行日志记录,实时表达式和日志点
+## 2. 你可以在没有源访问权限的情况下进行日志记录，实时表达式和日志点
 (Chromium 浏览器)
 
 添加 "console.log() "的常规方法是将其放在代码中想要获取信息的地方。但你也可以深入了解你无法访问和更改的代码。[Live 表达式](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/live-expressions) 是在不更改代码的情况下记录信息的好方法。它们还能记录不断变化的值，而不会让控制台满屏日志，从而降低产品的运行速度。你可以从下面的截屏中看到它们的不同之处：
@@ -126,10 +126,10 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
   <source src="https://youtu.be/00MNtSzasSQ" type="video/mp4">
 </video>
 
-## 4. 您可以向任何网站注入代码。片段（Snippets）和重写（Overrides）
+## 4. 你可以向任何网站注入代码，片段（Snippets）和重写（Overrides）
 (Chromium 浏览器)
 
-[片段(Snippets)](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets) 是开发者工具中针对当前网站运行脚本的一种方法。您可以在这些脚本中使用[控制台实用工具](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities)，它是编写和存储通常在控制台中执行的复杂 DOM 操作脚本的绝佳方法。您可以通过片段编辑器或命令菜单在当前文档的窗口上下文中运行脚本。在后一种情况下，以 ! 开头，然后键入要运行的代码段名称即可。
+[片段(Snippets)](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets) 是开发者工具中针对当前网站运行脚本的一种方法。你可以在这些脚本中使用[控制台实用工具](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities)，它是编写和存储通常在控制台中执行的复杂 DOM 操作脚本的绝佳方法。你可以通过片段编辑器或命令菜单在当前文档的窗口上下文中运行脚本。在后一种情况下，以 ! 开头，然后键入要运行的代码段名称即可。
 
 [重写(Overrides)](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/overrides) 允许你存储远程脚本的本地副本，并在页面加载时覆盖它们。举例来说，如果你的整个应用程序的构建过程很慢，而你又想试一试，这就非常好用。此外，它还是替代第三方网站恼人脚本的绝佳工具，而无需使用浏览器扩展。
 
@@ -145,7 +145,7 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 ### Edge 在 Visual Studio Code 的开发者工具
 (Microsoft Edge via a VS Code extension)
 
-这些工具的可嵌入性也使我们能够为您提供一种在浏览器之外使用它们的方法。[Microsoft Edge Tools for Visual Studio Code](https://aka.ms/devtools-for-code) 扩展将这些工具带到了 Visual Studio Code 中。这样，你就可以在代码编辑器旁边使用可视化调试工具，而不必总是在两者之间跳来跳去。当你开始调试会话并单击 "开发者工具"（Developer Tools）图标时，工具就会打开，或者首次打开时，系统会提示你安装扩展。
+这些工具的可嵌入性也使我们能够为你提供一种在浏览器之外使用它们的方法。[Microsoft Edge Tools for Visual Studio Code](https://aka.ms/devtools-for-code) 扩展将这些工具带到了 Visual Studio Code 中。这样，你就可以在代码编辑器旁边使用可视化调试工具，而不必总是在两者之间跳来跳去。当你开始调试会话并单击 "开发者工具"（Developer Tools）图标时，工具就会打开，或者首次打开时，系统会提示你安装扩展。
 
 [![Inspect button in the debug bar of Visual Studio Code](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)
 
@@ -166,7 +166,7 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 
 [![Developer tools in focus mode, showing only what's needed in the current context](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)
 
-我们正在开发的另一项功能是 "信息覆盖(informational overlays)"。您可以获得一个帮助按钮，打开开发者工具的叠加信息，解释每个工具是什么、如何使用以及提供文档链接。我们希望这将使人们更容易了解更多的功能。
+我们正在开发的另一项功能是 "信息覆盖(informational overlays)"。你可以获得一个帮助按钮，打开开发者工具的叠加信息，解释每个工具是什么、如何使用以及提供文档链接。我们希望这将使人们更容易了解更多的功能。
 
 [![Developer tools covered by overlays explaining what each of them are,](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)
 
@@ -185,17 +185,17 @@ Visual Studio 代码中的 CSS 镜像:
 ## 7. 你们是开发人员工具的受众和客户！
 (适用于所有浏览器，但此处显示的渠道仅限于 Microsoft Edge）
 
-作为开发人员，您是开发人员工具的主要受众。我们愿意听取您的反馈意见，最近对工具的许多更改都是外部开发人员要求的直接结果。我们通过提供直接与我们联系的上下文方式，尽可能地简化这一过程。例如，Visual Studio Code 扩展有显著的链接和按钮供你报告问题(report issues)和功能需求(request features)。
+作为开发人员，你是开发人员工具的主要受众。我们愿意听取你的反馈意见，最近对工具的许多更改都是外部开发人员要求的直接结果。我们通过提供直接与我们联系的上下文方式，尽可能地简化这一过程。例如，Visual Studio Code 扩展有显著的链接和按钮供你报告问题(report issues)和功能需求(request features)。
 
 [![Screenshot of the in-context links provided in the VS Code extension to demand new features, file bugs and learn abour experiments](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)
 
 [扩展插件的源代码](https://github.com/microsoft/vscode-edge-devtools) 也在 GitHub 上，你可以在那里[提交 issues](https://github.com/microsoft/vscode-edge-devtools/issues)。
 
-浏览器内的开发者工具也有一个直接向我们提供反馈的按钮。为了便于您提供可操作的反馈，该按钮包含了大量自动信息。
+浏览器内的开发者工具也有一个直接向我们提供反馈的按钮。为了便于你提供可操作的反馈，该按钮包含了大量自动信息。
 
 [![The feedback tool built into the browser developer tools of Microsoft Edge](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)
 
-它会自动记录发生问题的 URL、截图并发送诊断数据。我们还要求您提供电子邮件，以备我们需要更多信息，您还可以添加附件和如何重现问题的信息。我们每天都会检查这些反馈，很多伟大的发明和错误修复都来自于此。
+它会自动记录发生问题的 URL、截图并发送诊断数据。我们还要求你提供电子邮件，以备我们需要更多信息，你还可以添加附件和如何重现问题的信息。我们每天都会检查这些反馈，很多伟大的发明和错误修复都来自于此。
 
 [分享到 Mastodom](https://mastodon.social/share?text=Developer%20Tools%20secrets%20that%20shouldn%E2%80%99t%20be%20secrets%20https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/)
 
