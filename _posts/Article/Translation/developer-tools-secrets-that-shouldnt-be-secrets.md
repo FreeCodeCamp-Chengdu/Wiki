@@ -187,7 +187,7 @@ Visual Studio 代码中的 CSS 镜像:
 
 作为开发人员，你是开发人员工具的主要受众。我们愿意听取你的反馈意见，最近对工具的许多更改都是外部开发人员要求的直接结果。我们通过提供直接与我们联系的上下文方式，尽可能地简化这一过程。例如，Visual Studio Code 扩展有显著的链接和按钮供你报告问题(report issues)和功能需求(request features)。
 
-[![Screenshot of the in-context links provided in the VS Code extension to demand new features, file bugs and learn abour experiments](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)
+[![Screenshot of the in-context links provided in the VS Code extension to demand new features, file bugs and learn about experiments](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)
 
 [扩展插件的源代码](https://github.com/microsoft/vscode-edge-devtools) 也在 GitHub 上，你可以在那里[提交 issues](https://github.com/microsoft/vscode-edge-devtools/issues)。
 
