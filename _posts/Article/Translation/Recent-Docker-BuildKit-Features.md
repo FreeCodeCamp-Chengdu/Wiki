@@ -7,13 +7,15 @@ translator: ""
 reviewer: ""
 ---
 
-# Recent Docker BuildKit Features You're Missing Out On
+# 你可能错过的 Docker BuildKit 新功能
 
-With introduction of BuildKit - the improved builder backend for Docker - many new features has been added to Docker, many of which are little known. So, here's a rundown of the ones you definitely need to know about and should start using to make better use of Docker.
+随着 BuildKit 的引入，Docker 的构建后端得到了显著改进，并增添了许多强大的新功能。然而，很多用户并不了解这些新功能。因此，本文将向你介绍那些你绝对应该了解并开始使用的 BuildKit 功能，助你更好地利用 Docker。
 
-## Debugging
+## Debugging（调试）
 
-Starting with the most common of tasks - debugging. Debugging `docker build` has always been a pain - if some `RUN` or `COPY` command fails you can hardly view context and debug what went wrong, usually resorting to adding `RUN ls -la` and similar to get more info. That however now changes with introduction of `docker buildx debug`:
+让我们从最常见的任务 - **调试** 开始。一直以来，调试 `docker build` 都是一件痛苦的事情。当 `RUN` 或 `COPY` 命令失败时，你很难查看上下文并调试问题所在，通常只能求助于添加 `RUN ls -la` 等命令来获取更多信息。
+
+然而，随着 **`docker buildx debug`** 的引入，这一切都将成为过去！
 
 ```shell
 export BUILDX_EXPERIMENTAL=1
@@ -45,52 +47,52 @@ drwxr-xr-x    1 root     root          4096 May  4 10:11 app
 
 ```
 
-As we can see in the snippet above, we start by enabling experimental BuildKit features with `BUILDX_EXPERIMENTAL` environment variable. We then start build through `docker buildx debug` - if the build fails at any point we will be dropped into the container and can explore the context and debug.
+如上述代码片段所示，我们首先通过设置 `BUILDX_EXPERIMENTAL` 环境变量来启用实验性的 BuildKit 功能。然后，我们使用 `docker buildx debug` 命令启动构建过程。如果构建过程中的任何步骤发生错误，我们将自动进入容器内部，并可以自由探索上下文和进行调试。
 
-Notice that we included the `--on=error` option that will only start the debug session if the build fails.
+需要注意的是，我们使用了 `--on=error` 选项，这表示只有在构建失败时才会启动调试会话。
 
-For more details see [debugging docs](https://github.com/docker/buildx/blob/master/docs/debugging.md).
+[调试文档，获取更多细节](https://github.com/docker/buildx/blob/master/docs/debugging.md).
 
-## Environment Variables
+## 环境变量
 
-If you've run a build with BuildKit before, then you've noticed the fancy new log output. It does look nice but it's not very practical, especially when debugging. There's however an environment variable to switch to plain log output:
+如果你之前使用 BuildKit 运行过构建，你一定注意到了它那花哨的新日志输出格式。虽然看起来很漂亮，但在调试时却不太实用。
+
+好消息是，我们可以通过设置一个环境变量来切换回简洁的日志输出格式：
 
 ```shell
 export BUILDKIT_PROGRESS=plain
 ```
 
-You can also set it to `rawjson` which is definitely not human-readable, but could be useful if you want to process the logs in some way.
+你也可以将其设置为 `rawjson` ，虽然这种格式对人类来说绝对不可读，但如果你想以某种方式处理日志，它可能会很有用。
 
-Alternatively, if you like the TTY-based dynamic output, but dislike the colors, then you can simply change them with:
+或者，如果你喜欢基于 TTY 的动态输出，但不喜欢默认的颜色，那么你可以通过以下方式更改它们：
 
 ```shell
 BUILDKIT_COLORS="run=green:warning=yellow:error=red:cancel=cyan"
 docker buildx debug --invoke /bin/sh --on=error build .
 ```
 
-Making the output look like:
+会有如下输出:
 
 ![Buildx Colors](https://i.imgur.com/gTasZHC.png)
 
-See [docs](https://docs.docker.com/build/building/variables/#build-tool-configuration-variables) for other environment variables.
+查看 [环境变量文档](https://docs.docker.com/build/building/variables/#build-tool-configuration-variables)
 
-## Exporters
+## 导出容器
 
-BuildKit also introduces concept of _exporters_, which define how the output of a build will be saved. The 2 most useful options are `image` and `registry`. `image` -as you could expect - saves output as a container image, while `registry` exporter automatically pushes to specified registry:
+BuildKit 还引入了 _导出器(exporters)_ 的概念，它定义了如何保存构建的输出。其中两个最有用的选项是 `image` 和 `registry`。`image` 正如你所期望的那样，将输出保存为容器镜像，而 `registry` 导出器会自动将镜像推送到指定的镜像仓库：
 
-```
-
+```shell
 docker buildx build --output type=registry,name=martinheinz/testimage:latest .
-
 ```
 
-All we need to do is specify `--output` option with type `registry` and the destination. This option additionally supports specifying multiple registries at once:
+我们只需要使用 `--output` 选项并指定类型为 `registry` 以及目标地址即可。此选项还支持一次指定多个镜像仓库：
 
 ```shell
 docker buildx build --output type=registry,\"name=docker.io/martinheinz/testimage,docker.io/martinheinz/testimage2\" .
 ```
 
-Finally, we can also provide `--cache-to` and `--cache-from` options to e.g. use existing image from registry as a cache source:
+最后，我们还可以提供 `--cache-to` 和 `--cache-from` 选项，例如使用镜像仓库中的现有镜像作为缓存源：
 
 ```shell
 docker buildx build --output type=registry,name=martinheinz/testimage:latest \
@@ -111,31 +113,29 @@ docker buildx build --output type=registry,name=martinheinz/testimage:latest \
 ...
 ```
 
-## Imagetools
+## 镜像工具
 
-Simple, but handy subcommand of `docker buildx` called `imagetools`, allows us to inspect of an image in registry without having to pull it. The [documentation](https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/) includes a lot of examples, but the most useful one for me is getting a digest of remote image:
+`docker buildx` 有一个简单但方便的子命令叫做 `imagetools`，它允许我们在不拉取镜像的情况下检查镜像仓库中的镜像。[文档](https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/) 中包含许多示例，但对我来说最有用的是获取远程镜像的哈希值：
 
-```
-
+```shell
 docker buildx imagetools inspect alpine --format "{{json .Manifest}}" | jq .digest
 "sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b"
-
 ```
 
-## Latest Dockerfile Syntax
+## 最新的 Dockerfile 语法
 
-With BuildKit comes also new Dockerfile syntax through what's called _[Dockerfile frontend](https://docs.docker.com/build/dockerfile/frontend/)_. To enable current latest syntax we need to add a directive to the top of the Dockerfile, e.g.:
+BuildKit 还通过所谓的 _[Dockerfile 前端](https://docs.docker.com/build/dockerfile/frontend/)_ 带来了新的 Dockerfile 语法。要启用当前最新的语法，我们需要在 Dockerfile 的顶部添加一个指令，例如：
 
 ```shell
 # syntax=docker/dockerfile:1.3
 FROM ...
 ```
 
-To find version you can check `dockerfile-upstream` [Docker Hub repository](https://hub.docker.com/r/docker/dockerfile-upstream).
+要查找版本，你可以查看 [`dockerfile-upstream`](https://hub.docker.com/r/docker/dockerfile-upstream)。
 
 ## Here-docs
 
-First of these Dockerfile syntax improvements I want to mention is _here-docs_, which allows us to pass multiline scripts into `RUN` and `COPY` commands:
+我想提到的第一个 Dockerfile 语法改进是 _here-docs_，它允许我们将多行脚本传递给 `RUN` 和 `COPY` 命令：
 
 ```shell
 # syntax = docker/dockerfile:1.3-labs
@@ -145,13 +145,13 @@ RUN <<eot bash
   apt-get install -y vim
 eot
 
-# Same as:
+# 与下面的相同:
 RUN apt-get update && apt-get install -y vim
 ```
 
-In the past we would have to use `&&` if we wanted to put multiple commands into single `RUN`, now with here-docs, we can write a normal script.
+过去，如果我们想将多个命令放入单个 `RUN` 中，我们必须使用 `&&`，现在使用 here 文档，我们可以编写一个正常的脚本。
 
-Additionally, first line can specify interpreter, so we can - for example - write a Python script too:
+此外，第一行可以指定解释器，因此我们也可以，编写 Python 脚本：
 
 ```shell
 # syntax = docker/dockerfile:1.3-labs
@@ -163,11 +163,11 @@ eot
 
 ```
 
-## `COPY` and `ADD` Features
+## `COPY` 和 `ADD` 功能
 
-In this new Dockerfile syntax, there are also more subtle changes and improvements to `COPY` and `ADD` in form of new options.
+在这种新的 Dockerfile 语法中，`COPY` 和 `ADD` 也有更细微的变化和改进，以新选项的形式出现。
 
-`COPY` now supports `--parents` option:
+`COPY` 现在支持 `--parents` 选项：
 
 ```shell
 # syntax=docker/dockerfile:1.7.0-labs
@@ -190,17 +190,17 @@ RUN find /parents
 #12 0.509 /parents/one/two/some.txt
 ```
 
-If you copy a nested file with normal `COPY`, the image will contain only the file itself without the parent directories, with `--parents` the whole file tree is copied, similar to how `cp --parents` does it.
+如果你使用普通的 `COPY` 复制一个嵌套文件，镜像将只包含文件本身，而不包含父目录，使用 `--parents` 将复制整个文件树，类似于 `cp --parents` 的工作方式。
 
-Similarly to `--parents` option, you can also use `--exclude`:
+与 `--parents` 选项类似，你也可以使用 `--exclude`：
 
 ```shell
 COPY --exclude=*.txt ./some-dir/* ./some-dest
 ```
 
-Which will omit excluded files (and patterns) when copying.
+这将在复制时省略排除的文件（和模式）。
 
-Finally, `ADD` command has received an improvement too - it is now possible to directly add Git repository:
+最后，`ADD` 命令也得到了改进，现在可以直接添加 Git 仓库：
 
 ```shell
 # syntax=docker/dockerfile:1.7.0-labs
@@ -210,7 +210,7 @@ ADD git@github.com:kelseyhightower/helloworld.git /repo
 RUN ls -la /repo
 ```
 
-And when running build for this Dockerfile, we will get:
+并且在为此 Dockerfile 运行构建时，我们将获得：
 
 ```shell
 docker buildx build --ssh default --progress=plain .
@@ -230,13 +230,13 @@ docker buildx build --ssh default --progress=plain .
 #9 DONE 0.0s
 ```
 
-This will also work for [private repositories](https://docs.docker.com/reference/dockerfile/#adding-private-git-repositories).
+这同样适用于[私有仓库](https://docs.docker.com/reference/dockerfile/#adding-private-git-repositories)。
 
-See more interesting options in [docs](https://docs.docker.com/reference/dockerfile/#add), such `ADD --keep-git-dir` or `ADD --checksum` for validating artifact checksums
+在[文档](https://docs.docker.com/reference/dockerfile/#add)中查看更多有趣的选项，例如用于验证工件校验和的 `ADD --keep-git-dir` 或 `ADD --checksum`。
 
-## Bonus: Indentation
+## 额外奖励：缩进
 
-And while not a BuildKit feature, one thing I discovered recently is that you can indent lines in Dockerfile and it will work just fine, which allows for more readability, especially with multistage builds:
+虽然不是 BuildKit 功能，但我最近发现的一件事是，你可以在 Dockerfile 中缩进行，并且它可以正常工作，这允许更好的可读性，尤其是在多阶段构建中：
 
 ```shell
 # syntax=docker/dockerfile:1
@@ -251,8 +251,8 @@ FROM scratch
   CMD ["/bin/hello"]
 ```
 
-It looks weird at first glance, but it's more readable in my opinion, making it more clear where each stage starts and which commands belong to it.
+乍一看可能很奇怪，但我认为这样可读性更高，可以更清楚地看出每个阶段从哪里开始以及哪些命令属于它。
 
-## Conclusion
+## 结语
 
-The examples in this article only show the features that I find the most useful, but there's plenty more, so be sure to check out official [Docker docs](https://docs.docker.com/reference/cli/docker/buildx/), but also [BuildKit docs](https://github.com/moby/buildkit/tree/master/docs), which have the latest changes. Docker blog is also a great resources, posts tagged _[buildkit](https://www.docker.com/blog/tag/buildkit/)_ or _[buildx](https://www.docker.com/blog/tag/buildx/)_ specifically.
+本文中的示例仅展示了我认为最有用的功能，但还有更多功能，因此请务必查看官方 [Docker 文档](https://docs.docker.com/reference/cli/docker/buildx/)，以及包含最新更改的 [BuildKit 文档](https://github.com/moby/buildkit/tree/master/docs)。Docker 博客也是一个很好的资源，特别是打了 _[buildkit](https://www.docker.com/blog/tag/buildkit/)_ 或 _[buildx](https://www.docker.com/blog/tag/buildx/)_ 标签的帖子。
