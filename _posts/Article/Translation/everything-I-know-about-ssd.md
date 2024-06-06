@@ -59,33 +59,33 @@ date: "2019-3-1"
 
 由于闪存不支持原地更新，所以在内容可以被编程之前，页面需要被擦除；但不同于以页面粒度进行的编程或读取操作，擦除操作是以块粒度执行的。
 
-## 2D and 3D, and Layers
+## 2D 和 3D, 和 Layers（层）
 
-In flash architecture a block of planar flash, a two-dimensional array of cells, is rather unsurprisingly called 2D flash. If one (or more) array is stacked on top of each other then it's 3D flash. 3D NAND flash is built on one chip, up to 32 layers, and was devised to drive costs down when planar flash reached its scaling limit: 3D flash costs little more than 2D to produce, but multiplies the storage capacity immensely. In both 2D and 3D the cells in each page (the rows) are connected by Word Lines, and the cells at each offset within a page (the columns) are connected with a Bit Line (to put it very simply).
+在闪存架构中，一个平面闪存块，也就是一个二维的存储单元阵列，被称为 2D 闪存。如果一个或多个这样的阵列叠放在一起，那么就是 3D 闪存。3D NAND 闪存建立在一块芯片上，最多可达 32 层，是为了在平面闪存达到尺寸限制时降低成本而设计的：3D 闪存的生产成本几乎与 2D 相当，但存储容量大大增加。在 2D 和 3D 中，每个页面（即行）中的存储单元由单词线连接，而页面中的每个偏移量（即列）中的存储单元则通过位线连接（简单地说）。
 
-3D flash is not the same as layered flash, where separate very thin chips are arranged in a stack. This is prohibitively expensive. Most modern consumer SSDs (in the 2010's) use 3D TLC flash.
+3D 闪存与层叠式闪存不同，后者是将多个独立的超薄芯片堆叠在一起。这种做法成本高得令人望而却步。大多数现代消费级固态硬盘（2010 年代）都使用 3D TLC 闪存。
 
-## Can I see one?
+## 我能看到其中一个单元吗？
 
-The cell size on end-user flash is minute, with 15nm being common, and ranges from 43nm down to 12nm. Actually cell size, or cell diameter, is misleading, as the stated size is not a measurement of any dimension of a cell but a measure of the distance between discrete components on the chip. The silicon layers on the chip are approximately 0.5 to 3nm thick: by comparison a hydrogen atom is 0.1nm in diameter, and the silicon atoms used in chip manufacture 0.2nm. A nanometre (nm) is indeed exceedingly small, a billionth of a metre, and as an analogy if one mn were the size of a standard marble (about 13mm) then one metre would be the size of the earth. The power of a billion is impressive.
+终端用户闪存的单元尺寸极小，通常为 15 纳米，范围从 43 纳米到 12 纳米不等。实际上，单元尺寸或单元直径具有误导性，因为所述尺寸并非单元任何尺寸的测量值，而是芯片上离散组件之间距离的度量。芯片上的硅层厚度约为 0.5 至 3 纳米：相比之下，氢原子的直径为 0.1 纳米，而芯片制造中使用的硅原子为 0.2 纳米。一纳米 (nm) 确实非常小，仅为一米的十亿分之一，打个比方，如果一毫米相当于一颗标准弹珠的大小（约 13 毫米），那么一米就相当于地球的大小。十亿倍的威力令人印象深刻。
 
-## SLC, MLC, TLC, QLC and Beyond
+## SLC, MLC, TLC, QLC 及其未来发展
 
-A Single-Level Cell (SLC) has one threshold of electron charge to indicate the state of one bit, one or zero. A Multi-Level Cell (MLC) holds a voltage denoting the state of two bits, with three different thresholds representing 11, 10, 00 and 01. A Triple-Level Cell (TLC) holds the state of three bits, 111, 110, 100, 101, 001, 000, 010, and 011. The 15 thresholds used in Quad-level cells (QLC) can be deduced if anyone is at all interested. (I have seen other variations of what these threshold values represent in bit terms.)
+单级单元（SLC）有一个电子电荷阈值来指示一个位的状态，即一或零。多级单元（MLC）存储一个电压来表示两个位的状态，有三个不同的阈值分别代表 11、10、00 和 01。三级单元（TLC）存储三个位的状态，包括 111、110、100、101、001、000、010 和 011。如果有人感兴趣的话，可以推导出四级单元（QLC）使用的 15 个阈值。（我见过其他版本的阈值表示位的含义。）
 
-Unfortunately when the double level cell was developed it was called a multi-level cell and given the acronym MLC, thus forcing everyone to type out multi-level cell laboriously when they want to refer to multiple level cells. If only it had been called a double-level cell we could use DLC, TLC, and QLC freely and use MLC to describe the lot, but it's too late for that now. If only flash had stopped at SLC, with its yes/no one/zero state, these explanations would be far easier to write, and hopefully far easier to grasp.
+不幸的是，当双级单元被开发出来时，它被称为多级单元，并被赋予了 MLC 这个缩写，这迫使每个人在想要指代多个级别的存储单元时都要费力地打出“多级单元”这个词。如果它被称为双级单元，我们就可以自由地使用 DLC、TLC 和 QLC，并用 MLC 来描述所有这些，但现在为时已晚。如果闪存只停留在 SLC 阶段，有其是/否、一/零的状态，这些解释将更容易写，希望也更容易理解。
 
-With multi-level cells physical NAND pages represent two or more logical pages. The two bits belonging to a MLC are separately mapped to two logical pages. Odd numbered pages (including zero) are mapped to the least significant (RH) bit, and even numbered pages are mapped to the most significant (LH) bit. Similarly, the three bits belonging to a TLC are separately mapped to three logical pages, and a QLC is mapped to four logical pages (The page numbering for TLC and QLC is unknown).
+在多级单元中，物理 NAND 页面代表两个或更多的逻辑页面。属于 MLC 的两个位分别映射到两个逻辑页面。奇数编号的页面（包括零）映射到最不重要的（右手）位，偶数编号的页面映射到最重要的（左手）位。同样，属于 TLC 的三个位分别映射到三个逻辑页面，而 QLC 映射到四个逻辑页面（TLC 和 QLC 的页面编号是未知的）。
 
-The more bits a multi-level cell has to support affects the cell's performance. With SLC the controller only has to check if one threshold has been exceeded. With MLC the cell can have four values, with TLC eight, and QLC 16. Reading the correct value of the cell requires the SSD controller to use precise voltages and multiple reads to ascertain the charge in the cell. It's also apparent that if a single physical page supports multiple logical pages then that page will be read and written more frequently than a SLC page, with consequent affect on its life expectancy. Furthermore it would seem self-evident that a TLC SSD would need only a third of the physical cells required in an SLC device, so my 120 gb TLC SSD would actually hold only 40 gb of NAND cells.
+多层单元需要支持的位数越多，其性能就越受影响。对于 SLC，控制器只需要检查是否超过了一个阈值。而 MLC 单元可以有四个值，TLC 有八个，QLC 有 16 个。为了读取单元的正确值，SSD 控制器需要使用精确的电压和多次读取来确定单元中的电荷。很明显，如果一个物理页面支持多个逻辑页面，那么该页面的读写频率将高于 SLC 页面，从而影响其使用寿命。此外，显而易见的是，TLC SSD 只需要 SLC 设备三分之一的物理单元，因此我的 120 GB TLC SSD 实际上只包含 40 GB 的 NAND 单元。
 
-High-use enterprise SSDs used to be the province of the SLC, with it's greater speed, endurance, reliability and read/write capabilities, MLC and TLC are gaining acceptance for enterprise use. The end-user consumer SSD market gets the cheaper higher capacity but slower and more fragile multiple level cells.
+高使用率的企业级 SSD 曾经是 SLC 的天下，因为它具有更高的速度、耐用性、可靠性和读/写能力，而 MLC 和 TLC 也逐渐被企业级应用所接受。终端消费级 SSD 市场则获得了更便宜、容量更大，但速度更慢、更脆弱的多层单元。
 
-**Why is Nothing One?**
+**为什么空代表一？**
 
-Anyone still following this may have noticed a common factor in both single and multi-level cells, in that an empty cell - where the floating gate has no charge - represents one. Unlike HDDs, where any bit pattern can be written anywhere, a default logical state of ones is present on an empty SSD page. This is because there is only one programming function on the cells, to move electrons across the floating gate. NAND flash cells can only be programmed to a state of zero, there is no ability to program a one. With multi-level calls the default is still one across all pages, but a logical one can be represented even after the cell has been programmed and there are electrons present across the gate.
+任何仍在关注这一点的人可能已经注意到，单层和多层单元都有一个共同点，那就是一个空的单元格（其中浮栅没有电荷）代表一。与 HDD 不同，HDD 中任何位模式都可以写入任何位置，而 SSD 页面上存在一个默认的逻辑状态 1。这是因为单元上只有一个编程功能，即跨浮栅移动电子。NAND 闪存单元只能被编程为零状态，而没有能力编程为一。对于多层单元，所有页面的默认值仍然为 1，但即使在单元格被编程并且栅极上有电子存在之后，逻辑 1 仍然可以表示。
 
-Ever since Fibonacci introduced the Hindu-Arabic numeral system with its concept of zero into European mathematics in 1202, the human mind associates zero with empty and one with full. To be empty and represent one is rather perplexing, and appears to be mainly from convention (an empty state _could_ represent zero but would required inverters on the data lines). Possibly the circuitry is less complex, and possibly the ability of an empty cell to conduct a charge implies that it is a one.
+自从斐波那契在 1202 年将带有零概念的印度-阿拉伯数字系统引入欧洲数学以来，人类的思维就将零与空联系在一起，将一与满联系在一起。空着却代表一，这让人相当困惑，而且似乎主要来自于惯例（空状态*可以*代表零，但需要在数据线上使用反相器）。可能是电路不那么复杂，也可能是空单元格传导电荷的能力意味着它是一。
 
 ## They're all SLC anyway
 
