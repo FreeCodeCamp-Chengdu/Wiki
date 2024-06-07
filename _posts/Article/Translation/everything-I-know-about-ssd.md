@@ -87,97 +87,99 @@ date: "2019-3-1"
 
 自从斐波那契在 1202 年将带有零概念的印度-阿拉伯数字系统引入欧洲数学以来，人类的思维就将零与空联系在一起，将一与满联系在一起。空着却代表一，这让人相当困惑，而且似乎主要来自于惯例（空状态*可以*代表零，但需要在数据线上使用反相器）。可能是电路不那么复杂，也可能是空单元格传导电荷的能力意味着它是一。
 
-## They're all SLC anyway
+## 它们都是 SLC
 
-After all this it's perhaps worth emphasising that NAND flash, whatever its intended use, is all physically SLC. If you could look into a TLC cell you wouldn't see 101, or 011, or whatever. There can only ever be one quantity of electrons in a cell, no matter how that quantity is interpreted. The SSD controller knows whether the cells are to be treated as SLC, MLC etc and programs them accordingly, measures the electron count, and determines what logical value it represents. But even quad cells can only contain one value, just as do SLC cells.
+在讨论了这么多之后，或许有必要强调一点：无论预期用途如何，所有 NAND 闪存的物理结构都是 SLC（单层存储）。即使你能观察 TLC（三层存储）单元的内部，你也不会看到 101、011 或任何类似的数字。一个单元格中永远只可能存在一定数量的电子，无论这个数量如何解释。SSD 控制器知道应该将单元格视为 SLC、MLC 还是其他类型，并相应地对其进行编程、测量电子数量，并确定它代表的逻辑值。但即使是四层单元格也只能包含一个值，就像 SLC 单元格一样。
 
-## The Myths and Misconceptions
+## 迷思与误解
 
-And now we come to the myths, misconceptions and the real reason for writing this article, what happens when an SSD page is read, written and rewritten, and how does this affect deleted file recovery? On one hand we have NTFS, designed specifically for HDDs way before SSDs became easily available, NAND flash with its own unique way of operating, and several billion humans with years of ingrained HDD use and expectations. And here, if I haven't already, I shall use SSD interchangeably if incorrectly for NAND flash.
+现在我们来谈谈迷思、误解以及撰写本文的真正原因：当 SSD 页面被读取、写入和重写时会发生什么？这将如何影响已删除文件的恢复？一方面，我们有 NTFS，它专为 HDD 设计，远早于 SSD 的普及；另一方面，我们有 NAND 闪存，它有其独特的运作方式；此外，还有数十亿人多年来已经习惯了 HDD 的使用方式和预期。在这里，如果没有特别说明，我将交替使用 SSD 和 NAND 闪存，尽管这样说并不完全准确。
 
-## Storage Device Controllers
+## 存储设备控制器
 
-All HDDs, SSDs and flash drives have an internal controller. It's the way that the storage device can be, in the words of Microsoft, abstracted from the host. That abstraction is done by logical block addressing, where each cluster capable of being addressed on the storage device is known to the host by an ascending number (the LBA). The storage device controller maps that number to the sectors or pages on the device. To the host this mapping is constant - a cluster remains mapped to the same LBA until the host changes it. On an HDD this relationship is physical and fixed: in its simplest deconstruction an HDD controller just reads and writes whatever sectors the host asks it to. It doesn't have to think about what was there before, it just does what it's told and writes new data on top of the old. It does that because it can, there's nothing preventing a new cluster being written directly on top of the same sectors of an old one. On an SSD it's different.
+所有 HDD、SSD 和闪存驱动器都有一个内部控制器。用微软的话来说，控制器使得存储设备能够对主机进行“抽象化”。这种抽象是通过逻辑块寻址（LBA）实现的，其中存储设备上每个能够被寻址的簇都由主机通过一个递增的数字（LBA）来识别。存储设备控制器将该数字映射到设备上的扇区或页面。对于主机来说，这种映射是恒定的，一个簇会一直映射到同一个 LBA，直到主机更改它。在 HDD 上，这种关系是物理的、固定的：简单来说，HDD 控制器只是读取和写入主机要求的任何扇区。它不需要考虑以前那里有什么，它只是按照指令行事，将新数据写入旧数据之上。它之所以这样做，是因为它可以这样做，没有什么可以阻止新的簇直接写入旧簇的相同扇区之上。而在 SSD 上，情况就不同了。
 
-With an SSD the host still uses the LBA addressing system with the constant reconciliation between LBA and cluster number. It knows that the device is a SSD and has a few tricks to accommodate this, but they will come later. The SSD controller however has many tricks to reconcile the host's file system, written for HDDs, with the demands of NAND flash.
+对于 SSD，主机仍然使用 LBA 寻址系统，并不断协调 LBA 和簇号之间的关系。它知道该设备是一个 SSD，并有一些技巧来适应这一点，但这些技巧将在后面介绍。然而，SSD 控制器有许多技巧来协调为 HDD 编写的文件系统与 NAND 闪存的需求。
 
-## Flash Translation Layer
+## 闪存转换层（FTL）
 
-The host still uses LBA addressing to address the SSD for read and writes, as it knows no other. These commands are intercepted by the Flash Translation Layer on the SSD controller. The FTL maintains a map of LBAs to physical block addresses, and and passes the translated PBA to the controller. This map is required because unlike an HDD the LBA to PBA relationship is volatile. It's volatile because of the way data is written to NAND flash.
+主机仍然使用 LBA 寻址来对 SSD 进行读写操作，因为它不知道其他方式。这些命令会被 SSD 控制器上的闪存转换层 (FTL) 拦截。FTL 维护着一个 LBA 到物理块地址 (PBA) 的映射表，并将转换后的 PBA 传递给控制器。之所以需要这个映射表，是因为与 HDD 不同，LBA 到 PBA 的关系是易失的。之所以易失，是因为 NAND 闪存的写入数据方式。
 
-An empty page, with all cells uncharged, contains by default all ones. If a hex editor is used to look at an SSD's empty sectors however, it will be presented with clusters of zeroes. This is because empty pages are not allocated to the LBA/PBA mapping table. Instead, if a read request is issued for an empty page a default page of zeroes is returned. This applies to both unallocated clusters and those which are part of a file: the SSD does not allocate a page and change all its cells from ones to zeroes.
+一个空的页面，所有单元都未充电，默认情况下包含全 1。然而，如果使用十六进制编辑器查看 SSD 的空扇区，它将显示为一组零。这是因为空页面没有分配给 LBA/PBA 映射表。相反，如果对一个空页面发出读取请求，则会返回一个默认的零页面。这适用于未分配的簇和属于文件的簇：SSD 不会分配一个页面并将所有单元从 1 改为 0。
 
-## Floating Gate Transistors
+## 浮栅晶体管
 
-This section might be helpful before plunging into reads and writes, and here cell and (FG)transistor become interchangeable (a cell is a transistor). For more, much more, about floating gate MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistors) there is always Wikipedia.
+在深入了解读取和写入操作之前，这一部分可能会有所帮助，在这里，单元格和（FG）晶体管可以互换使用（一个单元格就是一个晶体管）。如果想了解更多关于浮栅金属氧化物半导体场效应晶体管（Metal-Oxide-Semiconductor Field-Effect Transistors，简称 MOSFET）的信息，可以随时查阅维基百科。
 
-A FGMOS transistor has three terminals, gate, drain, and source. When a voltage is applied to the gate a current can flow from the source to the drain. Low voltages applied to the gate cause the voltage flowing from source to drain to vary proportionally to the gate voltage. At a higher voltage the proportional response stops and the gate closes regardless.
+浮栅 MOS 晶体管有三个端子：栅极、漏极和源极。当一个电压被施加到栅极上时，电流就可以从源极流向漏极。施加到栅极的低电压会导致从源极到漏极的电压按比例变化。当电压升高时，这种比例响应会停止，不管怎样栅极都会关闭。
 
-The charge in the floating gate alters the voltage threshold of the transistor, i.e. at what point the gate will close. When the gate voltage is above a certain value, around 0.5 V, the gate will always close. When the voltage is below this value, the closing of the gate is determined by the floating gate voltage.
+浮栅中的电荷会改变晶体管的电压阈值，即栅极关闭的点。当栅极电压高于某个值，大约 0.5 伏时，栅极总是会关闭。当电压低于这个值时，栅极的关闭由浮栅电压决定。
 
-If the floating gate has no charge then a low voltage applied to the gate closes the gate and allows current to flow from source to drain. If the floating gate has a charge then a higher voltage needs to be applied to the gate for it to close and current to flow. The charge in the floating gate changes how much voltage must be applied to the gate in order for it to close and conduct.
+如果浮栅没有电荷，那么施加到栅极的低电压就会关闭栅极，并允许电流从源极流向漏极。如果浮栅带有电荷，那么需要施加更高的电压到栅极上，栅极才会关闭并且电流才会流动。浮栅中的电荷改变了为了使栅极关闭并导电所必须施加到栅极上的电压。
 
-## SSD Reads
+## SSD 读取
 
-There's nothing inherent in the design of NAND flash that prevents reading and writing to and from individual cells. However in line with NAND flash's design goal to be simple and small the standard commands that NAND chips accept are structured such that a page is the smallest addressable unit. This eliminates space that would be needed to hold additional instructions and cell-to-page maps.
+NAND 闪存的设计并没有固有的特性来阻止对单个单元格的读取和写入。然而，为了符合 NAND 闪存设计的目标——即简单和小巧——NAND 芯片接受的标准命令被构造成页面是最小的可寻址单元。这样就省去了存储额外指令和单元格到页面映射所需的空间。
 
-To read a single page, and the cells within it, the page needs to be isolated from the other pages within the block. To do this the pages not being read are temporarily disabled.
+要读取单个页面及其内部的单元格，需要将该页面与块内的其他页面隔离开来。为此，未被读取的页面会被临时禁用。
 
-All cells/transistors in the same block row (a page) are connected in parallel with a Word Line to the transistors' gates. All transistors in the same block column (cell offset) are chained in series with a Bit Line connecting the drain of one to the source of the next. At the end of each bit line is a sense amplifier. When a read takes place a pass-through voltage is applied to all word lines except the page being read. The pass-through voltage is close to or higher than the highest possible threshold voltage and forces the transistors _in all pages not being read_ to close whether they have a stored charge or not. All bit lines are energised with a low current.
+同一块内的同一行（一个页面）的所有单元格/晶体管通过字线（Word Line）并联连接到晶体管的栅极。同一列（单元格偏移）的所有晶体管串联在一起，通过位线（Bit Line）连接，将一个的漏极与下一个的源极相连。在每个位线的末端是一个感应放大器。进行读取操作时，除了正在读取的页面外，所有字线上都会施加一个穿透电压。穿透电压接近或高于可能的最高阈值电压，并迫使*所有未被读取页面中的*晶体管关闭，不管它们是否存储了电荷。所有位线都会通入低电流。
 
-The word line for the page being read is given a reference voltage, and all the bit line sense amplifiers read. Transistors holding a high enough electron count will not be closed by the reference voltage, and the bit line current will not pass through the source/drain chain to the sense amplifier. Transistors with no charge, or a charge below the threshold, will be closed by the reference voltage and conduct the bit line current to the sense amplifier. Several reads at varying threshold voltages are required to determine the logical state of a multi-level cell.
+正在读取的页面的字线会被给予一个参考电压，所有位线感应放大器进行读取。储存了足够电子数量的晶体管不会被参考电压关闭，位线电流不会通过源/漏链传递到感应放大器。没有电荷，或电荷低于阈值的晶体管会被参考电压关闭，并将位线电流传导到感应放大器。为了确定多级单元格的逻辑状态，需要进行多次不同阈值电压的读取。
 
-(To add, or avoid, more confusion a floating gate transistor can be either open or closed. An open gate does not conduct an electrical charge, and a closed gate does. So if the gate is open nothing can get through, and if it's closed it can. No wonder we're confused.)
+（为了增加或避免更多的混淆，浮栅晶体管可以是开启或关闭状态。开启状态的栅极不导电，关闭状态的栅极则导电。所以如果栅极是开启的，就没有电流能通过；如果关闭了，就能通过。难怪我们会感到困惑。）
 
-It can be seen from this that to read one page in a block requires that all transistors in every page in the block receive either a pass-through or one or more reference voltages. It also appears that this will still apply even if some or all of the other pages in the block are empty. This becomes significant in Read Disturbance below.
+由此可见，要读取块中的一个页面，块中每个页面的所有晶体管都需要接收一个穿透电压或一个或多个参考电压。即使块中的其他页面部分或全部为空，这一点似乎仍然适用。这在下面的读取干扰中变得很重要。
 
-## Interpreting the results
+## 读取存储
 
-It is quite easy to grasp the concept behind reading an SLC. Only one threshold applies to SLC flash so only one test voltage is required - the floating gate either will or will not close. if the threshold voltage closes the gate then the bit line current passes to the sense amplifier and the stored value is one. If it doesn't then it's zero.
+理解 SLC 读取背后的概念相当容易。SLC 闪存只应用一个阈值，因此只需要一个测试电压——浮栅要么关闭，要么不关闭。如果阈值电压使栅极关闭，则位线电流流向读出放大器，存储值为 1。如果没有，则为 0。
 
-Multi-level cells are different, and the reasoning behind the stored value bit order becomes apparent. In a MLC the possible user bit combinations are 11, 10, 00 and 01, separated by three threshold values. To read the most significant (l/h) bit only requires one read, of the middle threshold voltage. If the gate closes then the MSB is one, if it doesn't then the MSB is zero, no matter what is in the least significant bit. To read the LSB (r/h) two reads are required, one of threshold one, and one of threshold three. If the read of threshold one closes the gate then the LSB is set to one and read two is not required. If the gate opens then a read of threshold three is taken. If it closes the LSB is set to zero. If it doesn't then the value is one.
+多级单元则不同，存储值位序背后的原因也变得明显。在 MLC 中，可能的用户信息位组合为 11、10、00 和 01，由三个阈值分隔。读取最高有效位 (l/h) 只需要读取一次中间阈值电压。如果栅极关闭，则最高有效位为 1，如果未关闭，则最高有效位为 0，无论最低有效位是什么。要读取最低有效位 (r/h)，需要读取两次，一次读取阈值一，一次读取阈值三。如果读取阈值一使栅极关闭，则最低有效位设置为 1，不需要读取第二次。如果栅极打开，则读取阈值三。如果它关闭，则最低有效位设置为 0。如果没有，则值为 1。
 
-The bit combinations in TLC cells are 111, 110, 100, 101, 001, 000, 010, and 011, separated by seven threshold values, and are more tricky to grasp. The MSB bit again only requires one read of the middle threshold, as in MLC. The central bit requires two reads, at threshold two and six, and the LSB requires four reads, at thresholds one, three, five and seven.
+TLC 单元中的位组合为 111、110、100、101、001、000、010 和 011，由七个阈值分隔，更难以理解。与 MLC 一样，最高有效位仍然只需要读取一次中间阈值。中间位需要读取两次，分别在阈值二和六，最低有效位需要读取四次，分别在阈值一、三、五和七。
 
-All multi-cell pages based on the MSB (l/h) are treated as SLC, with only one read required to determine the user bit value.
+所有基于最高有效位 (l/h) 的多单元页面都被视为 SLC，只需要读取一次即可确定用户信息位值。
 
-## SSD Writes
+## SSD 写入
 
-The most significant aspect of NAND flash, the widest fork in the HDD/SSD path, and the fundamental, pivotal factor in what follows, is that data can only be written to an empty SSD page. This is not new, nor is it in any way unknown, but it has the greatest implications for data security and recovery.
+NAND 闪存最重要的方面，也是 HDD/SSD 路径上最大的分叉点，以及接下来所有内容的基础和关键因素是，数据只能写入空的 SSD 页面。这并不是什么新鲜事，也不是什么未知的事情，但它对数据安全和恢复有着最大的影响。
 
-While SSDs can read and write to individual pages, they cannot overwrite pages, as the voltages required to revert a zero to a one would damage adjacent cells. All writes and rewrites need an empty page. Unlike HDDs, where a compete cluster is written to the disk whatever was there previously, the act of writing an SSD page allocates an empty page with its default of all ones, and an electrical charge is applied to the cells that require changing to zeroes. This is as true for multi-level cells as it is for SLCs, as the no-charge all-ones pattern is either replaced with a charge representing another pattern, or is left alone. This is a once-only process.
+虽然 SSD 可以读写单个页面，但它们不能覆盖页面，因为将 0 变回 1 所需的电压会损坏相邻的单元。所有写入和重写都需要一个空白页。与 HDD 不同，HDD 会将完整的簇写入磁盘，无论之前有什么内容，写入 SSD 页面的行为是分配一个默认值为全 1 的空白页，并对需要更改为 0 的单元施加电荷。这对多级单元和 SLC 都是一样的，因为无电荷全 1 的模式要么被替换为代表另一种模式的电荷，要么保持不变。这是一个一次性的过程。
 
-When a write request is issued an empty page is allocated, usually within the same block, and the data written. The LBA/PBA map in the FTL is updated to allocate the new page to the relevant LBA. The LBA will always remain the same to the host: no matter which page is allocated the host will never know. This is the same process if the user data is being rewritten or if it is a new file allocation: the only difference is that the rewrite will have slightly more work to do. The old page will be flagged as invalid and will be inaccessible to the host, but will still take up space within its block as it cannot be reused.
+当发出写入请求时，会分配一个空页面（通常在同一个块内），然后写入数据。FTL 中的 LBA/PBA 映射会更新，以便将新页面分配给相关的 LBA。LBA 对主机来说始终保持不变：无论分配哪个页面，主机都不会知道。如果用户数据被重写或分配了一个新文件，这个过程是相同的：唯一的区别是重写的工作量会稍微多一些。旧页面将被标记为无效，主机将无法访问，但仍会占用其块内的空间，因为它无法被重用。
 
-Whilst it's easy to grasp writing to SLC pages, multi-level cell pages are more difficult to visualise. The controller accumulates new writes in the SSD cache until enough logical pages to fill a physical page are gathered, and then writes the physical page. This entails the fewest writes to the page. If a logical page in a multi-level page is amended it would require a new page to be allocated and all logical pages rewritten, as the individual values in the physical page can't be altered. If a logical page is deleted then I surmise that the deleted logical page is flagged as invalid, and when the block becomes a candidate for garbage collection any valid logical pages are consolidated before writing. In other words a multi-level page, or at least the majority of them, will always contain a full compliment of logical pages.
+虽然很容易理解写入 SLC 页面的过程，但多级单元页面的情况更难想象。控制器会将新的写入累积到 SSD 缓存中，直到收集到足够多的逻辑页面来填充一个物理页面，然后才会写入物理页面。这需要对页面进行最少的写入次数。如果修改了多级页面中的一个逻辑页面，则需要分配一个新页面并重写所有逻辑页面，因为物理页面中的各个值无法更改。如果删除了一个逻辑页面，那么我推测该逻辑页面会被标记为无效，当该块成为垃圾回收的候选对象时，任何有效的逻辑页面都会在写入之前进行合并。换句话说，一个多级页面，或者至少是其中的大部分，将始终包含一整套逻辑页面。
 
-It's apparent that if NAND flash handles data writes in this way - and it does - the SSD will eventually become full of valid and invalid pages, and performance will gradually slow to a crawl. Although an individual SSD page can't be erased a block can, and this method is used to return blocks to a writable state. To expedite this, and to ensure that a pool of empty blocks is always available for writes, the SSD controller uses Garbage Collection.
+很明显，如果 NAND 闪存以这种方式处理数据写入（事实也确实如此），那么 SSD 最终将充满有效和无效的页面，性能也会逐渐降低到爬行的程度。虽然单个 SSD 页面无法擦除，但一个块可以擦除，这种方法用于将块恢复到可写状态。为了加快这一过程，并确保始终有一组空块可用于写入，SSD 控制器会使用垃圾回收。
 
-## Garbage Collection
+## 垃圾回收
 
-Garbage Collection is enabled on the humblest up to the highest capacity SSD: without it NAND flash would be unusable. Garbage Collection is part of the SSD controller and its work is unknown to the host. In its simplest form GC takes a block holding valid and invalid pages, copies the valid pages to a new empty block, updates the LBA mapping tables, and consigns the old block to the invalid block pool. There the block and its pages are reset to empty state, and the block added to the available block pool. Thus a pool of available blocks should always be available for write activity. As long as there is power to the SSD GC will do its work, it cannot be stopped. There are various sophisticated techniques for GC routines, all proprietary and mainly known only to the manufacturers.
+从最简陋到容量最高的 SSD，垃圾回收功能都已启用：如果没有它，NAND 闪存将无法使用。垃圾回收是 SSD 控制器的一部分，主机并不知道它的工作。在最简单的形式中，GC 会选取一个包含有效和无效页面的块，将有效页面复制到一个新的空块中，更新 LBA 映射表，并将旧块放入无效块池中。在那里，该块及其页面将被重置为空状态，并将该块添加到可用块池中。因此，应该始终有一组可用块可用于写入活动。只要 SSD 通电，GC 就会执行其工作，无法停止。GC 例程有各种复杂的技术，所有这些技术都是专有的，而且主要只有制造商才知道。
 
-When an SSD arrives new from the factory writes will gradually fill the drive in a progressive, linear pattern until the addressable storage space has been entirely written. However once garbage collection begins, the method by which the data is written - sequential vs random - affects performance. Sequentially written data writes whole blocks, and when the data is replaced the whole block is marked as invalid. During garbage collection nothing needs to be moved to another block. This is the fastest possible garbage collection - i.e. no garbage to collect. When data is written randomly invalid pages are scattered throughout the SSD. When garbage collection acts on a block containing randomly written data, more data must be moved to a new block before the block can be erased.
+当一个全新的 SSD 从工厂出厂时，写入操作会以渐进的线性模式逐渐填满驱动器，直到可寻址存储空间被完全写入。然而，一旦垃圾回收开始，数据写入的方式（顺序写入还是随机写入）就会影响性能。顺序写入的数据会写入整个块，当数据被替换时，整个块会被标记为无效。在垃圾回收期间，不需要将任何数据移动到另一个块。这是最快的垃圾回收方式，也就是说，没有垃圾需要回收。当数据被随机写入时，无效页面会分散在整个 SSD 中。当垃圾回收作用于包含随机写入数据的块时，必须将更多数据移动到新块，然后才能擦除该块。
 
-## The Garbage Collection Conundrum
+## 垃圾回收难题
 
-Garbage Collection can either take place in the background, when the host is idle, or the foreground, as and when it is needed for a write. Whilst background GC may seem to be preferable, it has drawbacks. If the host uses a power-saving mode when idle, GC will either wait for the device to restart with a consequent user delay for GC to complete, or wake the device up and reduce battery life whilst the host is 'idle'. Furthermore GC has no knowledge of the data it is collecting. Inevitably some data will be subject to GC and then be deleted shortly afterwards, incurring another bout of GC and consequent additional and unnecessary writes (write amplification, the ratio of actual writes to data writes). Foreground GC, seemingly the antithesis of performance, avoids the power-saving problems, only incurs writes when they are actually required, and with fast cache and highly developed GC algorithms presents no noticeable performance penalty to the user. The trend in modern GC appears to be foreground collection, or a combination of foreground and background collection.
+垃圾回收可以在后台进行（当主机空闲时），也可以在前台进行（当写入需要时）。虽然后台垃圾回收看起来更可取，但它也有缺点。如果主机在空闲时使用节能模式，垃圾回收要么会等待设备重新启动，从而导致用户延迟以完成垃圾回收，要么会唤醒设备并缩短电池寿命，而此时主机处于“空闲”状态。此外，垃圾回收并不知道它正在回收的数据。不可避免的是，一些数据在进行垃圾回收后不久就会被删除，从而导致另一轮垃圾回收和随之而来的额外和不必要的写入（写入放大，即实际写入与数据写入的比率）。前台垃圾回收看似与性能背道而驰，但它避免了节能问题，只在实际需要时才进行写入，并且借助快速缓存和高度发达的垃圾回收算法，不会给用户带来明显的性能损失。现代垃圾回收的趋势似乎是前台回收，或者前台和后台回收的组合。
 
-Based on foreground garbage collection, and that most user activity is random, then the inevitable conclusion is that the SSD will spend most of its life at full capacity, if by that we mean available blocks, even though the allocated space appears to the host to be low.
+基于前台垃圾回收，以及大多数用户活动都是随机的，那么不可避免的结论是，SSD 将在其大部分生命周期中处于满容量状态，如果我们指的是可用块，即使分配给主机的空间看起来很低。
 
-However there is another potential problem with SSDs, and that is to do with a historical event: the way that file systems were designed.
+然而，SSD 还存在另一个潜在问题，这与一个历史事件有关：文件系统的设计方式。
 
-## File Systems - What you see isn't what you get
+## 文件系统 - 非眼见为实
 
-Host file systems were designed in the days when HDDs reigned supreme, simply because SSDs had yet to arrive in an available and affordable form. The file system does not take into account the needs of NAND flash. Files are constantly being updated: they get allocated, moved and deleted, and grow and shrink in size. The way the file system handles this is incompatible with the workings of NAND flash.
+主机文件系统的设计可以追溯到 HDD 称霸的时代，因为 SSD 那时还没有以可用且价格合理的形态出现。文件系统没有考虑到 NAND 闪存的需求。文件在不断地更新：它们被分配、移动和删除，大小也在增长和缩减。文件系统处理这些操作的方式与 NAND 闪存的工作机制不兼容。
 
-It's worth emphasising that storage devices are abstracted from the host operating system. Whilst an array of folders and files are displayed by Explorer in a form wholly comprehensible to a human, it's all an illusion. What Explorer is showing is a logical construct created entirely from metadata held within the file system's tables. The storage device controller knows nothing about files or folders, or tables or operating systems: all an HDD or SDD sees are commands to read or write specific sectors, which it does faithfully. An SSD has one advantage over an HDD however, it knows that some pages hold data, and are mapped to an LBA, and some pages are empty, hold no valid data, and are not mapped to an LBA. Conversely an HDD does not need to know this, to an HDD all sectors are the same.
+值得强调的是，存储设备对主机操作系统是抽象的。虽然资源管理器以人类完全可以理解的形式显示了一系列文件夹和文件，但这只是一种假象。资源管理器显示的是一个完全由文件系统表中的元数据创建的逻辑结构。存储设备控制器对文件、文件夹、表或操作系统一无所知：HDD 或 SSD 看到的只是读取或写入特定扇区的命令，而它们也忠实地执行了这些命令。然而，SSD 与 HDD 相比有一个优势，它知道哪些页面保存着数据并映射到 LBA，哪些页面是空的、不保存有效数据且未映射到 LBA。相反，HDD 不需要知道这些，对 HDD 来说，所有扇区都是一样的。
 
-## File Deletion
+## 文件删除
 
-In NTFS, when a file is deleted the entry in the Master File Table is flagged as such, and the cluster bitmap is amended to flag the file's clusters as available for reuse. The delete process takes place entirely within the MFT and the cluster bitmap. This is perfectly adequate for an HDD, as NTFS can simply reuse the MFT entry and the clusters whenever it wishes. On an SSD the process from NTFS's point is exactly the same, as NTFS has no other way of deleting files. However all the SSD sees is exactly what an HDD would see, updates to a few pages. Neither an HDD nor an SSD knows that it's the MFT and cluster bit map being updated, as they have no knowledge of such things. As there is no activity on the deleted file's clusters, the SSD's pages holding the clusters remain mapped to their LBAs in the FTL. The SSD's FTL has no way of knowing that these pages are no longer allocated by NTFS: to the SSD the pages are still valid and will not be cleaned up by garbage collection.
+在 NTFS 文件系统中，当一个文件被删除时，主文件表 (MFT) 中的对应条目会被标记为已删除，并且集群位图也会被修改，将该文件占用的集群标记为可重用。整个删除过程只在 MFT 和集群位图中进行。这对 HDD 来说完全足够了，因为 NTFS 可以随时重用 MFT 条目和集群。
 
-As these 'dead' pages are allocated to an LBA they could be released when files are allocated or extended and the host uses that LBA. In this case the page will be flagged as invalid and a new page used. However it is inevitable that eventually a significant amount of unused and unwanted baggage which is not flagged for garbage collection will be pointlessly maintained by the SSD controller and be unavailable for reuse. To overcome this, and to correlate the hosts view of allocated and unallocated pages with the SSD's, NTFS from Windows 7 onwards acquired the TRIM command.
+在 SSD 上，从 NTFS 的角度来看，这个过程完全相同，因为 NTFS 没有其他删除文件的方法。然而，SSD 看到的只是 HDD 看到的内容，即对几个页面的更新。HDD 和 SSD 都不知道正在更新的是 MFT 和集群位图，因为它们对这些东西一无所知。由于已删除文件的集群上没有任何活动，因此 SSD 中保存这些集群的页面仍然映射到 FTL 中的 LBA。SSD 的 FTL 无法知道这些页面不再被 NTFS 分配：对 SSD 来说，这些页面仍然有效，不会被垃圾回收清理。
+
+由于这些“死”页面被分配给了 LBA，因此当分配或扩展文件并且主机使用该 LBA 时，它们可能会被释放。在这种情况下，该页面将被标记为无效，并使用一个新页面。然而，最终不可避免地会出现大量未被标记为垃圾回收的未使用和不需要的数据，这些数据会被 SSD 控制器毫无意义地维护，并且无法重用。为了克服这个问题，并将主机对已分配和未分配页面的视图与 SSD 的视图关联起来，从 Windows 7 开始，NTFS 获得了 TRIM 命令。
 
 ## SSD Detection
 
