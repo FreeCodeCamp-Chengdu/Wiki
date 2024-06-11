@@ -7,44 +7,44 @@ translator: ""
 reviewer: ""
 ---
 
-At Depot, we're focused on providing the fastest build service for container images. We accomplish this primarily by:
+在 Depot，我们专注于为容器镜像提供最快的构建服务。我们主要通过以下方式实现这一目标：
 
 <!-- more -->
 
-1.  Providing instant access to powerful compute and storage
-2.  Optimizing the build process itself to be as fast as possible
+1.  提供对强大计算和存储的即时访问。
+2.  优化构建过程本身以使其尽可能快。
 
-We run Depot on top of AWS, using large 16-core machines for each Depot project. These machines use native Intel and Arm CPUs, avoiding emulation for multi-platform images. And we provide them with distributed cache storage using a Ceph cluster with NVMe SSDs. This all makes it quick to execute `RUN` statements and makes cache lookups and writes fast.
+我们将 Depot 运行在 AWS 之上，为每个 Depot 项目使用大型 16 核机器。这些机器使用原生 Intel 和 Arm CPU，避免了多平台镜像的仿真。并且我们使用带有 NVMe SSD 的 Ceph 集群为它们提供分布式缓存存储。这一切都使得执行 `RUN` 语句变得快速，并使缓存查找和写入变得快速。
 
-For the build process itself, in addition to many [high-level optimizations][1] of the build process, we're currently working on a number of low-level optimizations to the build process itself.
+对于构建过程本身，除了对构建过程进行许多[高级优化][1]之外，我们目前正在对构建过程本身进行许多低级优化。
 
-To better understand some of these optimizations, it's helpful to understand the OCI container image layer format itself.
+为了更好地理解其中一些优化，了解 OCI 容器镜像层格式本身很有帮助。
 
-## [][2]Layer format
+## [][2]层格式
 
-They're just tarballs!
+它们只是 tar 包！
 
-The [OCI image spec][3] for container images ("Docker images") defines a container image as a collection of "layers" and metadata. Each layer is a collection of files stored as a [tar archive][4].
+[OCI 镜像规范][3] 为容器镜像（“Docker 镜像”）定义了一个容器镜像，它是由“层”和元数据组成的集合。每一层都是一个以 [tar 归档][4] 形式存储的文件集合。
 
-When an image is unpacked, layers stack on each other to form the filesystem of the container. Conceptually, this can be seen as extracting each tarball on top of each other until you have the entire filesystem, or "unioning" all the layers together.
+当镜像被解包时，各层相互堆叠形成容器的文件系统。从概念上讲，这可以看作是在彼此之上提取每个 tar 包，直到拥有整个文件系统，或者将所有层“联合”在一起。
 
-Take this Dockerfile for example:
+以这个 Dockerfile 为例：
 
-```
+```yaml
 FROM ubuntu:22.04
 COPY hello.txt .
 COPY world.txt .
 ```
 
-When built, this will produce a container image with three layers:
+构建时，这将生成一个包含三层的容器镜像：
 
-1.  A "layer" (tarball) with the Ubuntu 22.04 base image files
-2.  A "layer" (tarball) that contains the `hello.txt` file
-3.  A "layer" (tarball) which contains the `world.txt` file
+1. 一个包含 Ubuntu 22.04 基础镜像文件的“层”（tar 包）
+2. 一个包含 `hello.txt` 文件的“层”（tar 包）
+3. 一个包含 `world.txt` 文件的“层”（tar 包）
 
-After unpacking the resulting image, the container filesystem would look like this:
+解压生成的镜像后，容器文件系统将如下所示：
 
-```
+```bash
 /
 ├── bin/
 ├── boot/
@@ -68,101 +68,101 @@ After unpacking the resulting image, the container filesystem would look like th
 └── world.txt
 ```
 
-This is all the files from the Ubuntu 22.04 base layer, plus the `hello.txt` file from the second layer, plus the `world.txt` file from the third layer.
+这将包含 Ubuntu 22.04 基础层中的所有文件，以及第二层中的 `hello.txt` 文件，以及第三层中的 `world.txt` 文件。
 
-Today, tools like Docker and BuildKit produce one tar layer for each `RUN`, `COPY`, `ADD`, etc. statement in the Dockerfile (or in the target stage of a multi-stage Dockerfile). Note that this is not a requirement of the OCI image spec, which doesn't specify how layers are created.
+如今，像 Docker 和 BuildKit 这样的工具会为 Dockerfile（或多阶段 Dockerfile 的目标阶段）中的每个 `RUN`、`COPY`、`ADD` 等语句生成一个 tar 层。请注意，这不是 OCI 镜像规范的要求，该规范没有指定如何创建层。
 
-An OCI container image is just a collection of tarballs.
+OCI 容器镜像只是一组 tar 包。
 
-## [][5]Assembling an OCI image
+## [][5]组装 OCI 镜像
 
-If container image layers are just tarballs, and they are unioned together to form the container filesystem, how is it possible to have files that are removed or modified in later layers?
+如果容器镜像层只是 tar 包，并且它们被联合在一起形成容器文件系统，那么如何才能在后面的层中删除或修改文件呢？
 
-### [][6]Handling modified files
+### [][6]处理已修改的文件
 
-Modified files are straightforward: if a file is included in multiple layers, the last layer to include that file "wins". For example:
+修改文件很简单：如果一个文件包含在多个层中，则最后包含该文件的层 `wins`。例如
 
-```
+```yaml
 FROM scratch
 RUN echo "hello" > example.txt
 RUN echo "world" > example.txt
 ```
 
-This will produce an image with two layers:
+这将生成一个包含两层的镜像：
 
-1.  A tarball with the `example.txt` file containing the text `hello`
-2.  A tarball with the `example.txt` file containing the text `world`
+1. 一个包含 `example.txt` 文件的 tar 包，其中包含文本 `hello`
+2. 一个包含 `example.txt` 文件的 tar 包，其中包含文本 `world`
 
-When unpacked, the first layer's `example.txt` file will be overwritten by the second layer's `example.txt` file, resulting in a container filesystem with a single `example.txt` file containing the text `world`.
+解压后，第一层的 `example.txt` 文件将被第二层的 `example.txt` 文件覆盖，从而生成一个容器文件系统，其中包含一个 `example.txt` 文件，其中包含文本 `world`。
 
-### [][7]Handling removed files
+### [][7]处理已删除的文件
 
-But what about files that are removed? For example:
+但是，已删除的文件该如何处理？ 例如：
 
-```
+```yaml
 FROM scratch
 RUN echo "hello" > example.txt
 RUN rm example.txt
 ```
 
-For this, the OCI image spec defines a special kind of file called a "whiteout" file.
+为此，OCI 镜像规范定义了一种特殊的文件，称为 `whiteout` 文件。
 
-Whiteout files are empty files with a special name that tells the container runtime that a path should be removed from the container filesystem. Whiteout files have a special prefix of `.wh.` plus the name of the file to be removed.
+Whiteout 文件是带有特殊名称的空文件，它告诉容器运行时应从容器文件系统中删除某个路径。 Whiteout 文件有一个特殊的`.wh.`前缀，后跟要删除的文件的名称。
 
-For example, the second layer produced by the above example would contain a zero-byte file named `.wh.example.txt`. That instructs the container runtime to remove the `example.txt` file from the container filesystem when unpacking the layer.
+例如，上面示例生成的第二层将包含一个名为 `.wh.example.txt` 的零字节文件。 这指示容器运行时在解压该层时从容器文件系统中删除 `example.txt` 文件。
 
-**Note:** This is a common cause of security vulnerabilities with container builds. If a file is included in an earlier layer and then removed in a later layer, the file's contents still exist in the container image contents. This can result in leaking sensitive information, such as credentials or private keys.
+**注意：** 这是容器构建中安全漏洞的常见原因。如果一个文件包含在较早的层中，然后在较晚的层中被删除，则该文件的内容仍然存在于容器镜像内容中。这可能导致泄露敏感信息，例如凭据或私钥。
 
-There is one additional special whiteout file called the "opaque whiteout", named `.wh..wh..opq`. This file instructs the container runtime to remove all files and directories in the same directory as the opaque whiteout file. For example, if a layer contains a file named `/example/.wh..wh..opq`, that instructs the container runtime to remove all files and directories that are children of the `/example` directory.
+还有一种特殊的 whiteout 文件，称为 `opaque whiteout`，名为 `.wh..wh..opq`。该文件指示容器运行时删除与 opaque whiteout 文件位于同一目录中的所有文件和目录。例如，如果一个层包含一个名为`/example/.wh..wh..opq`的文件，则指示容器运行时删除 `/example` 目录下的所有文件和目录。
 
-Finally, layers are often distributed as gzipped tarballs, with the `.tar.gz` extension, to save storage space and reduce network data transfer. Note that the spec also supports uncompressed tarballs (`.tar`) and zstd-compressed tarballs (`.tar.zstd`).
+最后，层通常以 gzip 压缩的 tar 包（扩展名为`.tar.gz`）的形式分发，以节省存储空间并减少网络数据传输。请注意，该规范还支持未压缩的 tar 包（`.tar`）和 zstd 压缩的 tar 包（`.tar.zstd`）。
 
-## [][8]Overlay filesystems
+## [][8]Overlay filesystems（叠加文件系统）
 
-Container runtimes like containerd or podman are responsible for taking an image's layers (tarballs) and unpacking them into a directory before running the container. This is called the container's "rootfs", or root filesystem.
+像 containerd 或 podman 这样的容器运行时负责在运行容器之前将镜像的层（tar 包）解压到一个目录中。这被称为容器的`rootfs`或根文件系统。
 
-Actually un-tarring each layer into the rootfs directory sequentially, taking care to apply file modifications or whiteout deletes, for each container launched, would be very slow. Instead, container runtimes often use special filesystems to efficiently combine the layers into a single filesystem.
+实际上，对于每个启动的容器，依次将每一层解压到 rootfs 目录中，并注意应用文件修改或删除 whiteout 文件，这将非常缓慢。相反，容器运行时通常使用特殊的文件系统来有效地将各层组合成一个单一的文件系统。
 
-One such filesystem is [overlayfs][9], which is a Linux kernel feature that allows multiple directories to be combined into a single directory. This is the default filesystem used by Docker and Podman.
+其中一种文件系统是 [overlayfs][9]，它是 Linux 内核的一项功能，允许多个目录组合成一个单一目录。这是 Docker 和 Podman 使用的默认文件系统。
 
-With overlayfs, each layer is unpacked into a separate directory, and then the container runtime tells the Linux kernel to mount these directories on top of each other. The kernel then presents the combined directories as a single directory to the container runtime.
+使用 overlayfs 时，每一层都会被解压到一个单独的目录中，然后容器运行时会告诉 Linux 内核将这些目录相互叠加挂载。然后，内核将组合后的目录作为单个目录呈现给容器运行时。
 
-Overlayfs supports the concept of whiteout files natively, so the container runtime translates the OCI image whiteout files into overlayfs whiteout files when mounting the layers.
+Overlayfs 本身支持 whiteout 文件的概念，因此容器运行时在挂载层时会将 OCI 镜像 whiteout 文件转换为 overlayfs whiteout 文件。
 
-This allows each image layer to only be unpacked once, so running multiple containers from the same image is very fast, and sharing common base layers between images is very efficient. And the Linux kernel handles all the complexity of combining the layers into a single filesystem.
+这使得每个镜像层只需解压一次，因此从同一个镜像运行多个容器非常快，并且在镜像之间共享公共基础层非常高效。Linux 内核处理将各层组合成单个文件系统的所有复杂性。
 
-## [][10]Lazy image layers with eStargz
+## [][10]使用 eStargz 的惰性镜像层
 
-While image layers are "just" tar archives containing files, it is possible to extend the format with additional capabilities for more efficient storage and transfer. One example of this is the [eStargz][11] image format.
+虽然镜像层“仅仅”是包含文件的 tar 归档文件，但可以通过扩展格式来提高存储和传输效率。[eStargz][11] 镜像格式就是一个例子。
 
-eStargz images are still valid tar archives, but they are constructed in a special way that allows a metadata file to describe the location of each individual file inside the compressed tarball. This allows access to those individual files without needing to download the entire layer from the registry and decompress.
+eStargz 镜像仍然是有效的 tar 归档文件，但它们的构建方式很特殊，允许元数据文件描述压缩 tar 包中每个文件的具体位置。这允许在无需从注册表下载整个层并解压缩的情况下访问这些文件。
 
-For example, to locate a specific file in an eStargz layer, the container runtime would:
+例如，要在 eStargz 层中找到特定文件，容器运行时将执行以下操作：
 
-1.  Fetch the end of the compressed tarball, which contains the index of all files in the layer (the "TOC")
-2.  Read the byte offset and length of the file from the TOC
-3.  Fetch the specified byte range from the registry
+1. 获取压缩 tar 包的末尾，其中包含层中所有文件的索引（`TOC`）
+2. 从 TOC 中读取文件的字节偏移量和长度
+3. 从注册表中获取指定的字节范围
 
-For large layers, this can result in significant savings in download size and time.
+对于大型层来说，这可以显著节省下载大小和时间。
 
-This kind of optimization can be useful when starting a container because the container is able to begin running before the entire image has been downloaded. Then, as the container runs and files are accessed, those files are lazy-loaded from the registry.
+这种优化在启动容器时非常有用，因为容器可以在整个镜像下载完成之前就开始运行。然后，随着容器的运行和文件的访问，这些文件会从注册表中延迟加载。
 
-This can be beneficial for building images as well. We built [depot.ai][12] as one example of this. With the depot.ai images, popular machine-learning models from Hugging Face are packaged as eStargz-compatible images. Then when copying those ML models into a new container image, Depot is able to only download the files that the `COPY` requests. This can be much faster than downloading the entire model repository, especially if the model repository contains multiple formats of the model where only one is needed.
+这对构建镜像也很有帮助。我们构建的 [depot.ai][12] 就是一个例子。借助 depot.ai 镜像，Hugging Face 中流行的机器学习模型被打包成与 eStargz 兼容的镜像。然后，当将这些机器学习模型复制到新的容器镜像中时，Depot 只需要下载 `COPY` 请求的文件。这比下载整个模型仓库要快得多，尤其是在模型仓库包含多种格式的模型而只需要一种格式的情况下。
 
-Other examples of this kind of optimization include the [SOCI snapshotter][13] from AWS, the [Nydus][14] image format, and [`zstd:chunked`][15] from Red Hat.
+这类优化的其他例子还包括 AWS 的 [SOCI 快照程序][13]、[Nydus][14] 镜像格式和 Red Hat 的 [`zstd:chunked`][15]。
 
-## [][16]Optimizing layer construction
+## [][16]优化层构建
 
-Considering that container image layers are tarballs, we're exploring a variety of optimizations to the layer construction process to make it faster and more efficient:
+考虑到容器镜像层本质上是 tar 包，我们正在探索各种层构建过程的优化方法，使其更快、更高效：
 
-1.  Depot supports both creating and consuming eStargz images today.
-2.  Depot parallelizes the compression of tarballs using multiple CPU cores. Today we divide layer tarballs into chunks and gzip each chunk in parallel, then concatenate the chunks together. This results in a slightly larger compressed tarball, but with vastly improved compression speed.
-3.  We're investigating parallelizing single-layer construction — "building" a layer means creating a tarball from a directory of files. Today, this is done sequentially, but the construction of the tar archive headers can be parallelized.
-4.  We're exploring alternate ways of constructing layers that don't require a `Dockerfile`. Today, Dockerfiles are the most common way of describing a container build, but given that layers are tarballs, it's possible to "just" make a tarball.
+1. Depot 目前支持创建和使用 eStargz 镜像。
+2. Depot 使用多个 CPU 核心并行压缩 tar 包。目前，我们会将层 tar 包分成多个块，并使用 gzip 并行压缩每个块，然后将这些块连接在一起。这会导致压缩后的 tar 包略大一些，但压缩速度会大大提高。
+3. 我们正在研究并行构建单层的方法，构建一层意味着从文件目录创建 tar 包。目前，这是按顺序完成的，但 tar 存档头的构建可以并行化。
+4. 我们正在探索构建层不需要 `Dockerfile` 的替代方法。目前，Dockerfile 是描述容器构建的最常见方式，但考虑到层是 tar 包，因此可以直接制作 tar 包。
 
 ---
 
-There are many more facets to optimizing the container build process, and we hope to share more of our work in the future. If any of this is interesting to you, feel free to reach out on [Twitter][17] or [Discord][18].
+优化容器构建过程还有很多方面，我们希望将来能分享更多我们的工作。如果您对这些内容感兴趣，请随时通过 [Twitter][17] 或 [Discord][18] 与我们联系。
 
 [1]: https://twitter.com/kylegalbraith/status/1746161367290167705
 [2]: #layer-format
