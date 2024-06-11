@@ -1,7 +1,7 @@
 ---
 title: Understanding Container Image Layers
 date: 2024-06-07T03:12:52.216Z
-author: GitHub
+author: Ken Muse
 authorURL: https://github.com/kenmuse
 originalURL: https://www.kenmuse.com/blog/understanding-container-image-layers/
 translator: ""
