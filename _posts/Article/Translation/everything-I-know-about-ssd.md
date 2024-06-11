@@ -181,77 +181,93 @@ NAND 闪存最重要的方面，也是 HDD/SSD 路径上最大的分叉点，以
 
 由于这些“死”页面被分配给了 LBA，因此当分配或扩展文件并且主机使用该 LBA 时，它们可能会被释放。在这种情况下，该页面将被标记为无效，并使用一个新页面。然而，最终不可避免地会出现大量未被标记为垃圾回收的未使用和不需要的数据，这些数据会被 SSD 控制器毫无意义地维护，并且无法重用。为了克服这个问题，并将主机对已分配和未分配页面的视图与 SSD 的视图关联起来，从 Windows 7 开始，NTFS 获得了 TRIM 命令。
 
-## SSD Detection
+## SSD 检测
 
-Although the storage device is abstracted from the File System, to enable some of the file system's SSD tweaks it needs to know whether the device is an HDD or SSD. There are various ways to do this, including querying the rotational speed of the device, which on an SSD should be zero (or perhaps one). This seems the most widely used and most proficient method.
+尽管文件系统对存储设备进行了抽象，但为了启用文件系统针对 SSD 的一些优化，它需要知道设备是 HDD 还是 SSD。有多种方法可以做到这一点，包括查询设备的转速，对于 SSD 来说，转速应该是零（或者可能是一）。这似乎是最广泛使用和最有效的方法。
 
 ## TRIM
 
-TRIM (it isn't an acronym) is a SATA command sent by the file system to the SSD controller to indicate that particular pages no longer contain live data, and are therefore candidates for garbage collection. TRIM is only supported in Windows on NTFS volumes. It is invoked on file deletion, partition deletion, and disk formatting. TRIM has to be supported by the SSD and enabled in NTFS to take effect. The command 'fsutil behavior query disabledeletenotify' returns 0 if TRIM is enabled in the operating system. It does not mean that the SSD supports it (or even if an SSD is actually installed) but all modern SSDs support a version of it.
+TRIM 并非缩写，而是一条 SATA 指令，由文件系统发送至 SSD 控制器，用于指示特定页面不再包含有效数据，可以进行垃圾回收。在 Windows 系统中，只有 NTFS 卷支持 TRIM。文件删除、分区删除和磁盘格式化都会触发 TRIM。TRIM 指令需要 SSD 支持并在 NTFS 中启用才能生效。
 
-There are three different types of TRIM defined in the SATA protocol and implemented in SSD drives. Non-deterministic TRIM: where each read command after a TRIM may return different data; Deterministic TRIM (DRAT): where all read commands after a TRIM return the same data (i.e. become determinate) and do not change until new data is written; and Deterministic Read Zero after TRIM (DZAT): where all read commands after a TRIM return zeroes until the page is written with new data. By the way whilst DRAT returns data on a read it is not the userdata that was ptrviously there before the TRIM: it is random.
+您可以使用命令 `fsutil behavior query disabledeletenotify` 来检查 TRIM 是否在操作系统中启用。如果返回值为 0，则表示 TRIM 已启用。但这并不代表 SSD 支持 TRIM（甚至不能确定是否安装了 SSD），不过目前所有现代 SSD 都支持某种版本的 TRIM。
 
-Fortunately Non-Deterministic TRIM is rarely used, and Windows does not support DRAT, so a read of a trimmed page - which is easily done with a hex aditor - invokes DZAT and returns zeroes immediately after the TRIM command is issued. The physical pages may not have been cleaned immediately following the TRIM command, but the SSD controller knows that there is no valid data held at the trimmed page address.
+SATA 协议定义了三种不同类型的 TRIM，SSD 驱动器也实现了这三种类型：
 
-TRIM tells the FTL that the pages allocated to specific LBAs are to be classed as invalid. When a block no longer has any free pages, or a specific threshold is reached, the block is a candidate for garbage collection. Live data is copied to a new empty block, and the original block is erased and made available for reuse.
+非确定性 TRIM：在执行 TRIM 后，每次读取命令都可能返回不同的数据。
+确定性 TRIM (DRAT)：在执行 TRIM 后，所有读取命令都返回相同的数据（即结果是确定的），并且在写入新数据之前不会改变。
+TRIM 后确定性读取零 (DZAT)：在执行 TRIM 后，所有读取命令都返回零，直到该页面被写入新数据。
 
-TRIM is an asynchronous command that is queued for low-priority operation. It does not need or send a response. The size of the TRIM queue is limited and in times of high activity some TRIM commands may be dropped. There is no indication that this takes place, so some unwanted pages may escape garbage collection.
+需要注意的是，虽然 DRAT 在读取时返回数据，但返回的数据并不是 TRIM 之前的用户数据，而是一些随机数据。
+
+幸运的是，非确定性 TRIM 很少使用，而且 Windows 也不支持 DRAT。因此，读取已 TRIM 的页面（使用十六进制编辑器很容易做到）会调用 DZAT，并在发出 TRIM 命令后立即返回零。尽管物理页面可能没有在 TRIM 命令之后立即被清理，但 SSD 控制器知道在已 TRIM 的页面地址上没有保存有效数据。
+
+TRIM 告诉 FTL（闪存转换层），分配给特定逻辑块地址 (LBA) 的页面将被归类为无效。当一个块不再有任何空闲页面，或者达到特定阈值时，该块就成为垃圾回收的候选对象。活动数据会被复制到一个新的空块中，而原始块会被擦除并重新可用。
+
+TRIM 是一种异步命令，会被排队等待低优先级操作。它不需要也不发送响应。TRIM 队列的大小是有限的，在高负载情况下，一些 TRIM 命令可能会被丢弃。这种情况不会有任何提示，因此一些不需要的页面可能会逃过垃圾回收。
 
 ## RETRIM
 
-Windows Defragger - now called Storage Optimiser - has an option to Optimise SSDs. This does not defrag the SSD but sends a series of TRIM commands to all unallocated pages identified in NTFS's cluster bitmap. This global TRIM (or RETRIM) command is run at a granularity that the TRIM queue will never exceed its permitted size and no RETRIM commands will be dropped. A RETRIM is run automatically once a month by the storage optimiser.
+Windows 系统中的磁盘碎片整理工具（现已更名为 `存储优化`）提供了一个优化 SSD 的选项。但这并不会对 SSD 进行碎片整理，而是向 NTFS 集群位图中标识的所有未分配页面发送一系列 TRIM 命令。
 
-## Over-provisioning
+这种全局 TRIM（或称为 RETRIM）命令的运行粒度经过精心设计，可以确保 TRIM 队列永远不会超过其允许的大小，并且不会丢弃任何 RETRIM 命令。存储优化工具会每月自动运行一次 RETRIM。
 
-All NAND flash devices use over-provisioning, additional capacity for extra write operations, controller firmware, failed block replacements, and other features utilised by the SSD controller. This capacity is not physically separate from the user capacity but is simply an amount of space in excess of that which can be allocated by the host. The specific pages within this excess space will vary dynamically as the SSD is used. According to Seagate, the minimum reserve is the difference between binary and decimal naming conventions. An SSD is marketed as a storage device and its capacity is measured in gigabytes (1,000,000,000 Bytes). NAND flash however is memory and is measured in gibibytes (1,073,741,824 bytes), making the minimum overprovisioning percentage just over 7.37%. Even if an SSD appears to the host to be full, it will still have 7.37% of available space with which to keep functioning and performing writes (although write performance will be diabolical). Manufacturers may further reduce the amount of capacity available to the user and set it aside as additional over-provisioning, in addition to the built-in 7.37%. Additional over-provisioning can also be created by the host by allocating a partition that does not use the drive's full capacity. The unallocated space will automatically be used by the controller as dynamic over-provisioning.
+## 预留空间
 
-My humble WD SSD has four 32 gb chips but a specified capacity of 120 gb, meaning that it has 8 gb set aside as additional over-provisioning. Add this to the 7.37% minimum (9.4 gb) and the 17.4 gb equates to almost 15% over-provisioning space.
+所有 NAND 闪存设备都使用预留空间，即额外容量，用于额外的写入操作、控制器固件、坏块替换以及 SSD 控制器使用的其他功能。这些容量并不是与用户容量物理隔离的，而仅仅是超出主机可分配空间的一部分。随着 SSD 的使用，这些额外空间中的特定页面会动态变化。
 
-## Wear Levelling
+希捷公司表示，最小预留空间是二进制和十进制命名约定之间的差异。SSD 作为存储设备销售，其容量以 GB（1,000,000,000 字节）为单位。然而，NAND 闪存属于内存，以 GiB（1,073,741,824 字节）为单位，这使得最小预留空间比例略高于 7.37%。即使 SSD 在主机看来已满，它仍然拥有 7.37% 的可用空间来维持功能和执行写入操作（尽管写入性能会非常糟糕）。
 
-Some files are written once and remain untouched for the rest of their life. Others have few updates, some very many. As a consequence some blocks will hardly ever see the invalid block pool and have a very low erase/write count, and some will be in the pool every few minutes and have a very heavy count. To spread the wear so that all blocks are subject to erase/writes equally, and the performance of the SSD is maintained over its life, wear levelling is used. Wear levelling uses algorithms to identify blocks with the lowest erase count and move the contents to high erase count blocks; and to select low erase count blocks for new allocations. As with garbage collection, wear levelling is far more complex than I could possibly deduce, let alone explain.
+除了内置的 7.37% 之外，制造商可能会进一步减少用户可用的容量，并将其作为额外的预留空间。主机也可以通过分配一个不使用驱动器全部容量的分区来创建额外的预留空间。未分配的空间将自动被控制器用作动态预留空间。
 
-## Read Disturbance
+例如，我的西部数据 SSD 有四个 32 GB 的芯片，但标称容量为 120 GB，这意味着它预留了 8 GB 作为额外的预留空间。再加上 7.37% 的最小值（9.4 GB），总共 17.4 GB 的预留空间几乎占总容量的 15%。
 
-SSD reads are not quite free, there is a price to pay. As described above, a read of one page generates a pass-through voltage on all other cells in the block. This voltage is likely to be below the highest threshold value that could be held by the cell, but it still generates a weak programming effect on the cells, which can unintentionally shift their threshold voltages. The pass-through voltage induces electric tunnelling that can shift the voltages of the unread cells to a higher value, disturbing the cell contents. As the size of flash cells is reduced the transistor oxide becomes thinner and in turn increases this tunnelling effect, with fewer read operations required to neighbouring pages for the unread flash cells to become disturbed, and move into a different logical state. Cells holding lower threshold values are more susceptible to read disturbance.
+## 磨损均衡
 
-Thus each read can cause the threshold voltages of other unread cells in the same block to shift to a higher value. After a significant amount of reads this can cause read errors for those cells. A read count is kept for each block and if it is exceeded the block is rewritten. The count is high for SLC cells, around 1m, lower for 25 nm MLC at around 40,000, and much lower for 15 nm TLC cells.
+有些文件写入一次后就保持不变，而有些文件则会频繁更新。因此，一些块几乎不会进入无效块池，其擦写次数非常低，而另一些块则每隔几分钟就会进入一次池，擦写次数非常高。为了分散磨损，使所有块的擦写次数相等，并保持 SSD 在其使用寿命内的性能，就需要使用磨损均衡技术。
 
-## File Recovery
+磨损均衡使用算法来识别擦除次数最低的块，并将内容移动到擦除次数高的块；并在分配新数据时选择擦除次数低的块。与垃圾回收一样，磨损均衡的复杂程度远远超出了我的理解范围，更不用说解释了。
 
-And now we come to deleted file recovery. NTFS goes through exactly the same process to delete a file on an SSD as it does on an HDD, with the exception of the additional TRIM command. And the TRIM command (assuming it's executed) and a few SSD quirks destroys any practicable chance of deleted file recovery.
+## 读取干扰
 
-TRIM commands, as described above, have a complimentary setting within the SSD controller in the form of DRAT and DZAT. (I don't believe that non-deterministic TRIM is used in any reputable SSD, and I don't think that Windows supports DRAT, but I have no proof.) The implementation of DZAT means that immediately on successful execution of the TRIM command (which will in most cases be immediately on file deletion) any attempt to read the TRIMed page will return zeroes. The data on the page will still exist until the block is processed by the garbage collector, but that data is not accessible from the host by any practicable means, or any general software.
+SSD 读取操作并非完全免费，需要付出一定的代价。如上所述，读取一个页面会在该块中的所有其他单元上产生穿通电压。这种电压可能低于单元可以保持的最高阈值，但它仍然会在单元上产生微弱的编程效应，从而无意中改变其阈值电压。穿通电压会导致电隧道效应，使未读取单元的电压向更高的值移动，从而干扰单元内容。随着闪存单元尺寸的减小，晶体管氧化层变得更薄，进而增加了这种隧道效应，未读取的闪存单元只需要更少的相邻页面读取操作就会受到干扰，并进入不同的逻辑状态。保持较低阈值的单元更容易受到读取干扰的影响。
 
-Garbage collection is independent of the host device and will be invoked at the will of the SSD's controller. Once the process is started it cannot be stopped, apart from powering off the SSD. Once powered up again the garbage collector will resume its duties to completion.
+因此，每次读取都可能导致同一块中其他未读取单元的阈值电压向更高的值移动。在大量读取操作之后，这可能会导致这些单元出现读取错误。每个块都会保留一个读取计数，如果超过该计数，则会重写该块。SLC 单元的读取计数很高，大约为 100 万次，25 纳米 MLC 单元的读取计数较低，大约为 40,000 次，而 15 纳米 TLC 单元的读取计数则更低。
 
-Deleted file recovery on a modern SSD is next to impossible for the end user, and under Windows as close to impossible as you can get. A theoretical examination of the chips would most likely show compressed and encrypted data, striped over multiple blocks, and no possibility of relating one page of data to another across the multiple millions of pages. There is a very small possibility of recovering recently deleted files by powering off the SSD immediately and sending it to a professional data recovery company. They may recover some data, given enough time and money.
+## 文件恢复
 
-After a session of file deletion, such as running Piriform's CCleaner, run Recuva on the SSD. The headers of the deleted files found (and presumably the rest of the file) will all be zeroes. This is TRIM and DZAT doing their work in a few seconds, killing any chance of deleted file recovery. Of course TRIM can be disabled, at the cost of performance, but it's probably better to be a little less cavalier when deleting files that might be wanted later.
+在 SSD 上，NTFS 删除文件的过程与在 HDD 上完全相同，只是多了 TRIM 命令。TRIM 命令（假设它被执行）和一些 SSD 的特性会破坏任何实际恢复已删除文件的可能性。
 
-## Deleted File Security
+如上所述，TRIM 命令在 SSD 控制器中有一个对应的设置，即 DRAT 和 DZAT。（我不认为任何知名品牌的 SSD 会使用非确定性 TRIM，而且我认为 Windows 不支持 DRAT，但我没有证据。）DZAT 的实现意味着，一旦 TRIM 命令成功执行（在大多数情况下，这会在文件删除后立即执行），任何读取已 TRIM 页面的尝试都将返回零。页面上的数据在被垃圾收集器处理之前仍然存在，但这些数据无法通过任何实际方法或任何通用软件从主机访问。
 
-The notion of secure file deletion - overwriting a file's data before deletion - is irrelevant, and if any other pattern except zeroes is chosen is just additional and pointless wear on the SSD. Even overwriting with zeroes will cause transaction log and other files to be written, so secure file deletion on an SSD should never be used. Wiping Free Space is far worse for pointless writes, and is even more futile than secure file deletion. The deleted files just aren't there any more.
+垃圾回收独立于主机设备，并由 SSD 控制器决定何时调用。一旦该过程开始，就无法停止，除非关闭 SSD 的电源。一旦重新上电，垃圾收集器将恢复其职责，直到完成。
 
-## The OCZ Myth
+对于最终用户来说，在现代 SSD 上恢复已删除的文件几乎是不可能的，而在 Windows 下，这几乎是不可能的。从理论上对芯片进行检查很可能会显示出经过压缩和加密的数据，这些数据分布在多个块上，并且不可能将多个页面中的一个数据页与另一个数据页关联起来。有一种非常小的可能性可以恢复最近删除的文件，方法是立即关闭 SSD 的电源，并将其送到专业的 数据恢复公司。在有足够的时间和金钱的情况下，他们可能会恢复一些数据。
 
-Some years ago (as a little light relief to all these acres of text) the OCZ forums were buzzing with the latest method of regaining performance on their SSDs: run Piriform's CCleaner Wipe Free Space, with one overwrite pass of zeroes. Although performance may have been regained, logic, and common sense, went out of the window. The theory was that overwriting the pages with zeroes was equivalent to erasing blocks (this was before the days of TRIM). This was nonsense, and should have been apparent from the start. The default state of an empty page is all ones, not zeroes, and how could a piece of software possibly erase NAND flash?. The real reason was that as CCleaner was filling the pages with zeroes the SSD controller simply unmapped the pages and showed default pages of zeroes to the host. The invalid pages were then candidates for garbage collection, which gave a much greater pool of blocks to call upon on writes, and hence a better performance. A sort of RETRIM before that was invented.
+在删除文件（例如运行 Piriform 的 CCleaner）之后，在 SSD 上运行 Recuva。找到的已删除文件（以及可能的文件的其余部分）的标题都将为零。这是 TRIM 和 DZAT 在几秒钟内完成的工作，从而扼杀了任何恢复已删除文件的可能性。当然，TRIM 可以被禁用，但代价是性能下降，但如果要删除以后可能需要的文件，最好还是谨慎一些。
 
-## SSD Defragmentation
+## 安全删除文件
 
-One of the SSD mantras is that an SSD should never be defragged. Whilst there is little (there is a little) to be gained from rearranging clusters into adjacent pages - an SSD has no significant overhead in random reads - an SSD defrag is not entirely verboten. In fact from Windows 8 onwards the Storage Optimiser will defrag an SSD if certain conditions are met. If System Restore is enabled, the fragmentation level is above 10%, and at least one month has passed since the last defrag, Windows Storage Optimiser Scheduled Maintenance will defrag the SSD. This is what Microsoft calls a Traditional Defrag, it is not an Optimise (RETRIM). The defrag is required to reduce the extents on the volume snapshot files when system restore is enabled.
+安全删除文件的概念，在删除之前覆盖文件的数据，是无关紧要的，并且如果选择除零以外的任何其他模式，只会对 SSD 造成额外且毫无意义的磨损。即使使用零覆盖也会导致写入事务日志和其他文件，因此永远不应该在 SSD 上使用安全删除文件。擦除可用空间对于无意义的写入来说要糟糕得多，而且比安全删除文件更加徒劳无功。删除的文件根本就不存在了。
 
-There is nothing to be afraid of in a monthly defrag. Most users won't hit the 10% fragmented criteria so a simple RETRIM will be run, and Windows 10 users won't get defragged anyway (System Restore is disabled in Widows 10 by default). The reduction in life of an SSD will not be noticed. Furthermore, although SSDs are not fazed by random reads, files do get fragmented and that means a significant increase in I/Os. An occasional clearup is a boon.
+## OCZ 论坛传说
 
-**SSD Lifetime:** There are many users worried about the life expectancy of their SSDs. Yes, continuous write/erase cycles, and the added and unseen write amplification, do take a toll on the life of NAND flash. Using an SSD does wear it out. My WD Green 120 gb SSD, a TLC SSD from a reputable manufacturer but at the very lowest cost, has an estimated life of 1 million+ hours and a write limit if 40 terabytes. One million hours is 114 years, so we can forget that. As for writes, at 1 gb a day - far more than my current rate of data use - it would take the same 114 years to reach 40 tb. Even with massive write overhead this SSD is not going to wear out in the foreseeable future. If all 128 gib of available flash is used equally, the 40 tb equates to 312 writes per cell, a very conservative number.
+几年前（作为对这些大段文字的一点轻松调剂），OCZ 论坛上充斥着恢复 SSD 性能的最新方法：运行 Piriform 的 CCleaner 擦除可用空间功能，并使用零进行一次覆盖。虽然性能可能已经恢复，但逻辑和常识却荡然无存。当时的理论是，用零覆盖页面等同于擦除块（这在 TRIM 出现之前）。这是无稽之谈，从一开始就应该很明显。空页面的默认状态是全 1，而不是零，而且软件怎么可能擦除 NAND 闪存？真正的原因是，当 CCleaner 用零填充页面时，SSD 控制器只是取消了页面的映射，并向主机显示默认的零页面。然后，无效页面成为垃圾收集的候选对象，这为写入提供了更大的块池，从而获得了更好的性能。这是一种在 RETRIM 发明之前的类似技术。
 
-## The End
+## SSD 碎片整理
 
-The only thing to add is that NAND flash, SSDs, and especially SSD controllers, are far more sophisticated, complex and incomprehensible than what has been written here, what I know, what I could possibly comprehend, and what I could possibly explain. I should also add secret, as their software is proprietary. Whilst an HDD is a marvel of complex electro-mechanical engineering at a ridiculously low cost, the SSD is an equally marvellous and complex piece of electronics and software at a minimally higher cost. We should be thankful for both.
+关于固态硬盘的一条准则是永远不要对其进行碎片整理。虽然将簇重新排列到相邻页面几乎没有什么好处（有一点好处）——固态硬盘在随机读取时没有明显的开销——但固态硬盘碎片整理并非完全禁止。事实上，从 Windows 8 开始，如果满足某些条件，存储优化器将对固态硬盘进行碎片整理。如果启用了系统还原，碎片级别高于 10%，并且自上次碎片整理以来至少过去了一个月，Windows 存储优化器计划维护将对固态硬盘进行碎片整理。这就是微软所说的传统碎片整理，它不是优化（RETRIM）。启用系统还原时，需要进行碎片整理以减少卷快照文件上的区段。
 
-You can return to my home page [_here_][1]
+每月进行一次碎片整理没有什么可怕的。大多数用户不会达到 10% 的碎片标准，因此将运行简单的 RETRIM，而 Windows 10 用户无论如何都不会进行碎片整理（默认情况下，Windows 10 中禁用了系统还原）。固态硬盘寿命的减少不会被注意到。此外，尽管固态硬盘不受随机读取的影响，但文件确实会变得碎片化，这意味着 I/O 会显着增加。偶尔清理一下是有益的。
 
-If you have any questions, comments or criticisms at all then I'd be pleased to hear them: please email me at kes at kcall dot co dot uk.
+**固态硬盘寿命：** 许多用户担心固态硬盘的使用寿命。是的，连续的写入/擦除循环，以及额外和不可见的写入放大，确实会影响 NAND 闪存的寿命。使用固态硬盘确实会将其磨损。我的西部数据 Green 120 GB 固态硬盘，一款来自信誉良好的制造商但成本最低的三层单元 (TLC) 固态硬盘，估计寿命为 100 多万小时，写入限制为 40 TB。100 万小时是 114 年，所以我们可以忘记这一点。至于写入，以每天 1 GB 的速度（远远超过我目前的数据使用率），将需要相同的 114 年才能达到 40 TB。即使有巨大的写入开销，这款固态硬盘在可预见的未来也不会磨损。如果所有 128 GiB 的可用闪存都得到平等使用，则 40 TB 相当于每个单元 312 次写入，这是一个非常保守的数字。
+
+## 结语
+
+唯一要补充的是，NAND 闪存、固态硬盘，尤其是固态硬盘控制器，远比我在这里写的内容、我所知道的、我可能理解的以及我可能解释的更加复杂、精密和难以理解。我还应该加上“秘密”一词，因为它们的软件是专有的。虽然机械硬盘是以极低的成本实现的复杂机电工程的奇迹，但固态硬盘是以略高的成本实现的同样出色和复杂的电子和软件产品。我们应该对两者都心存感激。
+
+你可以点击[_此处_][1]，返回我的主页
+
+如果您有任何问题意见或想指出的问题，请告诉我：请发送电子邮件至 kes@kcall.co.uk。
 
 © Webmaster. All rights reserved.
 
