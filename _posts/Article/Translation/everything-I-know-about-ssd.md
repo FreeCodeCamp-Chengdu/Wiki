@@ -189,7 +189,7 @@ NAND 闪存最重要的方面，也是 HDD/SSD 路径上最大的分叉点，以
 
 TRIM 并非缩写，而是一条 SATA 指令，由文件系统发送至 SSD 控制器，用于指示特定页面不再包含有效数据，可以进行垃圾回收。在 Windows 系统中，只有 NTFS 卷支持 TRIM。文件删除、分区删除和磁盘格式化都会触发 TRIM。TRIM 指令需要 SSD 支持并在 NTFS 中启用才能生效。
 
-您可以使用命令 `fsutil behavior query disabledeletenotify` 来检查 TRIM 是否在操作系统中启用。如果返回值为 0，则表示 TRIM 已启用。但这并不代表 SSD 支持 TRIM（甚至不能确定是否安装了 SSD），不过目前所有现代 SSD 都支持某种版本的 TRIM。
+你可以使用命令 `fsutil behavior query disabledeletenotify` 来检查 TRIM 是否在操作系统中启用。如果返回值为 0，则表示 TRIM 已启用。但这并不代表 SSD 支持 TRIM（甚至不能确定是否安装了 SSD），不过目前所有现代 SSD 都支持某种版本的 TRIM。
 
 SATA 协议定义了三种不同类型的 TRIM，SSD 驱动器也实现了这三种类型：
 
@@ -267,7 +267,7 @@ SSD 读取操作并非完全免费，需要付出一定的代价。如上所述�
 
 你可以点击[_此处_][1]，返回我的主页
 
-如果您有任何问题意见或想指出的问题，请告诉我：请发送电子邮件至 kes@kcall.co.uk。
+如果你有任何问题意见或想指出的问题，请告诉我：请发送电子邮件至 kes@kcall.co.uk。
 
 © Webmaster. All rights reserved.
 
