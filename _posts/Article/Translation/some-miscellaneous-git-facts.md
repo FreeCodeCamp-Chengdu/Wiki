@@ -1,12 +1,15 @@
 ---
-title: Julia Evans
-authorURL: ""
-originalURL: https://jvns.ca/blog/2023/10/20/some-miscellaneous-git-facts/
-translator: ""
-reviewer: ""
+title: 一些杂七杂八的 Git 知识
+date: 2023-10-20
+updated: 2024-05-22 23:55:00
+authors:
+  - luojiyin1987
+original: https://jvns.ca/blog/2023/10/20/some-miscellaneous-git-facts/
+categories:
+  - Article
+  - Translation
+toc: true
 ---
-
-# 一些杂七杂八的 git 知识
 
 我一直在慢慢地写关于 Git 工作原理的文章。我以为自己已经对 Git 相当了解了，但像往常一样，当我试图解释一些东西时，我又学到了一些新东西。
 
@@ -14,12 +17,11 @@ reviewer: ""
 
 事实是:
 
-- [一些杂七杂八的 git 知识](#一些杂七杂八的-git-知识)
-  - [`index`， `staging area` 和 `–cached` 都是一回事](#index-staging-area-和-cached-都是一回事)
-  - [储藏包含多个提交](#储藏包含多个提交)
-  - [并非所有引用都是分支或标签](#并非所有引用都是分支或标签)
-  - [merge commits（合并提交）不是空的](#merge-commits合并提交不是空的)
-  - [就这样](#就这样)
+- [`index`， `staging area` 和 `–cached` 都是一回事](#index-staging-area-和-cached-都是一回事)
+- [储藏包含多个提交](#储藏包含多个提交)
+- [并非所有引用都是分支或标签](#并非所有引用都是分支或标签)
+- [merge commits（合并提交）不是空的](#merge-commits合并提交不是空的)
+- [就这样](#就这样)
 
 让我们来谈谈它们！
 
@@ -46,9 +48,9 @@ Changes to be committed:
 
 在 Git 中，这个 `staging area(暂存区)`实际上有三个不同的名字。所有这些都指向同一个东西（文件 `.git/index`）：
 
--   `git diff --cached`
--   `git diff --staged`
--   这个文件对应 `.git/index`
+- `git diff --cached`
+- `git diff --staged`
+- 这个文件对应 `.git/index`
 
 我觉得我应该早点意识到这一点，但我没有，所以就这样了。
 
