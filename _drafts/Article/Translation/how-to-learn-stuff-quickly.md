@@ -4,7 +4,7 @@ date: 2024-06-22T16:21:51.250Z
 authorURL: https://www.joshwcomeau.com/
 originalURL: https://www.joshwcomeau.com/blog/how-to-learn-stuff-quickly/
 translator: "yiwei"
-reviewer: ""
+reviewer: "yiwei"
 ---
 
 人们常说互联网已经实现了教育民主化：人类知识的总和只需一次谷歌搜索即可获取！然而，获取信息只是故事的一半；你还需要能够将原始信息转化为可用的技能。
@@ -60,7 +60,7 @@ reviewer: ""
 
 ### [扩展教程](#extending-tutorials-3)
 
-假设我们通过[官方教程](https://reactjs.org/tutorial/tutorial.html)学习 React 并创建了一个井字棋游戏。
+假设我们通过这个[官方教程](https://reactjs.org/tutorial/tutorial.html)学习 React 并创建了一个井字棋游戏。
 
 当你完成教程时，你将创建一个功能齐全但非常简单的游戏。
 
@@ -98,7 +98,7 @@ reviewer: ""
 > 
 > 我的图表看起来像这样：
 > 
-> ![Your image description](image-link.png)
+> ![Line Chart](https://www.joshwcomeau.com/_next/image/?url=%2Fimages%2Fhow-to-learn-stuff-quickly%2Fguided-graph.png)
 > 
 > 你的图表可能看起来有些不同；最终，找到正确的平衡点取决于你自己！重要的是，我们不要只专注于有指导的学习或无指导的学习。
 
@@ -194,6 +194,8 @@ reviewer: ""
 最近，我开始自学如何使用 [Blender](https://www.blender.org/) 创建 3D 插图。
 
 我还是个初学者。目前，我大概投入了约 150 个小时的时间。但我已经能够创建一些看起来不错的艺术作品。以下是我制作的一些东西：
+
+![3D illustration](https://www.joshwcomeau.com/images/how-to-learn-stuff-quickly/sneakers.avif)
 
 我能够如此快速地学习，是因为遵循了这篇博文中列出的所有技术。但还有一个我手中的王牌：_互补技能_。
 
