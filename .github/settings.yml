@@ -8,9 +8,29 @@ repository:
   enable_vulnerability_alerts: true
 
 labels:
-  - name: crawler
-    color: "#d73a4a"
+  - name: Article
+    color: "#e99bb1"
     description: download an Internet article automatically
+
+  - name: Salon
+    color: "#d7f797"
+    description: 小型分享会、讲座
+
+  - name: Workshop
+    color: "#9fa6da"
+    description: 动手训练营、工作坊
+
+  - name: Conference
+    color: "#f9bec6"
+    description: 大型会议、峰会
+
+  - name: cooperation
+    color: "#73bde7"
+    description: 外部合作
+
+  - name: online
+    color: "#c5f2fc"
+    description: 线上活动
 
   - name: bug
     color: "#d73a4a"
