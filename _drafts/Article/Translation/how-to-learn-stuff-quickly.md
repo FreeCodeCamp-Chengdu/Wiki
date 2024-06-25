@@ -60,7 +60,7 @@ reviewer: "yiwei"
 
 ### [扩展教程](#extending-tutorials-3)
 
-假设我们通过这个[官方教程](https://reactjs.org/tutorial/tutorial.html)学习 React 并创建了一个井字棋游戏。
+假设我们通过这个[官方教程](https://react.dev/learn/tutorial-tic-tac-toe)学习 React 并创建了一个井字棋游戏。
 
 当你完成教程时，你将创建一个功能齐全但非常简单的游戏。
 
