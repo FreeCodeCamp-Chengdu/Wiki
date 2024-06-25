@@ -9,6 +9,8 @@ categories:
   - Article
   - Translation
 toc: true
+photos:
+  - https://i.ytimg.com/vi/x_0uxBiByCU/maxresdefault.jpg
 ---
 
 自从我参与开源 Python 项目以来，[tox][1] 一直是跨 Python 版本（以及其他因素）测试软件包的关键。然而，最近，我越来越多地在我的项目中使用 [Nox][2]。由于我被反复问到，为什么，我将总结一下我的想法。
@@ -18,6 +20,8 @@ toc: true
 我本能地不喜欢说 tox 的坏话，但如果不对比功能和行为就无法解释我的偏好。
 
 这不是呼吁放弃 tox（我仍然在许多项目中使用它），而是解释为什么我在某些情况下更喜欢 Nox。Nox 和 tox 都不是绝对优于另一个，只是不同而已。
+
+<!-- more -->
 
 ## 配置格式
 

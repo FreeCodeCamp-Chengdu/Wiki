@@ -9,6 +9,8 @@ categories:
   - Article
   - Translation
 toc: true
+photos:
+  - https://miro.medium.com/v2/resize:fit:640/format:webp/1*DFqc1P6PnOZ8S95puZqSEg.png
 ---
 
 ## 无需从头到尾阅读一本书，就能掌握其要点

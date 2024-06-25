@@ -1,6 +1,7 @@
 ---
 title: 对 Python 对环境管理和包管理工具的一次公正评估
 authors:
+  - Anna-Lena Popkes
   - luojiyin1987
 original: https://alpopkes.com/posts/python/packaging_tools/
 date: 2023-08-24
@@ -9,6 +10,8 @@ categories:
   - Article
   - Translation
 toc: true
+photos:
+  - https://p1.itc.cn/q_70/images03/20210809/1e2ff3ae07dd41d7bc190c7699f9583a.png
 ---
 
 ![作者头像][1]
