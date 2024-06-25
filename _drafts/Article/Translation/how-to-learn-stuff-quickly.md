@@ -1,272 +1,219 @@
 ---
-title: How To Learn Stuff Quickly
+title: 如何快速学习
 date: 2024-06-22T16:21:51.250Z
-authorURL: ""
+authorURL: https://www.joshwcomeau.com/
 originalURL: https://www.joshwcomeau.com/blog/how-to-learn-stuff-quickly/
-translator: ""
-reviewer: ""
+translator: "yiwei"
+reviewer: "tianheg"
 ---
 
-It's often said that the internet has democratized education: the sum of human knowledge is only a Google search away! And yet, having access to information is only half of the story; you also need to be able to convert raw information into usable skills.
+人们常说互联网已经实现了教育民主化：人类知识的总和只需要谷歌搜索即可获取！然而，获取信息只是故事的一半；你还需要能够将原始信息转化为可用的技能。
 
 <!-- more -->
 
-For a lot of us, the gap between the two can lead to things like _tutorial hell_—getting stuck doing tutorial after tutorial without ever feeling like you're making substantive progress.
+对于我们很多人来说，这两者之间的差距可能会导致类似于 _教程地狱_ 的情况——不断地做一个又一个教程，却从未觉得自己在取得实质性的进展。
 
-Learning how to learn effectively is super important, _especially_ as a software developer; learning new things is practically the whole gig! If you can learn to quickly pick up new languages/frameworks/tools, you'll be able to be _way more productive_ than the average developer. It's sort of a superpower.
+学习如何有效地学习是非常重要的，_尤其_ 是作为一名软件开发人员；学习新知识几乎就是整个工作的全部！如果你能快速掌握新语言/框架/工具，你会比一般的开发人员 _更高效_ 。这有点像超级能力。
 
-In this blog post, I'll share what I've learned about learning, and show you how I pick up new skills lickety-split!
+在这篇博文中，我将分享我关于学习的心得，并展示我如何快速掌握新技能！
 
-## [
+## [混合指导学习和非指导学习](#mixing-guided-and-unguided-learning-1)
 
-Link to this heading
+广义上讲，有两类学习：
 
-][1]Mixing guided and unguided learning
+1. **指导型学习：** 阅读教程、参加课程、观看 YouTube 视频。任何你在跟随指导的活动。
+2. **非指导型学习：** 从头开始创建自己的项目、扩展教程、在文档中查找信息。任何你不跟随指导的活动。
 
-Broadly speaking, there are two categories of learning:
+如果你只跟随指导资源，你会陷入_教程地狱_。你将无法掌握作为一名开发人员取得成功所需的解决问题的技能。当你尝试创建自己的项目时，你不知道从哪里开始。会觉得自己花了很多时间练习却没有获得任何实际的、实用的技能。
 
-1.  **Guided:** Reading a tutorial, taking a course, watching a YouTube video. Anything where you're following a guide.
-    
-2.  **Unguided:** Creating your own projects from scratch, extending a tutorial, looking things up in the docs. Anything where you aren't following a guide.
-    
+另一方面，如果你完全专注于非指导学习，学习过程会_非常漫长_。没有经验丰富的指导，你需要重新发明每一个轮子，花费几天或几周解决已经解决的问题。这是一条漫长而令人沮丧的道路。在最坏的情况下，你可能会完全放弃，错误地认为你不够聪明。
 
-If you only follow guided resources, you'll wind up in _tutorial hell_. You won't develop the problem-solving skills needed to succeed as a developer. When you try to build your own project, you won't know where to start. It will feel like you've spent so much time practicing without developing any tangible, practical skills.
+一些课程意识到了这种对立关系，并会包括非指导学习的机会。比如扩展目标、思维实验和挑战性练习。我希望这种类型的资源能更常见一些！
 
-On the other hand, if you focus entirely on unguided learning, it'll take _forever_. Without an experienced guide, you'll need to reinvent every wheel, spending days or weeks solving already-solved problems. This is a long and frustrating road. In the worst case, you might wind up quitting altogether, convinced (incorrectly!) that you just aren't smart enough for this stuff.
+让我们看看如何将一些非指导学习融入指导资源中的一些想法。
 
-Some courses are aware of this dichotomy, and will include opportunities for unguided learning. Things like stretch goals, thought experiments, and challenging exercises. I wish these types of resources were more common!
+### [故意犯错](#making-intentional-mistakes-2)
 
-Let's look at some ideas for how to mix some unguided learning into guided resources.
+如果你和我一样，你不喜欢犯错。你希望一切都能第一次就完美进行。
 
-### [
+这种心态在生活中通常是有帮助的，在其他领域也有帮助。如果你是一名汽车修理工，错误可能会花费数百美元的零件费用。如果你是一名牙医，一个错误可能会毁掉某人的微笑。
 
-Link to this heading
+但是在软件开发中，错误是免费的！如果我们犯了错误，可以切换回编辑器，修改代码，然后再试一次。我们甚至还有一些有用的错误信息（有时）可以指引我们方向。这是一种不可思议的奢侈，我们并没有充分利用它。
 
-][2]Making intentional mistakes
+当我跟随教程时，我喜欢玩代码。不要逐字逐句地复制/粘贴提供的代码，试着进行实验：如果省略其中一行会发生什么？或者更改某些值会发生什么？
 
-If you're anything like me, you don't like making mistakes. You want everything to go perfectly, the very first time.
+我尝试像科学家一样行事。如果我对这段代码的工作方式有一个假设，我会通过更改代码并观察它是否以我预期的方式崩溃来检验这个假设。当我发现我的假设有缺陷时，我可能会从教程中偏离，去谷歌上做一些研究。或者如果这个问题看起来太深，我可能会把它列入“稍后探索的事情”清单中。
 
-This mindset is generally helpful in life, and it's helpful in other fields. If you work as an auto mechanic, mistakes can cost hundreds of dollars in parts. If you work as a dentist, a mistake might ruin someone's smile.
+这个过程帮助我们避免了无主动意识地跟随教程，复制/粘贴代码而不真正理解它做了什么或为什么我们要这样做的危险循环。
 
-With software development, though, mistakes are free! If we make a mistake, we can tab back to our editor, change the code, and try again. We even have helpful error messages that can (sometimes) point us in the right direction. This is an incredible luxury, and not one that we take advantage of enough.
+学习是一个主动的过程。探究代码有助于我们建立对正在发生的事情的心理模型。
+> #### 教程渐隐
+> 多年前，当我刚起步时，我使用了一个我称之为“教程渐隐”的方法。
+> 
+> 具体操作如下：
+> 1. 按照教程逐字逐句地操作，一步一步地进行。
+> 2. 完成后，将代码重置为初始状态，并最小化教程。看看在不看教程的情况下你能走多远。当你卡住时，重新打开教程，但一旦你解开困惑，就再次将其最小化。
+> 3. 重复这个过程，直到你可以从头到尾完成教程而不看说明。
+> 就像上面描述的科学家心态一样，这个过程很有用，因为它迫使你集中注意力。教程逐渐淡出，你最终学会了在没有指导的情况下创建事物。
+> 
+> 这种方法非常有效，但并不是每个人都喜欢反复创建同样的东西。不过，如果你曾经挣扎于“教程地狱”，这可能值得一试！
 
-When I follow a tutorial, I like to play with the code. Instead of copy/pasting the provided code verbatim, try experimenting with it: what happens if you omit one of the lines? Or if you change some of the values?
+### [扩展教程](#extending-tutorials-3)
 
-I try and act like a scientist. If I have a hypothesis about how this code is supposed to work, I test that hypothesis by changing the code, and seeing if it breaks in the way I expect. When I discover that my hypothesis is flawed, I might detour from the tutorial and do some research on Google. Or I might add it to a list of "things to explore later", if the rabbit hole seems to go too deep.
+假设我们通过这个 [官方教程](https://react.dev/learn/tutorial-tic-tac-toe) 学习 React 并创建了一个井字棋游戏。
 
-This process helps us avoid the sinister rhythm of following a tutorial on autopilot, copy/pasting code without really understanding what it does or why we're doing it.
+当你完成教程时，你将创建一个功能齐全但非常简单的游戏。
 
-Learning is an active process. Poking and prodding at the code will help us build a mental model for what's going on.
+我们可以为它添加各种有趣的功能：
 
-### [
+- 记录每个玩家赢得了多少场比赛
+- 用更多的展示组件增强 UI
+- 允许配置棋盘大小（4x4, 5x5）
+- 添加一个可以与玩家对战的 AI
+- 趣味元素！（动画、音效、胜利时的彩带等）
 
-Link to this heading
+要有创造力，并选择你真正感兴趣的事情！
 
-][3]Extending tutorials
+这种策略很好，因为你避免了空白画布的压力。你已经有了一个功能齐全、理解透彻的项目。你是在坚实的基础上添加砖块。
 
-Let's suppose we're learning React by building a tic-tac-toe game, following the [official tutorial][4].
+它还有一个好处：如果你对教程项目进行了显著扩展，可以在你的作品集中将其作为亮点！我在我的书[《创建一个有效的开发者作品集》](https://www.joshwcomeau.com/effective-portfolio/)中深入探讨了这个策略。
 
-By the time you've finished the tutorial, you will have created a fully-functional yet pretty-minimal game.
+### [创建相关项目](#building-related-projects-4)
 
-There are all kinds of fun bells and whistles we can add to it:
+一旦你完成了井字棋项目，你可能会有点不确定接下来该做什么。
 
--   Keep track of how many games each player has won
-    
--   Enhance the UI with more presentational components
-    
--   Allow the board size to be configured (4x4, 5x5)
-    
--   Add an AI that the player can play against
-    
--   Whimsy! (animations, sound effects, confetti on victory, etc)
-    
+在跳到另一个教程之前，尝试从头开始创建一个类似的项目可能是个好主意。
 
-Be creative, and pick things you're genuinely interested in!
+例如，也许你可以制作一个宾果游戏！你可以利用一些新技能（状态管理、事件监听），但在一个稍微不同的背景下。你可能会遇到一些教程中没有涉及的难题；你可以在谷歌上做些调查，尝试找到解决方案！
 
-This strategy is nice because you avoid the stress of a blank canvas. You already have a fully-functional, well-understood project. You're adding bricks to a solid foundation.
+如果你真的无法解决，可以暂时搁置这个项目。再做几个教程，然后回来看你是否已经学到足够的知识来突破自己的知识局限。
 
-It also has a nice side-benefit: if you add significant extensions to a tutorial project, you can take credit for it in your portfolio! I cover this strategy in depth in my book, [Building an Effective Dev Portfolio][5].
+我见过这种策略被描述为“一个有指导，一个无指导”。跟随一个有指导资源，如教程，然后花费相同的时间创建一个类似的（但无指导的）项目。如果教程教你如何创建一个 Instagram 克隆版，尝试自己创建一个 Twitter 克隆版！
 
-### [
+> #### 找到正确的平衡点
+> 
+> 当我刚开始学习旅程时，我倾向于主要专注于有指导的学习。当我还在努力掌握语法和基础知识时，很难以无指导的方式构建任何东西！
+> 
+> 然而，当我变得越来越熟悉后，平衡就会发生变化。我花更多的时间进行无指导的学习，构建那些对我来说有趣的东西。当遇到新的或不熟悉的问题时，我会寻找教程，但随着经验的积累，这种情况会越来越少。
+> 
+> 我的图表看起来像这样：
+> 
+> ![Line Chart](https://www.joshwcomeau.com/_next/image/?url=%2Fimages%2Fhow-to-learn-stuff-quickly%2Fguided-graph.png&w=640&q=75)
+> 
+> 你的图表可能看起来有些不同；最终，找到正确的平衡点取决于你自己！重要的是，我们不要只专注于有指导的学习或无指导的学习。
 
-Link to this heading
+## [心态培养](#mindset-cultivation-5)
 
-][6]Building related projects
+多年前，我和一些朋友去打保龄球。
 
-Once you've finished the tic-tac-toe project, you might be a little unsure about what to do next.
+我表现得很差。我的大多数球都进了沟。到比赛结束时，我的得分是小组中最低的。
 
-Before hopping onto another tutorial, it might be a good idea to try building a similar project from scratch.
+有两种不同的方式来解释这种情况：
 
-For example, maybe you can make a bingo game! You'll be able to leverage some of your new skills (state management, event listening), but in a slightly different context. You'll likely hit a point where you don't know how to do something, because it wasn't covered in the tutorial; you can do some sleuthing on Google to try and find a solution!
+1. 我就是不擅长打保龄球，我永远不会擅长。保龄球根本不是我的菜。
+2. 我不擅长打保龄球。但如果我愿意，我可以成为一个优秀的保龄球选手。
 
-If you really can't crack it, you can set this project aside for now. Do a few more tutorials, and then check back later to see if you've learned enough to unblock yourself.
+这有一种自我实现预言的性质：无论你选择哪种解释都是正确的。如果你认为你的保龄球技能水平是固定的，它就会是。如果你相信自己可以提高，你就会提高！*
 
-I've seen this strategy described as "one on, one off". Follow a guided resource like a tutorial, and then spend an equal amount of time creating a similar (but unguided) project. If the tutorial shows you how to build an Instagram clone, try building a Twitter clone on your own!
+如果你想快速学习新技能，培养正确的心态至关重要。
 
-## [
+软件开发从来都不是一帆风顺的。不可避免地，我们会遇到一个困难的问题，即代码无法达到我们的预期。
 
-Link to this heading
+这可能会导致一个充满沮丧和自我怀疑以及冒名顶替综合症的下行螺旋，或者它可以被视为一个极好的学习机会。只要你有正确的心态，没有什么比难以理解的错误信息更能帮助你快速学习。
 
-][7]Mindset cultivation
+说实话，**我们从挣扎和失败中学到的比从轻松成功中学到的要多得多**。有了成长心态，虽然挣扎可能不一定_有趣_，但感觉很有成效，就像一次好的锻炼。
 
-Many years ago, I went bowling with some friends.
+了解更多关于 [培养成长心态](https://www.youtube.com/watch?v=-71zdXCMU6A) 的信息。
 
-I didn't do well. Most of my balls wound up in the gutter. By the end of the game, I had the lowest score out of the group by far.
+## [目标和动机](#goals-and-motivation-6)
 
-There are two different ways to interpret this scenario:
+我们生活在一个社交媒体炒作的世界里，很容易感到有压力，要跟上潮流，学习每一个在 Twitter 上出现的流行 JS 库。
 
-1.  I'm just not good at bowling, and I never will be. Bowling just isn't my thing.
-    
-2.  I'm not good at bowling. If I want to, though, I can become an excellent bowler.
-    
+就我个人而言，每次我试图这样做，结果都不太好。😅
 
-There is a self-fulfilling prophecy aspect to this: whichever interpretation you choose will be correct. If you think that your level of bowling skill is fixed, it will be. If you believe that you can improve, you will!\*
+我只是对为了学习而学习并没有特别的动力。为了让我保持动力，我需要有一个令人兴奋和具体的目标。
 
-If you want to learn new skills quickly, it's critically important that you cultivate the right mindset.
+例如：几年前，我发现了 Beat Saber，这是一款 VR 视频游戏。在这个游戏中，你用光剑攻击方块，与音乐同步。每首歌都有一个独特的编舞。
 
-Things never go smoothly when it comes to software development. Inevitably, we'll hit a rough patch where the code doesn't do what we expect.
+有软件让用户可以创建自己的编舞（在社区中称为“地图”），但我并不是它的忠实粉丝。我想为 Beat Saber 创建自己的地图编辑器。
 
-This can either lead to a downward spiral—one full of frustration and self-doubt and impostor syndrome—or it can be seen as a fantastic learning opportunity. Nothing helps you learn faster than an inscrutable error message, if you have the right mindset.
+经过几个月的艰苦和偶尔令人沮丧的工作，我实现了我的目标：
 
-Honestly, **we learn so much more from struggling and failing** than we do from effortless success. With a growth mindset, the struggle might not be _fun_ exactly, but it feels productive, like a good workout.
+（如果你对这个项目感兴趣，可以[在线观看](https://beatmapper.app/)，在 [Github 上查看代码](https://github.com/joshwcomeau/beatmapper)，或[观看关于其开发的会议演讲](https://www.youtube.com/watch?v=9u0VapB-AbE)！）
 
-Learn more about [cultivating a growth mindset][8].
+在这个项目之前，我没有任何 3D 经验，我必须学习大量关于 WebGL、Three.js 和 react-three-fiber 的知识。学习是困难的，无论你的成长心态有多么培养得当，总会有些日子事情进展不顺利。
 
-## [
+但因为我有一个具体的目标，是我_真正_想要的，我能够克服挫折并继续进步。如果我只是为了好玩或者因为我认为它会让我的简历看起来更好而学习这些东西，我可能很快就放弃了。
 
-Link to this heading
+不同的人受到不同事物的激励，所以我并不是说你需要找到一个特定的项目来创建。但我确实认为有一个明确的目标是很重要的，某个你真正感兴趣的东西。否则，在最初的新奇感消失后，维持所需的动力将变得很困难。
 
-][9]Goals and motivation
+## [记忆事物](#remembering-things-7)
 
-We live in a world of social-media hype, and it's easy to feel pressured to stay current, to learn every trendy JS library that floats by on Twitter.
+我的记忆力 _非常_ 差。
 
-Personally, every time I've tried to do this, it hasn't worked out. 😅
+这可能有点问题；如果你不能记住事情，学习东西会很难！幸运的是，我有一个系统：**间隔重复**。
 
-I'm just not particularly motivated to learn for learning's sake. In order for me to stay motivated, I need to have an exciting and concrete goal in mind.
+这里是间隔重复的核心思想：为了增强记忆，你需要在记忆即将消退时访问它。每次你增强记忆，它的持续时间就会稍微长一点。
 
-For example: a few years ago, I discovered Beat Saber, a VR video game. In this game, you attack blocks with lightsabers, timed to music. Every song has a unique choreography.
+这听起来很复杂，但有一些工具可以帮你跟踪这个过程。我个人使用 Leitner 盒，这是一个装有几百张索引卡的物理盒子。每天，我会复习一小部分卡片。
 
-Software existed to let users create their own choreographies (known in the community as “maps”), but I wasn't a big fan of it. I wanted to build my own map editor for Beat Saber.
+如果你对间隔重复感兴趣，我_强烈_建议你看看 Nicky Case 的这篇可探索的解释：[《如何永远记住任何事情》](https://ncase.me/remember/)。
 
-After a few months of hard and occasionally-frustrating work, I achieved my goal:
+## [建立日常习惯](#building-a-daily-habit-8)
 
-(If you're interested in this project, you can [view it live][10], [check out the code][11] on Github, or [watch a conference talk][12] about its development!)
+假设我们承诺每周花 7 个小时学习新东西。你认为是每天花一个小时在这个活动上更有效，还是每周日连续花 7 个小时更有效？
 
-Prior to this project, I had no 3D experience, and I had to learn a ton about WebGL, Three.js, and react-three-fiber. Learning is hard, and no matter how cultivated your growth mindset is, there will always be days where things just don't go well.
+据我的经验，花费较少的时间但更频繁地进行会 _更_ 有效。
 
-But because I had a concrete goal, something I _really_ wanted, I was able to push through the frustration and continue making progress. If I had been learning this stuff just for fun, or because I thought it would look good on my résumé, I would have probably given up pretty quickly.
+我意识到并非每个人都有这种奢侈的结构，但如果你能做到，我强烈建议你尝试每天花一点时间在你试图学习的东西上。
 
-Different people are motivated by different things, so I don't mean to imply that you need to find a niche project to build. But I do think it's important that you have a goal in mind, something you're truly excited about. Otherwise, it'll be hard to sustain the motivation required after the initial novelty wears off.
+我有一些关于为什么这种方式对我来说更有效的假设：
 
-## [
+1. 每晚，大脑会处理并承诺当天学到的东西。我希望每天都能利用这一点，而不仅仅是每周一次！
+2. 因为我每天都练习，可以直接从上次中断的地方继续。我不必花费大量时间刷新记忆和重新开始。
+3. 正如我们所谈论的，在新奇感消失后维持动力可能很困难。如果你能将其融入日常生活，你就不必太担心动力问题；不管你感觉如何，它变成了你只需要_做_的事情。
 
-Link to this heading
+## [公开学习](#learning-in-public-9)
 
-][13]Remembering things
+我是 Swyx 的 [公开学习](https://www.swyx.io/learn-in-public/) 理念的忠实粉丝。
 
-I have a _terrible_ memory.
+主要思想是，通过发布我们所学的内容，我们可以帮助未来的自己。当我们发现新事物时，我们应该创建一个记录它的文档，比如博文、推文或 YouTube 视频。
 
-This can be a bit problematic; it's hard to learn stuff if you can't remember things! Fortunately, I have a system: **spaced repetition**.
+这可能有点违背直觉；为什么要在“学习时间”写博文呢？这不是浪费时间吗？
 
-Here's the core idea behind spaced repetition: in order to strengthen a memory, you need to access it _right_ as it's about to fade away. And every time you strengthen a memory, it lasts just a little bit longer.
+公开学习有_很多_好处，我发现了以下几点：
+公开学习，但这里是我发现的一些：
 
-It sounds complicated, but there are tools that can keep track of this for you. Personally, I use a leitner box, a physical box that holds a few hundred index cards. Every day, I'll review a small handful of cards.\*
+1. 你有没有试图向某人解释某事，结果发现自己并不像你想象的那样彻底理解它？写博文有同样的效果。这是揭示你心理模型中的缺陷/漏洞的最佳方法，以便你可以修复它们。
+2. 世界上最糟糕的感觉是遇到一个你_知道_自己已经解决过的 bug，但你记不起如何解决它。如果你写了一篇关于它的博文，你可以参考它！
+3. 通过分享你的学习，你成为开发者社区的积极参与者。你可以结交朋友和建立联系。这既有趣又有成就感，更不用说在找新工作或启动新企业时的好处了！
 
-If you're interested in learning more about spaced repetition, I _strongly_ encourage you to check out this explorable explanation by Nicky Case: [“How to Remember Anything Forever-ish”][14].
+需要注意的一点是：不要陷入设置完美博客数周的陷阱！从像 [Dev](https://dev.to/) 这样的平台上发布开始，甚至只是发布在 Twitter 上！在我建立博客之前，我在 Medium 上发布了数十篇博文。如果你发现自己真的喜欢公开学习，你可以随时迁移到一个华丽的定制博客。😄
 
-## [
+## [技能网络](#a-network-of-skills-10)
 
-Link to this heading
+最近，我开始自学如何使用 [Blender](https://www.blender.org/) 创建 3D 插图。
 
-][15]Building a daily habit
+我还是个初学者。目前，我大概投入了约 150 个小时的时间。但我已经能够创建一些看起来不错的艺术作品。以下是我制作的一些东西：
 
-Let's suppose that we commit to spending 7 hours a week learning something new. Do you think it's more effective to spend an hour a day on that activity, or 7 hours on Sunday every week?
+![3D illustration](https://www.joshwcomeau.com/images/how-to-learn-stuff-quickly/sneakers.avif)
 
-Anecdotally, I've had _way_ more success spending small amounts of time more frequently.
+我能够如此快速地学习，是因为遵循了这篇博文中列出的所有技巧。但还有一个我手中的王牌：_互补技能_。
 
-I recognize that not everyone has the luxury to structure things this way, but if you can manage it, I'd strongly recommend trying to spend some amount of time every day on the thing you're trying to learn.
+事情是这样的，3D 插图不是一项单一的技能；它是多个技能组成的集合。其中一些，比如创建 3D 模型，对我来说是全新的，我必须从头学起。但其中一些是我有经验的技能网络的一部分。
 
-I have some hypotheses about why it's so much more effective for me:
+例如：我有点业余摄影爱好。几年前，我学会了构图，如何在视口中排列元素以获得引人注目的镜头。我可以在我的渲染中定位对象时利用这些技能。
 
-1.  Every night, the brain processes and commits what you've learned that day. I want to take advantage of this every day, not just once a week!
-    
-2.  Because I practice every day, I can pick up right where I left off. I don't have to spend a ton of time refreshing my memory and ramping back up.
-    
-3.  As we've talked about, it can be hard to sustain motivation after the novelty wears off. If you can work it into your daily routine, you don't have to worry about motivation as much; it becomes something you just _do_, regardless of how you're feeling.
-    
+这是一个特别具体的例子，但其他的例子则更为模糊。多年来，我在前端开发工作的过程中培养了对细节的关注。所有这些像素推敲帮助我为倒角和厚度设定合适的值。而我做 UI 设计的工作帮助我理解色彩理论和美学。
 
-## [
+你不一定会认为我已经拥有的技能会与 3D 插图产生协同作用，但它给了我一个极大的不公平优势。
 
-Link to this heading
+在我看来，技能就像财富。你积累的技能越多，它们增长的速度就越快。在一个领域中获得的想法和技术可以在另一个领域中发挥作用。
 
-][16]Learning in public
+我并不是说你应该成为一个完全的通才——拥有深厚的专业知识仍然是值得的！但你的技能网络越广，在学习新事物时你的优势就越大。
 
-I'm a big fan of Swyx's [Learn in Public][17] philosophy.
+有时，学习资源会利用这一点。例如，我正在制作一个 CSS 课程，[《为 JavaScript 开发者准备的 CSS》](https://css-for-js.dev/)。我专门为 JS 开发者创建它，因为我知道我可以利用大量的预先存在的知识来简化学习 CSS 的过程。我们不是从零开始创建，而是利用你对 JS 的知识来解释 CSS，复制/粘贴你已经拥有的心理模型。
 
-The main idea is that by publishing what we learn, we help our future selves. When we discover something new, we should create an artifact that documents it, like a blog post or a tweet or a YouTube video.
+我的目标是改变你与 CSS 的关系。很多 JS 开发者觉得它令人沮丧且违反直觉。如果你想提升你的 CSS 技能，你可以[了解更多关于课程的信息](https://css-for-js.dev/)。
 
-This can feel a bit counter-intuitive; why would you spend your "learning time" writing blog posts? Isn't that a big waste of time?
-
-There are _a ton_ of benefits to learning in public, but here are the ones I've found:
-
-1.  Have you ever tried to explain something to someone, only to realize that you don't quite understand it as thoroughly as you thought you did? Writing a blog post has the same effect. It's the best way to uncover flaws/holes in your mental model, so you can fix them.
-    
-2.  The worst feeling in the world is hitting a bug that you _know_ you've solved before, but you can't remember how you solved it. If you had written a blog post about it, you could reference it!
-    
-3.  By sharing what you learn, you become an active participant in the dev community. You can make friends and connections. This can be fun and fulfilling, not to mention beneficial when it comes to finding a new job or starting a new enterprise!
-    
-
-One word of caution: don't fall into the trap of spending weeks setting up the perfect blog from scratch! Start by publishing on a platform like [Dev][18], or even just on Twitter! I published dozens of blog posts on Medium before I built my blog. If you discover that you really enjoy learning in public, you can always migrate to a fancy custom blog later. 😄
-
-## [
-
-Link to this heading
-
-][19]A network of skills
-
-Recently, I started teaching myself how to create 3D illustrations using [Blender][20].
-
-I'm still a beginner. At this point, I'd say I've invested maybe ~150 hours into the skill. But I've been able to create some decent-looking art. Here are some of the things I've made:
-
-I've been able to learn so quickly by following all of the techniques laid out in this blog post. But there's one other ace up my sleeve: _complementary skills_.
-
-The thing is, 3D illustration isn't a single skill; it's a collection of dozens of individual skills. Some of these, like creating 3D models, were totally new to me, and I had to learn them from scratch. But some of them are part of a constellation I have experience with.
-
-For example: I'm a bit of a hobbyist photographer. Years ago I learned about composition, how to arrange elements within the viewport for compelling shots. I can leverage those skills when positioning objects in my renders.
-
-That's a particularly concrete example, but others are more nebulous. I've spent years and years developing an eye for detail in my work as a front-end developer. All of that pixel-pushing has helped me come up with suitable values for bevels and thicknesses. And my work doing UI design has helped me understand color theory and aesthetics.
-
-You wouldn't necessarily think that the skills I already have would synergize with 3D illustration, but it's given me a ridiculously unfair advantage.
-
-The way I see it, skills are like wealth. The more skills I pick up, the faster they accumulate. Ideas and techniques gleaned in one domain can help in another.
-
-I'm not saying you should become a total generalist—it's still worth having pockets of deep expertise! But the wider your skill network grows, the bigger your advantage will be when it comes to learning something new.
-
-Sometimes, learning resources will take advantage of that idea. For example, I'm working on a CSS course, [CSS for JavaScript Developers][21]. I'm building it specifically for JS developers, because I know I can leverage a bunch of pre-existing knowledge to make it easier to learn CSS. Instead of starting from ground zero and building up from nothing, we use your knowledge of JS to explain CSS, copy/pasting the mental models you already have.
-
-My goal is to change your relationship with CSS. So many JS developers find it frustrating and counterintuitive. If you want to level up your CSS skills, you can [learn more about the course][22].
-
-I covered _a lot_ of ground in this blog post, and I really appreciate that you made it all the way to the end 💖 Best of luck on your learning journey!
-
-[1]: #mixing-guided-and-unguided-learning-1
-[2]: #making-intentional-mistakes-2
-[3]: #extending-tutorials-3
-[4]: https://reactjs.org/tutorial/tutorial.html
-[5]: https://www.joshwcomeau.com/effective-portfolio/
-[6]: #building-related-projects-4
-[7]: #mindset-cultivation-5
-[8]: https://www.youtube.com/watch?v=-71zdXCMU6A
-[9]: #goals-and-motivation-6
-[10]: https://beatmapper.app/
-[11]: https://github.com/joshwcomeau/beatmapper
-[12]: https://www.youtube.com/watch?v=9u0VapB-AbE
-[13]: #remembering-things-7
-[14]: https://ncase.me/remember/
-[15]: #building-a-daily-habit-8
-[16]: #learning-in-public-9
-[17]: https://www.swyx.io/learn-in-public/
-[18]: https://dev.to/
-[19]: #a-network-of-skills-10
-[20]: https://www.blender.org/
-[21]: https://css-for-js.dev/
-[22]: https://css-for-js.dev/
+在这篇博文中我覆盖了 _很多_ 内容，真的很感谢你坚持到最后 💖 祝你在学习旅程中好运！
