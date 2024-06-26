@@ -1,10 +1,17 @@
 ---
-title: An unbiased evaluation of environment management and packaging tools
-authorURL: ""
-originalURL: https://alpopkes.com/posts/python/packaging_tools/
-translator: ""
-reviewer: ""
+title: 对 Python 对环境管理和包管理工具的一次公正评估
+authors:
+  - Anna-Lena Popkes
+  - luojiyin1987
+original: https://alpopkes.com/posts/python/packaging_tools/
 date: 2023-08-24
+updated: 2024-05-23 00:23:00
+categories:
+  - Article
+  - Translation
+toc: true
+photos:
+  - https://p1.itc.cn/q_70/images03/20210809/1e2ff3ae07dd41d7bc190c7699f9583a.png
 ---
 
 ![作者头像][1]
@@ -21,11 +28,11 @@ Anna-Lena Popkes
 
 为了撰写本文，我确定了环境和软件包管理的五大重要类别：
 
--   环境管理（主要涉及虚拟环境）
--   软件包管理
--   Python 版本管理
--   软件包构建
--   软件包发布
+- 环境管理（主要涉及虚拟环境）
+- 软件包管理
+- Python 版本管理
+- 软件包构建
+- 软件包发布
 
 正如你在下面的维恩图中所看到的，存在大量的工具。有些可以做一件事（即它们是单一用途的），而其他工具可以执行多个任务（因此我称它们为多用途工具）。
 
@@ -57,9 +64,9 @@ Anna-Lena Popkes
 
 ![版本管理工具对比图][5]
 
-### pyenv
+### PyEnv
 
-Python 有一个单一用途的工具可以让您安装和管理 Python 版本：[pyenv](https://github.com/pyenv/pyenv)！ Pyenv 易于使用。 最重要的命令如下：
+Python 有一个单一用途的工具可以让您安装和管理 Python 版本：[pyenv](https://github.com/pyenv/pyenv)！ PyEnv 易于使用。 最重要的命令如下：
 
 ```bash
 # Install specific Python version
@@ -87,9 +94,9 @@ pyenv global <version> # select version globally for your user account
 
 ![管理环境工具对比图][6]
 
-### venv
+### VEnv
 
-[Venv][7] 是用于创建虚拟环境的内置 Python 包。 这意味着它随 Python 一起提供，用户无需安装。 最重要的命令如下：
+[VEnv][7] 是用于创建虚拟环境的内置 Python 包。 这意味着它随 Python 一起提供，用户无需安装。 最重要的命令如下：
 
 ```bash
 # Create new environment
@@ -102,9 +109,9 @@ python3 -m venv <env_name>
 deactivate
 ```
 
-### virtualenv
+### VirtualEnv
 
-[Virtualenv][8] 试图改进 `venv`。 它提供了比 `venv` 更多的功能，并且速度更快、功能更强大。 最重要的命令与 `venv` 的命令类似，只是创建一个新环境更简洁：
+[VirtualEnv][8] 试图改进 `venv`。 它提供了比 `venv` 更多的功能，并且速度更快、功能更强大。 最重要的命令与 `venv` 的命令类似，只是创建一个新环境更简洁：
 
 ```bash
 # Create new environment
@@ -138,7 +145,7 @@ Python 中的打包已经走过了漫长的道路。直到 [PEP 518][9] `setup.p
 许多工具都可以执行包管理：`pip`、`pipx`、`pipenv`、`conda`、`pdm`、`poetry`、`rye` 和 `PyFlow`。`pip` 是 Python 社区中众所周知的专用包管理工具。
 ![包管理工具对比][11]
 
-#### pip
+#### PIP
 
 Python 的标准包管理器是 [`pip`][12]。它随 Python 一起提供，允许你从 PyPI 和其他索引安装软件包。主要命令（可能是 Python 开发人员学习的第一个命令之一）是 `pip install <package_name>`。当然，`pip` 还提供了许多其他选项。查看[文档][12]以获取有关可用标志等的更多信息。
 
@@ -152,7 +159,7 @@ Python 的标准包管理器是 [`pip`][12]。它随 Python 一起提供，允�
 
 了解了锁文件之后，我们可以开始研究执行多用途的工具。我们将从 `pipenv` 和 `conda` 开始，然后再过渡到 `poetry` 和 `pdm` 等打包工具。
 
-### Pipenv
+### PipEnv
 
 顾名思义，[`pipenv`][15] 结合了 `pip` 和 `virtualenv`。正如我们在维恩图中看到的，它允许你执行虚拟环境管理和包管理：
 
@@ -160,8 +167,8 @@ Python 的标准包管理器是 [`pip`][12]。它随 Python 一起提供，允�
 
 `pipenv` 引入了两个额外的文件：
 
--   `Pipfile`
--   `Pipfile.lock`
+- `Pipfile`
+- `Pipfile.lock`
 
 `Pipfile` 是一个 TOML 文件（类似于 `pyproject.toml`），用于定义项目依赖项。当开发者调用 `pipenv` 命令（如 `pipenv install`）时，它由开发者管理。`Pipfile.lock` 允许确定性构建。它消除了对 `requirements.txt` 文件的需求，并通过锁定操作自动管理。
 
@@ -199,18 +206,18 @@ pipenv shell
 
 关于这两个 PEP：Python 在打包方面有很多开放和关闭的 PEP。有关完整概述，请查看[此页面][20]。我仅出于特定原因包含了 PEP 660 和 PEP 621：
 
--   [PEP 660][21] 是关于基于 `pyproject.toml` 构建的可编辑安装。当你使用 `pip` 安装软件包时，你可以选择使用 `pip install -e package_name` 以可编辑模式安装它。当你正在开发一个软件包并希望你的更改直接反映在你的环境中时，这是一个非常重要的功能。
--   [PEP 621][22] 指定了如何在 `pyproject.toml` 文件中写入项目的核心元数据。我添加它是为了说明，目前有一个软件包（剧透：它是 `poetry`）不支持此 PEP，而是使用自己的方式声明元数据。
+- [PEP 660][21] 是关于基于 `pyproject.toml` 构建的可编辑安装。当你使用 `pip` 安装软件包时，你可以选择使用 `pip install -e package_name` 以可编辑模式安装它。当你正在开发一个软件包并希望你的更改直接反映在你的环境中时，这是一个非常重要的功能。
+- [PEP 621][22] 指定了如何在 `pyproject.toml` 文件中写入项目的核心元数据。我添加它是为了说明，目前有一个软件包（剧透：它是 `poetry`）不支持此 PEP，而是使用自己的方式声明元数据。
 
 ### Flit
 
 [Flit][23] 试图创建一个将 Python 包和模块放到 PyPI 上的简单方法。它有一个非常具体的用例：它旨在用于打包纯 Python 包（即没有构建步骤的包）。它不关心任何其他任务：
 
--   Python 版本管理：❌
--   包管理：❌
--   环境管理：❌
--   构建包：✅
--   发布包：✅
+- Python 版本管理：❌
+- 包管理：❌
+- 环境管理：❌
+- 构建包：✅
+- 发布包：✅
 
 这也反映在我们的维恩图中：
 
@@ -241,11 +248,11 @@ flit publish
 
 [Poetry][25] 是打包界中一个众所周知的工具。正如维恩图所示，除了 Python 版本管理之外，它可以做任何事情：
 
--   Python 版本管理：❌
--   包管理：✅
--   环境管理：✅
--   构建包：✅
--   发布包：✅
+- Python 版本管理：❌
+- 包管理：✅
+- 环境管理：✅
+- 构建包：✅
+- 发布包：✅
 
 ![poetry][26]
 
@@ -317,11 +324,11 @@ PDM 是唯一一个（除了 PyFlow）在本地包上实现 [PEP 582][28] 的工
 
 如维恩图所示，PDM 位于 Poetry 旁边。这意味着它可以做除 Python 版本管理之外的所有事情：
 
--   Python 版本管理：❌
--   包管理：✅
--   环境管理：✅
--   构建包：✅
--   发布包：✅
+- Python 版本管理：❌
+- 包管理：✅
+- 环境管理：✅
+- 构建包：✅
+- 发布包：✅
 
 PDM 的主要命令与 Poetry 类似。但是，存在的命令较少。例如，目前没有 `pdm shell` 或 `pdm new`。
 
@@ -385,11 +392,11 @@ pdm publish
 
 [Hatch][30] 可以执行以下任务：
 
--   Python 版本管理：❌
--   软件包管理：❌
--   环境管理：✅
--   构建软件包：✅
--   发布软件包：✅
+- Python 版本管理：❌
+- 软件包管理：❌
+- 环境管理：✅
+- 构建软件包：✅
+- 发布软件包：✅
 
 需要注意的是，Hatch 的作者承诺很快就会添加锁定功能，这也应该能够实现软件包管理。 在阅读本文时，请务必查看最新版本的 Hatch，以了解是否已实现此功能。
 
@@ -457,11 +464,11 @@ Hatch 的特别之处在于它允许您在 `pyproject.toml` 文件中配置您�
 
 [Rye][33] 是由 Flask 框架的创建者 Armin Ronacher 最近开发的（第一个版本于 2023 年 5 月发布）。它的灵感很大程度上来自于 `rustup` 和 `cargo`，这两个都是 Rust 编程语言的打包工具。Rye 是用 Rust 编写的，并且能够执行我们维恩图中的所有任务：
 
--   Python 版本管理：✅
--   软件包管理：✅
--   环境管理：✅
--   构建软件包：✅
--   发布软件包：✅
+- Python 版本管理：✅
+- 软件包管理：✅
+- 环境管理：✅
+- 构建软件包：✅
+- 发布软件包：✅
 
 目前，Rye 没有插件接口。但是，由于新版本会定期发布，因此将来可能会添加此功能。
 
@@ -534,8 +541,8 @@ rye publish
 
 有些工具不属于我的任何类别。它们是：
 
--   [pip-tools][35] 帮助您保持基于 `pip` 的软件包版本最新。
--   [tox][36] 和 [nox][37] 主要用于测试，但也处理虚拟环境。
+- [pip-tools][35] 帮助您保持基于 `pip` 的软件包版本最新。
+- [tox][36] 和 [nox][37] 主要用于测试，但也处理虚拟环境。
 
 [给本博文提供建议][38]
 
