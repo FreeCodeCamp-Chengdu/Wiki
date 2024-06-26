@@ -7,8 +7,6 @@ translator: ""
 reviewer: ""
 ---
 
-# 你可能错过的 Docker BuildKit 新功能
-
 随着 BuildKit 的引入，Docker 的构建后端得到了显著改进，并增添了许多强大的新功能。然而，很多用户并不了解这些新功能。因此，本文将向你介绍那些你绝对应该了解并开始使用的 BuildKit 功能，助你更好地利用 Docker。
 
 ## Debugging（调试）
@@ -20,8 +18,11 @@ reviewer: ""
 ```shell
 export BUILDX_EXPERIMENTAL=1
 docker buildx debug --invoke /bin/sh --on=error build .
+```
 
-[+] Building 1.2s (14/18)                docker:default
+```text
+[+] Building 1.2s (14/18)
+docker:default
 ...
 ------
  > [builder 5/6] RUN exit 1:
@@ -44,14 +45,13 @@ drwxr-xr-x    1 root     root          4096 May  5 12:59 .
 drwxr-xr-x    1 root     root          4096 May  5 12:59 ..
 drwxr-xr-x    1 root     root          4096 May  4 10:11 app
 ...
-
 ```
 
 如上述代码片段所示，我们首先通过设置 `BUILDX_EXPERIMENTAL` 环境变量来启用实验性的 BuildKit 功能。然后，我们使用 `docker buildx debug` 命令启动构建过程。如果构建过程中的任何步骤发生错误，我们将自动进入容器内部，并可以自由探索上下文和进行调试。
 
 需要注意的是，我们使用了 `--on=error` 选项，这表示只有在构建失败时才会启动调试会话。
 
-[调试文档，获取更多细节](https://github.com/docker/buildx/blob/master/docs/debugging.md).
+[调试文档，获取更多细节]
 
 ## 环境变量
 
@@ -137,7 +137,7 @@ FROM ...
 
 我想提到的第一个 Dockerfile 语法改进是 _here-docs_，它允许我们将多行脚本传递给 `RUN` 和 `COPY` 命令：
 
-```shell
+```Dockerfile
 # syntax = docker/dockerfile:1.3-labs
 FROM debian
 RUN <<eot bash
@@ -160,7 +160,6 @@ RUN <<eot
 #!/usr/bin/env python
 print("hello world")
 eot
-
 ```
 
 ## `COPY` 和 `ADD` 功能
