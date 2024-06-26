@@ -74,9 +74,9 @@ docker buildx debug --invoke /bin/sh --on=error build .
 
 会有如下输出:
 
-![Buildx Colors](https://i.imgur.com/gTasZHC.png)
+![Buildx Colors][1]
 
-查看 [环境变量文档](https://docs.docker.com/build/building/variables/#build-tool-configuration-variables)
+查看 [环境变量文档][2]
 
 ## 导出容器
 
@@ -115,7 +115,7 @@ docker buildx build --output type=registry,name=martinheinz/testimage:latest \
 
 ## 镜像工具
 
-`docker buildx` 有一个简单但方便的子命令叫做 `imagetools`，它允许我们在不拉取镜像的情况下检查镜像仓库中的镜像。[文档](https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/) 中包含许多示例，但对我来说最有用的是获取远程镜像的哈希值：
+`docker buildx` 有一个简单但方便的子命令叫做 `imagetools`，它允许我们在不拉取镜像的情况下检查镜像仓库中的镜像。[文档][3] 中包含许多示例，但对我来说最有用的是获取远程镜像的哈希值：
 
 ```shell
 docker buildx imagetools inspect alpine --format "{{json .Manifest}}" | jq .digest
@@ -124,14 +124,14 @@ docker buildx imagetools inspect alpine --format "{{json .Manifest}}" | jq .dige
 
 ## 最新的 Dockerfile 语法
 
-BuildKit 还通过所谓的 _[Dockerfile 前端](https://docs.docker.com/build/dockerfile/frontend/)_ 带来了新的 Dockerfile 语法。要启用当前最新的语法，我们需要在 Dockerfile 的顶部添加一个指令，例如：
+BuildKit 还通过所谓的 _[Dockerfile 前端][4]_ 带来了新的 Dockerfile 语法。要启用当前最新的语法，我们需要在 Dockerfile 的顶部添加一个指令，例如：
 
 ```shell
 # syntax=docker/dockerfile:1.3
 FROM ...
 ```
 
-要查找版本，你可以查看 [`dockerfile-upstream`](https://hub.docker.com/r/docker/dockerfile-upstream)。
+要查找版本，你可以查看 [`dockerfile-upstream`][5]。
 
 ## Here-docs
 
@@ -229,9 +229,9 @@ docker buildx build --ssh default --progress=plain .
 #9 DONE 0.0s
 ```
 
-这同样适用于[私有仓库](https://docs.docker.com/reference/dockerfile/#adding-private-git-repositories)。
+这同样适用于[私有仓库][6]。
 
-在[文档](https://docs.docker.com/reference/dockerfile/#add)中查看更多有趣的选项，例如用于验证工件校验和的 `ADD --keep-git-dir` 或 `ADD --checksum`。
+在[文档][7]中查看更多有趣的选项，例如用于验证工件校验和的 `ADD --keep-git-dir` 或 `ADD --checksum`。
 
 ## 额外奖励：缩进
 
@@ -254,4 +254,16 @@ FROM scratch
 
 ## 结语
 
-本文中的示例仅展示了我认为最有用的功能，但还有更多功能，因此请务必查看官方 [Docker 文档](https://docs.docker.com/reference/cli/docker/buildx/)，以及包含最新更改的 [BuildKit 文档](https://github.com/moby/buildkit/tree/master/docs)。Docker 博客也是一个很好的资源，特别是打了 _[buildkit](https://www.docker.com/blog/tag/buildkit/)_ 或 _[buildx](https://www.docker.com/blog/tag/buildx/)_ 标签的帖子。
+本文中的示例仅展示了我认为最有用的功能，但还有更多功能，因此请务必查看官方 [Docker 文档][8]，以及包含最新更改的 [BuildKit 文档][9]。Docker 博客也是一个很好的资源，特别是打了 _[buildkit][10]_ 或 _[buildx][11]_ 标签的帖子。
+
+[1]: https://i.imgur.com/gTasZHC.png
+[2]: https://docs.docker.com/build/building/variables/#build-tool-configuration-variables
+[3]: https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/
+[4]: https://docs.docker.com/build/dockerfile/frontend/
+[5]: https://hub.docker.com/r/docker/dockerfile-upstream
+[6]: https://docs.docker.com/reference/dockerfile/#adding-private-git-repositories
+[7]: https://docs.docker.com/reference/dockerfile/#add
+[8]: https://docs.docker.com/reference/cli/docker/buildx/
+[9]: https://github.com/moby/buildkit/tree/master/docs
+[10]: https://www.docker.com/blog/tag/buildkit/
+[11]: https://www.docker.com/blog/tag/buildx/
