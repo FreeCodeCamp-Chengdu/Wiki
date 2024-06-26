@@ -6,9 +6,17 @@
 [![Fetch Web pages](https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/fetch-Web.yml/badge.svg)][3]
 [![Format Markdown files](https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/formatter.yml/badge.svg)][4]
 
+## 开源文章翻译计划
+
+本计划是 [freeCodeCamp 中文社区文章翻译计划][5]的扩展项目，在相同的宗旨和工作流程下翻译 freeCodeCamp 社区之外的优秀开源、技术文章。
+
+-   [新增原文][6]
+-   翻译文章：[![gitlocalized](https://gitlocalize.com/repo/9653/whole_project/badge.svg)][7]
+-   [进度看板][8]
+
 ## 内容授权
 
-[![知识共享许可协议](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)][5]
+[![知识共享许可协议](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)][9]
 
 <span xmlns:dct="http://purl.org/dc/terms/"
     property="dct:title">
@@ -38,4 +46,8 @@ https://github.com/FreeCodeCamp-Chengdu/Wiki
 [2]: https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/main.yml
 [3]: https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/fetch-Web.yml
 [4]: https://github.com/FreeCodeCamp-Chengdu/Wiki/actions/workflows/formatter.yml
-[5]: http://creativecommons.org/licenses/by-nc-sa/4.0/
+[5]: https://github.com/freeCodeCamp/chinese?tab=readme-ov-file#freecodecamp-%E6%96%87%E7%AB%A0%E7%BF%BB%E8%AF%91%E8%AE%A1%E5%88%92
+[6]: https://github.com/FreeCodeCamp-Chengdu/Wiki/issues/new?assignees=&labels=Article%2CTranslation&projects=&template=translation.md&title=%EF%BC%88%E8%AF%91%E6%96%87%E4%B8%AD%E6%96%87%E6%A0%87%E9%A2%98%EF%BC%89
+[7]: https://gitlocalize.com/repo/9653?utm_source=badge
+[8]: https://github.com/orgs/Fr‍eeCodeCamp-Chengdu/projects/4
+[9]: http://creativecommons.org/licenses/by-nc-sa/4.0/
