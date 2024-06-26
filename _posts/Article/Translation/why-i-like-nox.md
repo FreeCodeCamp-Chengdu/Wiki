@@ -1,30 +1,33 @@
 ---
-title: Why I Like Nox
-authorURL: ""
-originalURL: https://hynek.me/articles/why-i-like-nox/
-translator: ""
-reviewer: ""
+title: 为什么我喜欢 Nox
+date: 2023-01-18
+updated: 2024-05-26 09:55:00
+original: https://hynek.me/articles/why-i-like-nox/
+authors:
+  - luojiyin1987
+categories:
+  - Article
+  - Translation
+toc: true
+photos:
+  - https://i.ytimg.com/vi/x_0uxBiByCU/maxresdefault.jpg
 ---
 
-# Why I Like Nox
+自从我参与开源 Python 项目以来，[tox][1] 一直是跨 Python 版本（以及其他因素）测试软件包的关键。然而，最近，我越来越多地在我的项目中使用 [Nox][2]。由于我被反复问到，为什么，我将总结一下我的想法。
+
+我再怎么强调也不为过，我不想阻止任何人使用 tox。tox 很棒。没有 tox，Python 开源生态系统就不会是现在的样子。它的作者和维护者我永远感激！
+
+我本能地不喜欢说 tox 的坏话，但如果不对比功能和行为就无法解释我的偏好。
+
+这不是呼吁放弃 tox（我仍然在许多项目中使用它），而是解释为什么我在某些情况下更喜欢 Nox。Nox 和 tox 都不是绝对优于另一个，只是不同而已。
 
 <!-- more -->
 
-2023-01-18 2023-06-05
+## 配置格式
 
-Ever since I got involved with open-source Python projects, _[tox][1]_ has been vital for testing packages across Python versions (and other factors). However, lately, I’ve been increasingly using _[Nox][2]_ for my projects instead. Since I’ve been asked _why_ repeatedly, I’ll sum up my thoughts.
+tox 和 Nox 之间最明显的区别是 tox 是基于古老的 [INI 格式][3] [(`tox.ini`)][4] 的 [DSL][5]，而 Nox 使用 Python 文件 (`noxfile.py`)。
 
-I can’t stress enough that I don’t want to discourage anyone from using _tox_. _tox_ is amazing. Without _tox_, the Python open-source ecosystem wouldn’t be where it is. Its authors and maintainers have my eternal gratitude!
-
-I viscerally dislike saying negative things about _tox_, but it’s impossible to explain my preference without contrasting features and behaviors.
-
-This is not a call for abandonment of _tox_ (that I still use with many projects), but an explanation of why I prefer Nox in certain situations. Neither Nox nor _tox_ are categorically better than the other – just different.
-
-## Configuration Formats
-
-The most visible difference between _tox_ and Nox is that _tox_ is a [DSL][3] on top of the venerable [INI format][4] (`tox.ini`)[1][5], while Nox uses a Python file (`noxfile.py`).
-
-In case you aren’t familiar with either one, a simple `tox.ini` like this:
+如果您不熟悉其中任何一个，一个简单的 `tox.ini` 如下所示：
 
 ```ini
 [tox]
@@ -35,7 +38,7 @@ extras = tests
 commands = pytest {posargs}
 ```
 
-…would look like this in a `noxfile.py`:
+在 `noxfile.py`中会是这样：
 
 ```python
 import nox
@@ -47,29 +50,23 @@ def tests(session):
     session.run("pytest", *session.posargs)
 ```
 
-You may notice a difference in nomenclature: What _tox_ calls _environments_ are _sessions_ to Nox.
+您可能会注意到命名上的差异：tox 所称的 environments 在 Nox 中称为 sessions。
 
----
+现在，如果您调用 `tox` 或 `nox`，它们都会：
 
-Now, if you call `tox` or `nox`, they both:
+1.  为 Python 3.10 和 Python 3.11 创建虚拟环境，
+2.  在其中安装当前软件包 (`.`) 及其额外的依赖项 `tests`，
+3.  并从每个环境中运行 `pytest`。
 
-1.  Create virtual environments for Python 3.10 and Python 3.11,
-2.  install the current package (`.`) along with its extra dependencies `tests` in them,
-3.  and run `pytest` from each of them.
+`{posargs}` 和 `*session.posargs` 位允许您将命令行参数传递给测试运行器。因此，要使 pytest 在第一个错误后中止，您可以分别编写 `nox -- -x` 或 `tox -- -x`。
 
-The `{posargs}` and `*session.posargs` bits allow you to pass command line arguments to the test runners. Therefore, to make _pytest_ abort after the first error, you could write `nox -- -x` or `tox -- -x`, respectively.
+对一些人来说，在这里使用 Python 似乎是一种倒退。我们难道不是刚刚从 `setup.py` 迁移到 `pyproject.toml` 来摆脱 Python 用于配置吗？
 
----
+是也不是。`setup.py` 的问题不在于它是 Python，而在于它在安装时不受控制地运行。
 
-Using Python here might look like a regression to some. Aren’t we _just_ migrating from `setup.py` to `pyproject.toml` to get rid of Python-for-configuration?
+按需运行命令，以及代码，是 tox 和 Nox 的存在理由；唯一的区别在于它们是如何定义的。由于 tox 使用自己的语言来定义这些命令，因此您需要在其 DSL 中使用专用功能来实现任何目标。同时，如果您想在 Nox 中做某事，您通常只需要编写一些 Python 代码。
 
-Yes and no. The problem with `setup.py` is not that it’s Python, but that it runs uncontrollably on installations.
-
-Running commands – and thus code – on demand is the _raison d’être_ for both _tox_ and Nox; the only difference is how they are defined. And since _tox_ uses an own language to define those commands, you need dedicated features in its DSL to achieve anything. Meanwhile if you want to do something in Nox, you usually just have to write some Python.
-
----
-
-Admittedly, one of the dominant reasons why I like Nox is that returning to a nontrivial `tox.ini` after a longer time has become a challenge for me. Just recently, I’ve noticed that in [_environ-config_][6] the _tox_ environment that was supposed to check the test suite passes with the oldest-supported version of [_attrs_][7] doesn’t work anymore. I’ve defined it like this:
+诚然，我喜欢 Nox 的主要原因之一是，在很长一段时间后回到一个重要的 `tox.ini` 对我来说已经成为一个挑战。就在最近，我注意到在 [_environ-config_][6] 中，应该检查测试套件是否通过最旧支持版本的 [_attrs_][7] 的 tox 环境不再工作了。我像这样定义它：
 
 ```ini
 [testenv]
@@ -78,15 +75,15 @@ deps = oldestAttrs: attrs==17.4.0
 commands = pytest {posargs}
 ```
 
-But although _tox_ _does_ install _attrs_ 17.4.0 first, it overwrites it with the latest version when installing the project. Why? I never figured it out, but I’m 99.9% sure it _used_ to work[2][8]. None of the other dependencies need a newer version and it still looks correct to me.
+但是，尽管 tox 确实首先安装了 _attrs_ 17.4.0，但在安装项目时，它会用最新版本覆盖它。为什么？我从来没有弄清楚，但我 99.9% 确定它曾经[工作过][8]。其他依赖项都不需要更新的版本，在我看来它仍然是正确的。
 
-## INI Inheritance vs. Python Functions
+## INI 继承 对比 Python 函数
 
-If you squint enough, you realize that – syntax aside – the two configuration principles are a case of **code sharing via subclassing** vs. **code sharing via functions**. In _tox_, you define a base `testenv` from which all others inherit, but can override any field. This behavior alone is already something that occasionally leaves me scratching my head.
+如果你足够仔细地观察，你会发现，抛开语法不谈——这两种配置原则分别是通过子类化共享代码 与通过函数共享代码的情况。在 tox 中，你定义了一个基础 `testenv`，所有其他环境都继承自它，但可以覆盖任何字段。仅此行为就足以让我偶尔挠头。
 
-Re-use among sub-environments (e.g. between `py37` and `py38`) in _tox_ is done using factor-dependent statements (like `oldestAttrs:` above) or substitutions like `{[testenv:py37]commands}` whose syntax I can never remember and always send me chasing for examples in my other projects.
+在 tox 中，子环境之间的重用（例如 `py37` 和 `py38` 之间）是使用因子相关的语句（如上面的 `oldestAttrs:`）或替换（如 `{[testenv:py37]commands}`）完成的，我永远记不住它们的语法，并且总是让我在其他项目中寻找例子。
 
-In Nox, if you want to reuse, you write functions. There’s no other language to learn, [just an API][9]. For instance, to run the oldest and newest Python versions under [_Coverage.py_][10], the rest without[3][11], and additionally run the oldest with a pinned _attrs_ dependency, I’ve come up with the following:
+在 Nox 中，如果你想重用，你写函数。没有其他语言需要学习，[只有一个 API][9]。例如，为了在 [_Coverage.py_][10] 下运行最旧和最新的 Python 版本，其余的没有，另外还要运行带有固定 _attrs_ 依赖项的最旧版本，我想出了以下内容：
 
 ```python
 OLDEST = "3.7"
@@ -113,17 +110,17 @@ def tests(session):
     session.run("pytest", *session.posargs)
 ```
 
-Now, if there were other environments (like Mypy or docs), I could run only tests using `nox --tags tests`.
+现在，如果有其他环境（如 Mypy 或 docs），我可以使用 `nox --tags tests` 只运行测试。
 
-In terms of the number of lines, this is longer than the _tox_ equivalent. But that’s because it’s more _explicit_ and anyone with a passing understanding of Python can deduce what’s happening here – including myself, looking at it in a year. Explicit can be good, actually.
+就代码行数而言，这比 tox 等效代码要长。但这是因为它更明确，任何对 Python 有一定了解的人都可以推断出这里发生了什么。包括我自己，在一年后回顾这段代码时。实际上，明确可能是件好事。
 
-## The Power of the Snake
+## 蟒蛇的力量
 
-Of course, Nox is a lot more powerful than _tox_ out-of-the-box, courtesy of Python. In the end, you’ve got the whole standard library at your disposal! You can read and write files, create temporary directories, format strings, make HTTP requests, … all without relying on platform features.
+当然，由于 Python 的强大功能，Nox 比 tox 开箱即用地强大得多。最终，你将拥有整个标准库供你使用！你可以读写文件、创建临时目录、格式化字符串、发出 HTTP 请求。所有这些都不依赖于平台特性。
 
-With _tox_, these are things that you often need to write a shell script (that probably doesn’t work on Windows) and call it from your `tox.ini`. Because _tox_ doesn’t wrap its calls in a shell (unlike, say [Hatch][12]), you’re pretty limited in what you can do: no pipes, no subcommands, no output redirection.
+使用 tox，这些事情你经常需要编写一个 shell 脚本（可能在 Windows 上不起作用）并从你的 `tox.ini` 中调用它。因为 tox 不会将它的调用包装在一个 shell 中（不像 [Hatch][11]），所以你能做的事情非常有限：没有管道、没有子命令、没有输出重定向。
 
-The only (purely ergonomic) downside of Nox is that it forces you to use the non-shell version of [`subprocess.run()`][13]. This can sometimes lead to rather brutalist command lines:
+Nox 唯一的（纯粹是人体工程学上的）缺点是它迫使你使用 [`subprocess.run()`][12] 的非 shell 版本。这有时会导致相当野蛮的命令行：
 
 ```python
 @nox.session(python="3.10")
@@ -147,13 +144,13 @@ def docs(session: nox.Session) -> None:
     session.run("python", "-m", "doctest", "README.md")
 ```
 
-But given the problems of shell-wrapping (c.f. [Docker][14] or [variable name sanitization][15]), this is probably a net positive nevertheless. Even if I had to switch [Black][16] off (`# fmt: off`) so it doesn’t get _too_ gross.
+但是，考虑到 shell 封装的问题（参见 [Docker][13] 或 [变量名净化][14]），这可能仍然是一个净收益。即使我不得不关闭 [Black][15] (`# fmt: off`) 以免它变得糟糕。
 
-## Bonus Tip: Python Versions as First-Class Selectors
+## 额外提示： 将 Python 版本作为一等公民，优先选择
 
-As [James Bennett][17] astutely [observed][18], one cool feature of Nox is that Python versions are first-class selectors for sessions – while for _tox_ it’s just a factor like any other.
+正如 [James Bennett][16] 精辟地 [观察到的][17]，Nox 的一个很酷的特性是 Python 版本是会话的第一类选择器。而对于 tox 来说，它只是像其他任何因素一样的因素。
 
-That means that you can call `nox --python 3.10` and _all_ sessions that are marked for Python 3.10 run. That’s _super_ useful in CI where you don’t need to map from [`setup-python`][19]’s version numbers (“3.11”) to _tox_’s environments (`py311` – either by hand or using one of [_tox-gh_][20] or [_tox-gh-actions_][21]). For instance with GitHub Actions, you could write:
+这意味着你可以调用 `nox --python 3.10`，所有标记为 Python 3.10 的会话都会运行。这在 CI 中非常有用，你不需要将 [`setup-python`][18] 的版本号（“3.11”）映射到 tox 的环境（`py311`——无论是手动还是使用 [_tox-gh_][19] 或 [_tox-gh-actions_][20]）。例如，使用 GitHub Actions，你可以编写：
 
 ```yaml
 jobs:
@@ -173,93 +170,71 @@ jobs:
       - name: Setup & run Nox
         run: |
           python -Im pip install nox
-          python -Im nox --python ${{ matrix.python-version }}          
+          python -Im nox --python ${{ matrix.python-version }}
 ```
 
-The new-ish `allow-prereleases: true` line allows you to install pre-release versions like as of writing `3.12.0b1`.
+新的 `allow-prereleases: true` 行允许你安装预发布版本，例如撰写本文时的 `3.12.0b1`。
 
 ---
 
-_tox_ 4 has the concept of selecting single factors using `-f`; therefore you can run all your 3.10 environments using `tox -f py310`. The version numbers don’t match that well, but [can be made][22] except for PyPy. I use the following step:
+tox 4 引入了使用 `-f` 选择单个因素的概念；因此，你可以使用 `tox -f py310` 运行所有 3.10 环境。版本号并不完全匹配，但 [可以进行调整][21]，PyPy 除外。我使用以下步骤：
 
 ```yaml
-      - name: Setup & run tox
-        run: |
-          V=${{ matrix.python-version }}
+- name: Setup & run tox
+  run: |
+    V=${{ matrix.python-version }}
 
-          if [[ "$V" = pypy-* ]]; then
-            V=pypy3
-          else
-            V=py$(echo $V | tr -d .)
-          fi
+    if [[ "$V" = pypy-* ]]; then
+      V=pypy3
+    else
+      V=py$(echo $V | tr -d .)
+    fi
 
-          python -Im pip install tox
-          python -Im tox run -f $V          
+    python -Im pip install tox
+    python -Im tox run -f $V
 ```
 
-However, it’s _not_ the same! `tox -f py310` will only run environments starting with `py310` (e.g. `py310` or `py310-foo`), not everything that is defined to use Python 3.10 (e.g. an environment called `docs` that sets `base_python = py310`).
+然而，这并不相同！`tox -f py310` 只会运行以 `py310` 开头的环境（例如 `py310` 或 `py310-foo`），而不是所有定义为使用 Python 3.10 的环境（例如名为 `docs` 的环境，它设置了 `base_python = py310`）。
 
-## Conclusion
+## 结语
 
-Again, this article is _**not**_ a call to abandon _tox_ and move all your projects to Nox – I haven’t done that myself and I don’t plan to. Neither Nox nor _tox_ are categorically better than the other, but if the mentioned issues resonate with you, there’s an option!
+再次强调，这篇文章不是呼吁放弃 tox 并将所有项目迁移到 Nox。我自己没有这样做，也不打算这样做。Nox 和 tox 都没有绝对的优劣之分，但如果提到的问题引起了你的共鸣，那么你还有另一种选择！
 
-And if you stay on _tox_, I’ve [written how to make it 75% faster][23] when running locally.
+如果你继续使用 tox，我已经[写了一篇关于如何在本地运行时使其速度提高 75% 的文章][22]。
 
----
-
-1.  [At least it’s not YAML.][24] [↩︎][25]
-    
-2.  I _did_ try to pin `tox<4` to no avail. [↩︎][26]
-    
-3.  Running code under Coverage slows it down – sometimes _considerably_. [↩︎][27]
-    
-
-Found this helpful? Please consider [supporting my work][28]!
-
-Want more content like this? Here's my free, low-volume, non-creepy [_Hynek Did Something_ newsletter][29]! It allows me to share my content directly with you and add extra context:
-
----
-
-[![Hynek Schlawack](https://static.hynek.me/img/avatar_w200h200.jpg)][30]
+[![Hynek Schlawack](https://static.hynek.me/img/avatar_w200h200.jpg)][23]
 
 ## Hynek Schlawack
 
-Code Bohemian in ❤️ with Python 🐍, Go 🐹, and DevOps 🔧. [blogger][31] 📝, [speaker][32] 📢, PSF [fellow][33] 🏆, [big city beach bum][34] 🏄🏻, substance over flash 🧠.
+一个热爱 Python 🐍、Go 🐹 和 DevOps 🔧 的代码波西米亚人。[博主][24] 📝，[演讲者][25] 📢，PSF [成员][26] 🏆，[大城市的海滩流浪汉][27] 🏄🏻，注重实质而非浮华 🧠。
 
-Is my content helpful and/or enjoyable to you? Please consider [supporting me][35]! Every bit helps to motivate me in creating more.
+我的内容对您有帮助或乐趣吗？请考虑[支持我][28]！每一份支持都能激励我创造更多内容。
 
 [1]: https://tox.wiki/
 [2]: https://nox.thea.codes/
-[3]: https://en.wikipedia.org/wiki/Domain-specific_language
-[4]: https://en.wikipedia.org/wiki/INI_file
-[5]: #fn:1
+[3]: https://en.wikipedia.org/wiki/INI_file
+[4]: https://tox.wiki/
+[5]: https://en.wikipedia.org/wiki/Domain-specific_language
 [6]: https://github.com/hynek/environ-config
 [7]: https://www.attrs.org/
-[8]: #fn:2
+[8]: https://nox.thea.codes/
 [9]: https://nox.thea.codes/en/stable/config.html
 [10]: https://coverage.readthedocs.io/
-[11]: #fn:3
-[12]: https://github.com/pypa/hatch/issues/701
-[13]: https://docs.python.org/3/library/subprocess.html#subprocess.run
-[14]: /articles/docker-signals/
-[15]: /articles/macos-dyld-env/
-[16]: https://black.readthedocs.io/
-[17]: https://www.b-list.org
-[18]: https://lobste.rs/s/983b6p/why_i_like_nox#c_zrnxmp
-[19]: https://github.com/actions/setup-python
-[20]: https://pypi.org/project/tox-gh/
-[21]: https://pypi.org/project/tox-gh-actions/
-[22]: https://fosstodon.org/@adamchainz/109717334764977122
-[23]: ../turbo-charge-tox/
-[24]: https://ruudvanasseldonk.com/2023/01/11/the-yaml-document-from-hell
-[25]: #fnref:1
-[26]: #fnref:2
-[27]: #fnref:3
-[28]: /say-thanks/
-[29]: https://buttondown.email/hynek
-[30]: /about/
-[31]: /articles/
-[32]: /talks/
-[33]: https://www.python.org/psf/fellows-roster/
-[34]: https://www.instagram.com/p/CCWlkRRqjXP/
-[35]: /say-thanks/
+[11]: https://github.com/pypa/hatch/issues/701
+[12]: https://docs.python.org/3/library/subprocess.html#subprocess.run
+[13]: https://hynek.me/articles/docker-signals/
+[14]: https://hynek.me/articles/macos-dyld-env/
+[15]: https://black.readthedocs.io/
+[16]: https://www.b-list.org/
+[17]: https://lobste.rs/s/983b6p/why_i_like_nox#c_zrnxmp
+[18]: https://github.com/actions/setup-python
+[19]: https://pypi.org/project/tox-gh/
+[20]: https://pypi.org/project/tox-gh-actions/
+[21]: https://fosstodon.org/@adamchainz/109717334764977122
+[22]: https://hynek.me/articles/turbo-charge-tox/
+[23]: https://hynek.me/about/
+[24]: https://hynek.me/articles/
+[25]: https://hynek.me/talks/
+[26]: https://www.python.org/psf/fellows-roster/
+[27]: https://www.instagram.com/p/CCWlkRRqjXP/
+[28]: https://hynek.me/say-thanks/

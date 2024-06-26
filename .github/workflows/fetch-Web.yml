@@ -16,7 +16,7 @@ jobs:
             - uses: freeCodeCamp-China/article-webpage-to-markdown-action@v1
               with:
                   newsLink: "${{ github.event.issue.Body }}"
-                  markDownFilePath: "./_posts/Article/Translation/"
+                  markDownFilePath: "./_drafts/Article/Translation/"
                   githubToken: ${{ github.token }}
 
             - uses: stefanzweifel/git-auto-commit-action@v5
