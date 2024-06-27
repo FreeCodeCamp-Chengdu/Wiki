@@ -10,7 +10,6 @@ reviewer: ""
 
 > **更新**: 由于这篇文章[正在 Hackernews 上热传](https://news.ycombinator.com/item?id=29071700)，我在每个标题后的括号中为每个提示添加了支持环境的信息。当我说明 `Chromium 浏览器` 时，指的是所有使用 `Chromium` 内核并具有所有开发者工具的浏览器。这包括 `Chrome` 浏览器、`Microsoft Edge`、`Brave` 以及其他更多浏览器。在此提醒一下： `Microsoft Edge` 是 `Windows 10/11` 系统自带的浏览器，基于 `Chromium`，因此从平台角度来看与 `Chrome` 浏览器类似。它们在用户体验和核心服务方面有所不同。`Edge` 开发者工具与谷歌密切合作，将我们添加到产品中的工作带回 `Chromium` 核心。但是，我在这里谈到的一些东西是微软 `Edge` 的实验和独有功能，它可在 `Windows`、`Mac` 和 `Linux` 上使用。有些功能只能通过 [Edge DevTools for VS Code 扩展](https://aka.ms/devtools-for-code)在 `Visual Studio Code` 中使用。
 
-
 这是我今年 9 月在 [CityJS](https://cityjsconf.org/) 上发表的演讲。我是 `Microsoft Edge` 开发者人员工具的首席产品经理，这些都是我在开发工具、记录工具和查看用户反馈时遇到的问题。
 
 你可以在 Youtube 上观看[演讲视频](https://www.youtube.com/watch?v=q_qzHzIVxw4)。
@@ -31,21 +30,16 @@ reviewer: ""
 
 使用 `console.log()` 的下一个问题是，我们似乎只记录了值，却忘了添加它们的来源。例如，当你使用下面的代码时，你会得到一个数字列表，但你不知道什么是什么。
 
-<table><tbody><tr><td class="code"><pre class="javascript" style="font-family:monospace;">console.<span style="color: #660066;">log</span><span style="color: #009900;">(</span>width<span style="color: #009900;">)</span>
-console.<span style="color: #660066;">log</span><span style="color: #009900;">(</span>height<span style="color: #009900;">)</span></pre></td></tr></tbody></table>
-
 ```javascript
-console.log(width) 
-console.log(height)
+console.log(width);
+console.log(height);
 ```
+
 要解决这个问题，最简单的方法是用大括号把要记录的内容包起来。这样，控制台就会同时记录你想知道的内容的名称和值。
 
-<table><tbody><tr><td class="code"><pre class="javascript" style="font-family:monospace;">console.<span style="color: #660066;">log</span><span style="color: #009900;">(</span><span style="color: #009900;">{</span>width<span style="color: #009900;">}</span><span style="color: #009900;">)</span>
-console.<span style="color: #660066;">log</span><span style="color: #009900;">(</span><span style="color: #009900;">{</span>height<span style="color: #009900;">}</span><span style="color: #009900;">)</span></pre></td></tr></tbody></table>
-
 ```javascript
-console.log({width}) 
-console.log({height})
+console.log({ width });
+console.log({ height });
 ```
 
 [![Using curly braces around variables in log messages logs their name and their value](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)
@@ -93,20 +87,22 @@ console.log({height})
 <span style="color: #009900;">}</span><span style="color: #009900;">)</span></pre></td></tr></tbody></table>
 
 ```javascript
-$$('a').map(a => { return {url: a.href, text: a.innerText} })
+$$("a").map((a) => {
+    return { url: a.href, text: a.innerText };
+});
 ```
 
 [![An example how the $$ function returns a collection of HTML elements that you can filter like any other array](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)
 
 ## 2. 你可以在没有源访问权限的情况下进行日志记录，实时表达式和日志点
+
 (Chromium 浏览器)
 
-添加 "console.log() "的常规方法是将其放在代码中想要获取信息的地方。但你也可以深入了解你无法访问和更改的代码。[Live 表达式](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/live-expressions) 是在不更改代码的情况下记录信息的好方法。它们还能记录不断变化的值，而不会让控制台满屏日志，从而降低产品的运行速度。你可以从下面的截屏中看到它们的不同之处：
+添加 `console.log()` 的常规方法是将其放在代码中想要获取信息的地方。但你也可以深入了解你无法访问和更改的代码。[Live 表达式](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/live-expressions) 是在不更改代码的情况下记录信息的好方法。它们还能记录不断变化的值，而不会让控制台满屏日志，从而降低产品的运行速度。你可以从下面的截屏中看到它们的不同之处：
 <video width="320" height="240" controls>
+
   <source src="https://christianheilmann.com/wp-content/uploads/2021/10/log-vs-live-expression-smaller.mp4" type="video/mp4">
 </video>
-
-
 
 日志点是一种特殊的断点。你可以右键单击开发者工具源代码工具中 JavaScript 的任意一行，然后设置一个日志点。你会被要求提供一个要记录的表达式，并在执行该行代码时在控制台中获得其值。这意味着从技术上讲，你可以在网络上的任何地方注入一个 `console.log()`。我早在八月份就[写过关于日志点的文章](https://christianheilmann.com/2021/08/24/using-console-log-on-any-website-logpoints-let-you-do-that/)，你可以在下面的截屏中看到演示：
 
@@ -115,6 +111,7 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 </video>
 
 ## 3. 你可以在浏览器之外使用 VS code 调试器进行日志记录
+
 (Chromium 浏览器 和 VS Code)
 
 在 Visual Studio Code 中启动调试会话时，可以生成一个浏览器实例，调试控制台就会变成浏览器开发者工具中的控制台。我曾在七月份的博客中详细介绍过这一点，所以你可以[阅读如何做到这一点](https://christianheilmann.com/2021/07/30/using-console-log-debugging-in-visual-studio-code/)。[官方文档](https://docs.microsoft.com/microsoft-edge/visual-studio-code/microsoft-edge-devtools-extension#browser-debugging-with-microsoft-edge-devtools-integration-in-visual-studio-code) 中也有更多内容。
@@ -123,10 +120,12 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 
 你还可以观看我展示功能的一分钟视频：
 <video width="320" height="240" controls>
+
   <source src="https://youtu.be/00MNtSzasSQ" type="video/mp4">
 </video>
 
 ## 4. 你可以向任何网站注入代码，片段（Snippets）和重写（Overrides）
+
 (Chromium 浏览器)
 
 [片段(Snippets)](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets) 是开发者工具中针对当前网站运行脚本的一种方法。你可以在这些脚本中使用[控制台实用工具](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities)，它是编写和存储通常在控制台中执行的复杂 DOM 操作脚本的绝佳方法。你可以通过片段编辑器或命令菜单在当前文档的窗口上下文中运行脚本。在后一种情况下，以 ! 开头，然后键入要运行的代码段名称即可。
@@ -134,6 +133,7 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 [重写(Overrides)](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/overrides) 允许你存储远程脚本的本地副本，并在页面加载时覆盖它们。举例来说，如果你的整个应用程序的构建过程很慢，而你又想试一试，这就非常好用。此外，它还是替代第三方网站恼人脚本的绝佳工具，而无需使用浏览器扩展。
 
 ## 5. 你可以检查(inspect)和调试(debug)的东西比你知道的要多得多！
+
 (Chromium 浏览器)
 
 你可能从 Google Chrome、Brave 或 Microsoft Edge 等浏览器中了解到 Chromium 开发者工具，但它们在更多环境中可用。任何基于 Electron 的应用程序都可以启用这些工具，你可以使用这些工具窥探引擎盖下的内容，看看产品是如何完成的。例如，这可以在 GitHub Desktop、Visual Studio Code 中使用，你甚至可以使用开发者工具调试浏览器的开发者工具！
@@ -143,38 +143,40 @@ $$('a').map(a => { return {url: a.href, text: a.innerText} })
 [![Inspecting the Chromium Developer tools with another instance of the developer tools](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)
 
 ### Edge 在 Visual Studio Code 的开发者工具
+
 (Microsoft Edge via a VS Code extension)
 
 这些工具的可嵌入性也使我们能够为你提供一种在浏览器之外使用它们的方法。[Microsoft Edge Tools for Visual Studio Code](https://aka.ms/devtools-for-code) 扩展将这些工具带到了 Visual Studio Code 中。这样，你就可以在代码编辑器旁边使用可视化调试工具，而不必总是在两者之间跳来跳去。当你开始调试会话并单击 "开发者工具"（Developer Tools）图标时，工具就会打开，或者首次打开时，系统会提示你安装扩展。
 
-[![Inspect button in the debug bar of Visual Studio Code](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)
+[![Visual Studio 代码调试栏中的检查按钮](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)
 
-[![Microsoft Edge Developer tools open in an instance of Visual Studio Code](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)
+[![在 Visual Studio Code 实例中打开 Microsoft Edge 开发者工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)
 
 ## 6. 肮脏的秘密
 
 与开发者工具进行亲密合作，并获得反馈和使用信息，这让我了解了一些 `肮脏的秘密`。第一个是，尽管我们所有人都对开发者工具的所有惊人功能感到非常兴奋，但用户只使用了其中的一小部分。许多在演示和视频教程中被誉为自切片面包以来最好的东西实际上很少被打开，更不用说被使用了。我以为这是因为缺乏文档记录，所以我们花费了大量的时间来更新[DevTools 文档](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/)，以确保其中的所有内容都被描述和解释，但这不是问题所在。文档似乎是人们在谷歌、Stack Overflow 或社交媒体渠道没有找到任何结果后的最后手段。
 
 ### 开发人员的工具变得复杂不堪，如何解决这个问题？
+
 (Microsoft Edge)
 
 可能是因为浏览器的开发者工具在过去几年中有机地发展壮大，让人目不暇接。这让我很烦恼，我认为我们应该做得更好。说到开发者工具，我有一句口头禅：
 
 > 开发者工具不应期望人们成为专家，而应随着时间的推移把他们变成专家。
 
-我们正在想办法让这一切变得更容易，你很快就会在 Microsoft Edge 中看到这些想法。我们的一个想法是 "聚焦模式(Focus Mode)"。我们不再向你显示所有工具和选项卡，而是将工具按不同的使用情况进行分类，如 "元素/CSS 调试(Elements/CSS debugging)"、"源代码/JavaScript 调试(Sources/JavaScript Debugging)"或 "网络检查(Network inspection)"。然后，我们只显示相关工具，隐藏所有可能会造成混淆或碍事的工具。
+我们正在想办法让这一切变得更容易，你很快就会在 Microsoft Edge 中看到这些想法。我们的一个想法是 “聚焦模式(Focus Mode)”。我们不再向你显示所有工具和选项卡，而是将工具按不同的使用情况进行分类，如 “元素/CSS 调试(Elements/CSS debugging)”、“源代码/JavaScript 调试(Sources/JavaScript Debugging)” 或 “网络检查(Network inspection)”。然后，我们只显示相关工具，隐藏所有可能会造成混淆或碍事的工具。
 
-[![Developer tools in focus mode, showing only what's needed in the current context](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)
+[![聚焦模式下的开发者工具，只显示当前环境下所需的工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)
 
-我们正在开发的另一项功能是 "信息覆盖(informational overlays)"。你可以获得一个帮助按钮，打开开发者工具的叠加信息，解释每个工具是什么、如何使用以及提供文档链接。我们希望这将使人们更容易了解更多的功能。
+我们正在开发的另一项功能是 “信息覆盖(informational overlays)”。你可以获得一个帮助按钮，打开开发者工具的叠加信息，解释每个工具是什么、如何使用以及提供文档链接。我们希望这将使人们更容易了解更多的功能。
 
-[![Developer tools covered by overlays explaining what each of them are,](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)
+[![开发者工具，通过覆盖图解释每种工具的含义](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)
 
 ### 编写代码与调试结果之间仍然存在脱节现象
+
 (Microsoft Edge)
 
 尽管现在的工具令人惊叹，但编写和调试之间仍然存在脱节。大多数情况下，我们在编写代码、创建应用程序后，会在浏览器中查看哪些地方无法正常工作。然后，我们使用浏览器开发者工具来调整和修复这些问题。然后，我们还需要解决一个大问题：如何将使用浏览器开发者工具创建的更改返回到代码中？大多数情况下，答案是 "复制并粘贴，或者试着记住需要更改的内容"。
-
 
 我们目前正在研究两种方法来简化这一过程。一种是在可用时用 Visual Studio Code 代替开发者工具内的编辑器，并在使用浏览器开发者工具时更改硬盘上的文件。另一种是 VS Code 扩展的一部分，可以在使用开发者工具时更改编辑器中的源代码，但在更改磁盘上的文件时仍有最终决定权。我[在 Edge 博客上描述了问题和可能的解决方案](https://blogs.windows.com/msedgedev/2021/10/21/improved-authoring-debugging-devtools-visual-studio-code/)，你也可以观看以下两个截屏视频，了解它们的实际效果。
 
@@ -183,23 +185,24 @@ Visual Studio 代码中的 CSS 镜像:
 如果…… Visual Studio Code 成为浏览器内开发者工具的编辑器，会发生什么？
 
 ## 7. 你们是开发人员工具的受众和客户！
+
 (适用于所有浏览器，但此处显示的渠道仅限于 Microsoft Edge）
 
 作为开发人员，你是开发人员工具的主要受众。我们愿意听取你的反馈意见，最近对工具的许多更改都是外部开发人员要求的直接结果。我们通过提供直接与我们联系的上下文方式，尽可能地简化这一过程。例如，Visual Studio Code 扩展有显著的链接和按钮供你报告问题(report issues)和功能需求(request features)。
 
-[![Screenshot of the in-context links provided in the VS Code extension to demand new features, file bugs and learn about experiments](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)
+[![VS 代码扩展中提供的上下文链接截图，用于要求新功能、提交错误和了解实验情况](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)
 
 [扩展插件的源代码](https://github.com/microsoft/vscode-edge-devtools) 也在 GitHub 上，你可以在那里[提交 issues](https://github.com/microsoft/vscode-edge-devtools/issues)。
 
 浏览器内的开发者工具也有一个直接向我们提供反馈的按钮。为了便于你提供可操作的反馈，该按钮包含了大量自动信息。
 
-[![The feedback tool built into the browser developer tools of Microsoft Edge](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)
+[![Microsoft Edge 浏览器开发工具中内置的反馈工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)
 
 它会自动记录发生问题的 URL、截图并发送诊断数据。我们还要求你提供电子邮件，以备我们需要更多信息，你还可以添加附件和如何重现问题的信息。我们每天都会检查这些反馈，很多伟大的发明和错误修复都来自于此。
 
 [分享到 Mastodom](https://mastodon.social/share?text=Developer%20Tools%20secrets%20that%20shouldn%E2%80%99t%20be%20secrets%20https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/)
 
-[分享到 Twitter](http://twitter.com/share?url=https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/&text=Developer) 
+[分享到 Twitter](http://twitter.com/share?url=https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/&text=Developer)
 
 ## 我的其它作品
 
@@ -212,9 +215,8 @@ Visual Studio 代码中的 CSS 镜像:
     -   [JavaScript 工具包： 编写更简洁、更快速、更优秀的代码](https://skl.sh/2CpiTGZ)
     -   [揭开人工智能的神秘面纱： 了解机器学习](https://skl.sh/2MHkYl1)
 
-
 [Christian Heilmann 博客](http://christianheilmann.com)  
-[chris@christianheilmann.com 邮箱](mailto:chris@christianheilmann.com?subject=NOT%20A%20GUEST%20POST%20REQUEST&body=I%20understand%20this%20blog%20does%20not%20do%20guest%20posts) (请不要就客座文章与我联系，我不做这种事！) 
+[chris@christianheilmann.com 邮箱](mailto:chris@christianheilmann.com?subject=NOT%20A%20GUEST%20POST%20REQUEST&body=I%20understand%20this%20blog%20does%20not%20do%20guest%20posts) (请不要就客座文章与我联系，我不做这种事！)
 我是一个首席项目经理，在德国柏林生活和工作。
 
 主题由 Chris Heilmann 制作。SVG 图标由 [Dan Klammer](https://github.com/danklammer/bytesize-icons) 制作。由 MediaTemple 主持。由 Coffee 和 Spotify Radio 提供技术支持。
