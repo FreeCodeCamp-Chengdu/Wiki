@@ -197,7 +197,7 @@ RUN find /parents
 
 与 `--parents` 选项类似，你也可以使用 `--exclude`：
 
-```shell
+```Dockerfile
 COPY --exclude=*.txt ./some-dir/* ./some-dest
 ```
 
