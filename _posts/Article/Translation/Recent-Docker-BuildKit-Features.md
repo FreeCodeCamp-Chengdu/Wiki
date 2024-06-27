@@ -51,7 +51,7 @@ drwxr-xr-x    1 root     root          4096 May  4 10:11 app
 
 需要注意的是，我们使用了 `--on=error` 选项，这表示只有在构建失败时才会启动调试会话。
 
-[调试文档，获取更多细节]
+[调试文档，获取更多细节][12]
 
 ## 环境变量
 
@@ -213,6 +213,9 @@ RUN ls -la /repo
 
 ```shell
 docker buildx build --ssh default --progress=plain .
+```
+
+```text
 #8 [2/3] ADD git@github.com:kelseyhightower/helloworld.git /repo
 #8 0.478 Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
 #8 1.738 ref: refs/heads/master HEAD
@@ -267,3 +270,4 @@ FROM scratch
 [9]: https://github.com/moby/buildkit/tree/master/docs
 [10]: https://www.docker.com/blog/tag/buildkit/
 [11]: https://www.docker.com/blog/tag/buildx/
+[12]: https://github.com/docker/buildx/blob/master/docs/debugging.md
