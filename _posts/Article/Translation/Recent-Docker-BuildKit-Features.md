@@ -20,7 +20,7 @@ export BUILDX_EXPERIMENTAL=1
 docker buildx debug --invoke /bin/sh --on=error build .
 ```
 
-```shell
+```text
 [+] Building 1.2s (14/18)
 docker:default
 ...
