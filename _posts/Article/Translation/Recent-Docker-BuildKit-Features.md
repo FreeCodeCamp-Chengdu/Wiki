@@ -20,7 +20,7 @@ export BUILDX_EXPERIMENTAL=1
 docker buildx debug --invoke /bin/sh --on=error build .
 ```
 
-```text
+```shell
 [+] Building 1.2s (14/18)
 docker:default
 ...
@@ -98,7 +98,9 @@ docker buildx build --output type=registry,\"name=docker.io/martinheinz/testimag
 docker buildx build --output type=registry,name=martinheinz/testimage:latest \
  --cache-to type=inline \
  --cache-from type=registry,ref=docker.io/martinheinz/testimage .
+```
 
+```shell
 ...
  => CACHED docker-image://docker.io/docker/dockerfile:1.4@sha256:9ba7531bd80fb0a8...1e24ef1a0dbc
 ...
@@ -144,7 +146,9 @@ RUN <<eot bash
   apt-get update
   apt-get install -y vim
 eot
+```
 
+```Dockerfile
 # 与下面的相同:
 RUN apt-get update && apt-get install -y vim
 ```
