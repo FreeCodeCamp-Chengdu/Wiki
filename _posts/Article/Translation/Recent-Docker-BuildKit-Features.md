@@ -100,7 +100,7 @@ docker buildx build --output type=registry,name=martinheinz/testimage:latest \
  --cache-from type=registry,ref=docker.io/martinheinz/testimage .
 ```
 
-```shell
+```text
 ...
  => CACHED docker-image://docker.io/docker/dockerfile:1.4@sha256:9ba7531bd80fb0a8...1e24ef1a0dbc
 ...
@@ -128,7 +128,7 @@ docker buildx imagetools inspect alpine --format "{{json .Manifest}}" | jq .dige
 
 BuildKit 还通过所谓的 _[Dockerfile 前端][4]_ 带来了新的 Dockerfile 语法。要启用当前最新的语法，我们需要在 Dockerfile 的顶部添加一个指令，例如：
 
-```shell
+```Dockerfile
 # syntax=docker/dockerfile:1.3
 FROM ...
 ```
@@ -157,7 +157,7 @@ RUN apt-get update && apt-get install -y vim
 
 此外，第一行可以指定解释器，因此我们也可以，编写 Python 脚本：
 
-```shell
+```Dockerfile
 # syntax = docker/dockerfile:1.3-labs
 FROM python:3.6
 RUN <<eot
@@ -172,7 +172,7 @@ eot
 
 `COPY` 现在支持 `--parents` 选项：
 
-```shell
+```Dockerfile
 # syntax=docker/dockerfile:1.7.0-labs
 FROM ubuntu
 
@@ -205,7 +205,7 @@ COPY --exclude=*.txt ./some-dir/* ./some-dest
 
 最后，`ADD` 命令也得到了改进，现在可以直接添加 Git 仓库：
 
-```shell
+```Dockerfile
 # syntax=docker/dockerfile:1.7.0-labs
 FROM ubuntu
 
@@ -244,7 +244,7 @@ docker buildx build --ssh default --progress=plain .
 
 虽然不是 BuildKit 功能，但我最近发现的一件事是，你可以在 Dockerfile 中缩进行，并且它可以正常工作，这允许更好的可读性，尤其是在多阶段构建中：
 
-```shell
+```Dockerfile
 # syntax=docker/dockerfile:1
 FROM golang:1.21
   WORKDIR /src
