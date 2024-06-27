@@ -24,7 +24,7 @@ reviewer: ""
 
 第一个问题是产品上线后未删除的日志信息塞满了控制台。查找所需的信息变得令人望而生畏，而解决这个问题的最好办法就是了解 [控制台过滤选项][5] 。使用这些选项，你可以将控制台的报告过滤为你所关心的内容，并屏蔽掉大量杂音。
 
-[![filtering options in the console tool][6]](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_.png)
+[![控制台工具中的过滤选项][6]](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_.png)
 
 ### 你想输出什日志?
 
@@ -42,23 +42,23 @@ console.log({ width });
 console.log({ height });
 ```
 
-[![Using curly braces around variables in log messages logs their name and their value][7]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)
+[![在日志信息中使用大括号记录变量的名称和值][7]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)
 
 ### 添加到你的控制台词汇
 
-[![Examples of warn, info and error messages and how they are displayed in the console][8]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)
+[![警告、信息和错误信息示例及其在控制台中的显示方式][8]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)
 
 除了 `console.log()` 之外，你还可以使用 [更多方法][9] 。例如，`console.warn()` 记录警告，`console.info()` 记录信息，`console.error()` 记录错误信息。这不仅会使控制台的显示略有不同，而且还会使信息具有不同的日志级别，这意味着更容易对其进行过滤。
 
 ### 控制台中的错误和断言
 
-[![The error method of console shows an error, and assert is a shortcut for an if statement with a console.log inside][10]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide11.png)
+[![console 的 error 方法会显示错误，而 assert 是 if 语句的快捷方式，其中包含 console.log][10]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide11.png)
 
 在控制台中显示错误不同于抛出错误，但向维护或调试产品的人员显示问题的严重性仍然是个好主意。另一个有趣的方法是 `console.assert()`，它只在满足特定条件时记录信息。你经常会发现自己在编写 `if` 语句时，里面包含了一个 `console.log()`。使用`assert()`后，这条语句就变得多余了，在清理调试代码时就少了一件要担心的事。
 
 ### 追溯源头
 
-[![Example of using console.trace() to track back where a call came from][11]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide12.png)
+[![使用 console.trace() 追溯调用来源的示例][11]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide12.png)
 
 你经常会发现自己添加了一个 `console.log('called')` 或类似内容来测试某个功能是否被触发。一旦有了这个功能，下一件事通常就是找出是什么调用了该方法。这就是`console.trace()`的作用，因为它不仅会告诉你某个方法被调用了，还会告诉你调用来自哪里。
 
@@ -66,7 +66,7 @@ console.log({ height });
 
 如果要记录的内容很多，可以使用 `console.group('name')` 和 `console.groupEnd('name')` 在控制台中以可折叠和可展开的方式封装信息。你甚至可以定义组默认是展开还是折叠。
 
-[![An example of defining groups in the console][12]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)
+[![在控制台中定义组的示例][12]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)
 
 ### 在控制台中以表格形式显示和过滤大量信息
 
@@ -74,7 +74,7 @@ console.log({ height });
 
 例如，你可以使用 `let elms = document.querySelectorAll(':is(h1,p,script')` 从文档中获取所有 H1、段落和脚本元素，并使用 `console.table(elms)` 以表格形式显示这些信息。由于不同的元素有大量的属性和属性，因此生成的表格非常难读。如果使用`console.table(elms,['nodeName', 'innerText', 'offsetHeight'])` 过滤出你感兴趣的内容，你就会得到一个只有这些属性及其值的表格。
 
-[![Code example using console.table() and its filtering options][13]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide14.png)
+[![使用 console.table() 及其过滤选项的代码示例][13]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide14.png)
 
 复制和粘贴这些信息时，表格结构会保持不变，可以轻松地将数据导入到 Excel 或 Word 中
 
@@ -82,9 +82,6 @@ console.log({ height });
 
 控制台自带了许多方便使用的方法，称为 [Console Utilities][14] 。其中两个非常有用的方法是 `$()` 和 `$$()`，它们分别是 `document.querySelector()` 和 `document.querySelectorAll()` 的替代方法。它们不仅会返回你所期望的 `nodeList`，还会将结果转换为数组，这意味着你可以直接在结果上使用 `map()` 和 `filter()`。以下代码将抓取当前文档中的所有链接，并返回一个数组，数组中的对象仅包含每个链接的 `href` 和 `innerText` 属性，即 `url` 和 `text` 属性。
 
-<table><tbody><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$$<span style="color: #009900;">(</span><span style="color: #3366CC;">'a'</span><span style="color: #009900;">)</span>.<span style="color: #660066;">map</span><span style="color: #009900;">(</span>a <span style="color: #339933;">=&gt;</span> <span style="color: #009900;">{</span>
-  <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #009900;">{</span>url<span style="color: #339933;">:</span> a.<span style="color: #660066;">href</span><span style="color: #339933;">,</span> text<span style="color: #339933;">:</span> a.<span style="color: #660066;">innerText</span><span style="color: #009900;">}</span>
-<span style="color: #009900;">}</span><span style="color: #009900;">)</span></pre></td></tr></tbody></table>
 
 ```javascript
 $$("a").map((a) => {
@@ -99,8 +96,8 @@ $$("a").map((a) => {
 (Chromium 浏览器)
 
 添加 `console.log()` 的常规方法是将其放在代码中想要获取信息的地方。但你也可以深入了解你无法访问和更改的代码。[Live 表达式][16] 是在不更改代码的情况下记录信息的好方法。它们还能记录不断变化的值，而不会让控制台满屏日志，从而降低产品的运行速度。你可以从下面的截屏中看到它们的不同之处：
-<video width="320" height="240" controls>
 
+<video width="320" height="240" controls>
   <source src="https://christianheilmann.com/wp-content/uploads/2021/10/log-vs-live-expression-smaller.mp4" type="video/mp4">
 </video>
 
