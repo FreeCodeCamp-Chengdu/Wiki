@@ -20,11 +20,11 @@ reviewer: ""
 
 （所有浏览器的开发者工具都遵循该标准）
 
-毫无疑问，除了元素工具，控制台是浏览器开发者工具中使用最多的部分。特别是，人们喜欢通过在代码中添加 "console.log()/"来调试，以了解发生了什么。虽然这样做存在一些问题，也有更好的调试脚本的方法，但既然人们都这么做了，那我们就来谈谈如何让这种体验变得更好。
+毫无疑问，除了元素工具，控制台是浏览器开发者工具中使用最多的部分。特别是，人们喜欢通过在代码中添加 `console.log()` 来调试，以了解发生了什么。虽然这样做存在一些问题，也有更好的调试脚本的方法，但既然人们都这么做了，那我们就来谈谈如何让这种体验变得更好。
 
 第一个问题是产品上线后未删除的日志信息塞满了控制台。查找所需的信息变得令人望而生畏，而解决这个问题的最好办法就是了解 [控制台过滤选项][5] 。使用这些选项，你可以将控制台的报告过滤为你所关心的内容，并屏蔽掉大量杂音。
 
-[![控制台工具中的过滤选项][6]](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_.png)
+![控制台工具中的过滤选项][6]
 
 ### 你想输出什日志?
 
@@ -42,7 +42,7 @@ console.log({ width });
 console.log({ height });
 ```
 
-[![在日志信息中使用大括号记录变量的名称和值][7]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)
+![在日志信息中使用大括号记录变量的名称和值][7]
 
 ### 添加到你的控制台词汇
 
@@ -58,7 +58,7 @@ console.log({ height });
 
 ### 追溯源头
 
-[![使用 console.trace() 追溯调用来源的示例][11]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide12.png)
+![使用 console.trace() 追溯调用来源的示例][11]
 
 你经常会发现自己添加了一个 `console.log('called')` 或类似内容来测试某个功能是否被触发。一旦有了这个功能，下一件事通常就是找出是什么调用了该方法。这就是`console.trace()`的作用，因为它不仅会告诉你某个方法被调用了，还会告诉你调用来自哪里。
 
@@ -66,7 +66,7 @@ console.log({ height });
 
 如果要记录的内容很多，可以使用 `console.group('name')` 和 `console.groupEnd('name')` 在控制台中以可折叠和可展开的方式封装信息。你甚至可以定义组默认是展开还是折叠。
 
-[![在控制台中定义组的示例][12]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)
+![在控制台中定义组的示例][12]
 
 ### 在控制台中以表格形式显示和过滤大量信息
 
@@ -74,7 +74,7 @@ console.log({ height });
 
 例如，你可以使用 `let elms = document.querySelectorAll(':is(h1,p,script')` 从文档中获取所有 H1、段落和脚本元素，并使用 `console.table(elms)` 以表格形式显示这些信息。由于不同的元素有大量的属性和属性，因此生成的表格非常难读。如果使用`console.table(elms,['nodeName', 'innerText', 'offsetHeight'])` 过滤出你感兴趣的内容，你就会得到一个只有这些属性及其值的表格。
 
-[![使用 console.table() 及其过滤选项的代码示例][13]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide14.png)
+![使用 console.table() 及其过滤选项的代码示例][13]
 
 复制和粘贴这些信息时，表格结构会保持不变，可以轻松地将数据导入到 Excel 或 Word 中
 
@@ -82,14 +82,13 @@ console.log({ height });
 
 控制台自带了许多方便使用的方法，称为 [Console Utilities][14] 。其中两个非常有用的方法是 `$()` 和 `$$()`，它们分别是 `document.querySelector()` 和 `document.querySelectorAll()` 的替代方法。它们不仅会返回你所期望的 `nodeList`，还会将结果转换为数组，这意味着你可以直接在结果上使用 `map()` 和 `filter()`。以下代码将抓取当前文档中的所有链接，并返回一个数组，数组中的对象仅包含每个链接的 `href` 和 `innerText` 属性，即 `url` 和 `text` 属性。
 
-
 ```javascript
 $$("a").map((a) => {
     return { url: a.href, text: a.innerText };
 });
 ```
 
-[![An example how the $$ function returns a collection of HTML elements that you can filter like any other array][15]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)
+![下面举例说明 $$ 函数如何返回一个 HTML 元素集合，您可以像过滤其他数组一样过滤这些元素][15]
 
 ## 2. 你可以在没有源访问权限的情况下进行日志记录，实时表达式和日志点
 
@@ -113,7 +112,7 @@ $$("a").map((a) => {
 
 在 Visual Studio Code 中启动调试会话时，可以生成一个浏览器实例，调试控制台就会变成浏览器开发者工具中的控制台。我曾在七月份的博客中详细介绍过这一点，所以你可以[阅读如何做到这一点][18]。[官方文档][19] 中也有更多内容。
 
-[![][20]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide24.png)
+![][20]
 
 你还可以观看我展示功能的一分钟视频：
 
@@ -138,17 +137,17 @@ $$("a").map((a) => {
 
 如果你检查一下开发者工具，就会发现它们是用 HTML、CSS 和 TypeScript 编写的。使用这些技术是一个令人兴奋的环境，因为你知道你的代码将在哪个渲染引擎中运行,这在网络上是永远无法知道的。
 
-[![Inspecting the Chromium Developer tools with another instance of the developer tools][23]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)
+[![使用另一个开发者工具实例检查 Chromium 开发工具][23]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)
 
 ### Edge 在 Visual Studio Code 的开发者工具
 
-(Microsoft Edge via a VS Code extension)
+(Microsoft Edge 使用 VS Code 扩展)
 
 这些工具的可嵌入性也使我们能够为你提供一种在浏览器之外使用它们的方法。[Microsoft Edge Tools for Visual Studio Code][2] 扩展将这些工具带到了 Visual Studio Code 中。这样，你就可以在代码编辑器旁边使用可视化调试工具，而不必总是在两者之间跳来跳去。当你开始调试会话并单击 "开发者工具"（Developer Tools）图标时，工具就会打开，或者首次打开时，系统会提示你安装扩展。
 
-[![Visual Studio 代码调试栏中的检查按钮][24]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)
+![Visual Studio 代码调试栏中的检查按钮][24]
 
-[![在 Visual Studio Code 实例中打开 Microsoft Edge 开发者工具][25]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)
+![在 Visual Studio Code 实例中打开 Microsoft Edge 开发者工具][25]
 
 ## 6. 肮脏的秘密
 
@@ -164,11 +163,11 @@ $$("a").map((a) => {
 
 我们正在想办法让这一切变得更容易，你很快就会在 Microsoft Edge 中看到这些想法。我们的一个想法是 “聚焦模式(Focus Mode)”。我们不再向你显示所有工具和选项卡，而是将工具按不同的使用情况进行分类，如 “元素/CSS 调试(Elements/CSS debugging)”、“源代码/JavaScript 调试(Sources/JavaScript Debugging)” 或 “网络检查(Network inspection)”。然后，我们只显示相关工具，隐藏所有可能会造成混淆或碍事的工具。
 
-[![聚焦模式下的开发者工具，只显示当前环境下所需的工具][27]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)
+![聚焦模式下的开发者工具，只显示当前环境下所需的工具][27]
 
 我们正在开发的另一项功能是 “信息覆盖(informational overlays)”。你可以获得一个帮助按钮，打开开发者工具的叠加信息，解释每个工具是什么、如何使用以及提供文档链接。我们希望这将使人们更容易了解更多的功能。
 
-[![开发者工具，通过覆盖图解释每种工具的含义][28]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)
+![开发者工具，通过覆盖图解释每种工具的含义][28]
 
 ### 编写代码与调试结果之间仍然存在脱节现象
 
@@ -184,17 +183,17 @@ Visual Studio 代码中的 CSS 镜像:
 
 ## 7. 你们是开发人员工具的受众和客户！
 
-(适用于所有浏览器，但此处显示的渠道仅限于 Microsoft Edge）
+（适用于所有浏览器，但此处显示的渠道仅限于 Microsoft Edge）
 
 作为开发人员，你是开发人员工具的主要受众。我们愿意听取你的反馈意见，最近对工具的许多更改都是外部开发人员要求的直接结果。我们通过提供直接与我们联系的上下文方式，尽可能地简化这一过程。例如，Visual Studio Code 扩展有显著的链接和按钮供你报告问题(report issues)和功能需求(request features)。
 
-[![VS 代码扩展中提供的上下文链接截图，用于要求新功能、提交错误和了解实验情况][30]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)
+![VS 代码扩展中提供的上下文链接截图，用于要求新功能、提交错误和了解实验情况][30]
 
 [扩展插件的源代码][31] 也在 GitHub 上，你可以在那里[提交 issues][32]。
 
 浏览器内的开发者工具也有一个直接向我们提供反馈的按钮。为了便于你提供可操作的反馈，该按钮包含了大量自动信息。
 
-[![Microsoft Edge 浏览器开发工具中内置的反馈工具][33]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)
+![Microsoft Edge 浏览器开发工具中内置的反馈工具][33]
 
 它会自动记录发生问题的 URL、截图并发送诊断数据。我们还要求你提供电子邮件，以备我们需要更多信息，你还可以添加附件和如何重现问题的信息。我们每天都会检查这些反馈，很多伟大的发明和错误修复都来自于此。
 
