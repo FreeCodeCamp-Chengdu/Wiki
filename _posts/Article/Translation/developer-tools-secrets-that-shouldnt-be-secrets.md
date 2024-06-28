@@ -1,204 +1,268 @@
 ---
-title: Developer Tools secrets that shouldn’t be secrets
+title: 浏览器开发者工具中不应该再有秘密
 authorURL: ""
 originalURL: https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/
 translator: ""
 reviewer: ""
 ---
 
-Monday, November 1st, 2021 at 3:21 pm
+2021 年 11 月 1 日星期一下午 3:21
 
-> **Update**: As this [is blowing up on Hackernews](https://news.ycombinator.com/item?id=29071700) I added information to each of the tips in which environment they are supported in parenthesis after each heading. When I state “Chromium browsers”, this refers to all browsers that use the Chromium core and also feature all the Developer Tools. This is Chrome, Microsoft Edge, Brave and many more. As a reminder: Microsoft Edge is the browser that comes with Windows 10/11 and is based on Chromium and thus from a platform perspective simular to Chrome. They differ in UX and services around the core. Edge Developer Tools work closely with Google on bringing the work we add to the product back into the Chromium Core. But some of the things I am talking about here are experiments and exclusively in Microsoft Edge, which is available on Windows, Mac and Linux. Some functionality is only available inside Visual Studio Code via the [Edge DevTools for VS Code extension](https://aka.ms/devtools-for-code) .
+> **更新**: 由于这篇文章[正在 Hackernews 上热传][1]，我在每个标题后的括号中为每个提示添加了支持环境的信息。当我说明 `Chromium 浏览器` 时，指的是所有使用 `Chromium` 内核并具有所有开发者工具的浏览器。这包括 `Chrome` 浏览器、`Microsoft Edge`、`Brave` 以及其他更多浏览器。在此提醒一下： `Microsoft Edge` 是 `Windows 10/11` 系统自带的浏览器，基于 `Chromium`，因此从平台角度来看与 `Chrome` 浏览器类似。它们在用户体验和核心服务方面有所不同。`Edge` 开发者工具与谷歌密切合作，将我们添加到产品中的工作带回 `Chromium` 核心。但是，我在这里谈到的一些东西是微软 `Edge` 的实验和独有功能，它可在 `Windows`、`Mac` 和 `Linux` 上使用。有些功能只能通过 [Edge DevTools for VS Code 扩展][2]在 `Visual Studio Code` 中使用。
 
-This is a talk that I’ve given at [CityJS](https://cityjsconf.org/) this September. I am a principal product manager for developer tools in Microsoft Edge and these are things I encountered during working on the tools, documenting them and going through user feedback.
+这是我今年 9 月在 [CityJS][3] 上发表的演讲。我是 `Microsoft Edge` 开发者人员工具的首席产品经理，这些都是我在开发工具、记录工具和查看用户反馈时遇到的问题。
 
-You can watch the [recording of the talk on Youtube](https://www.youtube.com/watch?v=q_qzHzIVxw4) .
+你可以在 Youtube 上观看[演讲视频][4]。
 
-<!-- more -->
+下面是我所写的所有内容：
 
-Here’s a write-up of all the things I covered:
+## 1. Console 远不止是打印日志!
 
-## 1\. Console is much more than \`log()\`!
+（所有浏览器的开发者工具都遵循该标准）
 
-(All browsers with developer tools following the standard)
+毫无疑问，除了元素工具，控制台是浏览器开发者工具中使用最多的部分。特别是，人们喜欢通过在代码中添加 `console.log()` 来调试，以了解发生了什么。虽然这样做存在一些问题，也有更好的调试脚本的方法，但既然人们都这么做了，那我们就来谈谈如何让这种体验变得更好。
 
-There is no doubt that, besides the Elements tool, Console is the most used part of the browser developer tools. Specificially, people love to debug by putting a \`console.log()\` in their code to learn what’s going on. There are a few problems with that, and there are better ways to debug scripts, but as this is what people do, let’s talk how to make that experience better.
+第一个问题是产品上线后未删除的日志信息塞满了控制台。查找所需的信息变得令人望而生畏，而解决这个问题的最好办法就是了解 [控制台过滤选项][5] 。使用这些选项，你可以将控制台的报告过滤为你所关心的内容，并屏蔽掉大量杂音。
 
-The first problem is log messages that aren’t removed when a product goes live clogging up the Console. Finding the information you’re looking for becomes daunting and the best way to work with that is to learn about the [console filtering options available to you](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/console-filters) . Using these you can filter the reporting of the console to the things you care about and block out a lot of the noise.
+[![控制台工具中的过滤选项](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_-1024x510.png)][6]
 
-[![filtering options in the console tool](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_-1024x510.png)](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_.png)
+### 你想输出什日志?
 
-### What is that you’re logging?
+使用 `console.log()` 的下一个问题是，我们似乎只记录了值，却忘了添加它们的来源。例如，当你使用下面的代码时，你会得到一个数字列表，但你不知道什么是什么。
 
-The next problem with using \`console.log()\` is that we seem to only log values and forget to add where they come from. For example, when you use the following code, you get a list of numbers, but you don’t know what is what.
+```javascript
+console.log(width);
+console.log(height);
+```
 
-<table><tbody><tr><td class="code"><pre class="javascript" style="font-family:monospace;">console.<span style="color: #660066;">log</span><span style="color: #009900;">(</span>width<span style="color: #009900;">)</span>
-console.<span style="color: #660066;">log</span><span style="color: #009900;">(</span>height<span style="color: #009900;">)</span></pre></td></tr></tbody></table>
+要解决这个问题，最简单的方法是用大括号把要记录的内容包起来。这样，控制台就会同时记录你想知道的内容的名称和值。
 
-console.log(width) console.log(height)
+```javascript
+console.log({ width });
+console.log({ height });
+```
 
-The easiest way to work around that issue is to wrap the things you want to log in curly braces. The console then logs both the name and the value of what you want to know about.
+[![在日志信息中使用大括号记录变量的名称和值](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)][7]
 
-<table><tbody><tr><td class="code"><pre class="javascript" style="font-family:monospace;">console.<span style="color: #660066;">log</span><span style="color: #009900;">(</span><span style="color: #009900;">{</span>width<span style="color: #009900;">}</span><span style="color: #009900;">)</span>
-console.<span style="color: #660066;">log</span><span style="color: #009900;">(</span><span style="color: #009900;">{</span>height<span style="color: #009900;">}</span><span style="color: #009900;">)</span></pre></td></tr></tbody></table>
+### 添加到你的控制台词汇
 
-console.log({width}) console.log({height})
+[![警告、信息和错误信息示例及其在控制台中的显示方式](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)][8]
 
-[![Using curly braces around variables in log messages logs their name and their value](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)
+除了 `console.log()` 之外，你还可以使用 [更多方法][9] 。例如，`console.warn()` 记录警告，`console.info()` 记录信息，`console.error()` 记录错误信息。这不仅会使控制台的显示略有不同，而且还会使信息具有不同的日志级别，这意味着更容易对其进行过滤。
 
-### Adding to your console vocabulary
+### 控制台中的错误和断言
 
-[![Examples of warn, info and error messages and how they are displayed in the console](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)
+[![console 的 error 方法会显示错误，而 assert 是 if 语句的快捷方式，其中包含 console.log](https://christianheilmann.com/wp-content/uploads/2021/10/Slide11.png)][10]
 
-In addition to \`console.log()\` you have a [lot more methods you can use](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/console-log) . For example, \`console.warn()\` logs a warning, \`console.info()\` an informational message, and \`console.error()\` an error message. This not only results in slighty different displays in the console, but it also gives your messages a different log level, which means it is easier to filter for them.
+在控制台中显示错误不同于抛出错误，但向维护或调试产品的人员显示问题的严重性仍然是个好主意。另一个有趣的方法是 `console.assert()`，它只在满足特定条件时记录信息。你经常会发现自己在编写 `if` 语句时，里面包含了一个 `console.log()`。使用`assert()`后，这条语句就变得多余了，在清理调试代码时就少了一件要担心的事。
 
-### Errors and assertions in Console
+### 追溯源头
 
-[![The error method of console shows an error, and assert is a shortcut for an if statement with a console.log inside](https://christianheilmann.com/wp-content/uploads/2021/10/Slide11.png)](https://christianheilmann.com/wp-content/uploads/2021/10/Slide11.png)
+[![使用 console.trace() 追溯调用来源的示例](https://christianheilmann.com/wp-content/uploads/2021/10/Slide12.png)][11]
 
-Displaying an error in the console is different to throwing an error, but it still is a good idea to show the severity of an issue to the person maintaining or debugging the product. Another interesting method is \`console.assert()\`, which only logs a message when a certain condition is met. Often you find yourself writing an \`if\` statement with a \`console.log()\` inside. Using \`assert()\` makes that one redundant and you have one less thing to worry about when cleaning up your debugging code.
+你经常会发现自己添加了一个 `console.log('called')` 或类似内容来测试某个功能是否被触发。一旦有了这个功能，下一件事通常就是找出是什么调用了该方法。这就是`console.trace()`的作用，因为它不仅会告诉你某个方法被调用了，还会告诉你调用来自哪里。
 
-### Tracing where something came from
+### 将控制台信息分组
 
-[![Example of using console.trace() to track back where a call came from](https://christianheilmann.com/wp-content/uploads/2021/10/Slide12.png)](https://christianheilmann.com/wp-content/uploads/2021/10/Slide12.png)
+如果要记录的内容很多，可以使用 `console.group('name')` 和 `console.groupEnd('name')` 在控制台中以可折叠和可展开的方式封装信息。你甚至可以定义组默认是展开还是折叠。
 
-Often you find yourself adding a \`console.log(‘called’)\` or similar to test if a certain functionality is even triggered. Once you have that the next thing you normally want to find out what called that method. That’s what \`console.trace()\` is for, as it doesn’t only tell you that something was called, but also where the call came from.
+[![在控制台中定义组的示例](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)][12]
 
-### Grouping console messages
+### 在控制台中以表格形式显示和过滤大量信息
 
-If you have a lot to log, you can use \`console.group(‘name’)\` and \`console.groupEnd(‘name’)\` to wrap the messages in collapsible and expandable messages in the Console. You can even define if the groups should be expanded or collapsed by default.
+如果你想以日志形式显示大量信息，那么阅读这些信息可能会令人望而生畏。`console.table()` 方法会在控制台中以表格形式显示类似数组的数据，你可以通过给它一个数组来过滤你想显示的属性。
 
-[![An example of defining groups in the console](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)
+例如，你可以使用 `let elms = document.querySelectorAll(':is(h1,p,script')` 从文档中获取所有 H1、段落和脚本元素，并使用 `console.table(elms)` 以表格形式显示这些信息。由于不同的元素有大量的属性和属性，因此生成的表格非常难读。如果使用`console.table(elms,['nodeName', 'innerText', 'offsetHeight'])` 过滤出你感兴趣的内容，你就会得到一个只有这些属性及其值的表格。
 
-### Displaying and filtering lots of information in the console as tables
+![使用 console.table() 及其过滤选项的代码示例][13]
 
-If you want to display a lot of of information as a log, it can become daunting to read the information. The \`console.table()\` method displays array-like data as a table in the console, and you can filter what you want to display by giving it an array of the properties you want to see.
+复制和粘贴这些信息时，表格结构会保持不变，可以轻松地将数据导入到 Excel 或 Word 中
 
-For example, you can use \`let elms = document.querySelectorAll(‘:is(h1,p,script’)\` to get all H1, paragraph and script elements from the document and \`console.table(elms)\` to display this information as a table. As the different elements have a boatload of attributes and properties, the resulting table is pretty unreadable. If you filter down to what you are interested in by using \`console.table(elms,\[‘nodeName’, ‘innerText’, ‘offsetHeight’\])\` you get a table with only these properties and their values.
+### 像 jQuery 一样锋利 : $() and $$()
 
-[![Code example using console.table() and its filtering options](https://christianheilmann.com/wp-content/uploads/2021/11/Slide14.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide14.png)
+控制台自带了许多方便使用的方法，称为 [Console Utilities][14] 。其中两个非常有用的方法是 `$()` 和 `$$()`，它们分别是 `document.querySelector()` 和 `document.querySelectorAll()` 的替代方法。它们不仅会返回你所期望的 `nodeList`，还会将结果转换为数组，这意味着你可以直接在结果上使用 `map()` 和 `filter()`。以下代码将抓取当前文档中的所有链接，并返回一个数组，数组中的对象仅包含每个链接的 `href` 和 `innerText` 属性，即 `url` 和 `text` 属性。
 
-The table structure is maintained when you copy and paste this information, which makes it a wonderful tool to get data into Excel or Word, for example.
+```javascript
+$$("a").map((a) => {
+    return { url: a.href, text: a.innerText };
+});
+```
 
-### Blinging it up: $() and $$()
+[![下面举例说明 $$ 函数如何返回一个 HTML 元素集合，您可以像过滤其他数组一样过滤这些元素](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)][15]
 
-The console comes with a lot of convenience methods you can use called the [Console Utilities](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities) . Two very useful ones are \`$()\` and \`$$()\` which are replacements for \`document.querySelector()\` and \`document.querySelectorAll()\` respectively. These not only return the nodeList you expect, but also cast the results to arrays, which means you can use \`map()\` and \`filter()\` on the results directly. The following code would grab all the links of the current document and return an Array with objects that contain only the \`href\` and \`innerText\` properties of each link as \`url\` and \`text\` properties.
+## 2. 你可以在没有源访问权限的情况下进行日志记录，实时表达式和日志点
 
-<table><tbody><tr><td class="code"><pre class="javascript" style="font-family:monospace;">$$<span style="color: #009900;">(</span><span style="color: #3366CC;">'a'</span><span style="color: #009900;">)</span>.<span style="color: #660066;">map</span><span style="color: #009900;">(</span>a <span style="color: #339933;">=&gt;</span> <span style="color: #009900;">{</span>
-  <span style="color: #000066; font-weight: bold;">return</span> <span style="color: #009900;">{</span>url<span style="color: #339933;">:</span> a.<span style="color: #660066;">href</span><span style="color: #339933;">,</span> text<span style="color: #339933;">:</span> a.<span style="color: #660066;">innerText</span><span style="color: #009900;">}</span>
-<span style="color: #009900;">}</span><span style="color: #009900;">)</span></pre></td></tr></tbody></table>
+(Chromium 浏览器)
 
-$$
-('a').map(a => { return {url: a.href, text: a.innerText} })
+添加 `console.log()` 的常规方法是将其放在代码中想要获取信息的地方。但你也可以深入了解你无法访问和更改的代码。[Live 表达式][16] 是在不更改代码的情况下记录信息的好方法。它们还能记录不断变化的值，而不会让控制台满屏日志，从而降低产品的运行速度。你可以从下面的截屏中看到它们的不同之处：
 
-[![An example how the $$ function returns a collection of HTML elements that you can filter like any other array](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)
+<video width="320" height="240" controls>
+  <source src="https://christianheilmann.com/wp-content/uploads/2021/10/log-vs-live-expression-smaller.mp4" type="video/mp4">
+</video>
 
-## 2\. You can log without source access – live expressions and logpoints
-(Chromium browsers)
+日志点是一种特殊的断点。你可以右键单击开发者工具源代码工具中 JavaScript 的任意一行，然后设置一个日志点。你会被要求提供一个要记录的表达式，并在执行该行代码时在控制台中获得其值。这意味着从技术上讲，你可以在网络上的任何地方注入一个 `console.log()`。我早在八月份就[写过关于日志点的文章][17]，你可以在下面的截屏中看到演示：
 
-The normal way to add a \`console.log()\` is to put it inside your code at the place you want to get the information. But you can also get insights into code you can’t access and change. [Live expressions](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/live-expressions) are a great way to log information without changing your code. They are also incredible to log values that change constantly without flooding the console and thus slowing down your product. You can see the difference in the following screencast:
+<video width="320" height="240" controls>
+  <source src="https://youtu.be/DRRezUZvZ6I" type="video/mp4">
+</video>
 
-Logpoints are a special kind of breakpoint. You can right-click any line in a JavaScript in the Sources tool of the Developer Tools and set a logpoint. You get asked to provide an expression you’d like to log and will get its value in the console when the line of code is executed. This means you can technically inject a \`console.log()\` anywhere on the web. I [wrote about logpoints](https://christianheilmann.com/2021/08/24/using-console-log-on-any-website-logpoints-let-you-do-that/) back in August and you can see a demo in the following screencast:
+## 3. 你可以在浏览器之外使用 VS code 调试器进行日志记录
 
-## 3\. You can log outside the browser – VS Code debugger
-(Chromium Browsers and VS Code)
+(Chromium 浏览器 和 VS Code)
 
-When you start a debugging session in Visual Studio Code, you can spawn a browser instance and the Debug Console becomes the Console you are used to from the browser developer tools. I blogged about this in July in detail, so you can [read up there how to do that](https://christianheilmann.com/2021/07/30/using-console-log-debugging-in-visual-studio-code/) . There is also more in the [official documentation](https://docs.microsoft.com/microsoft-edge/visual-studio-code/microsoft-edge-devtools-extension#browser-debugging-with-microsoft-edge-devtools-integration-in-visual-studio-code).
+在 Visual Studio Code 中启动调试会话时，可以生成一个浏览器实例，调试控制台就会变成浏览器开发者工具中的控制台。我曾在七月份的博客中详细介绍过这一点，所以你可以[阅读如何做到这一点][18]。[官方文档][19] 中也有更多内容。
 
-[![](https://christianheilmann.com/wp-content/uploads/2021/10/Slide24-842x1024.png)](https://christianheilmann.com/wp-content/uploads/2021/10/Slide24.png)
+[![](https://christianheilmann.com/wp-content/uploads/2021/10/Slide24-842x1024.png)][20]
 
-You can also watch this one minute video of me showing the functionality:
+你还可以观看我展示功能的一分钟视频：
 
-## 4\. You can inject code into any site – snippets and overrides.
-(Chromium Browsers)
+<video width="320" height="240" controls>
 
-[Snippets](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets) are a way in Developer Tools to run a script against the current web site. You can use the [Console Utilities](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities) in these scripts and it is a great way to write and store complex DOM manipulation scripts you normally execute in the Console. You can run your scripts in the window context of the current document either from the snippets editor or from the command menu. In the latter case, start your command with an ! and type the name of the snippet you want to run.
+  <source src="https://youtu.be/00MNtSzasSQ" type="video/mp4">
+</video>
 
-[Overrides](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/overrides) allow you to store local copies of remote scripts and override them when the page loads. This is great if you have, for example, a slow build process for your whole application and you want to try something out. It is also a great tool to replace annoying scripts from third party web sites without having to use a browser extension.
+## 4. 你可以向任何网站注入代码，片段（Snippets）和重写（Overrides）
 
-## 5\. You can inspect and debug much more than you know!
-(Chromium Browsers)
+(Chromium 浏览器)
 
-You may know the Chromium developer tools from browsers like Google Chrome, Brave or Microsoft Edge, but they are available in a lot more environments. Any app that’s based on Electron can have them enabled and you can use the Tools to peek under the hood and see how the product was done. This works, for example, in GitHub Desktop, Visual Studio Code, or you can even debug the Developer Tools of the browser using Developer Tools!
+[片段(Snippets)][21] 是开发者工具中针对当前网站运行脚本的一种方法。你可以在这些脚本中使用[控制台实用工具][14]，它是编写和存储通常在控制台中执行的复杂 DOM 操作脚本的绝佳方法。你可以通过片段编辑器或命令菜单在当前文档的窗口上下文中运行脚本。在后一种情况下，以 ! 开头，然后键入要运行的代码段名称即可。
 
-If you inspect the Developer Tools, you will see that they are written in HTML, CSS and TypeScript. It is an exciting environment to use these technologies, as you you know the rendering engine your code will run in – something you never know on the web.
+[重写(Overrides)][22] 允许你存储远程脚本的本地副本，并在页面加载时覆盖它们。举例来说，如果你的整个应用程序的构建过程很慢，而你又想试一试，这就非常好用。此外，它还是替代第三方网站恼人脚本的绝佳工具，而无需使用浏览器扩展。
 
-[![Inspecting the Chromium Developer tools with another instance of the developer tools](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)
+## 5. 你可以检查(inspect)和调试(debug)的东西比你知道的要多得多！
 
-### Edge Developer Tools in Visual Studio Code
-(Microsoft Edge via a VS Code extension)
+(Chromium 浏览器)
 
-The embeddable nature of the tools also allowed us to offer you a way to use them outside the browser. The [Microsoft Edge Tools for Visual Studio Code](https://aka.ms/devtools-for-code) extension brings the tools to Visual Studio Code. That way you can use the visual debugging tools right next to your code editor and you don’t need to jump between the two all the time.This also ties in with the “Console in Visual Studio Code” trick mentioned earlier. When you start a debugging session and you click the Developer Tools icon, the tools will open or – the first time – you will be prompted to install the extension.
+你可能从 Google Chrome、Brave 或 Microsoft Edge 等浏览器中了解到 Chromium 开发者工具，但它们在更多环境中可用。任何基于 Electron 的应用程序都可以启用这些工具，你可以使用这些工具窥探引擎盖下的内容，看看产品是如何完成的。例如，这可以在 GitHub Desktop、Visual Studio Code 中使用，你甚至可以使用开发者工具调试浏览器的开发者工具！
 
-[![Inspect button in the debug bar of Visual Studio Code](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)
+如果你检查一下开发者工具，就会发现它们是用 HTML、CSS 和 TypeScript 编写的。使用这些技术是一个令人兴奋的环境，因为你知道你的代码将在哪个渲染引擎中运行,这在网络上是永远无法知道的。
 
-[![Microsoft Edge Developer tools open in an instance of Visual Studio Code](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)
+[![使用另一个开发者工具实例检查 Chromium 开发工具][23]](https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png)
 
-## 6\. Some dirty secrets…
+### Edge 在 Visual Studio Code 的开发者工具
 
-Working intimately with developer tools and getting feedback and usage information taught me a few dirty secrets. The first one is that whilst we are all super excited about all the amazing features of developer tools, users only use a very small percentage of them. Many things heralded as the best thing since sliced bread in presentations and video tutorials are hardly every opened, let alone used. I thought this was about a lack of documentation and we spent a massive amount of time to update the [DevTools documentation](https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/) to ensure everything in them is described and explained, but that wasn’t it. Documentation is something people seem to go to as a last resort when they are stuck and Google/Stack Overflow/Social channels didn’t yield any results.
+(Microsoft Edge 使用 VS Code 扩展)
 
-### Developer tools have become complex and are overwhelming – a few ideas how to fix that
+这些工具的可嵌入性也使我们能够为你提供一种在浏览器之外使用它们的方法。[Microsoft Edge Tools for Visual Studio Code][2] 扩展将这些工具带到了 Visual Studio Code 中。这样，你就可以在代码编辑器旁边使用可视化调试工具，而不必总是在两者之间跳来跳去。当你开始调试会话并单击 "开发者工具"（Developer Tools）图标时，工具就会打开，或者首次打开时，系统会提示你安装扩展。
+
+[![Visual Studio 代码调试栏中的检查按钮](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)][24]
+
+[![在 Visual Studio Code 实例中打开 Microsoft Edge 开发者工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)][25]
+
+## 6. 肮脏的秘密
+
+与开发者工具进行亲密合作，并获得反馈和使用信息，这让我了解了一些 `肮脏的秘密`。第一个是，尽管我们所有人都对开发者工具的所有惊人功能感到非常兴奋，但用户只使用了其中的一小部分。许多在演示和视频教程中被誉为自切片面包以来最好的东西实际上很少被打开，更不用说被使用了。我以为这是因为缺乏文档记录，所以我们花费了大量的时间来更新[DevTools 文档][26]，以确保其中的所有内容都被描述和解释，但这不是问题所在。文档似乎是人们在谷歌、Stack Overflow 或社交媒体渠道没有找到任何结果后的最后手段。
+
+### 开发人员的工具变得复杂不堪，如何解决这个问题？
+
 (Microsoft Edge)
 
-It might be that the plain fact is that the Developer Tools of browsers grew organically over the years and can be incredibly overwhelming to look at. And that bothers me and I think we should do better. Here’s my mantra when it comes to tools for developers:
+可能是因为浏览器的开发者工具在过去几年中有机地发展壮大，让人目不暇接。这让我很烦恼，我认为我们应该做得更好。说到开发者工具，我有一句口头禅：
 
-> Developer tools should not expect people to be experts but turn them into experts over time.
+> 开发者工具不应期望人们成为专家，而应随着时间的推移把他们变成专家。
 
-We’re working on a few ideas to make that easier, and you will soon see those in Microsoft Edge. One idea we had is a “Focus Mode”. Instead of showing you all the tools and tabs we sorted the tools into different use cases, like “Elements/CSS debugging”, “Sources/JavaScript Debugging” or “Network inspection”. We then show only the relevant tools and hide all the ones that may be confusing or in the way.
+我们正在想办法让这一切变得更容易，你很快就会在 Microsoft Edge 中看到这些想法。我们的一个想法是 “聚焦模式(Focus Mode)”。我们不再向你显示所有工具和选项卡，而是将工具按不同的使用情况进行分类，如 “元素/CSS 调试(Elements/CSS debugging)”、“源代码/JavaScript 调试(Sources/JavaScript Debugging)” 或 “网络检查(Network inspection)”。然后，我们只显示相关工具，隐藏所有可能会造成混淆或碍事的工具。
 
-[![Developer tools in focus mode, showing only what's needed in the current context](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)
+[![聚焦模式下的开发者工具，只显示当前环境下所需的工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)][27]
 
-Another feature we are working on are “informational overlays”. You get a help button that allows you to turn on overlays for the developer tools, explaining what each of the tools is, how to use it and providing links to the documentation. We hope that this would make it easier for people to learn about more features.
+我们正在开发的另一项功能是 “信息覆盖(informational overlays)”。你可以获得一个帮助按钮，打开开发者工具的叠加信息，解释每个工具是什么、如何使用以及提供文档链接。我们希望这将使人们更容易了解更多的功能。
 
-[![Developer tools covered by overlays explaining what each of them are,](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)
+[![开发者工具，通过覆盖图解释每种工具的含义](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)][28]
 
-### There is still a disconnect between authoring code and debugging the outcome
+### 编写代码与调试结果之间仍然存在脱节现象
+
 (Microsoft Edge)
 
-Whilst it is amazing what tools provide us these days there is still a disconnect between authoring and debugging. Most of the time we write our code, create the app and then go to the browser to see what doesn’t work. We then use the browser developer tools to tweak and fix these issues. And then comes the big issue we still need to fix: how do you get the changes you created using the browser developer tools back into your code? Most of the time, the answer is “copy and paste or try to remember what needs changing”.
+尽管现在的工具令人惊叹，但编写和调试之间仍然存在脱节。大多数情况下，我们在编写代码、创建应用程序后，会在浏览器中查看哪些地方无法正常工作。然后，我们使用浏览器开发者工具来调整和修复这些问题。然后，我们还需要解决一个大问题：如何将使用浏览器开发者工具创建的更改返回到代码中？大多数情况下，答案是 "复制并粘贴，或者试着记住需要更改的内容"。
 
-We’re currently working on two ways to make this easier. One is to replace the in-devtools editor with Visual Studio Code when it is available and to change files on the hard drive as you use the browser developer tools. The other is part of the VS Code extension and changes the source code in the editor as you use the developer tools but still gives you the final say in changing the file on disk. I [described the problem and the possible solutions on the Edge blog](https://blogs.windows.com/msedgedev/2021/10/21/improved-authoring-debugging-devtools-visual-studio-code/) or you can watch the following two screencasts to see them in action.
+我们目前正在研究两种方法来简化这一过程。一种是在可用时用 Visual Studio Code 代替开发者工具内的编辑器，并在使用浏览器开发者工具时更改硬盘上的文件。另一种是 VS Code 扩展的一部分，可以在使用开发者工具时更改编辑器中的源代码，但在更改磁盘上的文件时仍有最终决定权。我[在 Edge 博客上描述了问题和可能的解决方案][29]，你也可以观看以下两个截屏视频，了解它们的实际效果。
 
-CSS Mirroring in Visual Studio Code:
+Visual Studio 代码中的 CSS 镜像:
 
-What if… Visual Studio Code became the editor of in-browser Developer Tools?
+如果…… Visual Studio Code 成为浏览器内开发者工具的编辑器，会发生什么？
 
-## 7\. You’re the audience and the clients of Developer Tools!
-(Applies to all browsers, but channels shown here are Microsoft Edge only)
+## 7. 你们是开发人员工具的受众和客户！
 
-As a developer, you are the main audience for Developer Tools. We are open to your feedback and many of the recent changes to the tools are direct results from demands from outside developers. We try to make this as easy as possible by providing in-context ways to contact us directly. For example, the Visual Studio Code extension has prominent links and buttons for you to report issues and request features.
+（适用于所有浏览器，但此处显示的渠道仅限于 Microsoft Edge）
 
-[![Screenshot of the in-context links provided in the VS Code extension to demand new features, file bugs and learn abour experiments](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)
+作为开发人员，你是开发人员工具的主要受众。我们愿意听取你的反馈意见，最近对工具的许多更改都是外部开发人员要求的直接结果。我们通过提供直接与我们联系的上下文方式，尽可能地简化这一过程。例如，Visual Studio Code 扩展有显著的链接和按钮供你报告问题(report issues)和功能需求(request features)。
 
-The [source code of the extension](https://github.com/microsoft/vscode-edge-devtools) is also on GitHub and you can [file issues](https://github.com/microsoft/vscode-edge-devtools/issues) there.
+[![VS 代码扩展中提供的上下文链接截图，用于要求新功能、提交错误和了解实验情况](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)][30]
 
-The in-browser developer tools also have a direct button to give us feedback. To make it easier for you to provide actionable feedback, the button includes a lot of automatic information.
+[扩展插件的源代码][31] 也在 GitHub 上，你可以在那里[提交 issues][32]。
 
-[![The feedback tool built into the browser developer tools of Microsoft Edge](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)
+浏览器内的开发者工具也有一个直接向我们提供反馈的按钮。为了便于你提供可操作的反馈，该按钮包含了大量自动信息。
 
-It records automatically what URL the issue happened on, takes a screenshot to include and offers to send diagnostic data. We also ask for you to provide an email in case we need more information and you can add attachments and info how to recreate the issue. We check this feedback daily, and a lot of great inventions and bug fixes came from that source.
+[![Microsoft Edge 浏览器开发工具中内置的反馈工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)][33]
 
-[Share on Mastodon (needs instance)](https://mastodon.social/share?text=Developer Tools secrets that shouldn’t be secrets https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/)
+它会自动记录发生问题的 URL、截图并发送诊断数据。我们还要求你提供电子邮件，以备我们需要更多信息，你还可以添加附件和如何重现问题的信息。我们每天都会检查这些反馈，很多伟大的发明和错误修复都来自于此。
 
-[Share on Twitter](http://twitter.com/share?url=https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/&text=Developer Tools secrets that shouldn’t be secrets&via=codepo8)
+[分享到 Mastodom][34]
 
-## My other work:
+[分享到 Twitter][35]
 
--   [The Developer Advocacy Handbook](https://developer-advocacy.com)
-    -   [Buy it on Amazon](https://www.amazon.com/dp/B0BKNTPDFJ/)
-    -   [Buy it on Leanpub](https://leanpub.com/developer-advocacy-handbook)
--   Skillshare Classes:
-    -   [Tools and Tips to Optimize Your Workflow as a Developer](https://skl.sh/3uKu5G1)
-    -   [Tools for Improving Product Accessibility](https://skl.sh/3eCFWRR)
-    -   [The JavaScript Toolkit: Write Cleaner, Faster & Better Code](https://skl.sh/2CpiTGZ)
-    -   [Demystifying Artificial Intelligence: Understanding Machine Learning](https://skl.sh/2MHkYl1)
+## 我的其它作品
 
-[Skip to search](#s)
+-   [开发人员倡导手册][36]
+    -   [在 Amazon 购买][37]
+    -   [在 Leanpub 购买][38]
+-   技能分享课程:
+    -   [优化开发人员工作流程的工具和技巧][39]
+    -   [改善产品无障碍环境的工具][40]
+    -   [JavaScript 工具包： 编写更简洁、更快速、更优秀的代码][41]
+    -   [揭开人工智能的神秘面纱： 了解机器学习][42]
 
-[Christian Heilmann](http://christianheilmann.com) is the blog of Christian Heilmann [chris@christianheilmann.com](mailto:chris@christianheilmann.com?subject=NOT%20A%20GUEST%20POST%20REQUEST&body=I%20understand%20this%20blog%20does%20not%20do%20guest%20posts) (Please do not contact me about guest posts, I don't do those!) a Principal Program Manager living and working in Berlin, Germany.
+[Christian Heilmann 博客][43]  
+[chris@christianheilmann.com 邮箱][44] (请不要就客座文章与我联系，我不做这种事！)
+我是一个首席项目经理，在德国柏林生活和工作。
 
-Theme by Chris Heilmann. SVG Icons by [Dan Klammer](https://github.com/danklammer/bytesize-icons) . Hosted by MediaTemple. Powered by Coffee and Spotify Radio.
+主题由 Chris Heilmann 制作。SVG 图标由 [Dan Klammer][45] 制作。由 MediaTemple 主持。由 Coffee 和 Spotify Radio 提供技术支持。
 
-[Get the feed, all the cool kids use RSS!](https://christianheilmann.com/feed/)
-$$
+[获取订阅，所有酷孩子都在使用 RSS！][46]
+
+[1]: https://news.ycombinator.com/item?id=29071700
+[2]: https://aka.ms/devtools-for-code
+[3]: https://cityjsconf.org/
+[4]: https://www.youtube.com/watch?v=q_qzHzIVxw4
+[5]: https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/console-filters
+[6]: https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_-1024x510.png
+[7]: https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png
+[8]: https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png
+[9]: https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/console-log
+[10]: https://christianheilmann.com/wp-content/uploads/2021/10/Slide11.png
+[11]: https://christianheilmann.com/wp-content/uploads/2021/10/Slide12.png
+[12]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png
+[13]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide14.png
+[14]: https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/utilities
+[15]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png
+[16]: https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/console/live-expressions
+[17]: https://christianheilmann.com/2021/08/24/using-console-log-on-any-website-logpoints-let-you-do-that/
+[18]: https://christianheilmann.com/2021/07/30/using-console-log-debugging-in-visual-studio-code/
+[19]: https://docs.microsoft.com/microsoft-edge/visual-studio-code/microsoft-edge-devtools-extension#browser-debugging-with-microsoft-edge-devtools-integration-in-visual-studio-code
+[20]: https://christianheilmann.com/wp-content/uploads/2021/10/Slide24-842x1024.png
+[21]: https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/snippets
+[22]: https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/javascript/overrides
+[23]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide36.png
+[24]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png
+[25]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png
+[26]: https://docs.microsoft.com/microsoft-edge/devtools-guide-chromium/
+[27]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png
+[28]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png
+[29]: https://blogs.windows.com/msedgedev/2021/10/21/improved-authoring-debugging-devtools-visual-studio-code/
+[30]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png
+[31]: https://github.com/microsoft/vscode-edge-devtools
+[32]: https://github.com/microsoft/vscode-edge-devtools/issues
+[33]: https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png
+[34]: https://mastodon.social/share?text=Developer%20Tools%20secrets%20that%20shouldn%E2%80%99t%20be%20secrets%20https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/
+[35]: http://twitter.com/share?url=https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/&text=Developer
+[36]: https://developer-advocacy.com
+[37]: https://www.amazon.com/dp/B0BKNTPDFJ/
+[38]: https://leanpub.com/developer-advocacy-handbook
+[39]: https://skl.sh/3uKu5G1
+[40]: https://skl.sh/3eCFWRR
+[41]: https://skl.sh/2CpiTGZ
+[42]: https://skl.sh/2MHkYl1
+[43]: http://christianheilmann.com
+[44]: mailto:chris@christianheilmann.com?subject=NOT%20A%20GUEST%20POST%20REQUEST&body=I%20understand%20this%20blog%20does%20not%20do%20guest%20posts
+[45]: https://github.com/danklammer/bytesize-icons
+[46]: https://christianheilmann.com/feed/
