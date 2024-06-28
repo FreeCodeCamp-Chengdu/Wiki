@@ -24,7 +24,7 @@ reviewer: ""
 
 第一个问题是产品上线后未删除的日志信息塞满了控制台。查找所需的信息变得令人望而生畏，而解决这个问题的最好办法就是了解 [控制台过滤选项][5] 。使用这些选项，你可以将控制台的报告过滤为你所关心的内容，并屏蔽掉大量杂音。
 
-![控制台工具中的过滤选项][6]
+[![控制台工具中的过滤选项](https://christianheilmann.com/wp-content/uploads/2021/10/console-filter-dropdown.msft_-1024x510.png)][6]
 
 ### 你想输出什日志?
 
@@ -42,23 +42,23 @@ console.log({ width });
 console.log({ height });
 ```
 
-![在日志信息中使用大括号记录变量的名称和值][7]
+[![在日志信息中使用大括号记录变量的名称和值](https://christianheilmann.com/wp-content/uploads/2021/10/Slide7.png)][7]
 
 ### 添加到你的控制台词汇
 
-[![警告、信息和错误信息示例及其在控制台中的显示方式][8]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)
+[![警告、信息和错误信息示例及其在控制台中的显示方式](https://christianheilmann.com/wp-content/uploads/2021/10/Slide10.png)][8]
 
 除了 `console.log()` 之外，你还可以使用 [更多方法][9] 。例如，`console.warn()` 记录警告，`console.info()` 记录信息，`console.error()` 记录错误信息。这不仅会使控制台的显示略有不同，而且还会使信息具有不同的日志级别，这意味着更容易对其进行过滤。
 
 ### 控制台中的错误和断言
 
-[![console 的 error 方法会显示错误，而 assert 是 if 语句的快捷方式，其中包含 console.log][10]](https://christianheilmann.com/wp-content/uploads/2021/10/Slide11.png)
+[![console 的 error 方法会显示错误，而 assert 是 if 语句的快捷方式，其中包含 console.log](https://christianheilmann.com/wp-content/uploads/2021/10/Slide11.png)][10]
 
 在控制台中显示错误不同于抛出错误，但向维护或调试产品的人员显示问题的严重性仍然是个好主意。另一个有趣的方法是 `console.assert()`，它只在满足特定条件时记录信息。你经常会发现自己在编写 `if` 语句时，里面包含了一个 `console.log()`。使用`assert()`后，这条语句就变得多余了，在清理调试代码时就少了一件要担心的事。
 
 ### 追溯源头
 
-![使用 console.trace() 追溯调用来源的示例][11]
+[![使用 console.trace() 追溯调用来源的示例](https://christianheilmann.com/wp-content/uploads/2021/10/Slide12.png)][11]
 
 你经常会发现自己添加了一个 `console.log('called')` 或类似内容来测试某个功能是否被触发。一旦有了这个功能，下一件事通常就是找出是什么调用了该方法。这就是`console.trace()`的作用，因为它不仅会告诉你某个方法被调用了，还会告诉你调用来自哪里。
 
@@ -66,7 +66,7 @@ console.log({ height });
 
 如果要记录的内容很多，可以使用 `console.group('name')` 和 `console.groupEnd('name')` 在控制台中以可折叠和可展开的方式封装信息。你甚至可以定义组默认是展开还是折叠。
 
-![在控制台中定义组的示例][12]
+[![在控制台中定义组的示例](https://christianheilmann.com/wp-content/uploads/2021/11/Slide13.png)][12]
 
 ### 在控制台中以表格形式显示和过滤大量信息
 
@@ -88,7 +88,7 @@ $$("a").map((a) => {
 });
 ```
 
-![下面举例说明 $$ 函数如何返回一个 HTML 元素集合，您可以像过滤其他数组一样过滤这些元素][15]
+[![下面举例说明 $$ 函数如何返回一个 HTML 元素集合，您可以像过滤其他数组一样过滤这些元素](https://christianheilmann.com/wp-content/uploads/2021/11/Slide15.png)][15]
 
 ## 2. 你可以在没有源访问权限的情况下进行日志记录，实时表达式和日志点
 
@@ -112,7 +112,7 @@ $$("a").map((a) => {
 
 在 Visual Studio Code 中启动调试会话时，可以生成一个浏览器实例，调试控制台就会变成浏览器开发者工具中的控制台。我曾在七月份的博客中详细介绍过这一点，所以你可以[阅读如何做到这一点][18]。[官方文档][19] 中也有更多内容。
 
-![][20]
+[![](https://christianheilmann.com/wp-content/uploads/2021/10/Slide24-842x1024.png)][20]
 
 你还可以观看我展示功能的一分钟视频：
 
@@ -145,9 +145,9 @@ $$("a").map((a) => {
 
 这些工具的可嵌入性也使我们能够为你提供一种在浏览器之外使用它们的方法。[Microsoft Edge Tools for Visual Studio Code][2] 扩展将这些工具带到了 Visual Studio Code 中。这样，你就可以在代码编辑器旁边使用可视化调试工具，而不必总是在两者之间跳来跳去。当你开始调试会话并单击 "开发者工具"（Developer Tools）图标时，工具就会打开，或者首次打开时，系统会提示你安装扩展。
 
-![Visual Studio 代码调试栏中的检查按钮][24]
+[![Visual Studio 代码调试栏中的检查按钮](https://christianheilmann.com/wp-content/uploads/2021/11/Slide39.png)][24]
 
-![在 Visual Studio Code 实例中打开 Microsoft Edge 开发者工具][25]
+[![在 Visual Studio Code 实例中打开 Microsoft Edge 开发者工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide40.png)][25]
 
 ## 6. 肮脏的秘密
 
@@ -163,11 +163,11 @@ $$("a").map((a) => {
 
 我们正在想办法让这一切变得更容易，你很快就会在 Microsoft Edge 中看到这些想法。我们的一个想法是 “聚焦模式(Focus Mode)”。我们不再向你显示所有工具和选项卡，而是将工具按不同的使用情况进行分类，如 “元素/CSS 调试(Elements/CSS debugging)”、“源代码/JavaScript 调试(Sources/JavaScript Debugging)” 或 “网络检查(Network inspection)”。然后，我们只显示相关工具，隐藏所有可能会造成混淆或碍事的工具。
 
-![聚焦模式下的开发者工具，只显示当前环境下所需的工具][27]
+[![聚焦模式下的开发者工具，只显示当前环境下所需的工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide45.png)][27]
 
 我们正在开发的另一项功能是 “信息覆盖(informational overlays)”。你可以获得一个帮助按钮，打开开发者工具的叠加信息，解释每个工具是什么、如何使用以及提供文档链接。我们希望这将使人们更容易了解更多的功能。
 
-![开发者工具，通过覆盖图解释每种工具的含义][28]
+[![开发者工具，通过覆盖图解释每种工具的含义](https://christianheilmann.com/wp-content/uploads/2021/11/Slide46.png)][28]
 
 ### 编写代码与调试结果之间仍然存在脱节现象
 
@@ -187,13 +187,13 @@ Visual Studio 代码中的 CSS 镜像:
 
 作为开发人员，你是开发人员工具的主要受众。我们愿意听取你的反馈意见，最近对工具的许多更改都是外部开发人员要求的直接结果。我们通过提供直接与我们联系的上下文方式，尽可能地简化这一过程。例如，Visual Studio Code 扩展有显著的链接和按钮供你报告问题(report issues)和功能需求(request features)。
 
-![VS 代码扩展中提供的上下文链接截图，用于要求新功能、提交错误和了解实验情况][30]
+[![VS 代码扩展中提供的上下文链接截图，用于要求新功能、提交错误和了解实验情况](https://christianheilmann.com/wp-content/uploads/2021/11/Slide56.png)][30]
 
 [扩展插件的源代码][31] 也在 GitHub 上，你可以在那里[提交 issues][32]。
 
 浏览器内的开发者工具也有一个直接向我们提供反馈的按钮。为了便于你提供可操作的反馈，该按钮包含了大量自动信息。
 
-![Microsoft Edge 浏览器开发工具中内置的反馈工具][33]
+[![Microsoft Edge 浏览器开发工具中内置的反馈工具](https://christianheilmann.com/wp-content/uploads/2021/11/Slide58.png)][33]
 
 它会自动记录发生问题的 URL、截图并发送诊断数据。我们还要求你提供电子邮件，以备我们需要更多信息，你还可以添加附件和如何重现问题的信息。我们每天都会检查这些反馈，很多伟大的发明和错误修复都来自于此。
 
