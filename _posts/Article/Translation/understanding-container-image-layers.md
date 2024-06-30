@@ -1,7 +1,7 @@
 ---
 title: Understanding Container Image Layers
 date: 2024-06-07T03:12:52.216Z
-author: GitHub
+author: Ken Muse
 authorURL: https://github.com/kenmuse
 originalURL: https://www.kenmuse.com/blog/understanding-container-image-layers/
 translator: ""
@@ -10,79 +10,65 @@ reviewer: ""
 
 # Understanding Container Image Layers
 
-<!-- more -->
-
-**Category:**
-
--   [DevOps][1]
-
-**Tags:**
-
--   [#DevOps][2]
-
--   [#Containers][3]
-
--   [#Docker][4]
-
-**Published:** [January 27][5], [2024][6] **Reading Time:** 9 min
+**发布时间:** [6 月 27][5], [2024][6] **阅读时间:** 9 分钟
 
 ---
 
-Containers are pretty amazing. They allow simple processes to act like virtual machines. Underneath this elegance is a set of patterns and practices that ultimately makes everything work. At the root of the design is _layers_. Layers are the fundamental way of storing and distributing the contents of a containerized file system. The design is both surprisingly simple and at the same time very powerful. In today’s post, I’ll explain what layers are and how they work conceptually.
+容器非常了不起。它们允许简单的进程像虚拟机一样运行。这种优雅的背后是一套模式和实践，最终使一切都能正常工作。设计的根源在于*层*。层是存储和分发容器化文件系统内容的基本方式。这种设计既非常简单，同时又非常强大。在今天的文章中，我将解释什么是层，以及它们在概念上是如何工作的。
 
-## Building layered images
+## 构建分层镜像
 
-When you create an image, you typically use a `Dockerfile` to define the contents of the container. It contains a series of commands, such as:
+当你创建一个镜像时，你通常会使用一个 `Dockerfile` 来定义容器的内容。它包含一系列命令，例如：
 
 ```bash
-1FROM scratch
-2RUN echo "hello" > /work/message.txt
-3COPY content.txt /work/content.txt
-4RUN rm -rf /work/message.txt
+FROM scratch
+RUN echo "hello" > /work/message.txt
+COPY content.txt /work/content.txt
+RUN rm -rf /work/message.txt
 ```
 
-Under the covers, the container engine will execute these commands in order, creating a “layer” for each. But what is really happening? It’s easiest to think of each layer as a directory that holds all of the modified files.
+在底层，容器引擎会按顺序执行这些命令，为每个命令创建一个 `层`。 但这究竟是如何实现的呢？ 最简单的理解方式是将每一层都视为一个目录，其中包含所有已修改的文件。
 
-Let’s step through an example of a possible implementation approach.
+让我们通过一个可能的实现方法的例子来逐步解释。
 
-1.  `FROM scratch` indicates that this container is starting with no contents. This is the first layer, and it could be represented by an empty directory, `/img/layer1`.
-2.  Create a second directory, `/img/layer2` and copy everything from `/img/layer1` into it. Then, execute the next command from the Dockerfile (which writes a file to `/work/message.txt`). Those contents are written to `/img/layer2/work/message.txt`. This is the second layer.
-3.  Create a third directory, `/img/layer3` copying everything from `img/layer2` into it. The next Dockerfile command requires copying `content.txt` from the host to that directory. That file is written to `/img/layer3/work/content.txt`. This is the third layer.
-4.  Finally, create a fourth directory, `/img/layer4` copying everything from `img/layer3` into it. The next command deletes the message file, `img/layer4/work/message.txt`. This is the fourth layer.
+1.  `FROM scratch` 表示此容器从零内容开始。 这是第一层，它可以用一个空目录 `/img/layer1` 来表示。
+2.  创建一个第二个目录 `/img/layer2` 并将 `/img/layer1` 中的所有内容复制到其中。 然后，执行 Dockerfile 中的下一条命令（将一个文件写入 `/work/message.txt`）。 这些内容被写入 `/img/layer2/work/message.txt`。 这是第二层。
+3.  创建一个第三个目录 `/img/layer3`，将 `img/layer2` 中的所有内容复制到其中。 下一个 Dockerfile 命令需要将主机的 `content.txt` 复制到该目录。 该文件被写入 `/img/layer3/work/content.txt`。 这是第三层。
+4.  最后，创建一个第四个目录 `/img/layer4`，将 `img/layer3` 中的所有内容复制到其中。 下一条命令删除消息文件 `img/layer4/work/message.txt`。 这是第四层。
 
-To share these layers, the easiest approach is to create a compressed `.tar.gz` for each directory. To reduce the total file size, any files that are unmodified copies of data from a previous layer would be removed. To make it clear when a file was deleted, a “whiteout file” could be used as a placeholder. The file would simply prefix `.wh.` to the original filename. For example, the fourth layer would replace the deleted file with a placeholder named `.wh.message.txt`. When a layer is unpacked, any files that start with `.wh.` can be deleted.
+为了共享这些层，最简单的方法是为每个目录创建一个压缩的 `.tar.gz` 文件。为了减小总文件大小，任何未经修改、只是从上一层复制的文件都会被删除。为了明确何时删除了文件，可以使用 `whiteout 文件` 作为占位符。该文件只需在原始文件名前加上前缀 `.wh.`。例如，第四层会将删除的文件替换为名为 `.wh.message.txt` 的占位符。当一个层被解包时，任何以 `.wh.` 开头的文件都可以被删除。
 
-Continuing our example, the compressed files would contain:
+继续我们的例子，压缩文件将包含：
 
-| File | Contents |
-| --- | --- |
-| `layer1.tar.gz` | Empty file |
-| `layer2.tar.gz` | Contains `/work/message.txt` |
-| `layer3.tar.gz` | Contains `/work/content.txt` (since `message.txt` was not modified) |
-| `layer4.tar.gz` | Contains `/work/.wh.message.txt` (since `message.txt` was deleted).  
-The file `content.txt` was not modified, so it is not included. |
+| File                                                | Contents                                                            |
+| --------------------------------------------------- | ------------------------------------------------------------------- |
+| `layer1.tar.gz`                                     | Empty file                                                          |
+| `layer2.tar.gz`                                     | Contains `/work/message.txt`                                        |
+| `layer3.tar.gz`                                     | Contains `/work/content.txt` (since `message.txt` was not modified) |
+| `layer4.tar.gz`                                     | Contains `/work/.wh.message.txt` (since `message.txt` was deleted). |
+| 文件 `content.txt` 没有被修改，所以没有被包含在内。 |
 
-Building lots of images this way would result in lots of “layer1” directories. To make sure the name is unique, the compressed file is named based on a digest of the contents. This is similar to how Git works. It has the benefit of identifying identical content while identifying any corruption of the files while downloading. If the digest of the contents does not match the file name, the file is corrupt.
+以这种方式构建大量镜像会导致大量的 `layer1` 目录。为了确保名称的唯一性，压缩文件的命名基于内容的摘要。这类似于 Git 的工作方式。它的好处是在识别文件下载过程中任何损坏的同时，还能识别相同的内容。如果内容的摘要（哈希值）与文件名不匹配，则文件已损坏。
 
-To make the results reproducible, one more thing is required — a file that explains how to order the layers (a manifest). The manifest would identify which files to be downloaded the order for unpacking them. This enables recreating the directory structures. It also provides an important benefit: layers can be reused and shared between images. This minimizes the local storage requirements.
+为了使结果可重复，还需要一个文件来解释如何对层进行排序（清单）。清单会标识要下载哪些文件以及解包它们的顺序。这使得能够重新创建目录结构。它还提供了一个重要的好处：层可以在镜像之间重复使用和共享。这最大限度地减少了本地存储需求。
 
-In practice, there are more optimizations available. For example, `FROM scratch` really means there is no parent layer, so our example really starts with the contents of `layer2`. The engine can also look at the files used in the build to determine whether or not a layer needs to be recreated. This is the basis for layer caching, which minimizes the need to build or recreate layers. As an additional optimizing, layers that don’t depend on the previous layer can use `COPY --link` to indicate that the layer won’t need to delete or modify any files from the previous layer. This allows the compressed layer file to be created in parallel to the other steps.
+在实践中，还有更多可用的优化。例如，`FROM scratch` 实际上意味着没有父层，所以我们的示例实际上是从 `layer2` 的内容开始的。引擎还可以查看构建中使用的文件，以确定是否需要重新创建层。这是层缓存的基础，它最大限度地减少了构建或重新创建层的需要。作为额外的优化，不依赖于前一层的层可以使用 `COPY --link` 来指示该层不需要删除或修改前一层中的任何文件。这允许压缩层文件与其他步骤并行创建。
 
-## Snapshots
+## 快照
 
-Before a container can run, it needs a file system to mount. In essence, it needs a directory with all of the files that need to be available. The compressed layer files contain the components of the file system, but they can’t be directly mounted and used. Instead, they need to be unpacked and organized into a file system. This unpacked directory is called a _snapshot_ (well, it’s one of a few things with that name 😄).
+在容器可以运行之前，它需要一个文件系统来挂载。本质上，它需要一个包含所有需要可用的文件的目录。压缩的层文件包含文件系统的组件，但它们不能直接挂载和使用。相反，它们需要被解包并组织成一个文件系统。这个解包后的目录被称为*快照*（好吧，它是具有该名称的几样东西之一 😄）。
 
-The process of creating a snapshot is the opposite of image building. It starts by downloading the manifest and building a list of layers to download. For each layer, a directory is created with the contents of the layer’s parent. This directory is called the _active snapshot_. Next, a _diff applier_ is responsible for unpacking the compressed layer file and applying the changes to the active snapshot. The resulting directory is then called a _committed snapshot_. The final committed snapshot is the one that is mounted as the container’s file system.
+创建快照的过程与镜像构建相反。它首先下载清单并构建要下载的层列表。对于每一层，都会创建一个包含该层父层内容的目录。此目录称为*活动快照*。接下来，*差异应用器*负责解压缩压缩的层文件并将更改应用于活动快照。然后，生成的目录称为*已提交快照*。最终提交的快照是作为容器文件系统挂载的快照。
 
-Using our earlier example:
+使用我们之前的例子：
 
-1.  The initial layer, `FROM scratch`, means that we can start with the next layer and an empty directory. There is no parent.
-2.  A directory for `layer2` is created. This empty directory is now an active snapshot. The file `layer2.tar.gz` is downloaded, validated (by comparing the digest to the file name), and unpacked into the directory. The result is a directory containing `/work/message.txt`. This is the first committed snapshot.
-3.  A directory for `layer3` is created, and the contents of `layer2` are copied into it. This is a new active snapshot. The file `layer3.tar.gz` is downloaded, validated, and unpacked. The result is a directory containing `/work/message.txt` and `/work/content.txt`. This is now the second committed snapshot.
-4.  A directory for `layer4` is created, and the contents of `layer3` are copied into it. The file `layer4.tar.gz` is downloaded, validated, and unpacked. The diff applier recognizes the whiteout file, `/work/.wh.message.txt`, and deletes `/work/message.txt`. This leaves just `/work/content.txt`. This is the third committed snapshot.
-5.  Since `layer4` was the last layer, it is the basis for a container. To enable it to support read and write operations, a new snapshot directory is created and the contents of `layer4` are copied into it. This directory is mounted as the container’s file system. Any changes made by the running container will happen in this directory.
+1.  初始层 `FROM scratch` 意味着我们可以从下一层和一个空目录开始。没有父层。
+2.  创建一个 `layer2` 的目录。这个空目录现在是一个活动快照。下载文件 `layer2.tar.gz`，验证（通过将摘要与文件名进行比较），并解压缩到目录中。结果是一个包含 `/work/message.txt` 的目录。这是第一个提交的快照。
+3.  创建一个 `layer3` 的目录，并将 `layer2` 的内容复制到其中。这是一个新的活动快照。下载文件 `layer3.tar.gz`，验证并解压缩。结果是一个包含 `/work/message.txt` 和 `/work/content.txt` 的目录。这是第二个提交的快照。
+4.  创建一个 `layer4` 的目录，并将 `layer3` 的内容复制到其中。下载文件 `layer4.tar.gz`，验证并解压缩。差异应用器识别出删除文件 `/work/.wh.message.txt`，并删除 `/work/message.txt`。只剩下 `/work/content.txt`。这是第三个提交的快照。
+5.  由于 `layer4` 是最后一层，因此它是容器的基础。为了使其支持读写操作，会创建一个新的快照目录，并将 `layer4` 的内容复制到其中。此目录作为容器的文件系统挂载。运行中的容器所做的任何更改都将发生在此目录中。
 
-If any of those directories already exist, it indicates that another image had the same dependency. As a result, the engine can skip the download and diff applier. It can use the layer as-is. In practice, each of these directories and files is named based on the digest of the contents to make that easier to identify. For example, a set of snapshots might look like this:
+如果这些目录中的任何一个已经存在，则表明另一个镜像具有相同的依赖项。因此，引擎可以跳过下载和差异应用器。它可以按原样使用该层。在实践中，这些目录和文件中的每一个都根据内容的摘要进行命名，以便更容易识别。例如，一组快照可能如下所示：
 
 ```bash
 1/var/path/to/snapshots/blobs
@@ -93,61 +79,61 @@ If any of those directories already exist, it indicates that another image had t
 6   └─ fb124ec4f943662ecf7aac45a43b096d316f1a6833548ec802226c7b406154e9
 ```
 
-or alternatively:
+或者，换句话说:
 
-| Image | Parent |
-| --- | --- |
-| sha256:635944d2044d0a54d01385271ebe96ec18b26791eb8b85790974da36a452cc5c |  |
+| Image                                                                   | Parent                                                                  |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| sha256:635944d2044d0a54d01385271ebe96ec18b26791eb8b85790974da36a452cc5c |                                                                         |
 | sha256:9de59f6b211510bd59d745a5e49d7aa0db263deedc822005ed388f8d55227fc1 | sha256:635944d2044d0a54d01385271ebe96ec18b26791eb8b85790974da36a452cc5c |
 | sha256:fb0624e7b7cb9c912f952dd30833fb2fe1109ffdbcc80d995781f47bd1b4017f | sha256:9de59f6b211510bd59d745a5e49d7aa0db263deedc822005ed388f8d55227fc1 |
 | sha256:fb124ec4f943662ecf7aac45a43b096d316f1a6833548ec802226c7b406154e9 | sha256:fb0624e7b7cb9c912f952dd30833fb2fe1109ffdbcc80d995781f47bd1b4017f |
 
-The actual snapshot system supports plugins that can improve some of these behaviors. For example, it can allow the snapshots to be pre-composed and unpacked, speeding up the process. This allows the snapshots to be stored remotely. It also allows for special optimizations, such as just-in-time downloading of the needed files and layers.
+实际的快照系统支持插件，可以改善其中一些行为。例如，它可以允许预先组合和解压缩快照，从而加快进程。这允许将快照存储在远程。它还允许进行特殊优化，例如按需下载所需的文件和层。
 
-## Overlays
+## 覆盖层
 
-While it’s easy to mount, the snapshot approach we just described creates a lot of file churn and lots of duplicate files. This slows down the process of starting a container the first time and wastes space. Thankfully, this is one of many aspects of the containerization process that can be handled by the file system. Linux natively supports mounting directories as overlays, implementing most of the process for us.
+虽然挂载很容易，但我们刚才描述的快照方法会创建大量文件变更和重复文件。这会减慢第一次启动容器的速度并浪费空间。值得庆幸的是，这是容器化过程中可以通过文件系统处理的众多方面之一。Linux 本身支持将目录挂载为覆盖层，为我们实现了大部分过程。
 
-In Linux (or a Linux container running as `--privileged` or with `--cap-add=SYS_ADMIN`):
+在 Linux 中（或以 `--privileged` 或 `--cap-add=SYS_ADMIN` 运行的 Linux 容器中）：
 
-1.  Create a `tmpfs` mount (memory-based file system that will be used to explore the overlay process)
-    
+1.  创建一个 `tmpfs` 挂载点（基于内存的文件系统，将用于探索覆盖过程）
+
     ```bash
-    1mkdir /tmp/overlay
-    2mount -t tmpfs tmpfs /tmp/overlay
+    mkdir /tmp/overlay
+    mount -t tmpfs tmpfs /tmp/overlay
     ```
-    
-2.  Create directories for our process. We’ll use `lower` for the lower (parent) layer, `upper` for the upper (child) layer, `work` as a working directory for the file system, and `merged` to contain the merged file system.
-    
+
+2.  创建我们流程所需的目录。我们将使用 `lower` 作为下层（父层），`upper` 作为上层（子层），`work` 作为文件系统的工作目录，`merged` 包含合并后的文件系统。
+
     ```bash
-    1mkdir /tmp/overlay/{lower,upper,work,merged}
+    mkdir /tmp/overlay/{lower,upper,work,merged}
     ```
-    
-3.  Create some files for the experiment. Optionally, you can add files in `upper` as well.
-    
+
+3.  为实验创建一些文件。你也可以选择在 `upper` 中添加文件。
+
     ```bash
-    1cd /tmp/overlay
-    2echo hello > lower/hello.txt
-    3echo "I'm only here for a moment" > lower/delete-me.txt
-    4echo message > upper/upper-message.txt
+    cd /tmp/overlay
+    echo hello > lower/hello.txt
+    echo "I'm only here for a moment" > lower/delete-me.txt
+    echo message > upper/upper-message.txt
     ```
-    
-4.  Mount these directories as an `overlay` type file system. This will create a new file system in the `merged` directory that contains the combined contents of the `lower` and `upper` directory. The `work` directory will be used to track changes to the file system.
-    
+
+4.  将这些目录挂载为 `overlay` 类型的文件系统。这将在 `merged` 目录中创建一个新的文件系统，其中包含 `lower` 和 `upper` 目录的组合内容。 `work` 目录将用于跟踪文件系统的更改。
+
     ```bash
-    1mount -t overlay overlay -o lowerdir=lower,upperdir=upper,workdir=work merged
+    mount -t overlay overlay -o lowerdir=lower,upperdir=upper,workdir=work merged
     ```
-    
-5.  Explore the file system. You’ll notice that `merged` contains the combined contents of `upper` and `lower`. Then, make some changes:
-    
+
+5.  探索文件系统。你会注意到 `merged` 包含 `upper` 和 `lower` 的组合内容。然后，进行一些更改：
+
     ```bash
-    1rm -rf merged/delete-me.txt
-    2echo "I'm new" > merged/new.txt
-    3echo world >> merged/hello.txt
+    rm -rf merged/delete-me.txt
+    echo "I'm new" > merged/new.txt
+    echo world >> merged/hello.txt
     ```
-    
-6.  As expected, `delete-me.txt` is removed from `merged` and a new file, `new.txt` is created in the same directory. If you `tree` the directories, you’ll see something interesting:
-    
+
+6.  正如预期的那样，`delete-me.txt` 已从 `merged` 中删除，并在同一目录中创建了一个新文件 `new.txt`。如果你对这些目录执行 `tree` 命令，你会发现一些有趣的事情：
+
     ```txt
        |-- lower
        |   |-- delete-me.txt
@@ -162,28 +148,21 @@ In Linux (or a Linux container running as `--privileged` or with `--cap-add=SYS_
        |   |-- new.txt
        |   `-- upper-message.txt
     ```
-    
-    And running `ls -l upper` shows
-    
+
+    运行 `ls -l upper` 显示：
+
     ```bash
-    1total 12
-    2c--------- 2 root root 0, 0 Jan 20 00:17 delete-me.txt
-    3-rw-r--r-- 1 root root   12 Jan 20 00:20 hello.txt
-    4-rw-r--r-- 1 root root    8 Jan 20 00:17 new.txt
-    5-rw-r--r-- 1 root root    8 Jan 20 00:17 upper-message.txt
+    total 12
+    c--------- 2 root root 0, 0 Jan 20 00:17 delete-me.txt
+    -rw-r--r-- 1 root root   12 Jan 20 00:20 hello.txt
+    -rw-r--r-- 1 root root    8 Jan 20 00:17 new.txt
+    -rw-r--r-- 1 root root    8 Jan 20 00:17 upper-message.txt
     ```
-    
 
-While `merged` shows the effects of our changes, `upper` (as the parent layer) stores the changes similar to the example in our manual process. It contains the new file, `new.txt` and the modified `hello.txt`. It has also created a whiteout file. For the overlay filesystem, this involves replacing the file with a character device (and a 0, 0 device number). In short, it has everything we need to be able to package up the directories!
+虽然 `merged` 显示了我们更改的效果，但 `upper`（作为父层）存储的更改类似于我们手动过程中的示例。它包含新文件 `new.txt` 和修改后的 `hello.txt`。它还创建了一个 whiteout 文件。对于 overlay 文件系统，这涉及将文件替换为字符设备（以及设备号 0，0）。简而言之，它拥有打包目录所需的一切！
 
-You can see how this approach could also be used to implement a snapshot system. The `mount` command can natively take a colon (`:`) delimited list of `lowerdir` paths, all of which are unioned together into a single file system. This is part of the nature of modern containers – the containers are composed using native operating system features.
+你可以看到这种方法如何也可以用于实现快照系统。 `mount` 命令本身可以接受一个以冒号 (`:`) 分隔的 `lowerdir` 路径列表，所有这些路径都合并到一个文件系统中。这是现代容器本质的一部分——容器是使用原生操作系统特性组成的。
 
-That’s really all there is to creating a basic system. In fact, the `containerd` runtime used by Kubernetes (and the recently release Docker Desktop 4.27.0) uses a similar approach to build and manage its images (with the deeper details covered in [Content Flow][7]). Hope this has helped to demystify the way container images work!
+这就是创建一个基本系统的全部内容。事实上，Kubernetes（以及最近发布的 Docker Desktop 4.27.0）使用的 `containerd` 运行时使用类似的方法来构建和管理其镜像（更详细的内容在 [Content Flow][1] 中介绍）。希望这有助于揭开容器镜像工作方式的神秘面纱！
 
-[1]: /categories/devops
-[2]: /tags/devops
-[3]: /tags/containers
-[4]: /tags/docker
-[5]: /blog/2024/01
-[6]: /blog/2024
-[7]: https://github.com/containerd/containerd/blob/main/docs/content-flow.md
+[1]: https://github.com/containerd/containerd/blob/main/docs/content-flow.md
