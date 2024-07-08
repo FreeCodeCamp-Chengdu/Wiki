@@ -10,7 +10,11 @@ repository:
 labels:
   - name: Article
     color: "#e99bb1"
-    description: download an Internet article automatically
+    description: write or translate an Article
+
+  - name: Translation
+    color: "#d73a4a"
+    description: auto download an Outer Article to translate
 
   - name: Salon
     color: "#d7f797"
