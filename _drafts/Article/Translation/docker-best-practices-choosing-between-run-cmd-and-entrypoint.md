@@ -267,7 +267,7 @@ Default is 30 seconds
 <-- SNIP -->
 ```
 
-然而，如果我运行 `ab` 并且包含了一个要测试的URL，我最初会得到一个错误：
+然而，如果我运行 `ab` 并且包含了一个要测试的 URL，我最初会得到一个错误：
 
 ```shell
 $ docker run --rm ab https://jayschmidt.us
@@ -320,7 +320,7 @@ Total: 132 132 0.0 132 132
 
 ### Run 使用 ENTRYPOINT
 
-在这次运行中，我们从Dockerfile中移除了 `CMD ab` 指令，用 `ENTRYPOINT ["ab"]` 替换它，然后重新构建镜像。
+在这次运行中，我们从 Dockerfile 中移除了 `CMD ab` 指令，用 `ENTRYPOINT ["ab"]` 替换它，然后重新构建镜像。
 
 这与 `CMD` 命令相似但又有所不同 — 当你使用 `ENTRYPOINT` 时，除非你在 `docker run` 命令上使用 `--entrypoint` 标志，否则你不能覆盖命令。相反，传递给 `docker run` 的任何参数都会被当作是 `ENTRYPOINT` 的参数。
 
@@ -428,17 +428,17 @@ Default is 30 seconds
 
 
 
-#### [Docker Desktop 4.32：Compose 文件查看器、终端Shell集成和卷备份到云提供商的测试版本][22]
+#### [Docker Desktop 4.32：Compose 文件查看器、终端 Shell 集成和卷备份到云提供商的测试版本][22]
 
 By [Deanna Sparks][23]
 
 
-#### [人工智能助手如何帮助配置项目的Git hook][25]
+#### [人工智能助手如何帮助配置项目的 Git hook][25]
 
 By [Docker Labs][26] July 15, 2024
 
 
-#### [如何使用Ollama和Testcontainers以编程方式运行Hugging Face模型][28]
+#### [如何使用 Ollama 和 Testcontainers 以编程方式运行 Hugging Face 模型][28]
 
 By [Ignasi Lopez Luna][29] July 11, 2024
 
