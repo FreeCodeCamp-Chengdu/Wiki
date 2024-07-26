@@ -12,7 +12,7 @@ reviewer: ""
 
 <!-- more -->
 
-![](https://www.docker.com/wp-content/uploads/2024/04/jay-schmidt.jpeg)
+<img src="https://www.docker.com/wp-content/uploads/2024/04/jay-schmidt.jpeg" width="50">
 
 [Jay Schmidt][1]
 
@@ -20,7 +20,7 @@ Docker 作为一款容器化工具，其灵活性和健壮性毋庸置疑，但�
 
 Dockerfile 指令中，[RUN][2], [CMD][3], 和 [ENTRYPOINT][4] 是容易混淆的领域之一。本文将讨论这些指令之间的区别，并描述每种指令的用例。
 
-![2400x1260 choosing between run cmd and entrypoint](https://www.docker.com/wp-content/uploads/2024/07/2400x1260_choosing-between-run-cmd-and-entrypoint-1110x583.png "- 2400X1260 Choosing Between Run Cmd And Entrypoint")
+![2400x1260 choosing between run cmd and entrypoint](https://www.docker.com/wp-content/uploads/2024/07/2400x1260_choosing-between-run-cmd-and-entrypoint.png)
 
 ### RUN
 
@@ -151,39 +151,43 @@ CMD 提供默认参数，可以在运行时被覆盖
 CMD ["-D", "FOREGROUND"]
 ```
 
-### Signal handling and flexibility
+### 信号处理与灵活性
 
-Using `ENTRYPOINT` in exec form and `CMD` to specify parameters ensures that Docker containers can handle operating system signals gracefully, respond to user inputs dynamically, and maintain secure and predictable operations.
+使用 `ENTRYPOINT` (exec 格式) 和 `CMD` 来指定参数，可以确保 Docker 容器能够优雅地处理操作系统信号，动态响应用户输入，并维护安全可预测的操作。
 
-This setup is particularly beneficial for containers that run critical applications needing reliable shutdown and configuration behaviors. The following table shows key differences between the forms.
+这种设置对于运行需要可靠关闭和配置行为的关键应用程序的容器特别有用。下表显示了两种形式之间的主要区别：
 
-#### **Key differences between shell and exec**
+#### **shell 和 exec 形式的主要区别**
 
-<table><tbody><tr><td></td><td><strong>Shell Form</strong></td><td><strong>Exec Form</strong></td></tr><tr><td><strong>Form</strong></td><td>Commands without <code>[]</code> brackets. Run by the container’s shell, e.g., <code>/bin/sh -c</code>.</td><td>Commands with <code>[]</code> brackets. Run directly, not through a shell.</td></tr><tr><td><strong>Variable Substitution</strong></td><td>Inherits environment variables from the shell, such as <code>$HOME</code> and <code>$PATH</code>.</td><td>Does not inherit shell environment variables but behaves the same for <code>ENV</code> instruction variables.</td></tr><tr><td><strong>Shell Features</strong></td><td>Supports sub-commands, piping output, chaining commands, I/O redirection, etc.</td><td>Does not support shell features.</td></tr><tr><td><strong>Signal Trapping &amp; Forwarding</strong></td><td>Most shells do not forward process signals to child processes.</td><td>Directly traps and forwards signals like <code>SIGINT</code>.</td></tr><tr><td><strong>Usage with ENTRYPOINT</strong></td><td>Can cause issues with signal forwarding.</td><td>Recommended due to better signal handling.</td></tr><tr><td><strong>CMD as ENTRYPOINT Parameters</strong></td><td>Not possible with the shell form.</td><td>If the first item in the array is not a command, all items are used as parameters for the <code>ENTRYPOINT</code>.</td></tr></tbody></table>
+| 特性                    | **Shell 形式**                                                                           | **Exec 形式**                                                                                               |
+|-------------------------|-------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| **形式**                | 没有 `[]` 括号的命令。由容器的 shell 运行，例如 `/bin/sh -c`。                                | 带有 `[]` 括号的命令。直接运行，不通过 shell。                                                                      |
+| **变量替换**             | 继承 shell 的环境变量，例如 `$HOME` 和 `$PATH`。                                          | 不继承 shell 环境变量，但对 `ENV` 指令变量的行为相同。                                                               |
+| **Shell 功能**          | 支持子命令、管道输出、命令链、I/O 重定向等。                                                | 不支持 shell 功能。                                                                                                |
+| **信号捕获和转发**       | 大多数 shell 不会将进程信号转发给子进程。                                                    | 直接捕获并转发 `SIGINT` 等信号。                                                                                 |
+| **与 ENTRYPOINT 一起使用** | 可能导致信号转发问题。                                                                    | 建议使用，因为信号处理更好。                                                                                      |
+| **CMD 作为 ENTRYPOINT 参数** | shell 形式不支持。                                                                        | 如果数组中的第一项不是命令，则所有项都用作 `ENTRYPOINT` 的参数。                                                          | 
 
-Figure 1 provides a decision tree for using `RUN`, `CMD`, and `ENTRYPOINT` in building a Dockerfile.
-
-![2400x1260 run cmd entrypoint](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201110%20583'%3E%3C/svg%3E "- 2400X1260 Run Cmd Entrypoint")
+图 1 提供了一个决策树，用于在构建 Dockerfile 时使用 `RUN`、`CMD` 和 `ENTRYPOINT` 指令。 
 
 ![2400x1260 run cmd entrypoint](https://www.docker.com/wp-content/uploads/2024/07/2400x1260_run-cmd-entrypoint-1110x583.png "- 2400X1260 Run Cmd Entrypoint")
 
-Figure 1: Decision tree — RUN, CMD, ENTRYPOINT.
+图 1：决策树 —— RUN, CMD, ENTRYPOINT。
 
-Figure 2 shows a decision tree to help determine when to use exec form or shell form.
 
-![2400x1260 decision tree exec vs shell](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201110%20583'%3E%3C/svg%3E "- 2400X1260 Decision Tree Exec Vs Shell")
+图 2 显示了一个决策树，用以帮助确定何时使用 exec 格式或 shell 格式。
 
 ![2400x1260 decision tree exec vs shell](https://www.docker.com/wp-content/uploads/2024/07/2400x1260_decision-tree-exec-vs-shell-1110x583.png "- 2400X1260 Decision Tree Exec Vs Shell")
 
-Figure 2: Decision tree — exec vs. shell form.
+图 2：决策树 —— exec 格式对比 shell 格式。
 
-## Examples
+## 例子
 
-The following section will walk through the high-level differences between `CMD` and `ENTRYPOINT`. In these examples, the `RUN` command is not included, given that the only decision to make there is easily handled by reviewing the two different formats.
+下一节将概述 `CMD` 和 `ENTRYPOINT` 之间的高层次差异。在这些示例中，没有包括 `RUN` 命令，因为只需查看两种不同的格式即可轻松做出决定。
 
 ### Test Dockerfile
-
-\# Use syntax version 1.3-labs for Dockerfile
+```yaml
+# Use syntax version 1.3-labs for Dockerfile
 
 # syntax=docker/dockerfile:1.3-labs
 
@@ -218,13 +222,16 @@ EOF
 # Set the default command
 
 CMD ab
+```
+### 第一次构建
 
-### First build
+我们将构建这个镜像，并将其 tag 记为 `ab`。
 
-We will build this image and tag it as `ab`.
-
+```shell
 $ docker build -t ab .
+```
 
+```text
 \[+\] Building 7.0s (6/6) FINISHED docker:desktop-linux
 => \[internal\] load .dockerignore 0.0s
 => => transferring context: 2B 0.0s
@@ -237,12 +244,17 @@ $ docker build -t ab .
 => => exporting layers 0.0s
 => => writing image sha256:99ca34fac6a38b79aefd859540f88e309ca759aad0d7ad066c4931356881e518 0.0s
 => => naming to docker.io/library/ab
+```
 
-### **Run with `CMD ab`**
+### **运行 `CMD ab`**
 
-Without any arguments, we get a usage block as expected.
+在没有任何参数的情况下，我们会按预期得到一个使用说明块。 
 
+```shell
 $ docker run ab
+```
+
+```text
 ab: wrong number of arguments
 Usage: ab \[options\] \[http\[s\]://\]hostname\[:port\]/path
 Options are:
@@ -253,15 +265,24 @@ This implies -n 50000
 -s timeout Seconds to max. wait for each response
 Default is 30 seconds
 <-- SNIP -->
+```
 
-However, if I run `ab` and include a URL to test, I initially get an error:
+然而，如果我运行 `ab` 并且包含了一个要测试的URL，我最初会得到一个错误：
 
+```shell
 $ docker run --rm ab https://jayschmidt.us
+```
+
+```text
 docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "https://jayschmidt.us": stat https://jayschmidt.us: no such file or directory: unknown.
+```
 
-The issue here is that the string supplied on the command line — `https://jayschmidt.us` — is overriding the `CMD` instruction, and that is not a valid command, resulting in an error being thrown. So, we need to specify the command to run:
+这里的问题是，命令行上提供的字符串 — `https://jayschmidt.us` — 覆盖了 `CMD` 指令，而这不是一个有效的命令，导致抛出了一个错误。所以，我们需要指定要运行的命令：
 
+```shell
 $ docker run --rm ab ab https://jayschmidt.us/
+```
+```text
 This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -295,14 +316,19 @@ Connect: 90 90 0.0 90 90
 Processing: 43 43 0.0 43 43
 Waiting: 43 43 0.0 43 43
 Total: 132 132 0.0 132 132
+```
 
-### Run with ENTRYPOINT
+### Run 使用 ENTRYPOINT
 
-In this run, we remove the `CMD ab` instruction from the Dockerfile, replace it with `ENTRYPOINT ["ab"]`, and then rebuild the image.
+在这次运行中，我们从Dockerfile中移除了 `CMD ab` 指令，用 `ENTRYPOINT ["ab"]` 替换它，然后重新构建镜像。
 
-This is similar to but different from the `CMD` command — when you use `ENTRYPOINT`, you cannot override the command unless you use the `–entrypoint` flag on the `docker run` command. Instead, any arguments passed to `docker run` are treated as arguments to the `ENTRYPOINT`.
+这与 `CMD` 命令相似但又有所不同 — 当你使用 `ENTRYPOINT` 时，除非你在 `docker run` 命令上使用 `--entrypoint` 标志，否则你不能覆盖命令。相反，传递给 `docker run` 的任何参数都会被当作是 `ENTRYPOINT` 的参数。
 
+```shell
 $ docker run --rm ab "https://jayschmidt.us/"
+```
+
+```text
 This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
 Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
 Licensed to The Apache Software Foundation, http://www.apache.org/
@@ -336,14 +362,19 @@ Connect: 91 91 0.0 91 91
 Processing: 31 31 0.0 31 31
 Waiting: 31 31 0.0 31 31
 Total: 122 122 0.0 122 122
+```
 
 ### What about syntax?
 
-In the example above, we use `ENTRYPOINT ["ab"]` syntax to wrap the command we want to run in square brackets and quotes. However, it is possible to specify `ENTRYPOINT ab` (without quotes or brackets).
+在上面的示例中，我们使用 `ENTRYPOINT ["ab"]` 语法将要运行的命令用方括号和引号括起来。但是，也可以指定 `ENTRYPOINT ab`（不带引号或括号）。 
 
-Let’s see what happens when we try that.
+让我们看看尝试这样做会发生什么。 
 
+```shell
 $ docker run --rm ab "https://jayschmidt.us/"
+```
+
+```text
 ab: wrong number of arguments
 Usage: ab \[options\] \[http\[s\]://\]hostname\[:port\]/path
 Options are:
@@ -354,10 +385,15 @@ This implies -n 50000
 -s timeout Seconds to max. wait for each response
 Default is 30 seconds
 <-- SNIP -->
+```
 
-Your first thought will likely be to re-run the `docker run` command as we did for `CMD ab` above, which is giving both the executable and the argument:
+您的第一个想法可能是像上面对 `CMD ab` 所做的那样重新运行 `docker run` 命令，该命令同时提供了可执行文件和参数： 
 
+```shell
 $ docker run --rm ab ab "https://jayschmidt.us/"
+```
+
+```text
 ab: wrong number of arguments
 Usage: ab \[options\] \[http\[s\]://\]hostname\[:port\]/path
 Options are:
@@ -368,64 +404,51 @@ This implies -n 50000
 -s timeout Seconds to max. wait for each response
 Default is 30 seconds
 <-- SNIP -->
+```
 
-This is because `ENTRYPOINT` can only be overridden if you explicitly add the `–entrypoint` argument to the `docker run` command. The takeaway is to always use `ENTRYPOINT` when you want to force the use of a given executable in the container when it is run.
+这是因为只有在 `docker run` 命令中显式添加 `--entrypoint` 参数时，才能覆盖 `ENTRYPOINT`。  要点是，当您希望在运行容器时强制使用给定的可执行文件时，请始终使用 `ENTRYPOINT`。 
 
-## Wrapping up: Key takeaways and best practices
+## 总结：关键要点和最佳实践
 
-The decision-making process involving the use of `RUN`, `CMD`, and `ENTRYPOINT`, along with the choice between shell and exec forms, showcases Docker’s intricate nature. Each command serves a distinct purpose in the Docker ecosystem, impacting how containers are built, operate, and interact with their environments.
+涉及使用 `RUN`、`CMD` 和 `ENTRYPOINT` 以及 shell 和 exec 形式的选择的决策过程，展现了 Docker 的复杂性。每个命令在 Docker 生态系统中都有其独特的用途，影响着容器的构建、运行以及与其环境的交互方式。
 
-By selecting the right command and form for each specific scenario, developers can construct Docker images that are more reliable, secure, and optimized for efficiency. This level of understanding and application of Docker’s commands and their formats is crucial for fully harnessing Docker’s capabilities. Implementing these best practices ensures that applications deployed in Docker containers achieve maximum performance across various settings, enhancing development workflows and production deployments.
+通过为每个特定场景选择正确的命令和形式，开发人员可以构建更可靠、更安全且针对效率进行优化的 Docker 镜像。这种对 Docker 命令及其格式的理解和应用水平，对于充分利用 Docker 的功能至关重要。实施这些最佳实践可确保在 Docker 容器中部署的应用程序在各种设置下都能实现最佳性能，从而增强开发工作流程和生产部署。 
 
-## Learn more
+## 学习更多
 
 -   [CMD][10]
 -   [ENTRYPOINT][11]
 -   [RUN][12]
--   Stay updated on the latest Docker news! Subscribe to the [Docker Newsletter][13].
--   Get the latest release of [Docker Desktop][14].
--   New to Docker? [Get started][15].
--   Have questions? The [Docker community is here to help][16].
+-   及时了解 Docker 最新资讯！订阅 [Docker 简报][13]。
+-   获取最新版的 [Docker Desktop][14]。
+-   Docker 新手？[开始使用][15]。
+-   有问题？[Docker 社区随时为您提供帮助][16]。
 
 [developers][17], [Docker][18], [Docker Desktop][19], [dockerfile][20]
 
-[
 
-][21]
 
-#### [Docker Desktop 4.32: Beta Releases of Compose File Viewer, Terminal Shell Integration, and Volume Backups to Cloud Providers][22]
+#### [Docker Desktop 4.32：Compose 文件查看器、终端Shell集成和卷备份到云提供商的测试版本][22]
 
 By [Deanna Sparks][23]
 
-[
 
-][24]
-
-#### [How an AI Assistant Can Help Configure Your Project’s Git Hooks][25]
+#### [人工智能助手如何帮助配置项目的Git hook][25]
 
 By [Docker Labs][26] July 15, 2024
 
-[
 
-][27]
-
-#### [How to Run Hugging Face Models Programmatically Using Ollama and Testcontainers][28]
+#### [如何使用Ollama和Testcontainers以编程方式运行Hugging Face模型][28]
 
 By [Ignasi Lopez Luna][29] July 11, 2024
 
 #### Posted
 
-Jul 15, 2024
-
--   [][30]
--   [][31]
--   [][32]
-
 #### Post Tags
 
 [developers][33][Docker][34][Docker Desktop][35][dockerfile][36]
 
-#### Categories
+#### 分类
 
 -   [Community][37]
 -   [Company][38]
