@@ -39,17 +39,17 @@ shadowRoot.innerHTML = '<h1>Hello Shadow DOM</h1>';
 
 这样的命令式 API 适用于客户端渲染：定义我们自定义元素的同一个 JavaScript 也用于创建它们的影子根节点并设置它们的内容。然而，很多 Web 需要在服务端渲染内容，或在构建时生成静态 HTML。想为或许无法运行 JavaScript 的访问者提供一个合理的体验，这可能是一个重要的举措。
 
-The justifications for [Server-Side Rendering][13] (SSR) vary from project to project. Some websites must provide fully functional server-rendered HTML in order to meet accessibility guidelines, others choose to deliver a baseline no-JavaScript experience as a way to guarantee good performance on slow connections or devices.
+使用[服务端渲染][13] (SSR) 的原因因项目而异。有些网站必须提供全功能的服务端渲染 HTML，以便符合无障碍准则；另一些则选择提供一个基准无 JavaScript 体验，以确保在慢速连接和设备上拥有良好性能。
 
-Historically, it has been difficult to use Shadow DOM in combination with Server-Side Rendering because there was no built-in way to express Shadow Roots in the server-generated HTML. There are also performance implications when attaching Shadow Roots to DOM elements that have already been rendered without them. This can cause layout shifting after the page has loaded, or temporarily show a flash of unstyled content ("FOUC") while loading the Shadow Root's stylesheets.
+历史上，将 Shadow DOM 与服务端渲染结合使用一直很困难，因为没有内建的方式在服务端生成的 HTML 中表示影子根。当把影子根附加到已单独渲染的 DOM 元素上也会有性能影响。这可能导致在页面已经加载完成时导致布局偏移，或当加载影子根的样式表时暂时闪烁一下未样式化的内容 ("FOUC")。
 
-[Declarative Shadow DOM][14] (DSD) removes this limitation, bringing Shadow DOM to the server.
+[声明式 Shadow DOM][14] (DSD) 解除了这些限制，把 Shadow DOM 带到了服务端。
 
-## Building a Declarative Shadow Root
+## 构建一个声明式影子根
 
-A Declarative Shadow Root is a `<template>` element with a `shadowrootmode` attribute:
+一个声明式影子根是一个带有 `shadowrootmode` 属性的 `<template>` 元素：
 
-```
+```html
 <host-element>
   <template shadowrootmode="open">
     <slot></slot>
