@@ -164,20 +164,13 @@ eStargz 镜像仍然是有效的 tar 归档文件，但它们的构建方式很�
 优化容器构建过程还有很多方面，我们希望将来能分享更多我们的工作。如果您对这些内容感兴趣，请随时通过 [Twitter][17] 或 [Discord][18] 与我们联系。
 
 [1]: https://twitter.com/kylegalbraith/status/1746161367290167705
-[2]: #layer-format
 [3]: https://github.com/opencontainers/image-spec/blob/main/spec.md
 [4]: https://en.wikipedia.org/wiki/Tar_(computing)
-[5]: #assembling-an-oci-image
-[6]: #handling-modified-files
-[7]: #handling-removed-files
-[8]: #overlay-filesystems
 [9]: https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html
-[10]: #lazy-image-layers-with-estargz
 [11]: https://github.com/containerd/stargz-snapshotter/blob/main/docs/estargz.md
 [12]: https://depot.ai/
 [13]: https://github.com/awslabs/soci-snapshotter
 [14]: https://nydus.dev/
 [15]: https://www.redhat.com/sysadmin/faster-container-image-pulls
-[16]: #optimizing-layer-construction
 [17]: https://twitter.com/jacobwgillespie
 [18]: https://discord.gg/MMPqYSgDCg
