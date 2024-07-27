@@ -8,7 +8,7 @@ translator: ""
 reviewer: ""
 ---
 
-# Understanding Container Image Layers
+# 了解容器镜像层
 
 **发布时间:** [6 月 27][5], [2024][6] **阅读时间:** 9 分钟
 
@@ -20,7 +20,7 @@ reviewer: ""
 
 当你创建一个镜像时，你通常会使用一个 `Dockerfile` 来定义容器的内容。它包含一系列命令，例如：
 
-```bash
+```dockerfile
 FROM scratch
 RUN echo "hello" > /work/message.txt
 COPY content.txt /work/content.txt
@@ -42,10 +42,10 @@ RUN rm -rf /work/message.txt
 
 | File                                                | Contents                                                            |
 | --------------------------------------------------- | ------------------------------------------------------------------- |
-| `layer1.tar.gz`                                     | Empty file                                                          |
-| `layer2.tar.gz`                                     | Contains `/work/message.txt`                                        |
-| `layer3.tar.gz`                                     | Contains `/work/content.txt` (since `message.txt` was not modified) |
-| `layer4.tar.gz`                                     | Contains `/work/.wh.message.txt` (since `message.txt` was deleted). |
+| `layer1.tar.gz`                                     | 空文件                                                          |
+| `layer2.tar.gz`                                     | 包含 `/work/message.txt`                                        |
+| `layer3.tar.gz`                                     | 包含 `/work/content.txt` （因为 `message.txt` 文件没有修改） |
+| `layer4.tar.gz`                                     | 包含 `/work/.wh.message.txt` （因为 `message.txt` 删除了） |
 | 文件 `content.txt` 没有被修改，所以没有被包含在内。 |
 
 以这种方式构建大量镜像会导致大量的 `layer1` 目录。为了确保名称的唯一性，压缩文件的命名基于内容的摘要。这类似于 Git 的工作方式。它的好处是在识别文件下载过程中任何损坏的同时，还能识别相同的内容。如果内容的摘要（哈希值）与文件名不匹配，则文件已损坏。
@@ -70,7 +70,7 @@ RUN rm -rf /work/message.txt
 
 如果这些目录中的任何一个已经存在，则表明另一个镜像具有相同的依赖项。因此，引擎可以跳过下载和差异应用器。它可以按原样使用该层。在实践中，这些目录和文件中的每一个都根据内容的摘要进行命名，以便更容易识别。例如，一组快照可能如下所示：
 
-```bash
+```text
 1/var/path/to/snapshots/blobs
 2└─ sha256
 3   ├─ 635944d2044d0a54d01385271ebe96ec18b26791eb8b85790974da36a452cc5c
