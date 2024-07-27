@@ -1,5 +1,5 @@
 ---
-title: Understanding Container Image Layers
+title: 理解容器镜像层
 date: 2024-06-07T03:12:52.216Z
 author: Ken Muse
 authorURL: https://github.com/kenmuse
