@@ -20,7 +20,7 @@ reviewer: ""
 
 为了更好地理解其中一些优化，了解 OCI 容器镜像层格式本身很有帮助。
 
-## [][2]层格式
+## 层格式
 
 它们只是 tar 包！
 
@@ -30,7 +30,7 @@ reviewer: ""
 
 以这个 Dockerfile 为例：
 
-```yaml
+```dockerfile
 FROM ubuntu:22.04
 COPY hello.txt .
 COPY world.txt .
@@ -44,7 +44,7 @@ COPY world.txt .
 
 解压生成的镜像后，容器文件系统将如下所示：
 
-```bash
+```text
 /
 ├── bin/
 ├── boot/
