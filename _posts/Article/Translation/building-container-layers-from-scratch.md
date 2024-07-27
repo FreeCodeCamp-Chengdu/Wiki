@@ -1,5 +1,5 @@
 ---
-title: "Building containers from scratch: Layers"
+title: "从零开始构建容器：层"
 date: 2024-06-07T03:14:58.423Z
 authorURL: ""
 originalURL: https://depot.dev/blog/building-container-layers-from-scratch
@@ -9,7 +9,6 @@ reviewer: ""
 
 在 Depot，我们专注于为容器镜像提供最快的构建服务。我们主要通过以下方式实现这一目标：
 
-<!-- more -->
 
 1.  提供对强大计算和存储的即时访问。
 2.  优化构建过程本身以使其尽可能快。
@@ -74,15 +73,15 @@ COPY world.txt .
 
 OCI 容器镜像只是一组 tar 包。
 
-## [][5]组装 OCI 镜像
+## 组装 OCI 镜像
 
 如果容器镜像层只是 tar 包，并且它们被联合在一起形成容器文件系统，那么如何才能在后面的层中删除或修改文件呢？
 
-### [][6]处理已修改的文件
+### 处理已修改的文件
 
 修改文件很简单：如果一个文件包含在多个层中，则最后包含该文件的层 `wins`。例如
 
-```yaml
+```dockerfile
 FROM scratch
 RUN echo "hello" > example.txt
 RUN echo "world" > example.txt
@@ -95,11 +94,11 @@ RUN echo "world" > example.txt
 
 解压后，第一层的 `example.txt` 文件将被第二层的 `example.txt` 文件覆盖，从而生成一个容器文件系统，其中包含一个 `example.txt` 文件，其中包含文本 `world`。
 
-### [][7]处理已删除的文件
+### 处理已删除的文件
 
 但是，已删除的文件该如何处理？ 例如：
 
-```yaml
+```dockerfile
 FROM scratch
 RUN echo "hello" > example.txt
 RUN rm example.txt
@@ -117,7 +116,7 @@ Whiteout 文件是带有特殊名称的空文件，它告诉容器运行时应�
 
 最后，层通常以 gzip 压缩的 tar 包（扩展名为`.tar.gz`）的形式分发，以节省存储空间并减少网络数据传输。请注意，该规范还支持未压缩的 tar 包（`.tar`）和 zstd 压缩的 tar 包（`.tar.zstd`）。
 
-## [][8]Overlay filesystems（叠加文件系统）
+## Overlay filesystems（叠加文件系统）
 
 像 containerd 或 podman 这样的容器运行时负责在运行容器之前将镜像的层（tar 包）解压到一个目录中。这被称为容器的`rootfs`或根文件系统。
 
@@ -131,7 +130,7 @@ Overlayfs 本身支持 whiteout 文件的概念，因此容器运行时在挂载
 
 这使得每个镜像层只需解压一次，因此从同一个镜像运行多个容器非常快，并且在镜像之间共享公共基础层非常高效。Linux 内核处理将各层组合成单个文件系统的所有复杂性。
 
-## [][10]使用 eStargz 的惰性镜像层
+## 使用 eStargz 的惰性镜像层
 
 虽然镜像层“仅仅”是包含文件的 tar 归档文件，但可以通过扩展格式来提高存储和传输效率。[eStargz][11] 镜像格式就是一个例子。
 
@@ -151,7 +150,7 @@ eStargz 镜像仍然是有效的 tar 归档文件，但它们的构建方式很�
 
 这类优化的其他例子还包括 AWS 的 [SOCI 快照程序][13]、[Nydus][14] 镜像格式和 Red Hat 的 [`zstd:chunked`][15]。
 
-## [][16]优化层构建
+## 优化层构建
 
 考虑到容器镜像层本质上是 tar 包，我们正在探索各种层构建过程的优化方法，使其更快、更高效：
 
