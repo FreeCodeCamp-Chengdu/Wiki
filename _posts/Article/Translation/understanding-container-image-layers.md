@@ -8,7 +8,6 @@ translator: ""
 reviewer: ""
 ---
 
-# 了解容器镜像层
 
 **发布时间:** [6 月 27][5], [2024][6] **阅读时间:** 9 分钟
 
@@ -81,7 +80,7 @@ RUN rm -rf /work/message.txt
 
 或者，换句话说:
 
-| Image                                                                   | Parent                                                                  |
+| 镜像                                                                   | 父镜像                                                                  |
 | ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | sha256:635944d2044d0a54d01385271ebe96ec18b26791eb8b85790974da36a452cc5c |                                                                         |
 | sha256:9de59f6b211510bd59d745a5e49d7aa0db263deedc822005ed388f8d55227fc1 | sha256:635944d2044d0a54d01385271ebe96ec18b26791eb8b85790974da36a452cc5c |
@@ -151,7 +150,7 @@ RUN rm -rf /work/message.txt
 
     运行 `ls -l upper` 显示：
 
-    ```bash
+    ```text
     total 12
     c--------- 2 root root 0, 0 Jan 20 00:17 delete-me.txt
     -rw-r--r-- 1 root root   12 Jan 20 00:20 hello.txt
