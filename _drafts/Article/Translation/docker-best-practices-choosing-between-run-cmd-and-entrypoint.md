@@ -1,5 +1,5 @@
 ---
-title: "Docker Best Practices: Choosing Between RUN, CMD, and ENTRYPOINT"
+title: "Docker 最佳实践： 在 RUN、CMD 和 ENTRYPOINT 之间选择"
 date: 2024-07-17T00:00:00.000Z
 author: Jay Schmidt
 authorURL: https://www.docker.com/author/jay-schmidt/
@@ -7,10 +7,6 @@ originalURL: https://www.docker.com/blog/docker-best-practices-choosing-between-
 translator: ""
 reviewer: ""
 ---
-
-# Docker Best Practices: Choosing Between RUN, CMD, and ENTRYPOINT
-
-<!-- more -->
 
 <img src="https://www.docker.com/wp-content/uploads/2024/04/jay-schmidt.jpeg" width="50">
 
@@ -20,7 +16,7 @@ Docker 作为一款容器化工具，其灵活性和健壮性毋庸置疑，但�
 
 Dockerfile 指令中，[RUN][2], [CMD][3], 和 [ENTRYPOINT][4] 是容易混淆的领域之一。本文将讨论这些指令之间的区别，并描述每种指令的用例。
 
-![2400x1260 choosing between run cmd and entrypoint](https://www.docker.com/wp-content/uploads/2024/07/2400x1260_choosing-between-run-cmd-and-entrypoint.png)
+![2400x1260 choosing between run cmd and entrypoint][41]
 
 ### RUN
 
@@ -28,7 +24,7 @@ Dockerfile 指令中，[RUN][2], [CMD][3], 和 [ENTRYPOINT][4] 是容易混淆�
 
 以下示例展示了如何在镜像构建期间指示 Docker 构建过程更新 `apt 缓存` 并安装 Apache：
 
-```shell
+```dockerfile
 RUN apt update && apt -y install apache2
 ```
 
@@ -42,7 +38,7 @@ RUN apt update && apt -y install apache2
 
 例如，默认情况下，您可能希望启动 Web 服务器，但用户可以将其覆盖为运行 shell：
 
-```shell
+```dockerfile
 CMD ["apache2ctl", "-DFOREGROUND"]
 ```
 
@@ -56,7 +52,7 @@ CMD ["apache2ctl", "-DFOREGROUND"]
 
 `ENTRYPOINT` 对于将容器转换为独立的可执行文件特别有用。例如，假设您正在打包一个需要参数的自定义脚本（例如，`my_script extra_args`）。在这种情况下，您可以使用 `ENTRYPOINT` 始终运行脚本进程 (`my_script`)，然后允许镜像用户在 `docker run` 命令行上指定 `extra_args`。您可以执行以下操作：
 
-```shell
+```dockerfile
 ENTRYPOINT ["my_script"]
 ```
 
@@ -66,7 +62,7 @@ ENTRYPOINT ["my_script"]
 
 例如，您可能有一个运行 Python 应用程序的容器，您希望始终使用相同的应用程序文件，但允许用户指定不同的命令行参数：
 
-```shell
+```dockerfile
 ENTRYPOINT ["python", "/app/my_script.py"]
 CMD ["--default-arg"]
 ```
@@ -124,13 +120,13 @@ exec 形式不调用命令 shell。这意味着您指定的命令将作为容器
 
 Shell 形式，适用于复杂的脚本编写。
 
-```shell
+```dockerfile
 RUN apt-get update && apt-get install -y nginx
 ```
 
 Exec 形式，用于直接执行命令
 
-```shell
+```dockerfile
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "nginx"]
 ```
@@ -141,13 +137,13 @@ RUN ["apt-get", "install", "-y", "nginx"]
 
 ENTRYPOINT 使用 exec 形式进行直接进程控制
 
-```shell
+```dockerfile
 ENTRYPOINT ["httpd"]
 ```
 
 CMD 提供默认参数，可以在运行时被覆盖
 
-```shell
+```dockerfile
 CMD ["-D", "FOREGROUND"]
 ```
 
@@ -186,7 +182,7 @@ CMD ["-D", "FOREGROUND"]
 下一节将概述 `CMD` 和 `ENTRYPOINT` 之间的高层次差异。在这些示例中，没有包括 `RUN` 命令，因为只需查看两种不同的格式即可轻松做出决定。
 
 ### Test Dockerfile
-```yaml
+```dockerfile
 # Use syntax version 1.3-labs for Dockerfile
 
 # syntax=docker/dockerfile:1.3-labs
@@ -495,3 +491,4 @@ By [Ignasi Lopez Luna][29] July 11, 2024
 [38]: https://www.docker.com/blog/category/company/
 [39]: https://www.docker.com/blog/category/engineering/
 [40]: https://www.docker.com/blog/category/products/
+[41]: https://www.docker.com/wp-content/uploads/2024/07/2400x1260_choosing-between-run-cmd-and-entrypoint.png
