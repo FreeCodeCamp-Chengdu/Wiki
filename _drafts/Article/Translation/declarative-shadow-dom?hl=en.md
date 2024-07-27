@@ -1,24 +1,15 @@
 ---
-title: Declarative Shadow DOM
+title: 声明式 Shadow DOM
 date: 2024-07-27T07:45:09.743Z
-author: X
+authors:
+  - TechQuery
 authorURL: https://twitter.com/_developit
-originalURL: https://developer.chrome.com/docs/css-ui/declarative-shadow-dom?hl=en
-translator: ""
-reviewer: ""
+original: https://developer.chrome.com/docs/css-ui/declarative-shadow-dom?hl=en
 ---
-
--   [Home][1]
--   [Docs][2]
--   [CSS and UI][3]
-
-<!-- more -->
-
-# Declarative Shadow DOM
 
 Stay organized with collections Save and categorize content based on your preferences.
 
-A new way to implement and use Shadow DOM directly in HTML.
+一种直接在 HTML 中实现和使用 Shadow DOM 的新方法。
 
 ![Jason Miller](https://web.dev/images/authors/developit.jpg)
 
@@ -32,13 +23,15 @@ Mason Freed
 
 [X][7] [GitHub][8]
 
-Declarative Shadow DOM is a [standard web platform feature][9], which has been supported in Chrome from version 90. Note that the specification for this feature changed in 2023 (including a rename of `shadowroot` to `shadowrootmode`), and the most up to date standardized versions of all parts of the feature landed in Chrome version 124.
+<!-- more -->
 
-[Shadow DOM][10] is one of the three Web Components standards, rounded out by [HTML templates][11] and [Custom Elements][12]. Shadow DOM provides a way to scope CSS styles to a specific DOM subtree and isolate that subtree from the rest of the document. The `<slot>` element gives us a way to control where the children of a Custom Element should be inserted within its Shadow Tree. These features combined enable a system for building self-contained, reusable components that integrate seamlessly into existing applications just like a built-in HTML element.
+声明式 Shadow DOM 是一种[标准 Web 平台特性][9]，已在 Chrome 90 中获得支持。需要注意的是，这个特性的规范在 2023 年有所变更（包括 `shadowroot` 到 `shadowrootmode` 的重命名），还有这个特性所有部分最近标准化的版本已在 Chrome 124 实现。
 
-Until now, the only way to use Shadow DOM was to construct a shadow root using JavaScript:
+[Shadow DOM][10] 是包括 [HTML templates][11] 和 [Custom Elements][12] 在内的三个 Web Components 标准之一。Shadow DOM 提供一种对一棵特定 DOM 子树局部化 CSS 样式的方式，并把这棵子树与文档的其它部分隔离开来。`<slot>` 元素给我们一种方式去控制一个自定义元素的子元素应该插入在它的影子树中的什么位置。这些特性联合成一个系统来构建自包含、可复用的组件，以便像一个内置 HTML 元素一样无感地集成进现有应用。
 
-```
+到目前为止，使用 Shadow DOM 的唯一风险是用 JavaScript 构造一个影子根节点：
+
+```js
 const host = document.getElementById('host');
 const shadowRoot = host.attachShadow({mode: 'open'});
 shadowRoot.innerHTML = '<h1>Hello Shadow DOM</h1>';
