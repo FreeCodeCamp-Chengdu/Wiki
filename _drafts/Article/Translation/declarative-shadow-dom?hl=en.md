@@ -25,11 +25,11 @@ Mason Freed
 
 <!-- more -->
 
-声明式 Shadow DOM 是一种[标准 Web 平台特性][9]，已在 Chrome 90 中获得支持。需要注意的是，这个特性的规范在 2023 年有所变更（包括 `shadowroot` 到 `shadowrootmode` 的重命名），还有这个特性所有部分最近标准化的版本已在 Chrome 124 实现。
+声明式 Shadow DOM 是一种[标准 Web 平台特性][9]，已在 Chrome 90 中获得支持。请注意，这个特性的规范在 2023 年有所变更（包括 `shadowroot` 到 `shadowrootmode` 的重命名），还有这个特性所有部分最近标准化的版本已在 Chrome 124 实现。
 
-[Shadow DOM][10] 是包括 [HTML templates][11] 和 [Custom Elements][12] 在内的三个 Web Components 标准之一。Shadow DOM 提供一种对一棵特定 DOM 子树局部化 CSS 样式的方式，并把这棵子树与文档的其它部分隔离开来。`<slot>` 元素给我们一种方式去控制一个自定义元素的子元素应该插入在它的影子树中的什么位置。这些特性联合成一个系统来构建自包含、可复用的组件，以便像一个内置 HTML 元素一样无感地集成进现有应用。
+[Shadow DOM][10] 是包括 [HTML templates][11] 和 [Custom Elements][12] 在内的三个 Web Components 标准之一。Shadow DOM 提供一种方式，可将 CSS 样式的作用域限定于一棵特定 DOM 子树，并把该子树与文档的其余部分隔离开来。`<slot>` 元素给我们一种方式去控制一个自定义元素的子节点应该插入在它的影子树中的什么位置。这些特性联合成一个系统来构建自包含、可复用的组件，以便像一个内置 HTML 元素一样无缝集成进现有应用。
 
-到目前为止，使用 Shadow DOM 的唯一风险是用 JavaScript 构造一个影子根节点：
+在此之前，使用 Shadow DOM 的唯一方法是用 JavaScript 构造一个影子根节点：
 
 ```js
 const host = document.getElementById('host');
@@ -37,7 +37,7 @@ const shadowRoot = host.attachShadow({mode: 'open'});
 shadowRoot.innerHTML = '<h1>Hello Shadow DOM</h1>';
 ```
 
-An imperative API like this works fine for client-side rendering: the same JavaScript modules that define our Custom Elements also create their Shadow Roots and set their content. However, many web applications need to render content server-side or to static HTML at build time. This can be an important part of delivering a reasonable experience to visitors who may not be capable of running JavaScript.
+这样的命令式 API 适用于客户端渲染：定义我们自定义元素的同一个 JavaScript 也用于创建它们的影子根节点并设置它们的内容。然而，很多 Web 需要在服务端渲染内容，或在构建时生成静态 HTML。想为或许无法运行 JavaScript 的访问者提供一个合理的体验，这可能是一个重要的举措。
 
 The justifications for [Server-Side Rendering][13] (SSR) vary from project to project. Some websites must provide fully functional server-rendered HTML in order to meet accessibility guidelines, others choose to deliver a baseline no-JavaScript experience as a way to guarantee good performance on slow connections or devices.
 
