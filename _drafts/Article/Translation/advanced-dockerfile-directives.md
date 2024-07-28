@@ -1,5 +1,5 @@
 ---
-title: Advanced Dockerfile Directives
+title: 高级 Dockerfile 指令
 date: 2024-07-08T06:25:58.000Z
 authorURL: ""
 originalURL: https://dev.to/kalkwst/advanced-dockerfile-directives-193f
@@ -7,41 +7,17 @@ translator: ""
 reviewer: ""
 ---
 
-  
-
-<!-- more -->
-
-[Skip to content][1]
-
-Navigation menu [![DEV Community](https://media.dev.to/cdn-cgi/image/quality=100/https://dev-to-uploads.s3.amazonaws.com/uploads/logos/resized_logo_UQww2soKuUsjaOGNB38o.png)][2]
-
-[Search][4]
-
-[Log in][5] [Create account][6]
-
-## DEV Community
-
-Close
-
- 
 
 [![Cover image for Advanced Dockerfile Directives](https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fud6oyinws6xha4i4f179.png)][14]
 
 [![Kostas Kalafatis](https://media.dev.to/cdn-cgi/image/width=50,height=50,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Fuser%2Fprofile_image%2F55227%2Fe91bf4bf-777b-4937-add8-f6710f9b94c8.jpg)][15]
 
-[Kostas Kalafatis][16]
-
-Posted on
-
    ![](https://dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg)  ![](https://dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg)  ![](https://dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg)  ![](https://dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg) ![](https://dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg)
 
-# Advanced Dockerfile Directives
-
-[#beginners][17] [#docker][18] [#devops][19] [#tutorial][20]
 
 ## [The Docker Workshop (6 Part Series)][21]
 
-[1 Running our First Docker Image][22] [2 Basic Container Lifecycle Management][23] [... 2 more parts...][24] [3 Getting Started with Dockerfiles][25] [4 Attaching To Containers Using the Attach Command][26] [5 Building Docker Images][27] [6 Advanced Dockerfile Directives][28]
+
 
 In this post, we are going to discuss more advanced **Dockerfile** directives. These directives can be used to create more advanced Docker images.
 
@@ -1930,177 +1906,83 @@ We're a place where coders share, stay up-to-date and grow their careers.
 
 ![](https://dev.to/assets/sparkle-heart-5f9bee3767e18deb1bb725290cb151c25234768a0e9a2bd39370c382d02920cf.svg) ![](https://dev.to/assets/multi-unicorn-b44d6f8c23cdd00964192bedc38af3e82463978aa611b4365bd33a0f1f4f3e97.svg) ![](https://dev.to/assets/exploding-head-daceb38d627e6ae9b730f36a1e390fca556a4289d5a41abb2c35068ad3e2c4b5.svg) ![](https://dev.to/assets/raised-hands-74b2099fd66a39f2d7eed9305ee0f4553df0eb7b4f11b01b6b1b499973048fe5.svg) ![](https://dev.to/assets/fire-f60e7a582391810302117f987b22a8ef04a2fe0df7e3258a5f49332df1cec71e.svg)
 
-[1]: #main-content
-[2]: /
 [3]: https://www.algolia.com/developers/?utm_source=devto&utm_medium=referral
-[4]: /search
-[5]: /enter
-[6]: /enter?state=new-user
 [7]: https://twitter.com/intent/tweet?text=%22Advanced%20Dockerfile%20Directives%22%20by%20Kostas%20Kalafatis%20%23DEVCommunity%20https%3A%2F%2Fdev.to%2Fkalkwst%2Fadvanced-dockerfile-directives-193f
 [8]: https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdev.to%2Fkalkwst%2Fadvanced-dockerfile-directives-193f&title=Advanced%20Dockerfile%20Directives&summary=In%20this%20post%2C%20we%20are%20going%20to%20discuss%20more%20advanced%20Dockerfile%20directives.%20These%20directives%20can%20be...&source=DEV%20Community
 [9]: https://www.reddit.com/submit?url=https%3A%2F%2Fdev.to%2Fkalkwst%2Fadvanced-dockerfile-directives-193f&title=Advanced%20Dockerfile%20Directives
 [10]: https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fdev.to%2Fkalkwst%2Fadvanced-dockerfile-directives-193f&t=Advanced%20Dockerfile%20Directives
 [11]: https://www.facebook.com/sharer.php?u=https%3A%2F%2Fdev.to%2Fkalkwst%2Fadvanced-dockerfile-directives-193f
 [12]: https://toot.kytta.dev/?text=https%3A%2F%2Fdev.to%2Fkalkwst%2Fadvanced-dockerfile-directives-193f
-[13]: /report-abuse
 [14]: https://media.dev.to/cdn-cgi/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fud6oyinws6xha4i4f179.png
-[15]: /kalkwst
-[16]: /kalkwst
-[17]: /t/beginners
-[18]: /t/docker
-[19]: /t/devops
-[20]: /t/tutorial
-[21]: /kalkwst/series/27622
-[22]: /kalkwst/running-our-first-docker-image-4gpm "Published Jun 6"
-[23]: /kalkwst/basic-container-lifecycle-management-3n9k "Published Jun 17"
-[24]: /kalkwst/getting-started-with-dockerfiles-3gmd "View more"
-[25]: /kalkwst/getting-started-with-dockerfiles-3gmd "Published Jun 24"
-[26]: /kalkwst/attaching-to-containers-using-the-attach-command-aaa "Published Jun 24"
-[27]: /kalkwst/building-docker-images-55f1 "Published Jul 8"
-[28]: /kalkwst/advanced-dockerfile-directives-193f "Published Jul 8"
-[29]: #the-env-directive
-[30]: #the-arg-directive
-[31]: #using-env-and-arg-directives-in-a-dockerfile
-[32]: #the-workdir-directive
-[33]: #the-copy-directive
-[34]: #the-add-directive
-[35]: #best-practices-copy-vs-add-in-dockerfiles
-[36]: #clarity-and-intent
-[37]: #security-and-predictability
-[38]: #docker-philosophy-alignment
-[39]: #using-the-workdir-copy-and-add-directives-in-a-dockerfile
-[40]: #the-user-directive
-[41]: #using-user-directive-in-the-dockerfile
-[42]: #the-volume-directive
-[43]: #using-the-volume-directive-in-the-dockerfile
-[44]: #the-expose-directive
-[45]: #the-healthcheck-directive
-[46]: #using-expose-and-healthcheck-directives-in-the-dockerfile
 [47]: https://media.dev.to/cdn-cgi/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fynq7tnklqzp44zhosob2.png
-[48]: #the-onbuild-directive
-[49]: #using-the-onbuild-directive-in-a-dockerfile
 [50]: https://media.dev.to/cdn-cgi/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fynq7tnklqzp44zhosob2.png
 [51]: https://media.dev.to/cdn-cgi/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdecdrnoany4idkkrrllx.png
-[52]: #summary
-[53]: /kalkwst/series/27622
-[54]: /kalkwst/running-our-first-docker-image-4gpm "Published Jun 6"
-[55]: /kalkwst/basic-container-lifecycle-management-3n9k "Published Jun 17"
-[56]: /kalkwst/getting-started-with-dockerfiles-3gmd "View more"
-[57]: /kalkwst/getting-started-with-dockerfiles-3gmd "Published Jun 24"
-[58]: /kalkwst/attaching-to-containers-using-the-attach-command-aaa "Published Jun 24"
-[59]: /kalkwst/building-docker-images-55f1 "Published Jul 8"
-[60]: /kalkwst/advanced-dockerfile-directives-193f "Published Jul 8"
-[61]: /settings/response-templates
-[62]: /404.html
 [63]: https://dev.to/rouqe
 [64]: https://dev.to/rouqe
-[65]: /rouqe
 [66]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2geaj
 [67]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2geaj
 [68]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2geaj
 [69]: https://dev.to/kalkwst
 [70]: https://dev.to/kalkwst
-[71]: /kalkwst
 [72]: mailto:kalafatiskwstas@gmail.com
 [73]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gebo
 [74]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gebo
 [75]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2gebo
 [76]: https://dev.to/rouqe
 [77]: https://dev.to/rouqe
-[78]: /rouqe
 [79]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gec5
 [80]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gec5
 [81]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2gec5
 [82]: https://dev.to/leadsbuilds
 [83]: https://dev.to/leadsbuilds
-[84]: /leadsbuilds
 [85]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gdoe
 [86]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gdoe
 [87]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2gdoe
 [88]: https://dev.to/kalkwst
 [89]: https://dev.to/kalkwst
-[90]: /kalkwst
 [91]: mailto:kalafatiskwstas@gmail.com
 [92]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2ge65
 [93]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2ge65
 [94]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2ge65
 [95]: https://dev.to/jangelodev
 [96]: https://dev.to/jangelodev
-[97]: /jangelodev
 [98]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gd68
 [99]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gd68
 [100]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2gd68
 [101]: https://dev.to/kalkwst
 [102]: https://dev.to/kalkwst
-[103]: /kalkwst
 [104]: mailto:kalafatiskwstas@gmail.com
 [105]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2ge68
 [106]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2ge68
 [107]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2ge68
 [108]: https://dev.to/clabnet
 [109]: https://dev.to/clabnet
-[110]: /clabnet
 [111]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gd6l
 [112]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gd6l
 [113]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2gd6l
 [114]: https://dev.to/kalkwst
 [115]: https://dev.to/kalkwst
-[116]: /kalkwst
 [117]: mailto:kalafatiskwstas@gmail.com
 [118]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2ge66
 [119]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2ge66
 [120]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2ge66
 [121]: https://dev.to/adriens
 [122]: https://dev.to/adriens
-[123]: /adriens
 [124]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gf7e
 [125]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gf7e
 [126]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2gf7e
 [127]: https://dev.to/oriroth
 [128]: https://dev.to/oriroth
-[129]: /oriroth
 [130]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gek1
 [131]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gek1
 [132]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2gek1
 [133]: https://dev.to/kalkwst
 [134]: https://dev.to/kalkwst
-[135]: /kalkwst
 [136]: mailto:kalafatiskwstas@gmail.com
 [137]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gele
 [138]: https://dev.to/kalkwst/advanced-dockerfile-directives-193f#comment-2gele
-[139]: #/kalkwst/advanced-dockerfile-directives-193f/comments/new/2gele
-[140]: /code-of-conduct
-[141]: /report-abuse
-[142]: /report-abuse
-[143]: /skipperhoa/myfirstapp-react-native-with-expo-p24-code-layout-register-screen-2iid
-[144]: /tolu1123/react-and-js-for-begineers-3fli
-[145]: /sudhanshu_developer/displaying-car-information-dynamically-using-javascript-and-html-3k3k
-[146]: /insideee_dev/customizing-your-lazyvim-setup-for-personal-preferences-57
-[147]: /kalkwst
-[148]: /kalkwst
-[149]: /kalkwst/building-docker-images-55f1
-[150]: /kalkwst/attaching-to-containers-using-the-attach-command-aaa
-[151]: /kalkwst/getting-started-with-dockerfiles-3gmd
-[152]: /
-[153]: /
-[154]: /pod
-[155]: /videos
-[156]: /tags
-[157]: /help
-[158]: https://shop.forem.com/
-[159]: /advertise
-[160]: /challenges
-[161]: /showcase
-[162]: /about
-[163]: /contact
-[164]: /guides
-[165]: /software-comparisons
-[166]: /code-of-conduct
-[167]: /privacy
-[168]: /terms
 [169]: https://www.forem.com
 [170]: https://dev.to/t/opensource
 [171]: https://dev.to
 [172]: https://dev.to/t/rails
-[173]: /enter
-[174]: /enter?state=new-user
+
