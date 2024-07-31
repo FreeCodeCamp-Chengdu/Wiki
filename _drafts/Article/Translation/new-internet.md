@@ -7,194 +7,194 @@ translator: "tianheg"
 reviewer: ""
 ---
 
-_Avery Pennarun is the CEO and co-founder of Tailscale. A version of this post was originally presented at a company all-hands._
+_Avery Pennarun 是 Tailscale 的首席执行官和联合创始人。这篇文章的版本最初是在公司全员大会上提出的。_
 
-We don’t talk a lot in public about the big vision for Tailscale, why we’re really here. Usually I prefer to focus on what exists right now, and what we’re going to do in the next few months. The future can be distracting.
+我们不太在公共场合谈论 Tailscale 的宏伟愿景，以及我们真正存在的原因。通常我更倾向于关注现在存在的东西，以及我们接下来几个月要做的事情。未来可能会让人分心。
 
-But increasingly, I’ve found companies are starting to buy Tailscale not just for what it does now, but for the big things they expect it’ll do in the future. They’re right! Let’s look at the biggest of big pictures for a change.
+但越来越多地，我发现公司开始购买 Tailscale 不仅仅是因为它现在能做什么，而是因为它们期望它在未来能做大事。他们是对的！让我们换个角度看看大局。
 
-But first, let’s go back to where we started.
+但首先，让我们回到我们开始的地方。
 
-## Old
+## 老的
 
-David Crawshaw’s first post that laid out what we were doing, long long ago in the late twenty-teens, was called [Remembering the LAN](https://tailscale.com/blog/remembering-the-lan/), about his experience doing networking back in the 1990s.
+大卫·克劳肖的第一篇帖子，阐述了我们在二十年代末很久以前所做的事情，叫做《[记住局域网]((https://tailscale.com/blog/remembering-the-lan/))》，讲述了他在 1990 年代从事网络工作的经历。
 
-I have bad news: if you remember doing LANs back in the 1990s, you are probably old. Quite a few of us here at Tailscale remember doing LANs in the 1990s. That’s an age gap compared to a lot of other startups. That age gap makes Tailscale unusual.
+我有坏消息：如果你还记得在 1990 年代使用局域网，你可能已经老了。在 Tailscale 这里，我们中有相当多的人记得 1990 年代的局域网。与许多其他初创公司相比，这是一个年龄差距。这个年龄差距使 Tailscale 不同寻常。
 
-Anything unusual about a startup can be an advantage or a disadvantage, depending what you do with it.
+创业公司任何不寻常的地方都可能是优势或劣势，这取决于你如何利用它。
 
-## Mature
+## 成熟
 
-Here’s another word for “old” but with different connotations.
+这是“老的”的另一种说法，但含义不同。
 
-I’m a person that likes looking on the bright side. There are disadvantages to being old, like I maybe can’t do a 40-hour coding binge like I used to when I wrote my first VPN, called Tunnel Vision, in 1997. But there are advantages, like maybe we have enough experience to do things right the first time, in fewer hours. Sometimes. If we’re lucky.
+我是一个喜欢看到事物光明面的人。年老也有不利之处，比如我可能不能再像 1997 年编写我的第一个 VPN——隧道视觉（Tunnel Vision）时那样连续编码 40 小时。但年老也有优势，比如我们可能有足够的经验，第一次就做对事情，用更少的时间。有时候。如果我们幸运的话。
 
-And maybe, you know, if you’re old enough, you’ve seen the tech cycle go round a few times and you’re starting to see a few patterns.
+也许，你知道，如果你足够老，你已经看到技术周期轮回了几次，你开始看到一些模式。
 
-That was us, me and the Davids, when we started Tailscale. What we saw was, a lot of things have gotten better since the 1990s. Computers are literally millions of times faster. 100x as many people can be programmers now because they aren’t stuck with just C++ and assembly language, and many, many, many more people now have some kind of computer. Plus app stores, payment systems, graphics. All good stuff.
+那就是我们，我和 Davids，当我们开始 Tailscale 的时候。我们看到的是，自 1990 年代以来，很多事情都变得更好了。计算机的速度实际上快了数百万倍。现在可以成为程序员的人数是原来的 100 倍，因为他们不再只局限于 C++和汇编语言，而且现在有更多的人拥有某种计算机。再加上应用商店、支付系统、图形。所有这些都是好东西。
 
-But, also things have gotten worse. A lot of day-to-day things that used to be easy for developers, are now hard. That was unexpected. I didn’t expect that. I expected I’d be out of a job by now because programming would be so easy.
+但是，事情也变得更糟了。许多对开发者来说曾经很容易的日常事务，现在变得困难了。这是出乎意料的。我没有预料到这一点。我原本以为到现在为止我可能已经失业了，因为编程会变得如此简单。
 
-Instead, the tech industry has evolved into an absolute mess. And it’s getting worse instead of better! Our tower of complexity is now so tall that we seriously consider slathering LLMs on top to write the incomprehensible code in the incomprehensible frameworks so we don’t have to.
+相反，技术行业已经演变成一个绝对的混乱局面。而且情况越来越糟，而不是变得更好！代码的复杂度现在如此之高，以至于我们认真考虑在其上使用LLMs，以便在难以理解的框架中编写难以理解的代码，这样我们就不必这么做了。
 
-And you know, we old people are the ones who have the context to see that.
+我们这些年长的人能看到这一点。
 
-It’s all fixable. It doesn’t have to be this way.
+都是可以修复的。事情不必是这样。
 
-Before I can tell you a vision for the future I have to tell you what I think went wrong.
+在我能够告诉你我对未来的愿景之前，我必须告诉你我认为哪里出了问题。
 
-## Not scaling
+## 不扩大规模
 
-Programmers today are impatient for success. They start planning for a billion users before they write their first line of code. In fact, nowadays, we train them to do this without even knowing they’re doing it. Everything they’ve ever been taught revolves around scaling.
+现在的程序员对成功没有耐心。他们在编写第一行代码之前就开始为十亿用户做计划。实际上，现在我们甚至在他们不知不觉中就训练他们这样做。他们所学的一切知识都围绕着扩展。
 
-We’ve been falling into this trap all the way back to when computer scientists started teaching big-O notation. In big-O notation, if you use it wrong, a hash table is supposedly faster than an array, for virtually anything you want to do. But in reality, that’s not always true. When you have a billion entries, maybe a hash table is faster. But when you have 10 entries, it almost never is.
+我们一直在陷入这个陷阱，可以追溯到计算机科学家开始教授大 O 符号的时候。在大 O 符号中，如果你使用不当，哈希表据说比数组快，几乎对于你想做的任何事都是如此。但实际上，情况并非总是如此。当你有十亿个条目时，也许哈希表更快。但当你只有 10 个条目时，它几乎从不是。
 
-People have a hard time with this idea. They keep picking the algorithms and architectures that can scale up, even when if you don’t scale up, a different thing would be thousands of times faster, and also easier to build and run.
+人们很难接受这个观点。他们一直在选择可以扩展的算法和架构，即使不扩展，不同的东西可能会快数千倍，而且也更容易构建和运行。
 
-Even I can barely believe I just said thousands of times easier and I wasn’t exaggerating.
+即使我自己也几乎不敢相信我刚刚说了数千次“更简单”，而且我并没有夸张。
 
-I read a post recently where someone bragged about using kubernetes to scale all the way up to 500,000 page views per month. But that’s 0.2 requests per second. I could serve that from my phone, on battery power, and it would spend most of its time asleep.
+我最近读了一篇文章，有人夸耀使用 Kubernetes 扩展到每月 50 万次页面浏览。但那是每秒 0.2 个请求。我可以用手机，在电池供电的情况下提供服务，而且大部分时间都会处于休眠状态。
 
-In modern computing, we tolerate long builds, and then docker builds, and uploading to container stores, and multi-minute deploy times before the program runs, and even longer times before the log output gets uploaded to somewhere you can see it, all because we’ve been tricked into this idea that everything has to scale. People get excited about deploying to the latest upstart container hosting service because it only takes tens of seconds to roll out, instead of minutes. But on my slow computer in the 1990s, I could run a perl or python program that started in milliseconds and served way more than 0.2 requests per second, and printed logs to stderr right away so I could edit-run-debug over and over again, multiple times per minute.
+在现代计算中，我们容忍长时间的构建，然后是 Docker 构建，上传到容器存储，以及程序运行前的多分钟部署时间，甚至在日志输出上传到您可以查看的地方之前还有更长的时间，所有这些都是因为我们被欺骗了，认为一切都必须扩展。人们对于部署到最新的初创容器托管服务感到兴奋，因为它只需要几十秒就可以推出，而不是几分钟。但在我 1990 年代的慢速计算机上，我可以运行一个 Perl 或 Python 程序，它在毫秒内启动，并每秒提供超过 0.2 个请求，并且立即将日志打印到 stderr，这样我可以一遍又一遍地编辑-运行-调试，每分钟多次。
 
-How did we get here?
+我们是怎么来到这里的？
 
-We got here because sometimes, someone really does need to write a program that has to scale to thousands or millions of backends, so it needs all that… stuff. And wishful thinking makes people imagine even the lowliest dashboard could be that popular one day.
+我们来到这里是因为有时候，确实有人需要编写一个需要扩展到成千上万甚至数百万后端的程序，所以它需要所有那些……东西。而一厢情愿的想法让人们甚至想象最不起眼的仪表板有一天也可能变得非常受欢迎。
 
-The truth is, most things don’t scale, and never need to. We made Tailscale for those things, so you can spend your time scaling the things that really need it. The long tail of jobs that are 90% of what every developer spends their time on. Even developers at companies that make stuff that scales to billions of users, spend most of their time on stuff that doesn’t, like dashboards and meme generators.
+事实是，大多数事物都不需要扩展，也永远不会需要。我们为那些事物创建了 Tailscale，这样你就可以把时间花在真正需要扩展的事物上。那些占据了每个开发者 90%时间的长尾工作。即使是那些制造出能够扩展到数十亿用户的产品的公司的开发人员，他们大部分时间也都花在不需要扩展的事物上，比如仪表板和表情包生成器。
 
-As an industry, we’ve spent all our time making the hard things possible, and none of our time [making the easy things easy](https://www.amazon.com/Learning-Perl-Making-Things-Possible/dp/1491954329).
+作为一个行业，我们把所有时间都花在了让困难的事情变得可能上，而没有花时间[让简单的事情变得容易](https://www.amazon.com/Learning-Perl-Making-Things-Possible/dp/1491954329)。
 
-Programmers are all stuck in the mud. Just listen to any professional developer, and ask what percentage of their time is spent actually solving the problem they set out to work on, and how much is spent on junky overhead.
+程序员们都陷入了困境。只要听听任何专业开发者的话，问问他们有多少时间是真正用来解决他们开始工作时设定的问题的，以及有多少时间是花在繁琐的开销上的。
 
-It’s true here too. Our developer experience at Tailscale is better than average. But even we have largely the same experience. Modern software development is mostly junky overhead.
+这也是真的。我们在 Tailscale 的开发者体验比平均水平要好。但即便如此，我们大体上也有相同的体验。现代软件开发大多是繁琐的开销。
 
-## The Internet
+## 互联网
 
-In fact, we didn’t found Tailscale to be a networking company. Networking didn’t come into it much at all at first.
+实际上，我们并没有将 Tailscale 视为一家网络公司。起初，网络并没有太多地涉及到其中。
 
-What really happened was, me and the Davids got together and we said, look. The problem is developers keep scaling things they don’t need to scale, and their lives suck as a result. (For most programmers you can imagine the “wiping your tears with a handful of dollar bills” meme here.) We need to fix that. But how?
+实际上发生的事情是，我和大卫聚在一起，我们说，看。问题是开发者们一直在扩展他们不需要扩展的东西，结果他们的生活很糟糕。（对于大多数程序员，你可以想象这里的“用一把钞票擦眼泪”的表情包。）我们需要解决这个问题。但是怎么做呢？
 
-We looked at a lot of options, and talked to a lot of people, and there was an underlying cause for all the problems. The Internet. Things used to be simple. Remember the LAN? But then we connected our LANs to the Internet, and there’s been more and more firewalls and attackers everywhere, and things have slowly been degrading ever since.
+我们考虑了很多选择，和很多人进行了交谈，所有问题背后都有一个根本原因。那就是互联网。事情过去很简单。还记得局域网吗？但后来我们把局域网连接到了互联网，然后防火墙和攻击者越来越多，事情从那时起就一直在慢慢恶化。
 
-When we explore the world of over-complexity, most of it has what we might call, no essential complexity. That is, the problems can be solved without complexity, but for some reason the solutions we use are complicated anyway. For example, logging systems. They just stream text from one place to another, but somehow it takes 5 minutes to show up. Or orchestration systems: they’re programs whose only job is to run other programs, which Unix kernels have done just fine, within milliseconds, for decades. People layer on piles of goop. But the goop can be removed.
+当我们探索过度复杂性的世界时，其中大部分具有我们可能称之为没有本质复杂性的特点。也就是说，问题可以在没有复杂性的情况下解决，但出于某种原因，我们使用的解决方案无论如何都很复杂。例如，日志系统。它们只是将文本从一个地方流到另一个地方，但不知何故需要 5 分钟才能显示出来。或者编排系统：它们是程序，其唯一的工作是运行其他程序，Unix 内核已经很好地完成了这项工作，只需毫秒，数十年来一直如此。人们堆积了一堆乱七八糟的东西。但是这些乱七八糟的东西可以被移除。
 
-Except networking.
+除了网络。
 
-You can’t build modern software without networking. But the Internet makes everything hard. Is it because networking has essential complexity?
+你不能在没有网络的情况下构建现代软件。但互联网让一切变得困难。这是因为网络具有本质的复杂性吗？
 
-Well, maybe. But maybe it’s only complex when you built it on top of the wrong assumptions, that result in the wrong problems, that you then have to paper over. That’s the Old Internet.
+嗯，也许吧。但也许只有当你基于错误的假设构建它时，它才会变得复杂，这些错误的假设导致了错误的问题，然后你不得不去掩盖这些问题。这就是旧互联网。
 
-Instead of adding more layers at the very top of the OSI stack to try to hide the problems, Tailscale is building a new OSI layer 3 — a New Internet — on top of new assumptions that avoid the problems in the first place.
+而不是在 OSI 模型的最顶层添加更多层来试图隐藏问题，Tailscale 正在构建一个新的 OSI 第三层——一个新的互联网——基于新的假设，这些假设从一开始就避免了问题。
 
-## Dominoes
+## 多米诺骨牌
 
-If we fix the Internet, a whole chain of dominoes can come falling down, and we reach the next stage of technology evolution.
+如果我们修复互联网，一连串的多米诺骨牌可能会倒下，我们将达到技术进化的下一个阶段。
 
-If you want to know the bottleneck in any particular economic system, look for who gets to charge rent. In the tech world, that’s AWS. Sure, Apple’s there selling popular laptops, but you could buy a different laptop or a different phone. And Microsoft was the gatekeeper for everything, once, but you don’t have Windows lock-in anymore, unless you choose to. All those “the web is the new operating system” people of the early 2000s finally won, we just forgot to celebrate.
+如果你想了解任何特定经济体系中的瓶颈，看看谁能够收取租金。在技术世界中，那就是 AWS。当然，苹果也在销售流行的笔记本电脑，但你可以选择购买不同的笔记本电脑或不同的手机。微软曾经是一切的守门人，但你不再有 Windows 的锁定，除非你选择这样。那些“网络是新的操作系统”的 2000 年代初的人们最终赢了，我们只是忘了庆祝。
 
-But the liberation didn’t last long. If you deploy software, you probably pay rent to AWS.
+但是解放并没有持续很长时间。如果你部署软件，你很可能要向 AWS 支付租金。
 
-Why is that? Compute, right? AWS provides scalable computing resources.
+这是为什么？计算，对吧？AWS 提供可扩展的计算资源。
 
-Well, you’d think so. But lots of people sell computing resources way cheaper. Even a mid-range Macbook can do 10x or 100x more transactions per second on its SSD than a supposedly fast cloud local disk, because cloud providers sell that disk to 10 or 100 people at once while charging you full price. Why would you pay exorbitant fees instead of hosting your mission-critical website on your super fast Macbook?
+嗯，你可能会这么想。但是很多人以更便宜的价格出售计算资源。即使是中档的 Macbook，其 SSD 每秒可以处理的交易量是所谓的快速云本地磁盘的 10 倍或 100 倍，因为云服务提供商同时将那个磁盘卖给 10 个或 100 个人，同时向你收取全价。你为什么要支付过高的费用，而不是将你的关键任务网站托管在你的超快 Macbook 上呢？
 
-We all know why:
+我们都知道为什么：
 
 ## IPv4
 
-Location, location, location. You pay exorbitant rents to cloud providers for their computing power because your own computer isn’t in the right place to be a decent server.
+位置，位置，还是位置。你因为云服务提供商的计算能力而支付昂贵的租金，因为你自己的计算机不在合适的地方成为一个真正的服务器。
 
-It’s behind a firewall and a NAT and a dynamic IP address and probably an asymmetric network link that drops out just often enough to make you nervous.
+它位于防火墙、网络地址转换（NAT）和动态 IP 地址后面，可能还有一个不对称的网络连接，这种连接的中断频率足以让你感到不安。
 
-You could fix the network link. You could reconfigure the firewall, and port forward through the NAT, I guess, and if you’re lucky you could pay your ISP an exorbitant rate for a static IP, and maybe get a redundant Internet link, and I know some of my coworkers actually did do all that stuff on a rack in their garage. But it’s all a lot of work, and requires expertise, and it’s far away from building the stupid dashboard or blog or cat video website you wanted to build in the first place. It’s so much easier to just pay a hosting provider who has all the IP addresses and network bandwidth money can buy.
+你可以修复网络连接。你可以重新配置防火墙，并通过 NAT 进行端口转发，我猜，如果你幸运的话，你可以支付给你的 ISP 一个过高的费用以获得一个静态 IP，也许还能获得一个冗余的互联网连接，我知道我的一些同事实际上在他们的车库里的架子上做了所有这些事情。但这一切都是很多工作，需要专业知识，而且它远离了你最初想要构建的愚蠢的仪表板或博客或猫视频网站。只需支付一个拥有所有 IP 地址和网络带宽的托管提供商，这要容易得多。
 
-And then, if you’re going to pay someone, and you’re a serious company, you’d better buy it from someone serious, because now you have to host your stuff on their equipment which means they have access to… everything, so you need to trust them not to misuse that access.
+然后，如果你打算付钱给某人，而且你是一家严肃的公司，你最好从一些严肃的人那里购买，因为现在你必须在他们的设备上托管你的东西，这意味着他们可以访问……一切，所以你得相信他们不会滥用这种访问权限。
 
-You know what, nobody ever got fired for buying AWS.
+你知道吗，买 AWS 从来没有人被解雇过。
 
-That’s an IBM analogy. We used to say, nobody ever got fired for buying IBM. I doubt that’s true anymore. Why not?
+这是一个 IBM 的类比。我们过去常说，买 IBM 的产品没人会被解雇。我怀疑现在这已经不再是真的了。为什么不呢？
 
-## Pendulums
+## 摆
 
-I refuse to say pendula.
+我拒绝说钟摆。
 
-IBM mainframes still exist, and they probably always will, but IBM used to be able to charge rent on every aspect of business computing, and now they can’t. They started losing influence when Microsoft arrived, stealing fire from the gods of centralized computing and bringing it back to individuals using comparatively tiny underpowered PCs on every desk, in every home, running Microsoft software.
+IBM 大型机仍然存在，而且可能永远都会存在，但 IBM 过去能够在商业计算的每个方面收取租金，现在他们不能了。当微软出现时，他们开始失去影响力，从集中式计算的神那里偷走火种，将其带回给使用每个桌子上、每个家庭中相对较小、功能不足的个人电脑的个人，运行微软软件。
 
-I credit Microsoft with building the first widespread distributed computing systems, even though all the early networks were some variant of sneakernet.
+我将构建第一个广泛分布的计算系统归功于微软，尽管所有早期的网络都是 sneakernet 的某种变体。
 
-I think we can agree that we’re now in a post-Microsoft, web-first world. Neat. Is this world a centralized one like IBM, or a distributed one like Microsoft?
+我认为我们可以达成共识，我们现在处于一个后微软、以网络为先的世界。整洁。这个世界是像 IBM 那样的集中式，还是像微软那样的分布式？
 
-\[When I did this as a talk, I took a poll: it was about 50/50\]
+\[当我以演讲的形式做这个时，我进行了一次投票：大约是 50/50\]
 
-So, bad news. The pendulum has swung back the other way. IBM was centralized, then Microsoft was distributed, and now the cloud+phone world is centralized again.
+所以，坏消息。钟摆又摆回来了。IBM 是集中化的，然后微软是分散化的，现在云+手机世界再次集中化了。
 
-We’ve built a giant centralized computer system, with a few megaproviders in the middle, and a bunch of dumb terminals on our desks and in our pockets. The dumb terminals, even our smart watches, are all supercomputers by the standards of 20 years ago, if we used them that way. But they’re not much better than a VT100. Turn off AWS, and they’re all bricks.
+我们已经构建了一个庞大的集中式计算机系统，中间有几个大型服务提供商，以及我们桌面和口袋里的一堆哑终端。这些哑终端，甚至是我们的智能手表，按照 20 年前的标准，都是超级计算机，如果我们那样使用它们的话。但它们并不比 VT100 好多少。关闭 AWS，它们就都变成了砖头。
 
-It’s easy to fool ourselves into thinking the overall system is distributed. Yes, we build fancy distributed consensus systems and our servers have multiple instances. But all that runs centrally on cloud providers.
+很容易让我们自己误以为整个系统是分布式的。是的，我们构建了花哨的分布式共识系统，我们的服务器有多个实例。但所有这些都在云服务提供商上集中运行。
 
-This isn’t new. IBM was doing multi-core computing and virtual machines back in the 1960s. It’s the same thing over again now, just with 50 years of Moore’s Law on top. We still have a big monopoly that gets to charge everyone rent because they’re the gatekeeper over the only thing that really matters.
+这并不新鲜。IBM 在 20 世纪 60 年代就在进行多核计算和虚拟机。现在又是同样的事情，只是多了 50 年的摩尔定律。我们仍然有一个大垄断，可以向每个人收取租金，因为他们是唯一真正重要事物的看门人。
 
-## Operating Systems
+## 操作系统
 
-Sorry, just kidding.
+抱歉，只是开玩笑。
 
-Connectivity.
+连接性。
 
-Everyone’s attitude is still stuck in the 1990s, when operating systems mattered. That’s how Microsoft stole the fire from IBM and ruled the world, because writing portable software was so hard that if you wanted to… interconnect… one program to another, if you wanted things to be compatible at all, you had to run them on the same computer, which meant you had to standardize the operating system, and that operating system was DOS, and then Windows.
+每个人的观念还停留在 90 年代，那时操作系统很重要。这就是微软如何从 IBM 那里偷走火种并统治世界，因为编写可移植软件非常困难，如果你想...互联...一个程序到另一个程序，如果你想让事情在任何程度上兼容，你必须在同一台计算机上运行它们，这意味着你必须标准化操作系统，那个操作系统是 DOS，然后是 Windows。
 
-The web undid that monopoly. Now javascript matters more than all the operating systems put together, and there’s a new element that controls whether two programs can talk to each other: HTTPS. If you can HTTPS from one thing to another, you can interconnect. If you can’t, forget it.
+网络打破了那个垄断。现在 JavaScript 比所有操作系统加起来都重要，而且有一个新元素控制着两个程序是否可以相互交流：HTTPS。如果你可以从一件事物到另一件事物使用 HTTPS，你就可以互联。如果你不能，那就别想了。
 
-## Certificates
+## 证书
 
-And HTTPS is fundamentally a centralized system. It has a client, and a server. A dumb terminal, and a thing that does the work. The server has a static IP address, a DNS name, a TLS certificate, and an open port. A client has none of those things. A server can keep doing whatever it wants if all the clients go away, but if the servers go away, a client does nothing.
+HTTPS 本质上是一个集中式系统。它有一个客户端和一个服务器。一个哑终端和一个执行工作的东西。服务器有一个静态 IP 地址、一个 DNS 名称、一个 TLS 证书和一个开放的端口。客户端没有这些东西。如果所有的客户端都消失，服务器可以继续做它想做的事情，但如果服务器消失，客户端就什么也做不了。
 
-We didn’t get here on purpose, mostly. It was just path dependence. We had security problems and an IPv4 address shortage, so we added firewalls and NATs, so connections became one way from client machines to server machines, and so there was no point putting certificates on clients, and nowadays there are 10 different reasons a client can’t be a server, and everyone is used to it, so we design everything around it. Dumb terminals and centralized servers.
+我们并非有意来到这里，主要是由于路径依赖。我们有安全问题和 IPv4 地址短缺，所以我们增加了防火墙和 NATs，因此连接变成了从客户端机器到服务器机器的单向连接，所以在客户端放置证书没有意义，现在有 10 个不同的原因客户端不能成为服务器，每个人都习惯了，所以我们围绕它设计一切。哑终端和集中式服务器。
 
-Once that happened, of course some company popped up to own the center of the hub-and-spoke network. AWS does that center better than everyone else, fair and square. Someone had to. They won.
+一旦这种情况发生，当然有公司出现来拥有中心辐射型网络的中心。AWS 在这方面做得比其他任何人都好，公平公正。总得有人这么做。他们赢了。
 
 ## Taildrop
 
-Okay, fast forward. We’ve spent the last 5 years making Tailscale the solution to that problem. Every device gets a cert. Every device gets an IP address and a DNS name and end-to-end encryption and an identity, and safely bypasses firewalls. Every device can be a peer. And we do it all without adding any latency or overhead.
+好的，快进。我们在过去 5 年中一直在使 Tailscale 成为解决这个问题的方案。每个设备都有一个证书。每个设备都有一个 IP 地址和一个 DNS 名称以及端到端加密和身份，并且可以安全地绕过防火墙。每个设备都可以成为对等体。我们所有操作都没有增加任何延迟或开销。
 
-That’s the New Internet. We built it! It’s the future, it’s just unevenly distributed, so far. For people with Tailscale, we’ve already sliced out 10 layers of nonsense. That’s why developers react so viscerally once they get it. Tailscale makes the Internet work how you thought the Internet worked, before you learned how the Internet works.
+那就是新互联网。我们建造了它！它是未来，只是目前分布不均。对于使用 Tailscale 的人来说，我们已经剔除了 10 层无意义的东西。这就是为什么开发者一旦理解了它，就会如此本能地反应。Tailscale 让互联网按照你原本认为的互联网工作方式运行，在你了解互联网如何工作之前。
 
-I like to use [Taildrop as an example of what that makes possible](https://tailscale.com/blog/2021-06-taildrop-was-easy). Taildrop is a little feature we spent a few months on back when we were tiny. We should spend more time polishing to make it even easier to use. But at its core, it’s a demo app. As long as you have Tailscale already, Taildrop is just one HTTP PUT operation. The sender makes an HTTP request to the receiver, says “here’s a file named X”, and sends the file. That’s it. It’s the most obvious thing in the world. Why would you do it any other way?
+我喜欢[以 Taildrop 为例来说明这一点所实现的可能性](https://tailscale.com/blog/2021-06-taildrop-was-easy)。Taildrop 是我们在规模还很小的时候花了几个月时间开发的小功能。我们应该花更多时间打磨，使其更加易于使用。但在其核心，它是一个演示应用程序。只要你已经有了 Tailscale，Taildrop 就只是一个 HTTP PUT 操作。发送方向接收方发出一个 HTTP 请求，说“这是名为 X 的文件”，然后发送文件。就是这样。这是世界上最显而易见的事情。你为什么要以其他方式来做呢？
 
-Well, before Tailscale, you didn’t have a choice. The receiver is another client device, not a server. So it was behind a firewall, with no open ports and no identity. Your only option was to upload the file to the cloud and then download it again, even if the sender and receiver are side by side on the same wifi. But that means you pay cloud fees for network egress, and storage, and the CPU time for running whatever server program is managing all that stuff. And if you upload the file and nobody downloads it, you need a rule for when to delete it from storage. And also you pay fees just in case to keep the server online, even when you’re not using it at all. Also, cloud employees can theoretically access the file unless you encrypt it. But you can’t encrypt it without exchanging encryption keys somehow between sender and recipient. And how does the receiver even know a file is there waiting to be received in the first place? Do we need a push notification system? For every client platform? And so on. Layers, and layers, and layers of gunk.
+嗯，在 Tailscale 之前，你没有选择。接收器是另一个客户端设备，而不是服务器。所以它在防火墙后面，没有开放的端口，也没有身份。你唯一的选择是将文件上传到云端，然后再下载它，即使发送者和接收者在同一个 wifi 上并排。但这意味着你要为网络出口、存储和运行任何服务器程序的 CPU 时间支付云费用。如果你上传了文件，但没有人下载它，你需要一个规则来决定何时将其从存储中删除。而且，即使你根本不使用它，你也要支付费用以保持服务器在线。此外，除非加密文件，否则云员工理论上可以访问文件。但你不能在发送者和接收者之间交换加密密钥的情况下加密它。接收者怎么知道有文件在那里等待接收呢？我们需要一个推送通知系统吗？每个客户端平台都需要吗？等等。层层叠叠的垃圾。
 
-And all that gunk means rent to cloud providers. Transferring files — one of the first things people did on the Internet, for no extra charge, via FTP — now has to cost money, because somebody has got to pay that rent.
+所有这些垃圾意味着要向云服务提供商支付租金。传输文件——人们在互联网上做的第一件事之一，通过 FTP 免费进行，现在必须付费，因为总得有人支付那笔租金。
 
-With Taildrop, it doesn’t cost money. Not because we’re generously draining our bank accounts to make file transfers free. It’s because the [cost overhead is gone altogether](https://tailscale.com/blog/free-plan), because it’s not built on the same devolved Internet everyone else has been using.
+使用 Taildrop，它不需要花钱。并不是因为我们慷慨地耗尽我们的银行账户来使文件传输免费。而是因为[成本开销完全消失了](https://tailscale.com/blog/free-plan)，因为它不是建立在同一退化的互联网上，其他人一直在使用。
 
-## The New Internet
+## 新互联网
 
-Taildrop is just an example, a trivial one, but it’s an existence proof for a whole class of programs that can be 10x easier just because Tailscale exists.
+Taildrop 只是一个例子，一个微不足道的例子，但它是整个类别程序存在性的证明，仅仅因为 Tailscale 的存在，这些程序可以变得简单 10 倍。
 
-The chain of dominoes starts with connectivity. Lack of connectivity is why we get centralization, and centralization is why we pay rent for every tiny little program we want to run and why everything is slow and tedious and complicated and hard to debug like an IBM batch job. And we’re about to start those dominoes falling.
+多米诺骨牌效应始于连接性。缺乏连接性是我们得到中心化的原因，而中心化则是我们为每个小程序支付租金的原因，也是一切变得缓慢、繁琐、复杂且难以调试的原因，就像 IBM 批处理作业一样。我们即将开始让这些多米诺骨牌倒下。
 
-The glimpse at these possibilities is why our users get excited about Tailscale, more than they’ve ever been excited about some VPN or proxy, because there’s something underneath our kind of VPN that you can’t get anywhere else. We’re removing layers, and layers, and layers of complexity, and making it easier to work on what you wanted to work on in the first place. Not everybody sees it yet, but they will. And when they do, they’re going to be able to invent things we could never imagine in the old centralized world, just like the Windows era of distributed computing made things possible that were unthinkable on a mainframe.
+对这些可能性的一瞥是为什么我们的用户对 Tailscale 感到兴奋，比他们对任何 VPN 或代理都感到兴奋，因为我们的 VPN 下面有一些东西是其他地方无法获得的。我们正在移除一层又一层又一层的复杂性，使您更容易地工作在您最初想要工作的事情上。不是每个人都看到了，但他们会的。当他们这样做时，他们将能够发明我们在旧的集中式世界中无法想象的东西，就像分布式计算的 Windows 时代使大型机上无法想象的事情成为可能。
 
-But there’s one catch. If we’re going to untangle the hairball of connectivity, that connectivity has to apply to…
+但有一个问题。如果我们想要解开连接性的乱麻，那么这种连接性必须适用于...
 
-## Everyone
+## 每个人
 
-There’s going to be a new world of haves and have-nots. Where in 1970 you had or didn’t have a mainframe, and in 1995 you had or didn’t have the Internet, and today you have or don’t have a TLS cert, tomorrow you’ll have or not have Tailscale. And if you don’t, you won’t be able to run apps that only work in a post-Tailscale world.
+将会有一个全新的拥有者和非拥有者的世界。在 1970 年，你拥有或没有大型机，1995 年你拥有或没有互联网，而今天你拥有或没有 TLS 证书，明天你将拥有或没有 Tailscale。如果你没有，你将无法运行仅在后 Tailscale 世界中工作的应用程序。
 
-And if not enough people have Tailscale, nobody will build those apps. That’s called a [chicken-and-egg problem](https://apenwarr.ca/log/20201227).
+如果使用 Tailscale 的人不够多，就没有人会开发那些应用程序。这就是所谓的“[先有鸡还是先有蛋](https://apenwarr.ca/log/20201227)”的问题。
 
-This is why our company strategy sounds so odd at first glance. It's why we spend so much effort giving Tailscale away for free, but also so much effort getting people to bring it to work, and so much effort doing tangential enterprise features so executives can easily roll it out to whole Fortune 500 companies.
+这就是为什么我们公司的战略乍一看听起来如此奇怪。这就是为什么我们花费如此多的努力免费提供 Tailscale，但也花费如此多的努力让人们将其带到工作中，以及花费如此多的努力开发相关的企业功能，以便高管可以轻松地将其推广到整个财富 500 强公司。
 
-The Internet is for everyone. You know, there were internetworks (lowercase) before the Internet (capitalized). They all lost, because the Internet was the most diverse and inclusive of all. To the people building the Internet, nothing mattered but getting everyone connected. Adoption was slow at first, then fast, then really fast, and today, if I buy a wristwatch and it doesn’t have an Internet link, it’s broken.
+互联网是为每个人服务的。你知道，互联网（大写）之前有网络（小写）。它们都失败了，因为互联网是最多样化和包容性最强的。对于建设互联网的人来说，唯一重要的是让每个人都连接上。起初采用速度很慢，然后变快，然后真的很快，今天，如果我买一只手表，它没有互联网连接，那它就是坏的。
 
-We won’t have built a New Internet if nerds at home can’t play with it. Or nerds at universities. Or employees at enterprises. Or, you know, eventually every person everywhere.
+我们不会建立一个新的互联网，如果家里的书呆子不能玩它。或者大学里的书呆子。或者企业里的员工。或者，你知道，最终每个地方的每个人。
 
-## Vision
+## 愿景
 
-There remain a lot of steps between here and there. But, let’s save those details for another time. Meanwhile, how are we doing?
+从这里到那里还有许多步骤。但是，让我们将这些细节留到其他时间再讨论。与此同时，我们做得怎么样？
 
-Well, about 1 in 20,000 people in the world uses the New Internet (that’s Tailscale). We’re not going to stop until it’s all of them.
+嗯，世界上大约有 1/20,000 的人使用新互联网（即 Tailscale）。我们不会停止，直到所有人都使用它。
 
-I’m old enough to remember when people made fun of Microsoft for their thing about putting a computer on every desk. Or when TCP/IP was an optional add-on you had to buy from a third party.
+我年纪足够大，还记得当人们嘲笑微软关于在每个桌子上放一台电脑的事情。或者当 TCP/IP 是一个可选的附加组件，你必须从第三方购买。
 
-You know, all that was less than 30 years ago. I’m old, but come to think of it, I’m not that old. The tech world changes fast. It can change for the better. We’re just getting started.
+你知道，所有这些都不到 30 年前。我老了，但仔细想想，我没那么老。科技世界变化很快。它可以变得更好。我们才刚刚开始。
