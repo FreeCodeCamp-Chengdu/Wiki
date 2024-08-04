@@ -232,89 +232,79 @@ COPY --chown=myuser:mygroup *.html /var/www/html/
 
 ## ADD 指令
 
-The **ADD** directive in Dockerfiles functions similar to the **COPY** directive but with additional features.
+Dockerfile 中的 **ADD** 指令与 **COPY** 指令功能类似，但具有一些额外的功能。 
 
 ```dockerfile
 ADD <source> <destination>
 ```
 
-The `<source>` specifies a path or **URL** to the file or directory on the local filesystem or a remote URL. The `<destination>` again specifies the path where the file or directory should be copied within the Docker image filesystem.
+`<source>` 指定本地文件系统或远程 URL 上的文件或目录的路径或 **URL**。 `<destination>` 再次指定文件或目录在 Docker 镜像文件系统中应复制到的路径。
 
-In the example below, we are going to use **ADD** to copy a file from the local filesystem:
-
+在下面的示例中，我们将使用 **ADD** 从本地文件系统复制文件： 
 ```dockerfile
 ADD index.html /var/www/html/index.html
 ```
 
-In this example, Docker is going to copy the `index.html` file from the local filesystem (relative to the Docker build context) into `/var/www/html/index.html` within the Docker image.
+在这个例子中，Docker 将把 `index.html` 文件从本地文件系统（相对于 Docker 构建上下文）复制到 Docker 镜像内的 `/var/www/html/index.html`。
 
-In the example below, we are going to use **ADD** to copy a file from a remote URL:
+在下面的例子中，我们将使用 **ADD** 从远程 URL 复制文件： 
 
 ```dockerfile
 ADD http://example.com/test-data.csv /tmp/test-data.csv
 ```
 
-Unlike **COPY**, the **ADD** directive allows specifying a URL (in this case `http://example.com/test-data.csv`) as the `<source>` parameter. Docker will download the file from the URL and copy it to the `/tmp/test-data.csv` within the Docker image.
+与 **COPY** 不同，**ADD** 指令允许指定一个 URL（在本例中是 `http://example.com/test-data.csv`）作为 `<source>` 参数。Docker 将从 URL 下载文件并将其复制到 Docker 镜像内的 `/tmp/test-data.csv`。
 
-The **ADD** directive not only copies files from the local filesystem or downloads them from URLs but also includes automatic extraction capabilities from a certain types of compressed archives. When `<source>` is a compressed archive file (e.g., `.tar`, `.tar.gz`, `.tgz`, `.bz2`, `.tbz2`, `.txz`, `.zip`), Docker will automatically extract its contents into `<destination>` within the Docker image filesystem.
+**ADD** 指令不仅可以从本地文件系统复制文件或从 URL 下载文件，还可以从某些类型的压缩存档中自动解压缩。当 `<source>` 是压缩存档文件（例如，`.tar`、`.tar.gz`、`.tgz`、`.bz2`、`.tbz2`、`.txz`、`.zip`）时，Docker 会自动将其内容解压缩到 Docker 镜像文件系统内的 `<destination>` 中。
 
-For example:
-
+例如： 
 ```dockerfile
 ADD myapp.tar.gz /opt/myapp/
 ```
 
-In the example above, `myapp.tar.gz` is a compressed archive file, and Docker will automatically extract the contents of `myapp.tar.gz` into `/opt/myapp/` within the Docker image.
+在上面的例子中，`myapp.tar.gz` 是一个压缩的存档文件，Docker 会自动将 `myapp.tar.gz` 的内容解压缩到 Docker 镜像内的 `/opt/myapp/` 中。 
 
-### [][35]Best Practices: COPY vs ADD in Dockerfiles
+### 最佳实践: Dockerfile 中 COPY 与 ADD 的比较 
+在编写 Dockerfile 时，在 **COPY** 和 **ADD** 指令之间进行选择对于维护镜像构建过程的清晰度、安全性和可靠性至关重要。 
 
-When writing Dockerfiles, choosing between the **COPY** and **ADD** directives is crucial for maintaining clarity, security and reliability in the image build process.
+##### 清晰度和意图（Clarity and Intent）
 
-##### [][36]Clarity and Intent
+**COPY** 的使用方式直观明了，它明确指出将本地文件系统中的文件或目录复制到 Docker 镜像中。这种清晰性有助于理解 Dockerfile 的目的，并使其更易于维护。
 
-**COPY** is straightforward and explicitly states that files or directories from the local filesystem are being copied into the Docker image. This clarity helps with understanding the Dockerfile's purpose and makes it easier to maintain over time.
+另一方面，**ADD** 引入了额外的功能，例如从 URL 下载文件和自动解压缩压缩包。虽然这些功能在某些情况下很方便，但它们也可能掩盖简单复制文件的原始意图。如果管理不当，这种缺乏透明度可能会导致意外行为或安全风险。
 
-On the other hand, **ADD** introduces additional functionalities such as downloading files from URLs and automatically extracting compressed archives. While these features can be convenient in certain scenarios , they can also obscure the original intent of simply copying files. This lack of transparency might lead to unexpected behaviors or security risks if not carefully managed.
+##### 安全性和可预测性
 
-##### [][37]Security and Predictability
+使用 **COPY** 可以增强安全性，因为它可以避免从任意 URL 下载文件所带来的潜在风险。Docker 镜像的构建应该使用受控的、经过验证的源，以防止包含意外或恶意内容。将文件下载与构建过程分离并使用 `COPY` 可以确保 Docker 构建环境保持安全和可预测。 
 
-Using **COPY** enhances security by avoiding potential risks associated with downloading files from arbitrary URLs. Docker images should be built using controlled, validated sources to prevent unintended or malicious content from being included. Separating the download of files from the build process and using `COPY` ensures that the Docker build environment remains secure and predictable.
+##### 与 Docker 理念一致
 
-##### [][38]Docker Philosophy Alignment
+Docker 鼓励构建轻量级、高效且可预测的容器化应用程序。 **COPY** 通过提升简洁性和降低镜像构建过程中出现意外副作用的风险，与这一理念完美契合。 
 
-Docker encourages building lightweight, efficient, and predictable containerized applications. **COPY** aligns well with this philosophy by promoting simplicity and reducing the risk of unintended side effects during image builds.
+### 在 Dockerfile 中使用 WORKDIR、COPY 和 ADD 指令 
+在这个例子中，我们要将一个自定义 HTML 文件部署到 Apache Web 服务器上。我们将使用 Ubuntu 作为基础镜像，并在其上安装 Apache。然后，我们将自定义的 `index.html` 文件复制到 Docker 镜像中，并下载一个 Docker logo。
 
-### [][39]Using the WORKDIR, COPY, and ADD Directives in a Dockerfile
+使用 `mkdir` 命令创建一个名为 `workdir-copy-add-example` 的新目录：
 
-In this example we are going to deploy a custom HTML file to an Apache web server. We are going to use Ubuntu as our base image and install Apache on top of it. Then, we are going to copy the custom `index.html` file to the Docker image and download a Docker logo.
-
-Create a new directory named `workdir-copy-add-example` using the `mkdir` command:
-
-```
+```shell
 mkdir workdir-copy-add-example
 ```
 
----
+进入到新建的 `workdir-copy-add-example` 目录：
 
-Navigate to the newly created `workdir-copy-add-example` directory:
-
-```
+```shell
 cd .\workdir-copy-add-example\
 ```
 
----
+在 `workdir-copy-add-example` 目录中，创建一个名为 `index.html` 的文件。这个文件将在构建镜像时被复制到 Docker 镜像中。我将使用 VS Code，但你可以随意使用你更习惯的任何编辑器： 
 
-Within the `workdir-copy-add-example` directory, create a file named `index.html`. This file will be copied to the Docker image during build time. I am going to use VS Code, but feel free to use any editor you feel more comfortable with:
-
-```
+```shell
 code index.html
 ```
 
----
+将以下内容添加到 index.html 文件中，保存并关闭编辑器： 
 
-Add the following content to the index.html file, save it, and close your editor:
-
-```
+```html
 <html>
     <body>
         <h1>
@@ -325,19 +315,15 @@ Add the following content to the index.html file, save it, and close your editor
 </html>
 ```
 
-This HTML code creates a basic web page that greets visitors with a large heading saying "Welcome to Docker!". Below the heading, it includes an image displayed using the `<img>` tag with the source attribute (`src="logo.png"`), indicating that it should fetch and display an image file named `logo.png`. The image is sized to be 350 pixels in height and 500 pixels in width (`height="350"` and `width="500"`).
+这段 HTML 代码创建了一个简单的网页，用一个写着“Welcome to Docker!”的大标题来迎接访问者。在标题下方，它包含了一个使用 `<img>` 标签显示的图片，其源属性 (`src="logo.png"`) 指示它应该获取并显示一个名为 `logo.png` 的图片文件。图片的大小被设置为高 350 像素，宽 500 像素 (`height="350"` 和 `width="500"`)。 
 
----
+现在，在这个目录下创建一个 **Dockerfile**：
 
-Now, create a **Dockerfile** within this directory:
-
-```
+```shell
 code Dockerfile
 ```
 
----
-
-Add the following content to the `Dockerfile` file, save it, and exit:
+将以下内容添加到 `Dockerfile` 文件中，保存并退出：
 
 ```dockerfile
 FROM ubuntu:latest
@@ -349,21 +335,18 @@ ADD https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engi
 CMD ["ls"]
 ```
 
-This Dockerfile begins by specifying `FROM ubuntu:latest`, indicating it will build upon the latest Ubuntu base image available. The subsequent `RUN apt-get update && apt-get upgrade` commands update and upgrade the package lists within the container. Following this, `apt-get install apache2 -y` installs the Apache web server using the package manager. The `WORKDIR /var/www/html/` directive sets the working directory to `/var/www/html/`, a common location for serving web content in Apache.
+这个 Dockerfile 首先指定了 `FROM ubuntu:latest`，表示它将基于可用的最新 Ubuntu 基础镜像构建。接下来的 `RUN apt-get update && apt-get upgrade` 命令更新并升级容器内的软件包列表。然后，`apt-get install apache2 -y` 使用包管理器安装 Apache Web 服务器。`WORKDIR /var/www/html/` 指令将工作目录设置为 `/var/www/html/`，这是 Apache 中用于提供 Web 内容的常见位置。
 
-Within this directory, `COPY index.html .` copies a local `index.html` file from the host machine into the container. Additionally, `ADD https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg ./logo.png` retrieves an SVG image file from a URL and saves it locally as `logo.png` in the same directory.
+在这个目录中，`COPY index.html .` 将主机上的本地 `index.html` 文件复制到容器中。此外，`ADD https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg ./logo.png` 从 URL 检索一个 SVG 图像文件，并将其作为 `logo.png` 保存在同一目录的本地。
 
-Lastly, `CMD ["ls"]` specifies that upon container startup, the `ls` command will execute, displaying a listing of files and directories in `/var/www/html/`.
+最后，`CMD ["ls"]` 指定在容器启动时，将执行 `ls` 命令，显示 `/var/www/html/` 中的文件和目录列表。 
 
----
-
-Now, build the Docker image with the tag of `workdir-copy-add`:
-
+现在，使用 `workdir-copy-add` 标签构建 Docker 镜像：
 ```shell
 docker build -t workdir-copy-add .
 ```
 
-You should see the following output:
+你应该看到以下输出：
 
 ```text
 [+] Building 4.0s (13/13) FINISHED                                                                       docker:default
@@ -389,70 +372,57 @@ You should see the following output:
  => => naming to docker.io/library/workdir-copy-add                                                                0.0s
 ```
 
----
-
-Execute the `docker container run` command to start a new container from the Docker image we built previously:
+执行 `docker container run` 命令，从我们之前构建的 Docker 镜像启动一个新容器：
 
 ```shell
 docker run workdir-copy-add
 ```
 
-As we can see, both `index.html` and `logo.png` are available in the `/var/www/html/` directory:
+正如我们所见，`index.html` 和 `logo.png` 都在 `/var/www/html/` 目录中：
 
 ```text
 index.html
 logo.png
 ```
 
-## [][40]The USER Directive
+## USER 指令
+在 Docker 中，默认情况下，容器以 root 用户身份运行，该用户在容器环境中拥有广泛的权限。为了降低安全风险，Docker 允许我们使用 **Dockerfile** 中的 **USER** 指令指定一个非 root 用户。此指令设置容器的默认用户，并且 Dockerfile 中指定的所有后续命令（例如 **RUN**、**CMD** 和 **ENTRYPOINT**）都将在该用户的上下文中执行。
 
-In Docker, by default, containers run with the root user, which has extensive privileges within the container environment. To mitigate security risks, Docker allows us to specify a non-root user using the **USER** directive in the **Dockerfile**. This directive sets the default user for the container, and all subsequent commands specified in the Dockerfile, such as **RUN**, **CMD**, and **ENTRYPOINT**, will be executed under this user's context.
+在 Docker 安全性中，实现 **USER** 指令被认为是最佳实践，它符合最小权限原则。它确保容器以其功能所需的最小权限运行，从而增强整体系统安全性并减少攻击面。
 
-Implementing the **USER** directive is considered a best practice in Docker security, aligning with the principle of least privilege. It ensures that containers operate with minimal privileges necessary for their functionality, thereby enhancing overall system security and reducing the attack surface.
-
-The **USER** directive takes the following format:
+**USER** 指令采用以下格式：
 
 ```
 USER <user>
 ```
-
-In addition to the username, we can also specify the optional group name to run the Docker container:
+除了用户名之外，我们还可以指定可选的组名来运行 Docker 容器：
 
 ```
 USER <user>:<group>
 ```
+您需要确保 `<user>` 和 `<group>` 值是有效的用户名和组名。否则，Docker 守护进程会在尝试运行容器时抛出错误。
 
-You need to make sure that the `<user>` and `<group>` values are valid user and group names. Otherwise, the Docker daemon will throw an error while trying to run the container.
+### 在 Dockerfile 中使用 USER 指令  
+在这个例子中，我们将使用 **Dockerfile** 中的 **USER** 指令来设置默认用户。我们将安装 Apache Web 服务器并将用户更改为 **www-data**。最后，我们将执行 `whoami` 命令以通过打印用户名来验证当前用户。
 
-### [][41]Using USER Directive in the Dockerfile
+创建一个名为 `user-example` 的新目录。
 
-In this example we are going to use the **USER** directive in the **Dockerfile** to set the default user. We will be installing the Apache web server and changing the user to **www-data**. Finally, we will execute the `whoami` command to verify the current user by printing the username.
-
-Create a new directory named `user-example`
 
 ```shell
 mkdir user-example
 ```
-
----
-
-Navigate to the newly created `user-example directory`
+进入新创建的目录 `user-example`
 
 ```shell
 cd .\user-example\
 ```
+在 `user-example` 目录中，创建一个新的 **Dockerfile** 文件。 
 
----
-
-Within the `user-example` directory create a new **Dockerfile**
-
-```
+```shell
 code Dockerfile
 ```
 
----
-
-Add the following content to your **Dockerfile**, save it and close the editor:
+将以下内容添加到您的 **Dockerfile** 中，保存并关闭编辑器： 
 
 ```dockerfile
 FROM ubuntu:latest
@@ -462,11 +432,9 @@ USER www-data
 CMD ["whoami"]
 ```
 
-This Dockerfile starts with the latest Ubuntu base image and updates system packages before installing Apache web server (`apache2`). It enhances security by switching to the `www-data` user, commonly used for web servers, to minimize potential vulnerabilities. The `CMD ["whoami"]` directive ensures that when the container starts, it displays the current user (`www-data`), demonstrating a secure setup suitable for hosting web applications in a Docker environment.
+这个 Dockerfile 首先使用最新的 Ubuntu 基础镜像，并在安装 Apache Web 服务器 (`apache2`) 之前更新系统软件包。它通过切换到 `www-data` 用户（通常用于 Web 服务器）来增强安全性，以最大程度地减少潜在漏洞。 `CMD ["whoami"]` 指令确保容器启动时显示当前用户 (`www-data`)，展示了适合在 Docker 环境中托管 Web 应用程序的安全设置。 
 
----
-
-Build the Docker image:
+构建 Docker 镜像： 
 
 ```shell
 docker build -t user .
@@ -492,43 +460,39 @@ And you should see the following output:
  => => naming to docker.io/library/user                                                                                                                0.0s
 ```
 
----
-
-Now, execute the `docker container run` command to start a new container from the Docker image that we built in the previous step:
+现在，执行 `docker container run` 命令，从上一步构建的 Docker 镜像启动一个新容器： 
 
 ```shell
 docker container run user
 ```
+输出应该显示 `www-data` 作为与 Docker 容器关联的当前用户： 
 
-And the output should display `www-data` as the current user associated with the Docker container:
-
-```
+```text
 www-data
 ```
 
-## [][42]The VOLUME Directive
+## VOLUME 指令
+在 Docker 中，容器旨在以可移植和轻量级的方式封装应用程序及其依赖项。但是，默认情况下，在 Docker 容器文件系统中生成或修改的任何数据都是短暂的，这意味着它仅在容器运行时存在。当容器被删除或替换时，这些数据就会丢失，这对需要持久存储的应用程序（例如数据库或文件存储系统）提出了挑战。
 
-In Docker, containers are designed to encapsulate applications and their dependencies in a portable and lightweight manner. However, by default, any data generated or modified within a Docker container's filesystem is ephemeral, meaning it exists only for the duration of the container's runtime. When a container is deleted or replaced, this data is lost, which poses challenges for applications that require persistent storage, such as databases or file storage systems.
+为了应对这一挑战，Docker 引入了卷的概念。卷提供了一种独立于容器生命周期来持久化数据的方法。它们充当 Docker 容器和主机之间的桥梁，确保即使在容器停止、移除或替换时，存储在卷中的数据也能保留下来。这使得卷对于需要跨容器实例维护状态信息的应用程序（例如存储数据库、配置文件或应用程序日志）至关重要。
 
-To address this challenge, Docker introduced the concept of volumes. Volumes provide a way to persist data independently of the container lifecycle. They act as a bridge between the Docker container and the host machine, ensuring that data stored within volumes persists even when containers are stopped, removed, or replaced. This makes volumes essential for applications that need to maintain stateful information across container instances, such as storing databases, configuration files, or application logs.
+当您使用 `VOLUME` 指令在 Dockerfile 中定义卷时，Docker 会在容器的文件系统中创建一个托管目录。此目录用作卷的挂载点。至关重要的是，Docker 还会在主机上建立一个相应的目录，用于存储卷的实际数据。这种映射确保了从容器内部对卷中的文件所做的任何更改都会立即与主机上的映射目录同步，反之亦然。
 
-When you define a volume in a Dockerfile using the `VOLUME` directive, Docker creates a managed directory within the container’s filesystem. This directory serves as the mount point for the volume. Crucially, Docker also establishes a corresponding directory on the host machine, where the actual data for the volume is stored. This mapping ensures that any changes made to files within the volume from within the container are immediately synchronized with the mapped directory on the host machine, and vice versa.
+Docker 中的卷支持多种类型，包括命名卷和主机挂载卷。命名卷由 Docker 创建和管理，对卷生命周期和存储管理提供了更多控制和灵活性。另一方面，主机挂载卷允许您将主机文件系统中的目录直接挂载到容器中，从而提供对主机资源的直接访问。
 
-Volumes in Docker support various types, including named volumes and host-mounted volumes. Named volumes are created and managed by Docker, offering more control and flexibility over volume lifecycle and storage management. Host-mounted volumes, on the other hand, allow you to directly mount a directory from the host filesystem into the container, providing straightforward access to host resources.
-
-The **VOLUME** directive generally takes a JSON array as a parameter:
+**VOLUME** 指令通常将 JSON 数组作为参数： 
 
 ```dockerfile
 VOLUME ["path/to/volume"]
 ```
 
-Or, we can specify a plain string with multiple paths:
+或者，我们可以指定一个包含多个路径的普通字符串： 
 
 ```dockerfile
 VOLUME /path/to/volume1 /path/to/volume2
 ```
 
-We can use the `docker container inspect <container>` command to view the volumes available in a container. The output JSON of the docker container inspect command will print the volume information similar to the following:
+我们可以使用 `docker container inspect <容器>` 命令来查看容器中可用的卷。 docker container inspect 命令的输出 JSON 将打印类似于以下内容的卷信息： 
 
 ```text
 [
@@ -544,7 +508,7 @@ We can use the `docker container inspect <container>` command to view the volume
 ]
 ```
 
-### [][43]Using the VOLUME Directive in the Dockerfile
+### 在 Dockerfile 中使用 VOLUME 指令
 
 In this example, we are going to setup a Docker container to run the Apache web server. However, we don't want to lose the Apache log files in case of a Docker container failure. As a solution, we are going to persist the log files by mounting the Apache log path to the underlying Docker host.
 
