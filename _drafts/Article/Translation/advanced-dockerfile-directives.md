@@ -509,34 +509,25 @@ VOLUME /path/to/volume1 /path/to/volume2
 ```
 
 ### 在 Dockerfile 中使用 VOLUME 指令
+在这个例子中，我们将设置一个 Docker 容器来运行 Apache Web 服务器。但是，我们不希望在 Docker 容器出现故障时丢失 Apache 日志文件。作为解决方案，我们将通过将 Apache 日志路径挂载到基础 Docker 主机来持久化日志文件。
 
-In this example, we are going to setup a Docker container to run the Apache web server. However, we don't want to lose the Apache log files in case of a Docker container failure. As a solution, we are going to persist the log files by mounting the Apache log path to the underlying Docker host.
-
-Create a new directory named `volume-example`
+创建一个名为 `volume-example` 的新目录 
 
 ```shell
 mkdir volume-example
 ```
 
----
-
-Navigate to the newly created `volume-example` directory
+进入新创建的 `volume-example` 目录
 
 ```shell
 cd volume-example
 ```
-
----
-
-Within the `volume-example` directory create a new **Dockerfile**
+在 `volume-example`目录里创建新的 **Dockerfile** 文件
 
 ```shell
 code Dockerfile
 ```
-
----
-
-Add the following to the **Dockerfile**, save it, and exit
+将以下内容添加到 **Dockerfile**，保存并退出。
 
 ```dockerfile
 FROM ubuntu:latest
@@ -545,18 +536,14 @@ RUN apt-get install apache2 -y
 VOLUME ["/var/log/apache2"]
 ```
 
-This Dockerfile starts by using the latest version of Ubuntu as the base image and ensures it is up to date by running `apt-get update` and `apt-get upgrade` to update all installed packages. It then installs Apache HTTP Server (`apache2`) using `apt-get install apache2 -y`. The `VOLUME ["/var/log/apache2"]` directive defines a Docker volume at `/var/log/apache2`, which is where Apache typically stores its log files.
+此 Dockerfile 首先使用最新版本的 Ubuntu 作为基础镜像，并通过运行 `apt-get update` 和 `apt-get upgrade` 来更新所有已安装的软件包，以确保其是最新的。然后，它使用 `apt-get install apache2 -y` 安装 Apache HTTP 服务器 (`apache2`)。 `VOLUME ["/var/log/apache2"]` 指令在 `/var/log/apache2` 处定义了一个 Docker 卷，这是 Apache 通常存储其日志文件的位置。
 
----
-
-Now, let's build the Docker image:
+现在，让我们构建 Docker 镜像： 
 
 ```shell
 docker build -t volume .
 ```
-
-And the output should be as follows:
-
+如下输出:
 ```text
 [+] Building 3.6s (8/8) FINISHED                                                                                                             docker:default
  => [internal] load .dockerignore                                                                                                                      0.0s
@@ -575,39 +562,33 @@ And the output should be as follows:
  => => naming to docker.io/library/volume
 ```
 
----
+执行 `docker container run` 命令从先前构建的镜像启动一个新容器。注意，你还需要使用 `--interactive` 和 `--tty` 标志来打开一个交互式的 bash 会话，这样你就可以从容器的 bash shell 执行命令。同时，你需要使用 `--name` 标志来定义容器的名称为 `volume-container`。
 
-Execute the `docker container run` command to start a new container from the previously built image. Note that you also need to use the `--interactive` and `--tty` flags to open an interactive bash session so that you can execute commands from the bash shell of the container. Also, you need to use the `--name` flag to define the container name as `volume-container`
 
 ```shell
 docker container run --interactive --tty --name volume-container volume /bin/bash
 ```
 
-Your bash shell will be opened as follows:
-
-```
+你的 bash shell 将如下打开：
+```shell
 root@8aa0f5fb8a6d:/#
 ```
 
----
+进入 `/var/log/apache2` 目录
 
-Navigate to the `/var/log/apache2` directory
-
-```
+```shell
 root@8aa0f5fb8a6d:/# cd /var/log/apache2/
 ```
 
-This will produce the following output:
+这将产生以下输出：
 
-```
+```shell
 root@8aa0f5fb8a6d:/var/log/apache2#
 ```
 
----
+现在，列出目录中的可用文件。
 
-Now, list the available files in the directory
-
-```
+```shell
 root@8aa0f5fb8a6d:/var/log/apache2# ls -l
 ```
 
