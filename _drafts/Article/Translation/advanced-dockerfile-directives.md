@@ -211,34 +211,30 @@ WORKDIR drink
 ```dockerfile
 COPY <source> <destination>
 ```
+`<source>` 指定了本地文件系统上相对于构建上下文的文件或目录的路径。 `<destination>` 指定了文件或目录在 Docker 镜像文件系统中应复制到的路径。
 
-The `<source>` specifies the path to the file or directory on your local filesystem relative to the build context. The `<destination>` specifies the path where the file or directory should be copied within the Docker image filesystem.
-
-In the following example, we are using the **COPY** directive to copy an `index.html` file from the local filesystem to the `/var/www/html/` directory of the Docker image:
-
-```
+在以下示例中，我们使用 **COPY** 指令将本地文件系统中的 `index.html` 文件复制到 Docker 镜像的 `/var/www/html/` 目录： 
+```dockerfile
 COPY index.html /var/www/html/index.html
 ```
 
-We can also use wildcards to copy all files matching the given pattern. Below, we will copy all files with the `.html` extension from the current directory to the `/var/www/html/` directory of the Docker image:
-
-```
+我们还可以使用通配符复制与给定模式匹配的所有文件。 在下文中，我们会将当前目录中所有扩展名为 `.html` 的文件复制到 Docker 镜像的 `/var/www/html/` 目录中： 
+```dockerfile
 COPY *.html /var/www/html/
 ```
 
-When using the **COPY** directive in a Dockerfile to transfer files from the local filesystem into a Docker image, we can also specify the `--chown` flag. This flag allows us to set the user and group ownership of the copied files within the Docker image.
-
-```
+在 Dockerfile 中使用 **COPY** 指令将文件从本地文件系统传输到 Docker 镜像时，我们还可以指定 `--chown` 标志。 此标志允许我们设置 Docker 镜像中复制文件的用户和组所有权。 
+```dockerfile
 COPY --chown=myuser:mygroup *.html /var/www/html/
 ```
 
-In this example, `--chown=myuser:mygroup` specifies that all `.html` files being copied from the local directory to `/var/www/html/` in the Docker image, should be owned by `myuser` (the user) and `mygroup` (the group).
+在这个例子中，`--chown=myuser:mygroup` 指定了所有从本地目录复制到 Docker 镜像中 `/var/www/html/` 的 `.html` 文件都应该归 `myuser`（用户）和 `mygroup`（组）所有。 
 
-## [][34]The ADD Directive
+## ADD 指令
 
 The **ADD** directive in Dockerfiles functions similar to the **COPY** directive but with additional features.
 
-```
+```dockerfile
 ADD <source> <destination>
 ```
 
@@ -246,7 +242,7 @@ The `<source>` specifies a path or **URL** to the file or directory on the local
 
 In the example below, we are going to use **ADD** to copy a file from the local filesystem:
 
-```
+```dockerfile
 ADD index.html /var/www/html/index.html
 ```
 
@@ -254,7 +250,7 @@ In this example, Docker is going to copy the `index.html` file from the local fi
 
 In the example below, we are going to use **ADD** to copy a file from a remote URL:
 
-```
+```dockerfile
 ADD http://example.com/test-data.csv /tmp/test-data.csv
 ```
 
@@ -264,7 +260,7 @@ The **ADD** directive not only copies files from the local filesystem or downloa
 
 For example:
 
-```
+```dockerfile
 ADD myapp.tar.gz /opt/myapp/
 ```
 
@@ -343,7 +339,7 @@ code Dockerfile
 
 Add the following content to the `Dockerfile` file, save it, and exit:
 
-```
+```dockerfile
 FROM ubuntu:latest
 RUN apt-get update && apt-get upgrade
 RUN apt-get install apache2 -y
@@ -363,13 +359,13 @@ Lastly, `CMD ["ls"]` specifies that upon container startup, the `ls` command wil
 
 Now, build the Docker image with the tag of `workdir-copy-add`:
 
-```
+```shell
 docker build -t workdir-copy-add .
 ```
 
 You should see the following output:
 
-```
+```text
 [+] Building 4.0s (13/13) FINISHED                                                                       docker:default
  => [internal] load build definition from Dockerfile                                                               0.0s
  => => transferring dockerfile: 290B                                                                               0.0s
@@ -397,13 +393,13 @@ You should see the following output:
 
 Execute the `docker container run` command to start a new container from the Docker image we built previously:
 
-```
+```shell
 docker run workdir-copy-add
 ```
 
 As we can see, both `index.html` and `logo.png` are available in the `/var/www/html/` directory:
 
-```
+```text
 index.html
 logo.png
 ```
@@ -434,7 +430,7 @@ In this example we are going to use the **USER** directive in the **Dockerfile**
 
 Create a new directory named `user-example`
 
-```
+```shell
 mkdir user-example
 ```
 
@@ -442,7 +438,7 @@ mkdir user-example
 
 Navigate to the newly created `user-example directory`
 
-```
+```shell
 cd .\user-example\
 ```
 
@@ -458,7 +454,7 @@ code Dockerfile
 
 Add the following content to your **Dockerfile**, save it and close the editor:
 
-```
+```dockerfile
 FROM ubuntu:latest
 RUN apt-get update && apt-get upgrade
 RUN apt-get install apache2 -y
@@ -472,13 +468,13 @@ This Dockerfile starts with the latest Ubuntu base image and updates system pack
 
 Build the Docker image:
 
-```
+```shell
 docker build -t user .
 ```
 
 And you should see the following output:
 
-```
+```text
 [+] Building 5.0s (8/8) FINISHED                                                                                                             docker:default
  => [internal] load build definition from Dockerfile                                                                                                   0.0s
  => => transferring dockerfile: 157B                                                                                                                   0.0s
@@ -500,7 +496,7 @@ And you should see the following output:
 
 Now, execute the `docker container run` command to start a new container from the Docker image that we built in the previous step:
 
-```
+```shell
 docker container run user
 ```
 
@@ -522,19 +518,19 @@ Volumes in Docker support various types, including named volumes and host-mounte
 
 The **VOLUME** directive generally takes a JSON array as a parameter:
 
-```
+```dockerfile
 VOLUME ["path/to/volume"]
 ```
 
 Or, we can specify a plain string with multiple paths:
 
-```
+```dockerfile
 VOLUME /path/to/volume1 /path/to/volume2
 ```
 
 We can use the `docker container inspect <container>` command to view the volumes available in a container. The output JSON of the docker container inspect command will print the volume information similar to the following:
 
-```
+```text
 [
    {
       "CreatedAt":"2024-06-21T22:52:52+03:00",
@@ -554,7 +550,7 @@ In this example, we are going to setup a Docker container to run the Apache web 
 
 Create a new directory named `volume-example`
 
-```
+```shell
 mkdir volume-example
 ```
 
@@ -562,7 +558,7 @@ mkdir volume-example
 
 Navigate to the newly created `volume-example` directory
 
-```
+```shell
 cd volume-example
 ```
 
@@ -570,7 +566,7 @@ cd volume-example
 
 Within the `volume-example` directory create a new **Dockerfile**
 
-```
+```shell
 code Dockerfile
 ```
 
@@ -578,7 +574,7 @@ code Dockerfile
 
 Add the following to the **Dockerfile**, save it, and exit
 
-```
+```dockerfile
 FROM ubuntu:latest
 RUN apt-get update && apt-get upgrade
 RUN apt-get install apache2 -y
@@ -591,13 +587,13 @@ This Dockerfile starts by using the latest version of Ubuntu as the base image a
 
 Now, let's build the Docker image:
 
-```
+```shell
 docker build -t volume .
 ```
 
 And the output should be as follows:
 
-```
+```text
 [+] Building 3.6s (8/8) FINISHED                                                                                                             docker:default
  => [internal] load .dockerignore                                                                                                                      0.0s
  => => transferring context: 2B                                                                                                                        0.0s
@@ -619,7 +615,7 @@ And the output should be as follows:
 
 Execute the `docker container run` command to start a new container from the previously built image. Note that you also need to use the `--interactive` and `--tty` flags to open an interactive bash session so that you can execute commands from the bash shell of the container. Also, you need to use the `--name` flag to define the container name as `volume-container`
 
-```
+```shell
 docker container run --interactive --tty --name volume-container volume /bin/bash
 ```
 
@@ -680,7 +676,7 @@ docker container inspect volume-container
 
 Under the `Mounts` key, you will be able to see the information relating to the mount
 
-```
+```text
 "Mounts":[
     {
          "Type":"volume",
@@ -705,7 +701,7 @@ docker volume inspect 50d3a5abf34535fbd3a347cbd6c74acf87a7aa533494360e661c73bbdf
 
 You should get an output similar to the following
 
-```
+```text
 [{
    "CreatedAt":"2024-06-21T11:02:32Z",
    "Driver":"local",
@@ -723,7 +719,7 @@ You should get an output similar to the following
 
 List the files available in the host file path. The host file path can be identified with the `Mountpoint` field of the previous output
 
-```
+```shell
 ls -l /var/lib/docker/volumes/50d3a5abf34535fbd3a347cbd6c74acf87a7aa533494360e661c73bbdf34b3e8/_data
 ```
 
@@ -749,7 +745,7 @@ There can be only one **HEALTHCHECK** directive in a **Dockerfile**. If there is
 
 For example, we can use the following directive to ensure that the container can receive traffic on the `http://localhost/` endpoint:
 
-```
+```dockerfile
 HEALTHCHECK CMD curl -f http://localhost/ || exit 1
 ```
 
@@ -764,7 +760,7 @@ When using the **HEALTHCHECK** directive in Docker, it's possible to configure a
 
 In the following example, the default values of **HEALTHCHECK** are overridden, by providing custom values:
 
-```
+```dockerfile
 HEALTHCHECK \
     --interval=1m \
     --timeout=2s \
@@ -780,7 +776,7 @@ We are going to dockerize the Apache web server to access the Apache home page f
 
 Create a new directory named `expose-heathcheck-example`
 
-```
+```shell
 mkdir expose-healthcheck-example
 ```
 
@@ -796,7 +792,7 @@ cd .\expose-healthcheck-example\
 
 Create a **Dockerfile** and add the following content
 
-```
+```dockerfile
 FROM ubuntu:latest
 
 RUN apt-get update && apt-get upgrade
@@ -816,13 +812,13 @@ This Dockerfile starts by pulling the latest Ubuntu base image and updating it. 
 
 Build the image
 
-```
+```shell
 docker image build -t expose-healthcheck-example .
 ```
 
 You should get an output similar to the following:
 
-```
+```text
 [+] Building 29.0s (8/8) FINISHED                                                                                                            docker:default
  => [internal] load build definition from Dockerfile                                                                                                   0.0s
  => => transferring dockerfile: 244B                                                                                                                   0.0s
@@ -844,7 +840,7 @@ You should get an output similar to the following:
 
 Execute the `docker container run` command to start a new container. You are going to use the `-p` flag to redirect port `80` of the host to port `8080` of the container. Additionally, you are going to use the `--name` flag to specify the container name as `expose-healthcheck-container`, and the `-d` flag to run the container in detach mode
 
-```
+```shell
 docker container run -p 8080:80 --name expose-healthcheck-container -d expose-healthcheck-example
 ```
 
@@ -852,13 +848,13 @@ docker container run -p 8080:80 --name expose-healthcheck-container -d expose-he
 
 List the running containers with the `docker container list` command
 
-```
+```shell
 docker container list
 ```
 
 In the output, you will see that the `STATUS` of `expose-healthcheck-container` is healthy
 
-```
+```text
 CONTAINER ID   IMAGE                        COMMAND                  CREATED              STATUS                        PORTS                            NAMES
 3ff16b11275c   expose-healthcheck-example   "apache2ctl -D FOREG…"   About a minute ago   Up About a minute (healthy)   80/tcp, 0.0.0.0:8080->8080/tcp   expose-healthcheck-container
 ```
@@ -877,13 +873,13 @@ By applying the ONBUILD directive within this "prerequisite" image, specific ins
 
 The **ONBUILD** directive takes the following format
 
-```
+```dockerfile
 ONBUILD <instruction>
 ```
 
 As an example, imagine that we have the following **ONBUILD** instruction in the **Dockerfile** of a custom base image
 
-```
+```dockerfile
 ONBUILD ENTRYPOINT ["echo", "Running an ONBUILD Directive"]
 ```
 
@@ -895,7 +891,7 @@ In this example, we are going to build a parent image with an Apache web server 
 
 Create a new directory named `onbuild-parent-example`
 
-```
+```shell
 mkdir onbuild-parent-example
 ```
 
@@ -903,7 +899,7 @@ mkdir onbuild-parent-example
 
 Navigate to the newly created `onbuild-parent-example` directory:
 
-```
+```shell
 cd .\onbuild-parent-example\
 ```
 
@@ -911,7 +907,7 @@ cd .\onbuild-parent-example\
 
 Create a new **Dockerfile** and add the following content
 
-```
+```dockerfile
 FROM ubuntu:latest
 
 RUN apt-get update && apt-get upgrade
@@ -931,13 +927,13 @@ This Dockerfile begins by using the latest Ubuntu base image. It updates and upg
 
 Now, build the Docker image:
 
-```
+```shell
 docker image build -t onbuild-parent-example .
 ```
 
 The output should be as follows:
 
-```
+```text
 [+] Building 3.5s (8/8) FINISHED                                                                         docker:default
  => [internal] load build definition from Dockerfile                                                               0.0s
  => => transferring dockerfile: 221B                                                                               0.0s
@@ -973,7 +969,7 @@ If you navigate to the `http://127.0.0.1:8080/` endpoint you should see the defa
 
 Remove the container so it won't interfere with the ports
 
-```
+```shell
 docker container stop onbuild-parent-container
 docker container rm onbuild-parent-container
 ```
@@ -982,7 +978,7 @@ docker container rm onbuild-parent-container
 
 Now, lets create another Docker image using `onbuild-parent-container` as the base image, to deploy a custom HTML home page. To do that let's create a new directory named `onbuild-child-example`
 
-```
+```shell
 cd ..
 mkdir onbuild-child-example
 ```
@@ -991,7 +987,7 @@ mkdir onbuild-child-example
 
 Create a new html page with the following content
 
-```
+```html
 <html>
 
     <body>
@@ -1017,13 +1013,13 @@ This **Dockerfile** has a single directive. This will use the **FROM** directive
 
 Now, build the docker image
 
-```
+```shell
 docker image build -t onbuild-child-example .
 ```
 
 The output should be something like the following
 
-```
+```text
 [+] Building 0.3s (7/7) FINISHED                                                                         docker:default
  => [internal] load .dockerignore                                                                                  0.1s
  => => transferring context: 2B                                                                                    0.0s
@@ -1044,7 +1040,7 @@ The output should be something like the following
 
 Execute the `docker container run` command to start a new container with the image we just built
 
-```
+```shell
 docker container run -p 8080:80 --name onbuild-child-container -d onbuild-child-example
 ```
 
