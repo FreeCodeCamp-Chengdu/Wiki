@@ -42,83 +42,71 @@ Dockerfile 中的 ENV 指令可用于设置环境变量。环境变量用于设�
 ENV <key>=<value>
 ```
 
-For example, we can set a path using the **ENV** directive as follows:
-
+例如，我们可以使用 **ENV** 指令设置路径，如下所示： 
 ```dockerfile
 ENV PATH $PATH:/usr/local/app/bin/
 ```
 
-We can set multiple environment variables in the same line separated by spaces. However, in this form, the **key** and **value** should be separated by the equal to (`=`) symbol:
+我们可以在同一行中设置多个环境变量，并用空格分隔。但是，在这种形式中，**键**和**值**应该用等号（`=`）符号分隔：
 
-```
+```dockerfile
 ENV <key>=<value> <key=value> ...
 ```
 
-Below, we set two environment variables configured. The **PATH** environment variable is configured with the value of `$PATH:/usr/local/app/bin`, and the **VERSION** environment variable is configured with the value of `1.0.0`:
+下面，我们设置了两个环境变量。**PATH** 环境变量配置为 `$PATH:/usr/local/app/bin`，**VERSION** 环境变量配置为 `1.0.0`：
 
-```
+```dockerfile
 ENV PATH=$PATH:/usr/local/app/bin/ VERSION=1.0.0
 ```
 
-Once an environment variable is set with the **ENV** directive in the **Dockerfile**, this variable is available in all subsequent Docker image layers. This variable is even available in the Docker containers launched from this Docker image.
+一旦使用 **ENV** 指令在 **Dockerfile** 中设置了环境变量，该变量在所有后续的 Docker 镜像层中都可用。此变量甚至在从此 Docker 镜像启动的 Docker 容器中也可用。
 
-## [][30]The ARG Directive
+## ARG 指令
 
-The **ARG** directive in a Dockerfile is used to define variables that users can pass at build time to the builder with the `docker build` command. These variables behave similarly to environment variables and can be used throughout the Dockerfile but are not persisted in the final image unless explicitly declared using the **ENV** directive.
+Dockerfile 中的 **ARG** 指令用于定义用户可以在构建时使用 `docker build` 命令传递给构建器的变量。这些变量的行为类似于环境变量，可以在整个 Dockerfile 中使用，但不会持久化到最终镜像中，除非使用 **ENV** 指令显式声明。
 
-The **ARG** directive has the following format:
-
-```
+**ARG** 指令的格式如下： 
+```dockerfile
 ARG <varname>
 ```
 
-We can also add multiple **ARG** directives, as follows:
-
-```
+我们还可以添加多个 **ARG** 指令，如下所示：
+```dockerfile
 ARG USER
 ARG VERSION
 ```
 
-These arguments can also have optional default values specified within the Dockerfile itself. If no value is provided by the user during the build process, Docker uses the default value defined in the **ARG** instruction:
-
-```
+这些参数还可以在 Dockerfile 本身中指定可选的默认值。如果用户在构建过程中没有提供值，Docker 会使用 **ARG** 指令中定义的默认值：
+```dockerfile
 ARG USER=TestUser
 ARG VERSION=1.0.0
 ```
 
-Unlike the **ENV** variables, **ARG** variables are not accessible from the running container. They are only available during the build process.
+与 **ENV** 变量不同，**ARG** 变量在运行的容器中不可访问。它们仅在构建过程中可用。 
 
-### [][31]Using ENV and ARG Directives in a Dockerfile
+### 在 Dockerfile 中使用 ENV 和 ARG 指令 
+我们将创建一个使用 ubuntu 作为父镜像的 **Dockerfile**，但我们能够在构建时更改 ubuntu 版本。我们还将指定环境名称和应用程序目录作为 Docker 镜像的环境变量。
 
-We are going to create a **Dockerfile** that will use ubuntu as the parent image, but we will be able to change the ubuntu version at build time. We will also going to specify the environment's name and application directory as the environment variables of the Docker image.
+使用 `mkdir` 命令创建一个名为 `env-arg-example` 的新目录： 
 
-Create a new directory named `env-arg-example` using the `mkdir` command:
 
-```
+```dockerfile
 mkdir env-arg-example
 ```
 
----
-
-Navigate the newly created `env-arg-example` directory using the `cd` command:
-
-```
+使用 cd 命令导航到新创建的 env-arg-example 目录：
+```shell
 cd env-arg-example
 ```
 
----
+现在，我们来创建一个新的 Dockerfile。我将使用 VS Code，但你可以随意使用任何你喜欢的编辑器：
 
-Now, let's create a new Dockerfile. I am going to use VS Code but feel free to use any editor you feel comfortable with:
-
-```
+```shell
 code Dockerfile
 ```
 
----
-
-Add the following content to the **Dockerfile**. Then save and exit:
-
-```
+将以下内容添加到 Dockerfile 中。然后保存并退出：
+```dockerfile
 ARG TAG=latest
 FROM ubuntu:$TAG
 LABEL maintainer=ananalogguyinadigitalworld@example.com
@@ -126,23 +114,29 @@ ENV ENVIRONMENT=dev APP_DIR=/usr/local/app/bin
 CMD ["env"]
 ```
 
-The **Dockerfile** begins by defining an argument **TAG** with a default value of `latest`. It then uses this argument to specify the base image in the **FROM** directive, resulting in the selection of the Ubuntu image tagged with `latest`.
+这段文字详细解释了一个 Dockerfile 的内容和作用。
 
-The **LABEL** directive adds metadata to the image, indicating the maintainer's email address. Next, the **ENV** directive sets two environment variables: `ENVIRONMENT` with a value of `dev` and `APP_DIR` pointing to `/usr/local/app/bin`. These variables can be used by applications running inside the container to adjust behavior based on the environment and directory paths.
+**Dockerfile 解释：**
 
-Finally, the **CMD** directive specifies the command to run when a container is started from this image, in this case, it executes `env` to display all environment variables set within the container.
+* **`ARG TAG=latest`**:  定义了一个名为 `TAG` 的构建参数，默认值为 `latest`。这个参数可以在构建镜像时通过 `docker build` 命令的 `--build-arg`  选项进行修改。
+* **`FROM ubuntu:$TAG`**:  使用 `ubuntu:$TAG` 作为基础镜像。这意味着 Docker 将会拉取标签为 `TAG` 值 (默认为 `latest`) 的 Ubuntu 镜像作为构建的基础。
+* **`LABEL maintainer="user@example.com"`**: 为镜像添加了维护者的信息，方便其他人了解镜像的来源。
+* **`ENV ENVIRONMENT=dev`**: 设置了一个名为 `ENVIRONMENT` 的环境变量，其值为 `dev`。环境变量可以在容器内部被应用程序访问，用于配置应用程序的行为。
+* **`ENV APP_DIR=/usr/local/app/bin`**: 设置了另一个名为 `APP_DIR` 的环境变量，其值为 `/usr/local/app/bin`，用于指定应用程序的目录。
+* **`CMD ["env"]`**: 定义了容器启动时执行的命令。在这里，容器启动后会执行 `env` 命令，用于显示容器内部的所有环境变量。
 
----
+**构建 Docker 镜像：**
 
-Now lets build the Docker image:
+接下来就可以使用 `docker build` 命令构建 Docker 镜像了。 
 
-```
+
+```shell
 docker image build -t env-arg --build-arg TAG=23.10 .
 ```
 
-The output should look similar to the following:
+输出结果应该类似于以下内容：
 
-```
+```text
 [+] Building 34.9s (6/6) FINISHED                                                                                                            docker:default
  => [internal] load .dockerignore                                                                                                                      0.0s
  => => transferring context: 2B                                                                                                                        0.0s
@@ -163,17 +157,15 @@ The output should look similar to the following:
  => => naming to docker.io/library/env-arg                                                                                                             0.0s
 ```
 
----
+现在，执行 `docker container run` 命令，从上一步构建的 Docker 镜像启动一个新的容器： 
 
-Now, execute the `docker container run` command to start a new container from the Docker image that we built in the last step:
-
-```
+```shell
 docker container run env-arg
 ```
 
-And the output should be something similar to the following:
+并且输出结果应该类似于以下内容：
 
-```
+```text
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=d6020a144f39
 ENVIRONMENT=dev
@@ -181,38 +173,42 @@ APP_DIR=/usr/local/app/bin
 HOME=/root
 ```
 
-## [][32]The WORKDIR Directive
+## WORKDIR 指令
 
-The **WORKDIR** directive in a Dockerfile is used to set the current working directory for any subsequent instructions that follow in the Dockerfile. This directive helps to define where the commands such as **ADD**, **CMD**, **COPY**, **ENTRYPOINT**, and **RUN**, will be executed within the container.
+这段文字解释了 Dockerfile 中 `WORKDIR` 指令的作用和用法。
 
-The **WORKDIR** directive has the following format:
+**WORKDIR 指令：**
 
-```
+Dockerfile 中的 `WORKDIR` 指令用于设置后续指令在容器内部执行时的**当前工作目录**。 这意味着，在 `WORKDIR` 指令之后出现的 `ADD`、`CMD`、`COPY`、`ENTRYPOINT` 和 `RUN` 等指令，都会在 `WORKDIR` 所指定的目录下执行。
+
+**WORKDIR 指令格式：**
+
+`WORKDIR` 指令的格式如下： 
+
+```dockerfile
 WORKDIR /path/to/workdir
 ```
+如果指定的目录在镜像中不存在，Docker 会在构建过程中创建它。 此外，`WORKDIR` 指令有效地结合了类 Unix 系统中 `mkdir` 和 `cd` 命令的功能。 它会在目录不存在时创建目录，并将当前目录更改为指定的路径。
 
-If the specified directory does not exist in the image, Docker will create it during the build process. Also the **WORKDIR** directive effectively combines the functionality of `mkdir` and `cd` commands in a Unix-like system. It creates the directory if it doesn't exist and changes the current directory to the specified path.
+我们可以在一个 Dockerfile 中使用多个 `WORKDIR` 指令。 如果后续的 `WORKDIR` 指令使用相对路径，则它们将相对于最后设置的 `WORKDIR`。
 
-We can have multiple **WORKDIR** directives in a Dockerfile. If subsequent **WORKDIR** directives use relative paths, they will be relative to the last **WORKDIR** set.
-
-So for example:
-
-```
+例如： 
+```dockerfile
 WORKDIR /one
 WORKDIR two
 WORKDIR three
 WORKDIR drink
 ```
 
-`WORKDIR /one` will set `/one` as the initial working directory. `WORKINGDIR two` will then change the directory to `/one/two`. `WORKDIR three` further changes it to `one/two/three`. Finally `WORKDIR drink` will change it to its final form `one/two/three/drink`.
+`WORKDIR /one` 会将 `/one` 设置为初始工作目录。 然后，`WORKDIR two` 会将目录更改为 `/one/two`。 `WORKDIR three` 会进一步将其更改为 `one/two/three`。 最后，`WORKDIR drink` 会将其更改为最终形式 `one/two/three/drink`。 
 
-## [][33]The COPY Directive
+## COPY 指令
 
-When building a Docker image, it's common to include files from our local development environment into the image itself. These files can range from application source code to configuration files and other resources needed for the application to run properly inside the container. The **COPY** directive in a Dockerfile serves this purpose by allowing us to specify which files or directories from our local filesystem should be copied into the image being built.
+在构建 Docker 镜像时，通常会将本地开发环境中的文件包含到镜像本身中。 这些文件可以是从应用程序源代码到配置文件以及应用程序在容器内正常运行所需的其他资源。 Dockerfile 中的 **COPY** 指令通过允许我们指定应将本地文件系统中的哪些文件或目录复制到正在构建的镜像中来实现此目的。
 
-The syntax of the **COPY** command looks as follows:
+**COPY** 命令的语法如下所示： 
 
-```
+```dockerfile
 COPY <source> <destination>
 ```
 
