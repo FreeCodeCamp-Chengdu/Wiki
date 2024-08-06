@@ -592,34 +592,29 @@ root@8aa0f5fb8a6d:/var/log/apache2#
 root@8aa0f5fb8a6d:/var/log/apache2# ls -l
 ```
 
-The output should be as follows
-
-```
+如下输出
+```text
 total 0
 -rw-r----- 1 root adm 0 Jun 20 13:42 access.log
 -rw-r----- 1 root adm 0 Jun 20 13:42 error.log
 -rw-r----- 1 root adm 0 Jun 20 13:42 other_vhosts_access.log
 ```
 
-These are the log files created by Apache while running the process. The same files should be available once you check the host mount of this volume.
+这些是由 Apache 在运行过程中创建的日志文件。 当您检查此卷的宿主机的挂载点时，应该能够看到相同的文件。 
 
----
+退出容器，回到宿主机。
 
-Exit the container to check the host filesystem
-
-```
+```shell
 root@8aa0f5fb8a6d:/var/log/apache2# exit
 ```
 
----
+检查 `volume-container` 以查看挂载信息。 
 
-Inspect the `volume-container` to view the mount information
-
-```
+```shell
 docker container inspect volume-container
 ```
 
-Under the `Mounts` key, you will be able to see the information relating to the mount
+在 `Mounts` 键下，你将能够看到与挂载相关的信息。 
 
 ```text
 "Mounts":[
@@ -636,15 +631,13 @@ Under the `Mounts` key, you will be able to see the information relating to the 
 ]
 ```
 
----
+使用 `docker volume inspect <volume_name>` 命令检查卷。 您可以在先前输出的 `Name` 字段中找到 `<volume_name>` 。 
 
-Inspect the volume with the `docker volume inspect <volume_name>` command. You can find the `<volume_name>` in the `Name` field of the previous output
-
-```
+```shell
 docker volume inspect 50d3a5abf34535fbd3a347cbd6c74acf87a7aa533494360e661c73bbdf34b3e8
 ```
 
-You should get an output similar to the following
+你应该会得到类似于以下内容的输出： 
 
 ```text
 [{
@@ -660,50 +653,50 @@ You should get an output similar to the following
 }]
 ```
 
----
 
-List the files available in the host file path. The host file path can be identified with the `Mountpoint` field of the previous output
+列出主机文件路径中可用的文件。 主机文件路径可以通过先前输出的 `Mountpoint` 字段识别。 
+
 
 ```shell
 ls -l /var/lib/docker/volumes/50d3a5abf34535fbd3a347cbd6c74acf87a7aa533494360e661c73bbdf34b3e8/_data
 ```
 
-## [][44]The EXPOSE Directive
+## EXPOSE 指令
 
-The **EXPOSE** directive in Docker serves to indicate to Docker that a container will be listening on specific ports during its runtime. This declaration is primarily informative and does not actually publish the ports to the host system or make them accessible from outside the container by default. Instead, it documents which ports are intended to be used for inter-container communication or network services within the Docker environment.
+Docker 中的 `EXPOSE` 指令用于指示容器在运行时将在特定端口上进行监听。 此声明主要用于提供信息，默认情况下不会将端口发布到主机系统或使其可从容器外部访问。 相反，它记录了哪些端口打算用于 Docker 环境中的容器间通信或网络服务。
 
-The **EXPOSE** directive supports both TCP and UDP protocols, allowing flexibility in how ports are exposed for various networking requirements. This directive is a precursor to the `-p` or `-P` options used during container runtime to actually map these exposed ports to ports on the host machine, enabling external access if required.
+`EXPOSE` 指令支持 TCP 和 UDP 协议，允许灵活地公开端口以满足各种网络需求。 此指令是容器运行时使用的 `-p` 或 `-P` 选项的前身，用于将这些公开的端口实际映射到主机上的端口，以便在需要时启用外部访问。
 
-The **EXPOSE** directive has the following format:
+EXPOSE 指令的格式如下：
 
-```
+```dockerfile
 EXPOSE <port>
 ```
 
-## [][45]The HEALTHCHECK Directive
+## HEALTHCHECK 指令
 
-A health check is a crucial mechanism that designed to assess the operational health of containers. It provides a means to verify if applications running within Docker containers are functioning properly. Without a specified health check, Docker lacks the capability to autonomously determine the health status of a container. This becomes especially critical in production environments where reliability and uptime are paramount.
+健康检查是一个关键机制，旨在评估容器的运行健康状况。它提供了一种方法来验证在 Docker 容器内运行的应用程序是否正常工作。如果没有指定健康检查，Docker 就缺乏自主确定容器健康状态的能力。这在生产环境中尤为关键，因为可靠性和系统正常运行时间至关重要。
 
-The **HEALTHCHECK** directive in Docker allows developers to define custom health checks, typically in the form of commands or scripts, that periodically inspect the container's state and report back on its health. This directive ensures proactive monitoring and helps Docker orchestration tools make informed decisions about container lifecycle management based on health status.
+Docker 中的 **HEALTHCHECK** 指令允许开发人员定义自定义健康检查，通常以命令或脚本的形式，定期检查容器的状态并报告其健康状况。这个指令确保了主动监控，并帮助 Docker 编排工具根据健康状态做出有关容器生命周期管理的明智决策。
 
-There can be only one **HEALTHCHECK** directive in a **Dockerfile**. If there is more than one **HEALTHCHECK** directive, only the last one will take effect.
+在一个 **Dockerfile** 中只能有一个 **HEALTHCHECK** 指令。如果有多个 **HEALTHCHECK** 指令，只有最后一个会生效。
 
-For example, we can use the following directive to ensure that the container can receive traffic on the `http://localhost/` endpoint:
+例如，我们可以使用以下指令来确保容器能够在 `http://localhost/` 上接收流量：
 
 ```dockerfile
 HEALTHCHECK CMD curl -f http://localhost/ || exit 1
 ```
 
-The exit code at the end of the preceding command is used to specify the health status of a container, `0` and `1` are valid values for this field. `0` means a healthy container, `1` means an unhealthy container.
+在前面命令的最后，退出码被用来指定容器的健康状态，`0` 和 `1` 是这个字段的有效值。`0` 表示容器健康，`1` 表示容器不健康。
 
-When using the **HEALTHCHECK** directive in Docker, it's possible to configure additional parameters beyond the basic command to tailor how health checks are performed:
+在 Docker 中使用 **HEALTHCHECK** 指令时，可以配置额外的参数来定制健康检查的执行方式：
 
--   **`--interval`**: Specifies the frequency at which health checks are executed, with a default interval of 30 seconds.
--   **`--timeout`**: Defines the maximum time allowed for a health check command to complete successfully. If no successful response is received within this duration, the health check is marked as failed. The default timeout is also set to 30 seconds.
--   **`--start-period`**: Specifies the initial delay before Docker starts executing the first health check. This parameter allows the container some time to initialize before health checks begin, with a default start period of 0 seconds.
--   **`--retries`**: Defines the number of consecutive failed health checks allowed before Docker considers the container as unhealthy. By default, Docker allows up to 3 retries.
+-   **`--interval`**：指定执行健康检查的频率，默认间隔为30秒。
+-   **`--timeout`**：定义健康检查命令成功完成所允许的最大时间。如果在这个时间段内没有收到成功响应，则健康检查被标记为失败。默认超时时间也设置为30秒。
+-   **`--start-period`**：指定在 Docker 开始执行第一次健康检查之前的初始延迟。这个参数允许容器在开始健康检查之前有时间进行初始化，默认开始期为0秒。
+-   **`--retries`**：定义在 Docker 认为容器不健康之前允许的连续失败的健康检查次数。默认情况下，Docker 允许最多3次重试。
 
-In the following example, the default values of **HEALTHCHECK** are overridden, by providing custom values:
+在以下示例中，通过提供自定义值，覆盖了 **HEALTHCHECK** 的默认值：
 
 ```dockerfile
 HEALTHCHECK \
@@ -715,27 +708,23 @@ HEALTHCHECK \
 
 ```
 
-### [][46]Using EXPOSE and HEALTHCHECK Directives in the Dockerfile
+### 在 Dockerfile 中使用 EXPOSE 和 HEALTHCHECK 
 
-We are going to dockerize the Apache web server to access the Apache home page from the web browser. Additionally, we are going to configure health checks to determine the health status of the Apache web server.
+我们将要将 Apache Web 服务器容器化，以便从 Web 浏览器访问 Apache 主页。此外，我们将配置健康检查来确定 Apache Web 服务器的健康状态。
 
-Create a new directory named `expose-heathcheck-example`
+创建一个名为 `expose-heathcheck-example` 的新目录。
 
 ```shell
 mkdir expose-healthcheck-example
 ```
 
----
+进入新创建的 `expose-healthcheck-example` 目录。
 
-Navigate to the newly created `expose-healthcheck-example` directory
-
-```
+```shell
 cd .\expose-healthcheck-example\
 ```
 
----
-
-Create a **Dockerfile** and add the following content
+创建 **Dockerfile** 文件，并加入如下内容。
 
 ```dockerfile
 FROM ubuntu:latest
@@ -750,18 +739,16 @@ EXPOSE 80
 
 ENTRYPOINT ["apache2ctl", "-D", "FOREGROUND"]
 ```
+这个 Dockerfile 从拉取最新的 Ubuntu 基础镜像并更新它开始。然后它使用 `apt-get` 安装 Apache Web 服务器和 curl。`HEALTHCHECK` 指令设置为运行健康检查命令（`curl -f http://localhost/ || exit 1`），确保基于 localhost 连接的容器健康。暴露 80 端口以允许外部访问 Apache。最后，容器被配置为使用 `ENTRYPOINT ["apache2ctl", "-D", "FOREGROUND"]` 以前台模式运行 Apache，确保它作为主进程保持活动和响应。这个设置使得在 Docker 环境内通过端口 80 访问托管的 Web 服务器成为可能。
 
-This Dockerfile starts by pulling the latest Ubuntu base image and updating it. It then installs Apache web server and curl using `apt-get`. The `HEALTHCHECK` directive is set to run a health check command (`curl -f http://localhost/ || exit 1`), ensuring the container's health based on localhost connectivity. Port 80 is exposed to allow external access to Apache. Finally, the container is configured to run Apache in foreground mode using `ENTRYPOINT ["apache2ctl", "-D", "FOREGROUND"]`, ensuring it stays active and responsive as the main process. This setup enables hosting a web server accessible via port 80 within the Docker environment.
 
----
-
-Build the image
+构建镜像
 
 ```shell
 docker image build -t expose-healthcheck-example .
 ```
 
-You should get an output similar to the following:
+你会获得如下输出:
 
 ```text
 [+] Building 29.0s (8/8) FINISHED                                                                                                            docker:default
@@ -780,77 +767,65 @@ You should get an output similar to the following:
  => => writing image sha256:3323e865b3888a4e45852c6a8c163cb820739735716f8783a0d126b43d810f1e                                                           0.0s
  => => naming to docker.io/library/expose-healthcheck-example                                                                                          0.0s
 ```
-
----
-
-Execute the `docker container run` command to start a new container. You are going to use the `-p` flag to redirect port `80` of the host to port `8080` of the container. Additionally, you are going to use the `--name` flag to specify the container name as `expose-healthcheck-container`, and the `-d` flag to run the container in detach mode
+执行 `docker container run` 命令来启动一个新容器。您将使用 `-p` 标志将主机的端口 `80` 重定向到容器的端口 `8080`。此外，您将使用 `--name` 标志指定容器名称为 `expose-healthcheck-container`，并使用 `-d` 标志以分离模式运行容器。
 
 ```shell
 docker container run -p 8080:80 --name expose-healthcheck-container -d expose-healthcheck-example
 ```
 
----
-
-List the running containers with the `docker container list` command
+使用 `docker container list` 命令列出正在运行的容器。
 
 ```shell
 docker container list
 ```
 
-In the output, you will see that the `STATUS` of `expose-healthcheck-container` is healthy
+在输出中，你将看到 `expose-healthcheck-container` 的 `STATUS` 显示为健康（healthy）。
 
 ```text
 CONTAINER ID   IMAGE                        COMMAND                  CREATED              STATUS                        PORTS                            NAMES
 3ff16b11275c   expose-healthcheck-example   "apache2ctl -D FOREG…"   About a minute ago   Up About a minute (healthy)   80/tcp, 0.0.0.0:8080->8080/tcp   expose-healthcheck-container
 ```
 
----
-
-Now, you should be able to view the Apache home page. Navigate to the `http://127.0.0.1:8080` endpoint from your browser
+现在，您应该能够查看 Apache 主页。请从您的浏览器访问 `http://127.0.0.1:8080`。
 
 [![Image description](https://media.dev.to/cdn-cgi/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fynq7tnklqzp44zhosob2.png)][47]
 
-## [][48]The ONBUILD Directive
+## ONBUILD 指令
 
-The ONBUILD directive in Dockerfiles facilitates the creation of reusable base images intended for subsequent image builds. It allows developers to define instructions that will be triggered only when another Docker image uses the current image as its base. For instance, you could construct a Docker image containing all necessary prerequisites and configurations required to run an application.
+Dockerfile 中的 ONBUILD 指令有助于创建可重用的基础镜像，这些基础镜像用于后续的镜像构建。它允许开发人员定义只有当另一个 Docker 镜像使用当前镜像作为其基础时才会触发的指令。例如，你可以构建一个 Docker 镜像，包含运行应用程序所需的所有必备前提条件和配置。
 
-By applying the ONBUILD directive within this "prerequisite" image, specific instructions can be deferred until the image is employed as a parent in another Dockerfile. These deferred instructions are not executed during the build process of the current Dockerfile but are instead inherited and executed when building the child image. This approach streamlines the process of setting up environments and ensures that common dependencies and configurations are consistently applied across multiple projects or applications derived from the base image.
+通过在这个“前提条件”镜像中应用 ONBUILD 指令，可以将特定指令推迟到该镜像作为父镜像在另一个 Dockerfile 中使用时再执行。这些推迟的指令在当前 Dockerfile 的构建过程中不会被执行，而是在构建子镜像时被继承和执行。这种方法简化了设置环境的过程，并确保基础镜像衍生的多个项目或应用程序中一致地应用了常见的依赖项和配置。
 
-The **ONBUILD** directive takes the following format
+**ONBUILD** 指令的格式如下：
 
 ```dockerfile
 ONBUILD <instruction>
 ```
 
-As an example, imagine that we have the following **ONBUILD** instruction in the **Dockerfile** of a custom base image
-
+例如，设想我们在自定义基础镜像的 **Dockerfile** 中有以下的 **ONBUILD** 指令。
 ```dockerfile
 ONBUILD ENTRYPOINT ["echo", "Running an ONBUILD Directive"]
 ```
 
-The `Running an ONBUILD Directive` value will not be printed if we create a Docker container from our custom base image, but will be printed if we use it as a base for another Docker image.
+如果我们从自定义基础镜像创建一个 Docker 容器，`Running an ONBUILD Directive` 的值不会被打印出来，但如果我们使用它作为另一个 Docker 镜像的基础，则会被打印出来。
 
-### [][49]Using the ONBUILD Directive in a Dockerfile
+### 在 Dockerfile 中使用 ONBUILD 指令
 
-In this example, we are going to build a parent image with an Apache web server and use the **ONBUILD** directive to copy HTML files.
+在这个例子中，我们将构建一个带有 Apache 网络服务器的父镜像，并使用 **ONBUILD** 指令来复制 HTML 文件。
 
-Create a new directory named `onbuild-parent-example`
+创建文件夹 `onbuild-parent-example`
 
 ```shell
 mkdir onbuild-parent-example
 ```
 
----
-
-Navigate to the newly created `onbuild-parent-example` directory:
+进入刚创建 `onbuild-parent-example` 目录:
 
 ```shell
 cd .\onbuild-parent-example\
 ```
 
----
-
-Create a new **Dockerfile** and add the following content
+创建 **Dockerfile** 文件，加入如下内容：
 
 ```dockerfile
 FROM ubuntu:latest
@@ -866,17 +841,15 @@ EXPOSE 80
 ENTRYPOINT ["apache2ctl", "-D", "FOREGROUND"]
 ```
 
-This Dockerfile begins by using the latest Ubuntu base image. It updates and upgrades the system packages, then installs the Apache web server. The ONBUILD directive specifies that any child images built from this Dockerfile will automatically copy all HTML files from the build context to the `/var/www/html` directory within the container. Port 80 is exposed to allow incoming traffic to the Apache server. Finally, the `ENTRYPOINT` command configures the container to run Apache in foreground mode, ensuring it remains active and responsive as the primary process. This setup enables the container to serve web content via Apache on port 80.
+这个 Dockerfile 从使用最新的 Ubuntu 基础镜像开始。它更新并升级了系统包，然后安装了 Apache 网络服务器。ONBUILD 指令指定任何从这个 Dockerfile 构建的子镜像都将自动将所有 HTML 文件从构建上下文复制到容器内的 `/var/www/html` 目录。暴露 80 端口以允许流入的流量访问 Apache 服务器。最后，`ENTRYPOINT` 命令配置容器以前台模式运行 Apache，确保它作为主进程保持活跃和响应。这个设置使得容器能够通过 Apache 在 80 端口提供网页内容。
 
----
-
-Now, build the Docker image:
+现在，构建 Docker 镜像:
 
 ```shell
 docker image build -t onbuild-parent-example .
 ```
 
-The output should be as follows:
+输出如下内容:
 
 ```text
 [+] Building 3.5s (8/8) FINISHED                                                                         docker:default
@@ -896,15 +869,11 @@ The output should be as follows:
  => => naming to docker.io/library/onbuild-parent-example                                                          0.0s
 ```
 
----
-
-Execute the `docker container run` command to start a new container from the Docker image built in the previous step:
-
-```
+执行 `docker container run` 命令从上一步构建的 Docker 镜像启动一个新容器：
+```shell
 docker container run -p 8080:80 --name onbuild-parent-container -d onbuild-parent-example
 ```
 
----
 
 If you navigate to the `http://127.0.0.1:8080/` endpoint you should see the default Apache home page
 
