@@ -1,5 +1,5 @@
 ---
-title: 10 Examples Why cURL is an Awesome CLI Tool
+title: 10 个示例：为什么 cURL 是一个很棒的 CLI 工具
 date: 2024-08-01T00:00:00.000Z
 authorURL: ""
 originalURL: https://martinheinz.dev/blog/113
@@ -7,19 +7,20 @@ translator: ""
 reviewer: ""
 ---
 
-Whether you're developer, DevOps engineer, SysAdmin, QA or in any other technical role, you're surely familiar with cURL - _the command line tool and library for transferring data with URLs_ (as described in docs).
+无论你是开发者、DevOps 工程师、系统管理员、QA 还是其他任何技术岗位，你肯定都熟悉 cURL —— _这个用于通过 URL 传输数据的命令行工具和库_（正如文档中所述）。
 
-Most of the time however, we all really only use `curl` for simple tasks, such downloading a file or checking if website is accessible, yet there's some much more `curl` can do!
+然而，大多数时候，我们实际上只使用 `curl` 来完成一些简单的任务，比如下载文件或检查网站是否可访问，但 `curl` 还可以做更多的事情！
 
-And in this article we will go through exactly those cool examples and tricks to showcase why `curl` is awesome and underappreciated tool...
-
-## Globbing
+在本文中，我们将详细介绍那些很酷的示例和技巧，以展示为什么 `curl` 是一个很棒但被低估的工具。
 
 
-First up is _globbing_, allowing us to make multiple requests with a single `curl` command:
+## 通配符匹配
 
-```
 
+首先是 _通配符匹配_，它允许我们使用单个 `curl` 命令发出多个请求： 
+
+
+```shell
 curl -s "https://jsonplaceholder.typicode.com/users/[1-3]" | jq -s .
 curl -s "https://jsonplaceholder.typicode.com/users/[0-10:2]" | jq -s .
 
@@ -28,21 +29,20 @@ curl -s "https://jsonplaceholder.typicode.com/photos/{1,6,35}" | jq -s .
 curl -s "https://jsonplaceholder.typicode.com/users/[1-3]" -o "file_#1.json"
 ```
 
-The first two commands show how we can run a range of requests - first command produces requests to `.../users/1`, `.../users/2`, and `.../users/3`, while the other uses a _step_ option, which gives us 2, 4, 6, 8 and 10. Considering that these particular requests return JSON, we also combine it with `jq ...` with the `-s` (_slurp_) operator, which joins responses of individual requests into single array.
+前两个命令展示了我们如何运行一系列请求 - 第一个命令生成对 `.../users/1`、`.../users/2` 和 `.../users/3` 的请求，而另一个命令使用 _step_ 选项，它给了我们 2、4、6、8 和 10。考虑到这些特定请求返回 JSON，我们还将它与带有 `-s` (_slurp_) 运算符的 `jq ...` 组合在一起，该运算符将各个请求的响应连接到单个数组中。
 
-Third examples uses list of specific numbers instead of range - this also works for characters and words - for example, we could use globbing to make requests with multiple protocols: `{http,https}://...`
+第三个示例使用特定数字列表而不是范围 - 这也适用于字符和单词 - 例如，我们可以使用文件名扩展来发出具有多种协议的请求：`{http,https}://...`
 
-The final example combines globbing with output variables, where the `#1` variable in filename refers to the range `[1-3]`. This will produce `file_1.json`, `file_2.json` and `file_3.json`.
+最后一个示例将文件名扩展与输出变量相结合，其中文件名的 `#1` 变量指的是范围 `[1-3]`。这将生成 `file_1.json`、`file_2.json` 和 `file_3.json`。 
 
-## Configuration Files
+## 配置文件
 
+大多数情况下，在使用 `curl` 时，我们可能希望传入相同的命令行选项，例如代理设置、请求超时、标头等。这就是 `curl` 配置文件 `.curlrc` 可能派上用场的地方： 
 
-Most of the time, when using `curl` we probably want to pass in same commandline options, such as proxy settings, request timeouts, headers, etc. That's where `curl` configuration file named `.curlrc` might come in handy:
-
+```shell
+# cat ~/.curlrc
 ```
-
-# ~/.curlrc
-
+```text
 # some headers
 -H "Upgrade-Insecure-Requests: 1"
 -H "Accept-Language: en-US,en;q=0.8"
@@ -51,61 +51,56 @@ Most of the time, when using `curl` we probably want to pass in same commandline
 --location
 ```
 
-It's just a text file, where each line represents one option that will be passed to `curl`. It's read automatically from `~/.curlrc`, so you don't need any extra flags, but you can use `-K` to override or specify different location, e.g.:
+它只是一个文本文件，其中每一行代表一个将传递给 `curl` 的选项。它会从 `~/.curlrc` 自动读取，因此您不需要任何额外的标志，但您可以使用 `-K` 来覆盖或指定不同的位置，例如： 
 
-```
 
+```shell
 curl -K .curlrc https://google.com
 ```
 
-Similarly to flags and options, one might also want to pass in credentials. This can be done with `--user` option, but that will leave the credentials in shell history, so instead we can utilize `.netrc` file which `curl` supports:
+与标志和选项类似，您可能还想传入凭据。这可以使用 `--user` 选项来完成，但这会将凭据留在 shell 历史记录中，因此我们可以改用 `curl` 支持的 `.netrc` 文件： 
 
-```
-
+```shell
 # ~/.netrc
 machine https://authenticationtest.com/HTTPAuth/
 login user
 password pass
 ```
 
-The format includes `machine` (the URL), `login` and `password` - they can be on single line or as shown above, and we can also have multiple of them in single file. To use it, just pass it to `curl` like:
+格式包括 `machine`（URL）、`login` 和 `password` - 它们可以位于单行上，也可以如上所示，并且我们还可以在单个文件中包含多个。要使用它，只需将其传递给 `curl`，如下所示： 
 
-```
-
+```shell
 curl --netrc-file .netrc https://authenticationtest.com/HTTPAuth/
 ```
 
-## Parallel Requests
+##  并发请求
+我们已经在 globbing 部分讨论了请求范围，但是并行化呢？嗯，`curl` 也可以做到： 
 
 
-We've already talked about ranges of request in globbing section, but what about parallelization? Well, `curl` can do that too:
-
-```
-
+```shell
 curl -I --parallel --parallel-immediate --parallel-max 3 --config websites.txt
 
 curl -I --parallel --parallel-immediate --parallel-max 3 stackoverflow.com google.com example.com
 ```
 
-All we need to do, is add `--parallel` (or `-Z`) and `curl` will open up to 50 parallel connections (can be changed with `--parallel-max N`). Also notice how we're supplying the URLs - first option is `--config` and a textfile that would look like:
-
-```
-
+我们所需要做的就是添加 `--parallel`（或 `-Z`），`curl` 将打开最多 50 个并行连接（可以使用 `--parallel-max N` 更改）。还要注意我们如何提供 URL - 第一个选项是 `--config` 和一个文本文件，如下所示： 
+```shell
 url = "stackoverflow.com"
 url = "google.com"
 url = "example.com"
 ```
 
-Other option is just putting all the URL on commandline. Both of these options also works with non-parallel request!
+另一个选择是将所有 URL 放在命令行上。这两个选项也适用于非并行请求！ 
 
-## Formatting & Variables
+## 格式化和变量 
 
-`curl` can output a lot of stuff, and sometimes it can be overwhelming, verbose and unnecessary. Luckily, we can use output formatting to only print the things that we're interested in:
+`curl` 可以输出很多东西，有时这些内容可能过多、冗长且不必要。幸运的是，我们可以使用输出格式来只打印我们感兴趣的内容：
 
-```
 
+```shell
 curl --silent --output /dev/null --show-error -w @format.txt http://example.com/
-
+```
+```text
 # Type: text/html; charset=UTF-8
 # Code: 200
 #
@@ -118,10 +113,8 @@ curl --silent --output /dev/null --show-error -w @format.txt http://example.com/
 # Server: Sat, 29 Jun 2024 13:01:30 GMT
 ```
 
-We do so using the `-w` option and by passing in a format file. To produce output such as above, we can use:
-
-```
-
+我们使用 `-w` 选项并传入一个格式文件来做到这一点。要生成如上所示的输出，我们可以使用：
+```text
 # format.txt
 Type: %{content_type}\nCode: %{response_code}\n\n
 
@@ -135,12 +128,11 @@ Read header content (v7.83.0):\n
 %header{date}
 ```
 
-Each variable is enclosed in `%{...}`. They can be either simple ones like `response_code` or part of `url.<NAME>` which refer to URL components, such as host or port. Finally, we can also output response headers with `%header{HEADER_NAME}` variables.
+每个变量都包含在 `%{...}` 中。它们可以是简单的变量，如 `response_code`，也可以是 `url.<NAME>` 的一部分，后者指的是 URL 组件，如主机或端口。最后，我们还可以使用 `%header{HEADER_NAME}` 变量输出响应头。
 
-One of the many nice use cases for formatting is measuring request/response time, which can be done with following format:
+格式化的许多良好用例之一是测量请求/响应时间，这可以使用以下格式完成：
 
-```
-
+```text
 # format.txt
      time_namelookup:  %{time_namelookup}s\n
         time_connect:  %{time_connect}s\n
@@ -162,33 +154,31 @@ One of the many nice use cases for formatting is measuring request/response time
           time_total:  0.223992s
 ```
 
-For full list of variables see [docs](https://everything.curl.dev/usingcurl/verbose/writeout.html#available---write-out-variables).
+有关变量的完整列表，查阅[文档](https://everything.curl.dev/usingcurl/verbose/writeout.html#available---write-out-variables).
 
-## Testing & Troubleshooting
+## 测试和故障排除
+使用 `curl` 最常见的情况是进行（网络）故障排除 - 通常情况下，只需向特定 URL 发出请求就足以提供足够的信息，但我们还可以做更多的事情，例如，我们可以强制使用特定的本地网络接口：
 
-
-Most common way to use `curl` is for (network) troubleshooting - oftentimes just making a request to particular URL will provide enough information, but there are more things we can do, for example we can force usage of specific local network interface:
-
-```
-
+```shell
 ip link show
+```
+```text
 # ...
 # 3: wlp5s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DORMANT group default qlen 1000
 
+```shell
 curl --interface wlp5s0 https://example.com
 ```
 
-Similarly, specific DNS server can be forced:
-
-```
-
+同样，可以强制使用特定的 DNS 服务器：
+```shell
 curl --dns-ipv4-addr 1.1.1.1 https://example.com
 ```
 
-Or we can test for timeout and capture exit code ([exit codes](https://everything.curl.dev/cmdline/exitcode.html)):
+或者我们可以测试超时并捕获 [退出状态码](https://everything.curl.dev/cmdline/exitcode.html)：
 
-```
 
+```shell
 curl --connect-timeout 30 --silent --output /dev/null \
   --show-error -w 'Total: %{time_total}s\n' http://google.com/ || EXIT_CODE=$?
 
@@ -200,17 +190,16 @@ else
 fi
 ```
 
-This can be useful - for example - for testing if proxy server is working (with `-x http://proxy.example.com:80`).
+这很有用 - 例如 - 用于测试代理服务器是否正常工作（使用 `-x http://proxy.example.com:80`）。 
 
-Trurl
------
+##  Trurl
 
-`curl` is more than just the CLI tool - the project includes `libcurl` as well as `trurl` which I want showcase here.
+`curl` 不仅仅是一个命令行工具——该项目还包括 `libcurl` 以及我想在这里展示的 `trurl`。
 
-[`trurl`](https://curl.se/trurl/) is a dedicated tool for parsing URLs and is a sibling project to `curl`. It can be installed from source:
+[`trurl`](https://curl.se/trurl/) 是一个专门用于解析 URL 的工具，是 `curl` 的兄弟项目。它可以从源代码安装：
 
-```
 
+```shell
 sudo apt-get install libcurl4-openssl-dev
 git clone https://github.com/curl/trurl.git
 cd trurl
@@ -218,10 +207,9 @@ make
 # ...
 ```
 
-And here are couple examples for using it:
+以下是一些使用它的示例：
 
-```
-
+```shell
 trurl --url https://example.com/some/path/to/file.html --get '{path}'
 # /some/path/to/file.html
 
@@ -249,61 +237,56 @@ trurl --url "https://example.com/?name=hello" --append query=key=value
 # ]
 ```
 
-First one shows how we can extract URL component, here it's path, but can be e.g. url, scheme, user, password, options or host.
+第一个例子展示了我们如何提取 URL 组件，这里提取的是路径，但也可以是例如 url、scheme、user、password、options 或 host。
 
-The second one uses the _append_ feature, to add query parameter to the URL.
+第二个例子使用了 _append_ 功能，向 URL 添加查询参数。
 
-And final example shows the `--json` option which outputs the parsed URL as JSON, which is great for further processing.
+最后一个例子展示了 `--json` 选项，它将解析后的 URL 作为 JSON 输出，这对于进一步处理非常有用。
 
-There's lot more `trurl` can do - you can check out [this video](https://www.youtube.com/watch?v=oDL7DVszr2w) or [manual](https://curl.se/trurl/manual.html) (examples at the bottom).
-
-## Sending/Uploading Data
+`trurl` 还可以做更多的事情——你可以查看[这个视频](https://www.youtube.com/watch?v=oDL7DVszr2w)或[手册](https://curl.se/trurl/manual.html)（示例在底部）。
 
 
-Most of the time we use `curl` to download or request data, but it can (obviously) also send data. POSTing data with `curl` is nothing new right?
+## 发送/上传数据
 
-```
+大多数情况下，我们使用 `curl` 来下载或请求数据，但它（显然）也可以发送数据。使用 `curl` 发送 POST 数据并不是什么新鲜事，对吧？ 
 
+```shell
 curl -X POST "https://httpbin.org/post" -H "accept: application/json" --json '{"key": "value"}'
 ```
 
-But sending JSON like this, having to alternate the single and double quotes gets annoying pretty quickly, but there's a better way:
+但是像这样发送 JSON，必须交替使用单引号和双引号很快就会变得很烦人，但是有一种更好的方法：
 
-```
-
+```shell
 jo -p key=value | curl -X POST "https://httpbin.org/post" -H "accept: application/json" --json @-
 ```
 
-I think we're all familiar with parsing JSON output of `curl` with `jq`, but what about the opposite? - Above we use `jo` tool which easily creates JSON which we can then pass to `curl` using the `--json` option.
+我想我们都熟悉使用 `jq` 解析 `curl` 的 JSON 输出，但是反过来呢？- 在上面，我们使用 `jo` 工具轻松创建 JSON，然后可以使用 `--json` 选项将其传递给 `curl`。
 
-Naturally, the `--json` option can also take input from file, e.g. with `--json @data.json`.
+当然，`--json` 选项也可以从文件中获取输入，例如使用 `--json @data.json`。
 
-Protocols
----------
 
-Last but not least here are protocols - usually we would only use HTTP or HTTPS, but `curl` supports [_a lot_ of protocols](https://everything.curl.dev/protocols/protocols.html#what-other-protocols-are-there).
+## 协议
 
-One I want to mention in particular is `telnet`, which is handy for testing if server listens on specific port, but what if you're on a server/machine where you don't have and can't install `telnet`? Simply use `curl`:
+最后但并非最不重要的是协议 - 通常我们只使用 HTTP 或 HTTPS，但 `curl` 支持[_很多协议_](https://everything.curl.dev/protocols/protocols.html#what-other-protocols-are-there)。
 
-```
+我想特别提一下的是 `telnet`，它可以方便地测试服务器是否在特定端口上监听，但是如果您在没有并且无法安装 `telnet` 的服务器/机器上怎么办？只需使用 `curl`： 
 
+```shell
 # Same as telnet example.com 1234
 curl telnet://example.com:1234
 ```
 
-Some of the more obscure (funny) protocol options are IMAP, POP3 and SMTP for emails, which means that you _can_ read and send emails with `curl`. To read them:
+一些更不为人知（有趣）的协议选项是用于电子邮件的 IMAP、POP3 和 SMTP，这意味着您可以使用 `curl` _读取_和发送电子邮件。要阅读它们：
 
-```
-
+```shell
 curl --url "imaps://imap.gmail.com:993/Inbox;UID=1" --user "user@gmail.com:PASSWORD"
 ```
 
-To make this work with GMail specifically, you would need to create [app password](https://support.google.com/mail/answer/185833?hl=en) which is less secure than normal password. If you _actually_ want to try this, do check out also [Gmail IMAP docs](https://developers.google.com/gmail/imap/imap-extensions) and [these queries](https://gist.github.com/akpoff/53ac391037ae2f2d376214eac4a23634) for inspiration.
+要使其专门用于 Gmail，您需要创建[应用密码](https://support.google.com/mail/answer/185833?hl=en)，它不如普通密码安全。如果您_真的_想尝试这个，请查看[Gmail IMAP 文档](https://developers.google.com/gmail/imap/imap-extensions)和[这些查询](https://gist.github.com/akpoff/53ac391037ae2f2d376214eac4a23634)以获取灵感。
 
-For sending email, you can use:
+要发送电子邮件，您可以使用：
 
-```
-
+```shell
 curl smtp://mail.example.com \
   --mail-from me@example.com \
   --mail-rcpt someone@example.com \
@@ -311,11 +294,10 @@ curl smtp://mail.example.com \
   -u "me@example.com:PASSWORD"
 ```
 
-Here the `message.txt` is the actual email, which needs to follow a specific format, check out [this page](https://everything.curl.dev/usingcurl/smtp.html) for examples.
+这里的 `message.txt` 是实际的电子邮件，它需要遵循特定的格式，请查看[此页面](https://everything.curl.dev/usingcurl/smtp.html)以获取示例。 
 
-## Conclusion
+## 总结
 
+我们到最后了，我敢肯定至少有 10 个例子（我不再计数了）。但老实说，这真的只是触及了皮毛——我们甚至还没有触及 `libcurl`，它是 `curl` 的_重要_部分。
 
-We're at the end, and I'm pretty sure that was at least 10 examples (I stopped counting). But honestly, this really barely scratches the surface - we haven't even touched the `libcurl` which is the _big_ part of `curl`.
-
-There's so much more you can do with `curl` so I recommend exploring both [docs](https://curl.se/docs/manpage.html) and [https://everything.curl.dev/](https://everything.curl.dev/).
+使用 `curl` 还可以做更多的事情，所以我建议同时浏览 [文档](https://curl.se/docs/manpage.html) 和 [https://everything.curl.dev/](https://everything.curl.dev/)。 
