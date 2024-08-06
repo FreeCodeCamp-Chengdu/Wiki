@@ -874,32 +874,26 @@ docker image build -t onbuild-parent-example .
 docker container run -p 8080:80 --name onbuild-parent-container -d onbuild-parent-example
 ```
 
-
-If you navigate to the `http://127.0.0.1:8080/` endpoint you should see the default Apache home page
+如果你访问到 `http://127.0.0.1:8080/` ，你应该会看到默认的 Apache 主页。
 
 [![Image description](https://media.dev.to/cdn-cgi/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fynq7tnklqzp44zhosob2.png)][50]
 
----
 
-Remove the container so it won't interfere with the ports
+
+移除容器，以免它占用端口使用。
 
 ```shell
 docker container stop onbuild-parent-container
 docker container rm onbuild-parent-container
 ```
 
----
-
-Now, lets create another Docker image using `onbuild-parent-container` as the base image, to deploy a custom HTML home page. To do that let's create a new directory named `onbuild-child-example`
+现在，让我们使用 `onbuild-parent-container` 作为基础镜像来创建另一个 Docker 镜像，以部署自定义的 HTML 主页。为此，让我们创建一个名为 `onbuild-child-example` 的新目录。
 
 ```shell
 cd ..
 mkdir onbuild-child-example
 ```
-
----
-
-Create a new html page with the following content
+创建一个包含以下内容的新 html 页面。
 
 ```html
 <html>
@@ -913,25 +907,22 @@ Create a new html page with the following content
 </html>
 ```
 
----
+在同一目录下创建一个 **Dockerfile**。
 
-In the same directory create a **Dockerfile**
-
-```
+```dockerfile
 FROM onbuild-parent-example
 ```
 
-This **Dockerfile** has a single directive. This will use the **FROM** directive to utilize the `onbuild-parent-example` Docker image that we created previously as the base image.
+这个 **Dockerfile** 有一个指令。它将使用 **FROM** 指令，以我们之前创建的 `onbuild-parent-example` Docker 镜像作为基础镜像。
 
----
 
-Now, build the docker image
+现在，构建 Docker 镜像
 
 ```shell
 docker image build -t onbuild-child-example .
 ```
 
-The output should be something like the following
+如下输出：
 
 ```text
 [+] Building 0.3s (7/7) FINISHED                                                                         docker:default
@@ -950,29 +941,24 @@ The output should be something like the following
  => => naming to docker.io/library/onbuild-child-example                                                           0.0s
 ```
 
----
-
-Execute the `docker container run` command to start a new container with the image we just built
+执行 `docker container run` 命令以使用我们刚刚构建的镜像启动一个新容器。
 
 ```shell
 docker container run -p 8080:80 --name onbuild-child-container -d onbuild-child-example
 ```
 
----
-
-You should be able now to view our custom `index.html` page if you navigate to the `http://127.0.0.1:8080/` endpoint.
+现在，如果你访问到 `http://127.0.0.1:8080/` ，你应该能够看到我们自定义的 `index.html` 页面。
 
 [![Image description](https://media.dev.to/cdn-cgi/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fdecdrnoany4idkkrrllx.png)][51]
 
-## [][52]Summary
+## 总结
 
-In this post we focused on building Docker images. We we discussed more advanced Dockerfile directives, including the **ENV**, **ARG**, **WORKDIR**, **COPY**, **ADD**, **USER**, **VOLUME**, **EXPOSE**, **HEALTHCHECK**, and **ONBUILD** directives.
+在这篇文章中，我们专注于构建Docker镜像。我们讨论了更高级的Dockerfile指令，包括 **ENV**、**ARG**、**WORKDIR**、**COPY**、**ADD**、**USER**、**VOLUME**、**EXPOSE**、**HEALTHCHECK** 和 **ONBUILD** 指令。
 
-In the next few posts we are going to discuss what a Docker registry is, look at private and public Docker registries and how we can publish images to Docker registries.
+在接下来的几篇文章中，我们将讨论什么是Docker注册表，研究私有和公共Docker注册表，以及我们如何将镜像发布到Docker注册表。
 
----
 
-Buckle up, buttercup! This docker journey is about to get even wilder. For references, just check out the first post in this series. It's your one-stop shop for all the nitty-gritty details.
+系好安全带，小伙伴们！这段Docker之旅即将变得更加狂野。如果需要参考资料，只需查看本系列的第一篇文章。那里是你获取所有细节信息的一站式商店。
 
 
 [3]: https://www.algolia.com/developers/?utm_source=devto&utm_medium=referral
