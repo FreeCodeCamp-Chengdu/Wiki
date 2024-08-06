@@ -1,18 +1,22 @@
 ---
 title: 浏览器开发者工具中不应该再有秘密
-authorURL: ""
-originalURL: https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/
-translator: ""
-reviewer: ""
+date: 2021-11-01 15:21:00
+authors:
+  - luojiyin1987
+original: https://christianheilmann.com/2021/11/01/developer-tools-secrets-that-shouldnt-be-secrets/
+categories:
+  - Article
+  - Translation
+toc: true
 ---
-
-2021 年 11 月 1 日星期一下午 3:21
 
 > **更新**: 由于这篇文章[正在 Hackernews 上热传][1]，我在每个标题后的括号中为每个提示添加了支持环境的信息。当我说明 `Chromium 浏览器` 时，指的是所有使用 `Chromium` 内核并具有所有开发者工具的浏览器。这包括 `Chrome` 浏览器、`Microsoft Edge`、`Brave` 以及其他更多浏览器。在此提醒一下： `Microsoft Edge` 是 `Windows 10/11` 系统自带的浏览器，基于 `Chromium`，因此从平台角度来看与 `Chrome` 浏览器类似。它们在用户体验和核心服务方面有所不同。`Edge` 开发者工具与谷歌密切合作，将我们添加到产品中的工作带回 `Chromium` 核心。但是，我在这里谈到的一些东西是微软 `Edge` 的实验和独有功能，它可在 `Windows`、`Mac` 和 `Linux` 上使用。有些功能只能通过 [Edge DevTools for VS Code 扩展][2]在 `Visual Studio Code` 中使用。
 
 这是我今年 9 月在 [CityJS][3] 上发表的演讲。我是 `Microsoft Edge` 开发者人员工具的首席产品经理，这些都是我在开发工具、记录工具和查看用户反馈时遇到的问题。
 
 你可以在 Youtube 上观看[演讲视频][4]。
+
+<!-- more -->
 
 下面是我所写的所有内容：
 
