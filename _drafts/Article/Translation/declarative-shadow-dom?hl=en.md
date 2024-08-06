@@ -1,24 +1,15 @@
 ---
-title: Declarative Shadow DOM
+title: 声明式 Shadow DOM
 date: 2024-07-27T07:45:09.743Z
-author: X
+authors:
+  - TechQuery
 authorURL: https://twitter.com/_developit
-originalURL: https://developer.chrome.com/docs/css-ui/declarative-shadow-dom?hl=en
-translator: ""
-reviewer: ""
+original: https://developer.chrome.com/docs/css-ui/declarative-shadow-dom?hl=en
 ---
-
--   [Home][1]
--   [Docs][2]
--   [CSS and UI][3]
-
-<!-- more -->
-
-# Declarative Shadow DOM
 
 Stay organized with collections Save and categorize content based on your preferences.
 
-A new way to implement and use Shadow DOM directly in HTML.
+一种直接在 HTML 中实现和使用 Shadow DOM 的新方法。
 
 ![Jason Miller](https://web.dev/images/authors/developit.jpg)
 
@@ -32,31 +23,33 @@ Mason Freed
 
 [X][7] [GitHub][8]
 
-Declarative Shadow DOM is a [standard web platform feature][9], which has been supported in Chrome from version 90. Note that the specification for this feature changed in 2023 (including a rename of `shadowroot` to `shadowrootmode`), and the most up to date standardized versions of all parts of the feature landed in Chrome version 124.
+<!-- more -->
 
-[Shadow DOM][10] is one of the three Web Components standards, rounded out by [HTML templates][11] and [Custom Elements][12]. Shadow DOM provides a way to scope CSS styles to a specific DOM subtree and isolate that subtree from the rest of the document. The `<slot>` element gives us a way to control where the children of a Custom Element should be inserted within its Shadow Tree. These features combined enable a system for building self-contained, reusable components that integrate seamlessly into existing applications just like a built-in HTML element.
+声明式 Shadow DOM 是一种[标准 Web 平台特性][9]，已在 Chrome 90 中获得支持。请注意，这个特性的规范在 2023 年有所变更（包括 `shadowroot` 到 `shadowrootmode` 的重命名），还有这个特性所有部分最近标准化的版本已在 Chrome 124 实现。
 
-Until now, the only way to use Shadow DOM was to construct a shadow root using JavaScript:
+[Shadow DOM][10] 是包括 [HTML templates][11] 和 [Custom Elements][12] 在内的三个 Web Components 标准之一。Shadow DOM 提供一种方式，可将 CSS 样式的作用域限定于一棵特定 DOM 子树，并把该子树与文档的其余部分隔离开来。`<slot>` 元素给我们一种方式去控制一个自定义元素的子节点应该插入在它的影子树中的什么位置。这些特性联合成一个系统来构建自包含、可复用的组件，以便像一个内置 HTML 元素一样无缝集成进现有应用。
 
-```
+在此之前，使用 Shadow DOM 的唯一方法是用 JavaScript 构造一个影子根节点：
+
+```js
 const host = document.getElementById('host');
 const shadowRoot = host.attachShadow({mode: 'open'});
 shadowRoot.innerHTML = '<h1>Hello Shadow DOM</h1>';
 ```
 
-An imperative API like this works fine for client-side rendering: the same JavaScript modules that define our Custom Elements also create their Shadow Roots and set their content. However, many web applications need to render content server-side or to static HTML at build time. This can be an important part of delivering a reasonable experience to visitors who may not be capable of running JavaScript.
+这样的命令式 API 适用于客户端渲染：定义我们自定义元素的同一个 JavaScript 也用于创建它们的影子根节点并设置它们的内容。然而，很多 Web 需要在服务端渲染内容，或在构建时生成静态 HTML。想为或许无法运行 JavaScript 的访问者提供一个合理的体验，这可能是一个重要的举措。
 
-The justifications for [Server-Side Rendering][13] (SSR) vary from project to project. Some websites must provide fully functional server-rendered HTML in order to meet accessibility guidelines, others choose to deliver a baseline no-JavaScript experience as a way to guarantee good performance on slow connections or devices.
+使用[服务端渲染][13] (SSR) 的原因因项目而异。有些网站必须提供全功能的服务端渲染 HTML，以便符合无障碍准则；另一些则选择提供一个基准无 JavaScript 体验，以确保在慢速连接和设备上拥有良好性能。
 
-Historically, it has been difficult to use Shadow DOM in combination with Server-Side Rendering because there was no built-in way to express Shadow Roots in the server-generated HTML. There are also performance implications when attaching Shadow Roots to DOM elements that have already been rendered without them. This can cause layout shifting after the page has loaded, or temporarily show a flash of unstyled content ("FOUC") while loading the Shadow Root's stylesheets.
+历史上，将 Shadow DOM 与服务端渲染结合使用一直很困难，因为没有内建的方式在服务端生成的 HTML 中表示影子根。当把影子根附加到已单独渲染的 DOM 元素上也会有性能影响。这可能导致在页面已经加载完成时导致布局偏移，或当加载影子根的样式表时暂时闪烁一下未样式化的内容 ("FOUC")。
 
-[Declarative Shadow DOM][14] (DSD) removes this limitation, bringing Shadow DOM to the server.
+[声明式 Shadow DOM][14] (DSD) 解除了这些限制，把 Shadow DOM 带到了服务端。
 
-## Building a Declarative Shadow Root
+## 构建一个声明式影子根
 
-A Declarative Shadow Root is a `<template>` element with a `shadowrootmode` attribute:
+一个声明式影子根是一个带有 `shadowrootmode` 属性的 `<template>` 元素：
 
-```
+```html
 <host-element>
   <template shadowrootmode="open">
     <slot></slot>
