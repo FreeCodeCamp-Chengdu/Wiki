@@ -1,15 +1,18 @@
 ---
-title: Everything I Know About SSDs 2019
-authorURL: ""
-originalURL: https://kcall.co.uk/ssd/index.html
-translator: ""
-reviewer: ""
-date: "2019-03-01"
+title: 我所知道的关于固态硬盘的一切
+date: 2019-03-01
+authors:
+  - luojiyin1987
+original: https://kcall.co.uk/ssd/index.html
+categories:
+  - Article
+  - Translation
+toc: true
 ---
 
-# 我所知道的关于固态硬盘的一切
+使用 NAND 闪存的固态硬盘，它们与机械硬盘的区别，以及它们如何影响文件删除和恢复。
 
-使用 NAND 闪存的固态硬盘，它们与机械硬盘的区别，以及它们如何影响文件删除和恢复
+<!-- more -->
 
 ## 介绍
 

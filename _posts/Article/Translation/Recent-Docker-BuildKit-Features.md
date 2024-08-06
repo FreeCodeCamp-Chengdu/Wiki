@@ -1,13 +1,18 @@
 ---
-title: Recent Docker BuildKit Features You're Missing Out On
+title: 你正在错过的最新 Docker BuildKit 功能
 date: 2024-05-13T00:00:00.000Z
-authorURL: ""
-originalURL: https://martinheinz.dev/blog/111
-translator: ""
-reviewer: ""
+authors:
+  - luojiyin1987
+original: https://martinheinz.dev/blog/111
+categories:
+  - Article
+  - Translation
+toc: true
 ---
 
 随着 BuildKit 的引入，Docker 的构建后端得到了显著改进，并增添了许多强大的新功能。然而，很多用户并不了解这些新功能。因此，本文将向你介绍那些你绝对应该了解并开始使用的 BuildKit 功能，助你更好地利用 Docker。
+
+<!-- more -->
 
 ## Debugging（调试）
 

@@ -1,14 +1,16 @@
 ---
-title: "从零开始构建容器：层"
+title: 从零开始构建容器：层
 date: 2024-06-07T03:14:58.423Z
-authorURL: ""
-originalURL: https://depot.dev/blog/building-container-layers-from-scratch
-translator: ""
-reviewer: ""
+authors:
+  - luojiyin1987
+original: https://depot.dev/blog/building-container-layers-from-scratch
+categories:
+  - Article
+  - Translation
+toc: true
 ---
 
 在 Depot，我们专注于为容器镜像提供最快的构建服务。我们主要通过以下方式实现这一目标：
-
 
 1.  提供对强大计算和存储的即时访问。
 2.  优化构建过程本身以使其尽可能快。
@@ -18,6 +20,8 @@ reviewer: ""
 对于构建过程本身，除了对构建过程进行许多[高级优化][1]之外，我们目前正在对构建过程本身进行许多低级优化。
 
 为了更好地理解其中一些优化，了解 OCI 容器镜像层格式本身很有帮助。
+
+<!-- more -->
 
 ## 层格式
 
@@ -118,7 +122,7 @@ Whiteout 文件是带有特殊名称的空文件，它告诉容器运行时应�
 
 ## Overlay filesystems（叠加文件系统）
 
-像 containerd 或 podman 这样的容器运行时负责在运行容器之前将镜像的层（tar 包）解压到一个目录中。这被称为容器的`rootfs`或根文件系统。
+像 containerd 或 podman 这样的容器运行时负责在运行容器之前将镜像的层（tar 包）解压到一个目录中。这被称为容器的 `rootfs` 或根文件系统。
 
 实际上，对于每个启动的容器，依次将每一层解压到 rootfs 目录中，并注意应用文件修改或删除 whiteout 文件，这将非常缓慢。相反，容器运行时通常使用特殊的文件系统来有效地将各层组合成一个单一的文件系统。
 
