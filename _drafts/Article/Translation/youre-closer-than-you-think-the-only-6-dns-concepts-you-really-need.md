@@ -8,54 +8,56 @@ translator: ""
 reviewer: ""
 ---
 
-Feeling like DNS is this big, scary monster you’ll never fully understand? Here’s some good news: you’re probably a lot closer to mastering it than you realize. In fact, there are really only six core concepts you need to have down pat. The rest? You can offload that from your mental RAM. Let’s walk through these essentials and show you how much you already know – and how little more you need to learn to handle 80% of your DNS needs with confidence.
+觉得 DNS 是个你永远无法完全理解的庞然大物？有个好消息：你可能比自己意识到的更接近掌握它了。事实上，你真正需要掌握的核心概念只有六个。剩下的呢？你可以把它们从你的大脑内存中卸载掉。让我们来看看这些基本要素，并向你展示你已经知道了多少——以及你需要学习多少才能自信地处理 80% 的 DNS 需求。
 
-You might want to scroll fast past the next table… its a bit intimidating.
+你可能想快速滚动浏览下一张表格……它有点吓人。
 
-## A quick complete list of DNS Functionality and Descriptions
-|    | DNS Functionality | Description |
-|----|-------------------|-------------|
-| 1  | A Records         | Map domain names to IPv4 addresses |
-| 2  | AAAA Records      | Map domain names to IPv6 addresses |
-| 3  | CNAME Records     | Create aliases for domain names |
-| 4  | MX Records        | Specify mail servers for handling email |
-| 5  | TXT Records       | Store arbitrary text strings, often used for domain verification |
-| 6  | NS Records        | Delegate a domain or subdomain to a set of name servers |
-| 7  | SOA Record        | Specify authoritative information about a DNS zone |
-| 8  | PTR Records       | Reverse DNS lookup, map IP addresses to domain names |
-| 9  | SRV Records       | Specify location of services (e.g., VoIP, IM) |
-| 10 | CAA Records       | Specify which Certificate Authorities can issue SSL/TLS certificates |
-| 11 | DKIM Records      | Email authentication method to detect forged sender addresses |
-| 12 | SPF Records       | Email authentication method to prevent email spoofing |
-| 13 | DMARC Records     | Email authentication, policy, and reporting protocol |
-| 14 | NAPTR Records     | Used for ENUM and SIP services |
-| 15 | SSHFP Records     | Store SSH public host key fingerprints |
-| 16 | DS Records        | Used in DNSSEC to secure delegation of subdomains |
-| 17 | TLSA Records      | Associate TLS/SSL certificate with domain name for DANE protocol |
-| 18 | LOC Records       | Specify geographical location of a domain |
-| 19 | HINFO Records     | Specify host hardware and operating system |
-| 20 | RP Records        | Specify a responsible person for a domain |
-| 21 | AFSDB Records     | Specify location of AFS cell database servers |
-| 22 | Zone Transfers    | Configure zone transfer settings between primary and secondary DNS servers |
-| 23 | TTL               | Set caching duration for DNS records |
-| 24 | Reverse DNS Zones | Configure reverse lookup zones for IP to domain mapping |
-| 25 | Subdomains        | Create and manage subdomains |
-| 26 | Wildcard DNS Records | Set up catch-all records for subdomains |
-| 27 | DNS Forwarding    | Configure DNS servers to forward queries to other DNS servers |
-| 28 | DNSSEC            | Enable and configure DNSSEC for securing DNS |
-| 29 | GeoDNS            | Set up location-based DNS responses |
-| 30 | Round Robin DNS   | Configure multiple A or AAAA records for load balancing |
-| 31 | Dynamic DNS       | Allow automatic updates of DNS records |
-| 32 | DNS Aliases       | Create alternative names for the same host |
-| 33 | DNS Views         | Configure different DNS responses based on the source of the query |
+## DNS 功能和描述的速查表
 
-#	DNS Functionality	Description
-1	A Records	Map domain names to IPv4 addresses
-2	CNAME Records	Create aliases for domain names
-3	MX Records	Specify mail servers for handling email
-4	TXT Records	Store text strings, often used for domain verification
-5	NS Records	Delegate a domain to name servers
-6	TTL	Set caching duration for DNS records
+|     | DNS 功能             | 描述                                                 |
+| --- | -------------------- | ---------------------------------------------------- |
+| 1   | A Records            | 将域名映射到 IPv4 地址                               |
+| 2   | AAAA Records         | 将域名映射到 IPv6 地址                               |
+| 3   | CNAME Records        | 为域名创建别名                                       |
+| 4   | MX Records           | 指定用于处理电子邮件的邮件服务器                     |
+| 5   | TXT Records          | 存储任意文本字符串，通常用于域名验证                 |
+| 6   | NS Records           | 将域名或子域名委托给一组名称服务器                   |
+| 7   | SOA Records          | 指定有关 DNS 区域的权威信息                          |
+| 8   | PTR Records          | 反向 DNS 查询，将 IP 地址映射到域名                  |
+| 9   | SRV Records          | 指定服务的位置（例如，VoIP、IM）                     |
+| 10  | CAA Records          | 指定哪些证书颁发机构可以颁发 SSL/TLS 证书            |
+| 11  | DKIM Records         | 电子邮件身份验证方法，用于检测伪造的发件人地址       |
+| 12  | SPF Records          | 电子邮件身份验证方法，用于防止电子邮件欺骗           |
+| 13  | DMARC Records        | 电子邮件身份验证、策略和报告协议                     |
+| 14  | NAPTR Records        | 用于 ENUM 和 SIP 服务                                |
+| 15  | SSHFP Records        | 存储 SSH 公共主机密钥指纹                            |
+| 16  | DS Records           | 用于 DNSSEC 中以确保子域名的安全委托                 |
+| 17  | TLSA Records         | 将 TLS/SSL 证书与 DANE 协议的域名相关联              |
+| 18  | LOC Records          | 指定域名的地理位置                                   |
+| 19  | HINFO Records        | 指定主机硬件和操作系统                               |
+| 20  | RP Records           | 指定域名的责任人                                     |
+| 21  | AFSDB Records        | 指定 AFS 单元数据库服务器的位置                      |
+| 22  | Zone Transfers       | 配置主 DNS 服务器和辅助 DNS 服务器之间的区域传送设置 |
+| 23  | TTL                  | 设置 DNS Records 的缓存持续时间                      |
+| 24  | Reverse DNS Zones    | 配置用于 IP 到域名映射的反向查询区域                 |
+| 25  | Subdomains           | 创建和管理子域名                                     |
+| 26  | Wildcard DNS Records | 为子域名设置通配符 Records                           |
+| 27  | DNS Forwarding       | 配置 DNS 服务器以将查询转发到其他 DNS 服务器         |
+| 28  | DNSSEC               | 启用和配置 DNSSEC 以保护 DNS                         |
+| 29  | GeoDNS               | 设置基于位置的 DNS 响应                              |
+| 30  | Round Robin DNS      | 配置多个 A 或 AAAA Records 以实现负载均衡            |
+| 31  | Dynamic DNS          | 允许自动更新 DNS Records                             |
+| 32  | DNS Aliases          | 为同一主机创建备用名称                               |
+| 33  | DNS Views            | 根据查询来源配置不同的 DNS 响应                      |
+
+## DNS 功能描述
+
+1 A Records Map domain names to IPv4 addresses
+2 CNAME Records Create aliases for domain names
+3 MX Records Specify mail servers for handling email
+4 TXT Records Store text strings, often used for domain verification
+5 NS Records Delegate a domain to name servers
+6 TTL Set caching duration for DNS records
 Look, I get it. DNS can seem like a labyrinth of cryptic records and arcane configurations. But here’s the dirty little secret: most devs are massively overcomplicating things. You don’t need to be a DNS guru to get shit done. In fact, understanding just six key concepts will cover about 80% of your DNS needs. Let’s break it down, shall we?
 
 A Records: Your Domain’s Home Address
@@ -101,15 +103,12 @@ NS Record Example
 
 NS (Name Server) records are crucial for the hierarchical structure of DNS. They tell the internet which servers are authoritative for your domain’s DNS information.
 
-
 Example NS Record Usage:
 You’re using Cloudflare for DNS. You’d set up NS records like:
 coolsite.com. IN NS dana.ns.cloudflare.com.
 coolsite.com. IN NS rick.ns.cloudflare.com.
 
-
 By setting these NS records, you’re delegating responsibility for your domain’s DNS to Cloudflare’s name servers. It’s like telling the internet, ‘For information about coolsite.com, ask these Cloudflare servers.’
-
 
 Going deeper: NS records are part of a larger system of delegation in DNS. When you change NS records, you’re changing who controls your domain’s DNS settings. This change needs to be reflected at your domain registrar to take full effect, which is why NS changes can take time to propagate fully across the internet.
 
