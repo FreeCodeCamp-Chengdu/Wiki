@@ -7,68 +7,68 @@ translator: ""
 reviewer: ""
 ---
 
-I’ve been having problems for the last 3 years or so where [Mess With DNS](https://messwithdns.net/) periodically runs out of memory and gets OOM killed.
+在过去的 3 年左右时间里，我一直遇到一个问题:[Mess With DNS](https://messwithdns.net/) 会周期性地耗尽内存并被 OOM killer 终止。
 
-This hasn’t been a big priority for me: usually it just goes down for a few minutes while it restarts, and it only happens once a day at most, so I’ve just been ignoring. But last week it started actually causing a problem so I decided to look into it.
+这对我来说并不是一个大问题:通常它只会在重启时停机几分钟,而且最多每天发生一次,所以我一直在忽略它。但是上周它开始真的造成问题了,所以我决定研究一下。
 
-This was kind of winding road where I learned a lot so here’s a table of contents:
+这是一个曲折的过程,我学到了很多东西,以下是目录:
 
-*   [there’s about 100MB of memory available](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#there-s-about-100mb-of-memory-available)
-*   [the problem: OOM killing the backup script](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#the-problem-oom-killing-the-backup-script)
-*   [attempt 1: use SQLite](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#attempt-1-use-sqlite)
-    *   [problem: how to store IPv6 addresses](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#problem-how-to-store-ipv6-addresses)
-    *   [problem: it’s 500x slower](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#problem-it-s-500x-slower)
-    *   [time for EXPLAIN QUERY PLAN](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#time-for-explain-query-plan)
-*   [attempt 2: use a trie](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#attempt-2-use-a-trie)
-    *   [some notes on memory profiling](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#some-notes-on-memory-profiling)
-*   [attempt 3: make my array use less memory](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#attempt-3-make-my-array-use-less-memory)
-    *   [idea 3.1: deduplicate the Name and Country](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#idea-3-1-deduplicate-the-name-and-country)
-    *   [how big are ASNs?](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#how-big-are-asns)
-    *   [idea 3.2: use netip.Addr instead of net.IP](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#idea-3-2-use-netip-addr-instead-of-net-ip)
-    *   [the result: saved 70MB of memory!](https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#the-result-saved-70mb-of-memory)
+-   [大约有 100MB 的可用内存][2]
+-   [问题:OOM killer 终止备份脚本][3]
+-   [尝试 1:使用 SQLite][4]
+    -   [问题:如何存储 IPv6 地址][5]
+    -   [问题:速度慢了 500 倍][6]
+    -   [是时候用 EXPLAIN QUERY PLAN 了][7]
+-   [尝试 2:使用字典树][8]
+    -   [关于内存分析的一些笔记][9]
+-   [尝试 3:让数组使用更少的内存][10]
+    -   [想法 3.1:对 Name 和 Country 进行去重][11]
+    -   [ASN 有多大?][12]
+    -   [想法 3.2:使用 netip.Addr 替代 net.IP][13]
+    -   [结果:节省了 70MB 内存!][14]
 
-### there’s about 100MB of memory available
+### 大约有 100MB 的可用内存
 
-I run Mess With DNS on a VM without about 465MB of RAM, which according to `ps aux` (the `RSS` column) is split up something like:
+我在一个大约有 465MB RAM 的虚拟机上运行 Mess With DNS,根据 `ps aux` (RSS 列)显示内存分配如下:
 
-*   100MB for PowerDNS
-*   200MB for Mess With DNS
-*   40MB for [hallpass](https://fly.io/blog/ssh-and-user-mode-ip-wireguard/)
+-   PowerDNS 使用 100MB
+-   Mess With DNS 使用 200MB
+-   [hallpass][15] 使用 40MB
 
-That leaves about 110MB of memory free.
+这样还剩下大约 110MB 的可用内存。
 
-A while back I set [GOMEMLIMIT](https://tip.golang.org/doc/gc-guide) to 250MB to try to make sure the garbage collector ran if Mess With DNS used more than 250MB of memory, and I think this helped but it didn’t solve everything.
+之前我设置了 [GOMEMLIMIT][16] 为 250MB,以确保当 Mess With DNS 使用超过 250MB 内存时垃圾收集器会运行,我觉得这有帮助但并没有解决所有问题。
 
-### the problem: OOM killing the backup script
+### 问题:OOM killer 终止备份脚本
 
-A few weeks ago I started backing up Mess With DNS’s database for the first time [using restic](https://jvns.ca/til/restic-for-backing-up-sqlite-dbs/).
+几周前我第一次开始使用 [restic][17] 备份 Mess With DNS 的数据库。
 
-This has been working okay, but since Mess With DNS operates without much extra memory I think `restic` sometimes needed more memory than was available on the system, and so the backup script sometimes got OOM killed.
+这个方案基本可行,但由于 Mess With DNS 没有太多额外的内存,我认为 `restic` 有时需要的内存超过了系统可用内存,所以备份脚本有时会被 OOM killer 终止。
 
-This was a problem because
+这带来了两个问题:
 
-1.  backups might be corrupted sometimes
-2.  more importantly, restic takes out a lock when it runs, and so I’d have to manually do an unlock if I wanted the backups to continue working. Doing manual work like this is the #1 thing I try to avoid with all my web services (who has time for that!) so I really wanted to do something about it.
+1. 备份可能会被损坏
+2. 更重要的是,restic 在运行时会加锁,如果我想让备份继续工作就必须手动解锁。手动操作是我在所有网络服务中最想避免的事情(谁有时间做这个!)所以我真的想解决这个问题。
 
-There’s probably more than one solution to this, but I decided to try to make Mess With DNS use less memory so that there was more available memory on the system, mostly because it seemed like a fun problem to try to solve.
+这可能有不止一种解决方案,但我决定尝试让 Mess With DNS 使用更少的内存,这样系统就有更多可用内存,主要是因为这看起来是一个有趣的问题。
 
-### what’s using memory: IP addresses
+### 内存使用在哪里:IP 地址
 
-I’d run a memory profile of Mess With DNS a bunch of times in the past, so I knew exactly what was using most of Mess With DNS’s memory: IP addresses.
+我之前对 Mess With DNS 做过很多次内存分析,所以我很清楚什么占用了最多内存:IP 地址。
 
-When it starts, Mess With DNS loads this [database where you can look up the ASN of every IP address](https://iptoasn.com/) into memory, so that when it receives a DNS query it can take the source IP address like `74.125.16.248` and tell you that IP address belongs to `GOOGLE`.
+在启动时,Mess With DNS 会将这个[可以查找每个 IP 地址的 ASN 的数据库][18]加载到内存中,这样当它收到 DNS 查询时,就可以获取源 IP 地址(如 `74.125.16.248`)并告诉你这个 IP 地址属于 `GOOGLE`。
 
-This database by itself used about 117MB of memory, and a simple `du` told me that was too much – the original text files were only 37MB!
+仅这个数据库就使用了大约 117MB 内存,而一个简单的 `du` 命令告诉我这太多了 - 原始文本文件只有 37MB!
 
-```
+```bash
 $ du -sh *.tsv
 26M	ip2asn-v4.tsv
 11M	ip2asn-v6.tsv
 ```
 
-The way it worked originally is that I had an array of these:
+最初的实现方式是我有一个这样的数组:
 
-```
+```golang
 type IPRange struct {
 	StartIP net.IP
 	EndIP   net.IP
@@ -78,28 +78,28 @@ type IPRange struct {
 }
 ```
 
-and I searched through it with a binary search to figure out if any of the ranges contained the IP I was looking for. Basically the simplest possible thing and it’s super fast, my machine can do about 9 million lookups per second.
+然后我用二分查找来确定是否有任何范围包含我要查找的 IP。这是最简单的方法,而且超级快,我的机器每秒可以进行约 900 万次查找。
 
-### attempt 1: use SQLite
+### 尝试 1:使用 SQLite
 
-I’ve been using SQLite recently, so my first thought was – maybe I can store all of this data on disk in an SQLite database, give the tables an index, and that’ll use less memory.
+我最近一直在使用 SQLite,所以我的第一个想法是 - 也许我可以把所有数据存储在 SQLite 数据库的磁盘上,给表添加索引,这样就能使用更少的内存。
 
-So I:
+所以我:
 
-*   wrote a quick Python script using [sqlite-utils](https://sqlite-utils.datasette.io/en/stable/) to import the TSV files into an SQLite database
-*   adjusted my code to select from the database instead
+-   写了一个使用 [sqlite-utils][19] 的简单 Python 脚本来将 TSV 文件导入到 SQLite 数据库
+-   调整了代码以从数据库中查询
 
-This did solve the initial memory goal (after a GC it now hardly used any memory at all because the table was on disk!), though I’m not sure how much GC churn this solution would cause if we needed to do a lot of queries at once. I did a quick memory profile and it seemed to allocate about 1KB of memory per lookup.
+这确实解决了最初的内存目标(在 GC 之后几乎不使用任何内存,因为表在磁盘上!),虽然我不确定如果我们需要同时进行大量查询时这个解决方案会造成多少 GC 压力。我做了一个快速的内存分析,发现每次查找大约分配 1KB 内存。
+让我们来谈谈使用 SQLite 遇到的问题。
 
-Let’s talk about the issues I ran into with using SQLite though.
+### 问题:如何存储 IPv6 地址
 
-### problem: how to store IPv6 addresses
+SQLite 不支持大整数,而 IPv6 地址是 128 位的,所以我决定将它们存储为文本。我认为 BLOB 可能会更好,我最初以为 BLOB 不能比较,但 [sqlite 文档][20] 说可以。
+我最终使用了这样的模式:
 
-SQLite doesn’t have support for big integers and IPv6 addresses are 128 bits, so I decided to store them as text. I think `BLOB` might have been better, I originally thought `BLOB`s couldn’t be compared but the [sqlite docs](https://www.sqlite.org/datatype3.html#sort_order) say they can.
+我最终使用了这样的表结构:
 
-I ended up with this schema:
-
-```
+```sql
 CREATE TABLE ipv4_ranges (
    start_ip INTEGER NOT NULL,
    end_ip INTEGER NOT NULL,
@@ -120,15 +120,15 @@ CREATE INDEX idx_ipv4_ranges_end_ip ON ipv4_ranges (end_ip);
 CREATE INDEX idx_ipv6_ranges_end_ip ON ipv6_ranges (end_ip);
 ```
 
-Also I learned that Python has an `ipaddress` module, so I could use `ipaddress.ip_address(s).exploded` to make sure that the IPv6 addresses were expanded so that a string comparison would compare them properly.
+另外我了解到 Python 有一个 ipaddress 模块,所以我可以使用 ipaddress.ip_address(s).exploded 来确保 IPv6 地址被展开,这样字符串比较就能正确工作。
 
-### problem: it’s 500x slower
+### 问题:速度慢了 500 倍
 
-I ran a quick microbenchmark, something like this. It printed out that it could look up 17,000 IPv6 addresses per second, and similarly for IPv4 addresses.
+我做了一个快速的微基准测试,像这样。它打印出每秒可以查找 17,000 个 IPv6 地址,对于 IPv4 地址也是如此。
 
-This was pretty discouraging – being able to look up 17k addresses per section is kind of fine (Mess With DNS does not get a lot of traffic), but I compared it to the original binary search code and the original code could do 9 million per second.
+这相当令人沮丧——每秒查找 17,000 个地址的能力还算可以接受(Mess With DNS 不会收到太多流量),但与原来的二分查找代码相比,原来的代码每秒可以查找 900 万个地址。
 
-```
+```golang
 	ips := []net.IP{}
 	count := 20000
 	for i := 0; i < count; i++ {
@@ -150,44 +150,43 @@ This was pretty discouraging – being able to look up 17k addresses per section
 	fmt.Println("number per second", float64(count)/elapsed.Seconds())
 ```
 
-### time for EXPLAIN QUERY PLAN
+### 是时候用 EXPLAIN QUERY PLAN 了
 
-I’d never really done an EXPLAIN in sqlite, so I thought it would be a fun opportunity to see what the query plan was doing.
+我从来没有真正在 sqlite 中做过 EXPLAIN,所以我认为这是一个很好的机会来看看查询计划在做什么。
 
-```
+```sql
 sqlite> explain query plan select * from ipv6_ranges where '2607:f8b0:4006:0824:0000:0000:0000:200e' BETWEEN start_ip and end_ip;
 QUERY PLAN
 `--SEARCH ipv6_ranges USING INDEX idx_ipv6_ranges_end_ip (end_ip>?)
 ```
 
-It looks like it’s just using the `end_ip` index and not the `start_ip` index, so maybe it makes sense that it’s slower than the binary search.
+看起来它只使用了 `end_ip` 索引,而不是 `start_ip` 索引,所以也许它比二分查找慢是有道理的。
 
-I tried to figure out if there was a way to make SQLite use both indexes, but I couldn’t find one and maybe it knows best anyway.
+我试图找出是否有办法让 SQLite 使用两个索引,但我找不到,也许它无论如何都知道得更好。
 
-At this point I gave up on the SQLite solution, I didn’t love that it was slower and also it’s a lot more complex than just doing a binary search. I felt like I’d rather keep something much more similar to the binary search.
+这时我放弃了 SQLite 解决方案,我不喜欢它更慢而且比简单的二分查找复杂得多。我觉得我更愿意保持一个更接近二分查找的方案。
+我尝试了一些方法来让 SQLite 使用两个索引,但都没有成功:
 
-A few things I tried with SQLite that did not cause it to use both indexes:
+-   使用复合索引而不是两个单独的索引
+-   运行 `ANALYZE`
+-   使用 `INTERSECT` 来交叉 `start_ip < ?` 和 `? < end_ip` 的结果。这确实让它使用了两个索引,但查询也明显慢了 1000 倍,可能是因为它需要在内存中创建两个子查询的结果并交叉它们。
 
-*   using a compound index instead of two separate indexes
-*   running `ANALYZE`
-*   using `INTERSECT` to intersect the results of `start_ip < ?` and `? < end_ip`. This did make it use both indexes, but it also seemed to make the query literally 1000x slower, probably because it needed to create the results of both subqueries in memory and intersect them.
+### 尝试 2:使用字典树
 
-### attempt 2: use a trie
+我的下一个想法是使用[字典树][21],因为我有一个模糊的想法,也许字典树会使用更少的内存。我找到了一个叫 [ipaddress-go][22] 的库,它可以使用字典树来查找 IP 地址。
 
-My next idea was to use a [trie](https://medium.com/basecs/trying-to-understand-tries-3ec6bede0014), because I had some vague idea that maybe a trie would use less memory, and I found this library called [ipaddress-go](https://github.com/seancfoley/ipaddress-go) that lets you look up IP addresses using a trie.
+我尝试使用它([这里是代码][23]),但我觉得我可能做错了什么,因为与我简单的数组+二分查找相比:
 
-I tried using it [here’s the code](https://gist.github.com/jvns/3ce617796b22127017590ac62c57fddd), but I think I was doing something wildly wrong because, compared to my naive array + binary search:
+-   它使用了更多的内存(仅存储 IPv4 地址就用了 800MB)
+-   查找速度慢得多(每秒只能进行 10 万次查找,而不是 900 万次)
 
-*   it used WAY more memory (800MB to store just the IPv4 addresses)
-*   it was a lot slower to do the lookups (it could do only 100K/second instead of 9 million/second)
+我不太确定这里出了什么问题,但我放弃了这个方法,决定尝试让我的数组使用更少的内存,继续使用简单的二分查找。
 
-I’m not really sure what went wrong here but I gave up on this approach and decided to just try to make my array use less memory and stick to a simple binary search.
+### 关于内存分析的一些笔记
 
-### some notes on memory profiling
+关于内存分析,我学到的一件事是可以使用 `runtime` 包来查看程序当前分配的内存量。这就是我如何得到这篇文章中所有内存数据的方法。这是代码:
 
-One thing I learned about memory profiling is that you can use `runtime` package to see how much memory is currently allocated in the program. That’s how I got all the memory numbers in this post. Here’s the code:
-
-```
+```golang
 func memusage() {
 	runtime.GC()
 	var m runtime.MemStats
@@ -203,15 +202,15 @@ func memusage() {
 }
 ```
 
-Also I learned that if you use `pprof` to analyze a heap profile there are two ways to analyze it: you can pass either `--alloc-space` or `--inuse-space` to `go tool pprof`. I don’t know how I didn’t realize this before but `alloc-space` will tell you about everything that was allocated, and `inuse-space` will just include memory that’s currently in use.
+另外我了解到,如果使用 `pprof` 分析堆配置文件,有两种方式可以分析:你可以传递 `--alloc-space` 或 `--inuse-space` 给 `go tool pprof`。我不知道我之前怎么没意识到这一点,但 `alloc-space` 会告诉你所有被分配的内存,而 `inuse-space` 只会包含当前正在使用的内存。
 
-Anyway I ran `go tool pprof -pdf --inuse_space mem.prof > mem.pdf` a lot. Also every time I use pprof I find myself referring to [my own intro to pprof](https://jvns.ca/blog/2017/09/24/profiling-go-with-pprof/), it’s probably the blog post I wrote that I use the most often. I should add `--alloc-space` and `--inuse-space` to it.
+总之我运行了很多次 `go tool pprof -pdf --inuse_space mem.prof > mem.pdf`。每次使用 pprof 时,我都会参考[我自己写的 pprof 入门指南][24],这可能是我写过的最常用的博客文章。我应该在里面加入 `--alloc-space` 和 `--inuse-space` 的说明。
 
-### attempt 3: make my array use less memory
+### 尝试 3:让数组使用更少的内存
 
-I was storing my ip2asn entries like this:
+我之前是这样存储 ip2asn 条目的:
 
-```
+```golang
 type IPRange struct {
 	StartIP net.IP
 	EndIP   net.IP
@@ -221,17 +220,17 @@ type IPRange struct {
 }
 ```
 
-I had 3 ideas for ways to improve this:
+我有 3 个改进的想法:
 
-1.  There was a lot of repetition of `Name` and the `Country`, because a lot of IP ranges belong to the same ASN
-2.  `net.IP` is an `[]byte` under the hood, which felt like it involved an unnecessary pointer, was there a way to inline it into the struct?
-3.  Maybe I didn’t need both the start IP and the end IP, often the ranges were consecutive so maybe I could rearrange things so that I only had the start IP
+1. `Name` 和 `Country` 有很多重复,因为很多 IP 范围属于同一个 ASN
+2. `net.IP` 底层是一个 `[]byte`,这感觉涉及了一个不必要的指针,是否有办法将它内联到结构体中?
+3. 也许我不需要同时存储起始 IP 和结束 IP,因为范围通常是连续的,所以也许我可以重新安排只存储起始 IP
 
-### idea 3.1: deduplicate the Name and Country
+### 想法 3.1:对 Name 和 Country 进行去重
 
-I figured I could store the ASN info in an array, and then just store the index into the array in my `IPRange` struct. Here are the structs so you can see what I mean:
+我想到可以存储 ASN 信息到一个数组中,然后在 `IPRange` 结构体中只存储数组中的索引。这是结构体代码:
 
-```
+```golang
 type IPRange struct {
 	StartIP netip.Addr
 	EndIP   netip.Addr
@@ -250,61 +249,93 @@ type ASNPool struct {
 }
 ```
 
-This worked! It brought memory usage from 117MB to 65MB – a 50MB savings. I felt good about this.
+这确实有效!它将内存使用量从 117MB 减少到 65MB – 节省了 50MB。我对此感到满意。
 
-[Here’s all of the code for that part](https://github.com/jvns/mess-with-dns/blob/94f77b4bb1597b5e2a6768e33bd6c285919aa1bf/api/streamer/ip2asn/ip2asn.go#L18-L54).
+[这里是这部分的全部代码][25]。
 
-### how big are ASNs?
+### ASN 有多大?
 
-As an aside – I’m storing the ASN in a `uint32`, is that right? I looked in the ip2asn file and the biggest one seems to be 401307, though there are a few lines that say `4294901931` which is much bigger, but also are just inside the range of a uint32. So I can definitely use a `uint32`.
+顺便说一句 – 我存储 ASN 的 `uint32` 是对的吗?我看了 ip2asn 文件,最大的一个似乎是 401307,尽管也有几行说 `4294901931` 这个数字更大,但也只是在 `uint32` 的范围之内。所以我绝对可以使用 `uint32`。
 
 ```
 59.101.179.0	59.101.179.255	4294901931	Unknown	AS4294901931
 ```
 
-### idea 3.2: use `netip.Addr` instead of `net.IP`
+### 想法 3.2:使用 `netip.Addr` 替代 `net.IP`
 
-It turns out that I’m not the only one who felt that `net.IP` was using an unnecessary amount of memory – in 2021 the folks at Tailscale released a new IP address library for Go which solves this and many other issues. [They wrote a great blog post about it](https://tailscale.com/blog/netaddr-new-ip-type-for-go).
+事实证明,我不只是一个人认为 `net.IP` 使用了不必要的内存 – 在 2021 年,Tailscale 发布了一个新的 IP 地址库,解决了这个问题和许多其他问题。[他们写了一篇很棒的博客文章][26]。
 
-I discovered (to my delight) that not only does this new IP address library exist and do exactly what I want, it’s also now in the Go standard library as [netip.Addr](https://pkg.go.dev/net/netip#Addr). Switching to `netip.Addr` was very easy and saved another 20MB of memory, bringing us to 46MB.
+我惊喜地发现这个新的 IP 地址库不仅存在,而且确实是我想要的,而且现在也在 Go 标准库中作为 [netip.Addr][27]。切换到 `netip.Addr` 非常简单,又节省了 20MB 内存,将内存使用量减少到 46MB。
 
-I didn’t try my third idea (remove the end IP from the struct) because I’d already been programming for long enough on a Saturday morning and I was happy with my progress.
+我没有尝试我的第三个想法(从结构体中删除结束 IP),因为我已经在一个周六早上编程了足够长的时间,我对我的进展感到满意。
 
-It’s always such a great feeling when I think “hey, I don’t like this, there must be a better way” and then immediately discover that someone has already made the exact thing I want, thought about it a lot more than me, and implemented it much better than I would have.
+每次我想到“嘿,我不喜欢这个,一定有更好的方法”,然后立即发现有人已经做了我想要的东西,比我思考得更多,实现得更好。这总是如此美妙的感觉。
 
-### all of this was messier in real life
+### 现实生活中的调试过程更混乱
 
-Even though I tried to explain this in a simple linear way “I tried X, then I tried Y, then I tried Z”, that’s kind of a lie – I always try to take my actual debugging process (total chaos) and make it seem more linear and understandable because the reality is just too annoying to write down. It’s more like:
+尽管我试图以一种简单线性的方式解释这一点“我尝试了 X,然后我尝试了 Y,然后我尝试了 Z”,但这有点不真实 – 我总是试图将我的实际调试过程(完全混乱)变得更有条理和更容易理解,因为现实情况写下来太烦人了。更像是:
 
-*   try sqlite
-*   try a trie
-*   second guess everything that I concluded about sqlite, go back and look at the results again
-*   wait what about indexes
-*   very very belatedly realize that I can use `runtime` to check how much memory everything is using, start doing that
-*   look at the trie again, maybe I misunderstood everything
-*   give up and go back to binary search
-*   look at all of the numbers for tries/sqlite again to make sure I didn’t misunderstand
+-   尝试 SQLite
+-   尝试字典树
+-   再次猜测我关于 SQLite 的结论,再次查看结果
+-   wait what about indexes
+-   非常非常晚地意识到我可以使用 `runtime` 来检查每个东西使用了多少内存,开始这样做
+-   再次查看字典树,也许我误解了一切
+-   放弃并回到二分查找
 
-### A note on using 512MB of memory
+### 使用 512MB 内存的注意事项
 
-Someone asked why I don’t just give the VM more memory. I could very easily afford to pay for a VM with 1GB of memory, but I feel like 512MB really _should_ be enough (and really that 256MB should be enough!) so I’d rather stay inside that constraint. It’s kind of a fun puzzle.
+有人问我为什么不直接给虚拟机更多的内存。我完全可以负担得起一台有 1GB 内存的虚拟机,但我感觉 512MB 真的应该足够了(而且真的 256MB 应该也足够了!)所以我宁愿待在这个限制内。这有点像一个有趣的谜题。
 
-Folks had a lot of good ideas I hadn’t thought of. Recording them as inspiration if I feel like having another Fun Performance Day at some point.
+人们有很多我没想到的好主意。如果我有一天想再有一个 Fun Performance Day,我会把它们记录为灵感。
 
-*   Try Go’s [unique](https://pkg.go.dev/unique) package for the `ASNPool`. Someone tried this and it uses more memory, probably because Go’s pointers are 64 bits
-*   Try compiling with `GOARCH=386` to use 32-bit pointers to sace space (maybe in combination with using `unique`!)
-*   It should be possible to store all of the IPv6 addresses in just 64 bits, because only the first 64 bits of the address are public
-*   [Interpolation search](https://en.m.wikipedia.org/wiki/Interpolation_search) might be faster than binary search since IP addresses are numeric
-*   Try the MaxMind db format with [mmdbwriter](https://github.com/maxmind/mmdbwriter) or [mmdbctl](https://github.com/ipinfo/mmdbctl)
-*   Tailscale’s [art](https://github.com/tailscale/art) routing table package
+-   尝试 Go 的 [unique][28] 包来存储 `ASNPool`。有人尝试了这个,但它使用了更多的内存,可能是因为 Go 的指针是 64 位的
+-   尝试使用 `GOARCH=386` 来使用 32 位指针来节省空间(可能与使用 `unique` 一起!)
+-   应该可以将所有 IPv6 地址存储在 64 位中,因为只有地址的前 64 位是公共的
+-   [插值搜索][29] 可能比二分查找更快,因为 IP 地址是数字的
+-   尝试使用 MaxMind db 格式与 [mmdbwriter][30] 或 [mmdbctl][31]
+-   Tailscale 的 [art][32] 路由表包
 
-### the result: saved 70MB of memory!
+### 结果:节省了 70MB 的内存!
 
-I deployed the new version and now Mess With DNS is using less memory! Hooray!
+我部署了新版本,现在 Mess With DNS 使用的内存更少了! 耶!
 
-A few other notes:
+其他一些注意事项:
 
-*   lookups are a little slower – in my microbenchmark they went from 9 million lookups/second to 6 million, maybe because I added a little indirection. Using less memory and a little more CPU seemed like a good tradeoff though.
-*   it’s still using more memory than the raw text files do (46MB vs 37MB), I guess pointers take up space and that’s okay.
+-   查找速度稍微慢了一点 – 在我的微基准测试中,它们从每秒 900 万次查找下降到每秒 600 万次查找,可能是因为我添加了一些间接寻址。使用更少的内存和一点更多的 CPU 似乎是一个很好的权衡。
+-   它仍然比原始文本文件使用更多的内存(46MB vs 37MB),我猜指针也占用空间,这是可以接受的。
 
-I’m honestly not sure if this will solve all my memory problems, probably not! But I had fun, I learned a few things about SQLite, I still don’t know what to think about tries, and it made me love binary search even more than I already did.
+我确实不确定这会解决我所有的内存问题,可能不会! 但我很开心,我学到了一些关于 SQLite 的知识,我还是不知道该怎么看字典树,但它让我更爱二分查找了。
+
+[1]: https://messwithdns.net/
+[2]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#there-s-about-100mb-of-memory-available
+[3]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#the-problem-oom-killing-the-backup-script
+[4]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#attempt-1-use-sqlite
+[5]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#problem-how-to-store-ipv6-addresses
+[6]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#problem-it-s-500x-slower
+[7]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#time-for-explain-query-plan
+[8]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#attempt-2-use-a-trie
+[9]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#some-notes-on-memory-profiling
+[10]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#attempt-3-make-my-array-use-less-memory
+[11]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#idea-3-1-deduplicate-the-name-and-country
+[12]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#how-big-are-asns
+[13]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#idea-3-2-use-netip-addr-instead-of-net-ip
+[14]: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/#the-result-saved-70mb-of-memory
+[15]: https://fly.io/blog/ssh-and-user-mode-ip-wireguard/
+[16]: https://tip.golang.org/doc/gc-guide
+[17]: https://jvns.ca/til/restic-for-backing-up-sqlite-dbs/
+[18]: https://iptoasn.com/
+[19]: https://sqlite-utils.datasette.io/en/stable/
+[20]: https://www.sqlite.org/datatype3.html#sort_order
+[21]: https://medium.com/basecs/trying-to-understand-tries-3ec6bede0014
+[22]: https://github.com/seancfoley/ipaddress-go
+[23]: https://gist.github.com/jvns/3ce617796b22127017590ac62c57fddd
+[24]: https://jvns.ca/blog/2017/09/24/profiling-go-with-pprof/
+[25]: https://github.com/jvns/mess-with-dns/blob/94f77b4bb1597b5e2a6768e33bd6c285919aa1bf/api/streamer/ip2asn/ip2asn.go#L18-L54
+[26]: https://tailscale.com/blog/netaddr-new-ip-type-for-go
+[27]: https://pkg.go.dev/net/netip#Addr
+[28]: https://pkg.go.dev/unique
+[29]: https://en.m.wikipedia.org/wiki/Interpolation_search
+[30]: https://github.com/maxmind/mmdbwriter
+[31]: https://github.com/ipinfo/mmdbctl
+[32]: https://github.com/tailscale/art
