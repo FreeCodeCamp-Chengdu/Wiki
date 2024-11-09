@@ -1,5 +1,5 @@
 ---
-title: Thoughts while building
+title: 理解轮询 DNS
 date: 2001-10-26T00:00:00.000Z
 authorURL: ""
 originalURL: https://blog.hyperknot.com/p/understanding-round-robin-dns
@@ -7,133 +7,52 @@ translator: ""
 reviewer: ""
 ---
 
-Share this post
+对于[OpenFreeMap][1]项目，我使用了轮询 DNS 背后的服务器。在本文中，我试图理解浏览器和 CDN 是如何选择使用哪一个服务器的。
 
-<!-- more -->
+通常情况下，当你从像 Digital Ocean 或 Hetzner 这样的 VPS 提供商托管网站时，你只需在 DNS 提供商的控制面板中添加一条 A 记录。
 
-![](https://substackcdn.com/image/fetch/w_120,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F13e623d8-a8c8-44e9-ad80-0e61b53323f6_1186x516.png)
+---
 
-#### Understanding Round Robin DNS
+![图片1][2]
 
-blog.hyperknot.com
+这意味着 rr-direct.hyperknot.com 将从 5.223.46.55 提供数据。
 
-Copy link
+在轮询 DNS 中，你可以为同一个子域名指定多个服务器，如下所示：
 
-Facebook
+![图片2][3]
 
-Email
+这样可以在多个服务器之间分担负载，并且能够自动检测哪些服务器离线，从而选择在线的服务器。
 
-Note
+这是一个非常简单而优雅的解决方案，避免了使用负载均衡器。它是免费的，而且可以在任何 DNS 提供商上使用，相比之下，负载均衡解决方案可能会非常昂贵（即使是在 Cloudflare 上，尽管它的其他服务定价合理）。
 
-Other
+我开始着迷于它是如何工作的。表面上看一切都很优雅，但浏览器是如何决定连接哪个服务器的呢？
 
-# Understanding Round Robin DNS
+理论上，有一个叫做 Happy Eyeballs 的[RFC 8305][4]（也链接到[RFC 6724][5]）规定了客户端在连接前应如何对地址进行排序。
 
-### In which I try to understand how browsers and Cloudflare choose which server to use
+这确实超出了我的经验水平，但[这一部分][6]似乎最接近回答我的问题：
 
-[![](https://substackcdn.com/image/fetch/w_80,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb4493a04-aa03-4863-92e4-6875f8db25fe_512x512.png)][1]
+> 如果客户端是有状态的，并且有访问每个地址的路由的预期往返时间（RTTs）历史记录，它应该在规则 8 和 9 之间添加一个目标地址选择规则，优先选择 RTT 较低的地址。
 
-[Zsolt Ero][2]
+根据我的理解，它基本上是：
 
-Oct 26, 2024
+-   检查服务器是否在线/离线
+-   根据 ping 时间对在线服务器进行排序
 
-16
+让我们看看它在实践中是如何工作的。
 
-Share this post
-
-![](https://substackcdn.com/image/fetch/w_120,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F13e623d8-a8c8-44e9-ad80-0e61b53323f6_1186x516.png)
-
-#### Understanding Round Robin DNS
-
-blog.hyperknot.com
-
-Copy link
-
-Facebook
-
-Email
-
-Note
-
-Other
-
-[
-
-9
-
-][3]
-
-3
-
-For [OpenFreeMap][4], I'm using servers behind Round Robin DNS. In this article, I'm trying to understand how browsers and CDNs select which one to use.
-
-## What is Round Robin DNS?
-
-Normally, when you are serving a website from a VPS like Digital Ocean or Hetzner, you add a single A record in your DNS provider's control panel.
-
-[
-
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F15591e83-689a-4821-8309-919e0528a434_768x140.png)
+我在世界各地创建了 3 个 VPS：一个在美国，一个在欧盟，一个在新加坡。我在 Cloudflare 中创建了 3 个代理和 3 个非代理 A 记录。
 
 
+![图片3][8]
 
-][5]
+它们运行的 nginx 配置如下:
 
-This means that rr-direct.hyperknot.com will serve data from 5.223.46.55.
-
-In Round Robin DNS, you specify multiple servers for the same subdomain, like this.
-
-[
-
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0c97e110-0b2c-429b-b764-acb2331afa7e_792x268.png)
-
-
-
-][6]
-
-This allows you to share the load between multiple servers, as well as to automatically detect which servers are offline and choose the online ones.
-
-It's an amazingly simple and elegant solution that avoids using Load Balancers. It's also free, and you can do it on any DNS provider, whereas Load Balancing solutions can get really expensive (even on Cloudflare, which is otherwise very reasonably priced).
-
-## How does it work in theory?
-
-I became obsessed with how it works. I mean, on the surface, everything is elegant, but how does a browser decide which server to connect to?
-
-In theory, there is an [RFC 8305][7] called Happy Eyeballs (also linking to [RFC 6724][8]) about how the client should sort addresses before connecting.
-
-Now, this is definitely above my experience level, but [this section][9] seems like the closest to answering my question:
-
-> If the client is stateful and has a history of expected round-trip times (RTTs) for the routes to access each address, it SHOULD add a Destination Address Selection rule between rules 8 and 9 that prefers addresses with lower RTTs.
-
-So in my understanding, it's basically:
-
--   Checking if servers are online/offline
-    
--   Sort the online ones according to ping times
-    
-
-## In Practice
-
-Let's see how it works in practice.
-
-I created 3 VPSs around the world: one in the US, one in the EU, and one in Singapore. I made 3 proxied and 3 non-proxied A records in Cloudflare.
-
-[
-
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F13e623d8-a8c8-44e9-ad80-0e61b53323f6_1186x516.png)
-
-
-
-][10]
-
-They run nginx with a config like this:
-
-```
+```nginx
 server {
     server_name rr-direct.hyperknot.com rr-cf.hyperknot.com;
 
-    # this is basically a wildcard block
-    # so /a/b/c will return the same color.png file
+    # 这基本上是一个通配符块
+    # 所以 /a/b/c 将返回相同的 color.png 文件
     location / {
         root /data;
         rewrite ^ /color.png break;
@@ -146,76 +65,47 @@ server {
 }
 ```
 
-So they serve a color.png, which is a 1px red/green/blue PNG file, as well as their hostname, which is test-eu/us/sg.
+所以它们提供一个 color.png 文件(这是一个 1 像素的红/绿/蓝 PNG 文件)，以及它们的主机名(test-eu/us/sg)。
 
-### Client Behavior When Servers Are Online
+[我制作了一个 HTML 测试页面][9]，它用随机图像填充了一个 10x10 的网格。
 
-[I made a HTML test page][11], which fills a 10x10 grid with random images.
+服务器颜色如下：
 
-The server colors are the following:
+-   美国 - 绿色
+-   欧盟 - 蓝色
+-   新加坡 - 红色
 
--   US - green
-    
--   EU - blue
-    
--   SG - red
-    
+重要说明：我是从欧洲进行测试的；欧盟服务器离我比美国或尤其是新加坡的服务器要近得多。我应该看到蓝色方框！
 
-Important: I'm testing from Europe; the EU server is much closer to me than US or especially the SG one. I should be seeing blue boxes!
+### Chrome 的表现
 
-#### Chrome
+Chrome 在所有位置之间有些随机选择，但一旦选定就会保持不变。它会在几个小时后重新评估选择。在这种情况下，它停留在新加坡服务器几个小时，尽管对我来说这是最慢的服务器。
 
-Chrome selects somewhat randomly between all locations, but once selected, it sticks with it. It re-evaluates the selection after a few hours. In this case, it was stuck with SG for hours, even though it is by far the slowest server for me.
+![图片4][10]
 
-[
+另外，Chrome 在不使用 HTTP/2 时有一个有趣的行为：它有时会在两个服务器之间随机选择，创建如下模式。这里它在欧盟和美国之间随机选择。
 
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F82985913-6f42-4fd2-b009-61fedac5294f_958x570.png)
+![图片5][11]
 
+### Firefox 的表现
 
+行为与 Chrome 类似，在启动时随机选择一个位置然后保持不变。如果重启浏览器，它会选择一个不同的随机位置。
 
-][12]
+![图片6][12]
 
-Also, an interesting behavior on Chrome was when not using HTTP/2: it can sometimes choose randomly between two servers, creating a pattern like this. Here it's choosing between EU and US randomly.
+### Safari 的表现
 
-[
+令我最惊讶的是，Safari 总是正确地选择最近的服务器。即使服务器暂时离线，刷新几次后，它总能再次找到欧盟服务器！
 
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F36c86eaa-335c-4ceb-af52-e4db28fefcf4_958x570.png)
+![图片7][13]
 
+### Curl 的表现
 
+Curl 也能正确工作。第一次可能不会，但如果你运行命令两次，它总是会纠正到最近的服务器。
 
-][13]
+如果你在世界各地有多个 VPS，可以通过 ssh 尝试这个命令，看看选择了哪个：
 
-#### Firefox
-
-Behaves similarly to Chrome, selects a location randomly on startup and then sticks with it. If I restart the browser, it picks a different random location.
-
-[
-
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F67cfbcbe-87f8-4d83-a46e-a970b4f34fd7_958x570.png)
-
-
-
-][14]
-
-#### Safari
-
-To my biggest surprise, Safari always selects the closest server correctly. Even if it goes offline for a while, after a few refreshes, it always finds the EU server again!
-
-[
-
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa86d8b48-6660-4c76-b063-b10c73ec6fee_958x570.png)
-
-
-
-][15]
-
-#### curl  
-
-Curl also works correctly. First time it might not, but if you run the command twice, it always corrects to the nearest server.
-
-If you have multiple VPSs around the world, try this command via ssh and see which one gets selected:
-
-```
+```bash
 curl https://rr-direct.hyperknot.com/server
 test-us
 
@@ -223,200 +113,100 @@ curl https://rr-direct.hyperknot.com/server
 test-eu
 ```
 
-#### Cloudflare
+### Cloudflare 的表现
 
-Cloudflare picks a random location based on your client IP and then sticks with it. (It behaves like client\_ip\_hash modulo server\_num or similar.)
+Cloudflare 根据你的客户端 IP 随机选择一个位置然后保持不变。(它的行为类似于 client_ip_hash 模除以 server_num 或类似方式。)
 
-As you have seen in the images, the right-side rectangle is always green. On my home IP, no matter what I do, Cloudflare goes to the US server. Curl shows the same.
+如你在图片中所见，右侧矩形始终是绿色的。在我的家庭 IP 上，无论我做什么，Cloudflare 都会去美国服务器。Curl 显示相同的结果。
 
-```
+```bash
 curl https://rr-cf.hyperknot.com/server
 test-us
 ```
 
-Now, if I go to my mobile hotspot, it always connects to the EU server.
+现在，如果我切换到移动热点，它总是连接到欧盟服务器。
 
-If I log into some VPSes and run the same curl command, I can see this behavior across the world. Every VPS gets connected to a totally random location around the world, but always the same.
+如果我登录到一些 VPS 并运行相同的 curl 命令，我可以在全世界看到这种行为。每个 VPS 都连接到世界上完全随机的位置，但总是相同的。
 
-```
+```bash
 curl https://rr-cf.hyperknot.com/server
 test-sg
 ```
 
-### Client Behavior with Partially Offline Servers
+### 当服务器离线时会发生什么？
 
-So what happens when one of the servers is offline? Say I stop the US server:
+假设我停止美国服务器：
 
-```
+```bash
 service nginx stop
 ```
 
-#### Chrome
+![图片8][14]
 
-[
+![图片9][15]
 
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4261f746-b85e-4407-bf6e-d01c5962e7bb_958x570.png)
+![图片10][16]
 
-
-
-][16]
-
-#### Firefox
-
-[
-
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb15577b7-7255-4c5f-bb86-0a66ed463bce_958x570.png)
-
-
-
-][17]
-
-#### Safari
-
-[
-
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F03015118-9864-4c4b-ab35-9e04b42b08f3_958x570.png)
-
-
-
-][18]
-
-#### curl
-
-```
+```bash
 curl https://rr-direct.hyperknot.com/server
 test-eu
 ```
 
-As you can see, all clients correctly detect it and choose an alternative server.
+如你所见，所有客户端都能正确检测到这一点并选择替代服务器。
 
-Actually, they do this fallback so well that if I turn off the server while they are loading, they correct within < 1 sec! Here is an animation of the 50x50 version of the same grid, on Safari:
+实际上，它们做这种故障转移做得如此之好，以至于如果我在它们加载时关闭服务器，它们会在 1 秒内纠正！这是同一网格 50x50 版本在 Safari 上的动画：
 
-#### Cloudflare
+那 Cloudflare 呢？如上面的截图所示，Cloudflare**不会**检测到离线服务器。它会继续访问它为你的 IP 决定的服务器，不管它是否在线。
 
-And what about Cloudflare? As you can see in the screenshots above, Cloudflare does **not** detect an offline server. It keeps accessing the server it decided for your IP, regardless of whether it's online or offline.
+如果服务器离线，你就会被服务离线。在 curl 中，它返回：
 
-If the server is offline, you are served offline. In curl, it returns:
-
-```
+```bash
 curl https://rr-cf.hyperknot.com/server
 error code: 521
 ```
 
-I've been trying to understand what this behavior is, and I highly suspect it's a **bug** in their network. One reference I found in their [documentation][19] is this part:
+我一直在试图理解这种行为是什么，我强烈怀疑这是他们网络中的一个**bug**。我在他们的[文档](https://developers.cloudflare.com/fundamentals/basic-tasks/protect-your-origin-server/#zero-downtime-failover)中找到的一个参考是这部分：
 
-[
+![图片11][17]
 
-![](https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F86323993-bbaa-4d0b-b21c-72c2b44a2fcc_1388x622.png)
+基于这个文档 - 也是出于常识 - 我认为 Cloudflare 也应该像浏览器和 curl 那样表现。
 
+1. 至少，应该能检测到离线服务器。
+2. 而且，如果能像 Safari 那样选择延迟最低的服务器就更好了！
 
+我的意思是，目前如果你在美国有一个服务器，在新西兰有一个服务器，恰好 50%的美国用户会从新西兰得到服务，这毫无意义。而且，对 Safari 用户来说，它实际上比不使用 Cloudflare 还要慢！
 
-][20]
+现在有一个[HN 讨论][18]，Cloudflare 的 CEO 和 CTO 都回复了！
 
-Based on this documentation - and by common sense as well - I believe Cloudflare should also behave like browsers and curl do.
+注 1：我已尽最大努力理解 Matthew Prince 在 X 上[指出给我](https://x.com/eastdakota/status/1850103009826554285)的文章**[1][20]**、**[2][21]**、**[3][22]**。据我理解，他们提到的"服务器"指的是 Cloudflare 服务器，而不是 A 记录背后的用户服务器。此外，我找不到任何与轮询 DNS 相关的内容。
 
-### Cloudflare Wish List
+注 2：如果你有任何想法关于**如何继续运行**这个实验而不用支付世界各地 3 个 VPS 的费用，请在下面评论。我很想继续运行它。有支持 HTTPS 和轮询 DNS 的无服务器平台吗？
 
-1.  At the very least, offline servers should be detected.
-    
-2.  Moreover, it would also be really nice if the server with the lowest latency were selected, like in Safari!
-    
+## 相关链接
+- [OpenFreeMap 项目][1]
+- [RFC 8305 - Happy Eyeballs Version 2][4]
+- [RFC 6724 - Default Address Selection][5]
 
-I mean, currently, if you have one server in the US and one in New Zealand, exactly 50% of your US users will be served from New Zealand, which makes no sense. Also, for Safari users, it's actually slower compared to not using Cloudflare!
-
----
-
-There is a [HN discussion now][21], where both the CEO and the CTO of Cloudflare replied!
-
-Note 1: I've tried my best to understand articles **[1][22]**, **[2][23]**, **[3][24]** which Matthew Prince **[pointed out to me][25]** on X. As I understand, they are referring to Cloudflare servers as "servers", not users' servers behind A records. Also, I couldn't find anything related to Round Robin DNS.
-
-Note 2: If you have any idea **how I can keep running** this experiment without paying for 3 VPS-es around the world, please comment below. I'd love to keep it running. Is there a serverless platform that supports HTTPS and Round Robin DNS?
-
-If you enjoyed this post, feel free to subscribe to this blog
-
-16
-
-Share this post
-
-![](https://substackcdn.com/image/fetch/w_120,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F13e623d8-a8c8-44e9-ad80-0e61b53323f6_1186x516.png)
-
-#### Understanding Round Robin DNS
-
-blog.hyperknot.com
-
-Copy link
-
-Facebook
-
-Email
-
-Note
-
-Other
-
-[
-
-9
-
-][26]
-
-3
-
-#### Discussion about this post
-
-Comments
-
-Restacks
-
-<table class="comment-content"><tbody><tr><td class="comment-head"><div class="profile-hover-card-target _profileHoverCardTarget_c9bh7_50"><div class="user-head"><a href="https://substack.com/profile/76382232-josh-enders"><div class="profile-img-wrap"><picture><source type="image/webp" srcset="https://substackcdn.com/image/fetch/w_66,h_66,c_fill,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9e5ff4b0-9188-4328-8324-a2a7cbf204b5_144x144.png"><img src="https://substackcdn.com/image/fetch/w_66,h_66,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9e5ff4b0-9188-4328-8324-a2a7cbf204b5_144x144.png" sizes="100vw" alt="" width="66" height="66" class="_img_16u6n_1 pencraft pc-reset"></picture></div></a></div></div></td><td class="comment-rest"><div class="comment-meta"><span class="commenter-name"><div class="pencraft pc-display-flex pc-gap-4 pc-alignItems-center pc-reset pc-display-inline-flex"><div class="profile-hover-card-target _profileHoverCardTarget_c9bh7_50"><a href="https://substack.com/profile/76382232-josh-enders"><div class="pencraft pc-reset _color-pub-primary-text_q8zsn_187 _line-height-20_q8zsn_80 _font-text_q8zsn_106 _size-13_q8zsn_39 _weight-semibold_q8zsn_148 _reset_q8zsn_1">Josh Enders</div></a></div></div></span><span class="comment-publication-name-separator">·</span><span class="edited-indicator"><em>edited Oct 26</em></span></div><div class="comment-body"><p><span>Load balancing via DNS is entirely dependent on the behavior of caching DNS resolvers. Clients are beholden to how answers are sorted and it’s rarely fair. Even with a zero second TTL, the TTL of answers is often ignored. The situation is even worse with a TTL, as the answers are rarely re-resolved after the expiration. The JVM, for example, is notorious for defaulting to ignoring TTL entirely ruining round-robin load abounding via DNS. That’s not to say that it can’t be defective but its limitations should be well understood.</span></p><div role="button" class="show-all-toggle"><div class="show-all-toggle-label">Expand full comment</div></div></div><div class="pencraft pc-display-flex pc-gap-16 pc-paddingTop-8 pc-justifyContent-flex-start pc-alignItems-center pc-reset comment-actions _withShareButton_mhaex_5"><span class="pencraft pc-reset _decoration-hover-underline_q8zsn_290 _reset_q8zsn_1"><a class="pencraft pc-reset _link_mhaex_1 _link_uqs75_1"><div class="pencraft pc-display-flex pc-gap-6 pc-alignItems-center pc-reset"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary-themed)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg><div class="pencraft pc-reset _color-pub-secondary-text_q8zsn_190 _line-height-20_q8zsn_80 _font-meta_q8zsn_115 _size-11_q8zsn_31 _weight-medium_q8zsn_145 _transform-uppercase_q8zsn_234 _reset_q8zsn_1 _meta_q8zsn_434">Reply</div></div></a></span><span class="pencraft pc-reset _decoration-hover-underline_q8zsn_290 _reset_q8zsn_1"><a class="pencraft pc-reset _link_mhaex_1 _link_uqs75_1"><div class="pencraft pc-display-flex pc-gap-6 pc-alignItems-center pc-reset"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary-themed)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" x2="12" y1="2" y2="15"></line></svg><div class="pencraft pc-reset _color-pub-secondary-text_q8zsn_190 _line-height-20_q8zsn_80 _font-meta_q8zsn_115 _size-11_q8zsn_31 _weight-medium_q8zsn_145 _transform-uppercase_q8zsn_234 _reset_q8zsn_1 _meta_q8zsn_434">Share</div></div></a></span><button tabindex="0" type="button" id="trigger38607" aria-expanded="false" aria-haspopup="dialog" aria-controls="dialog38608" arialabel="View more" class="pencraft pc-reset _iconButton_1r1ly_154 _iconButtonBase_1r1ly_154 _buttonBase_1r1ly_1 _buttonOldColors_1r1ly_65 _priority_secondary-theme_1r1ly_259 _fill_empty_1r1ly_320"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button></div></td></tr></tbody></table>
-
-<table class="comment-content"><tbody><tr><td class="comment-head"><div class="profile-hover-card-target _profileHoverCardTarget_c9bh7_50"><div class="user-head"><a href="https://substack.com/profile/58235475-shu"><div class="profile-img-wrap"><picture><source type="image/webp" srcset="https://substackcdn.com/image/fetch/w_66,h_66,c_fill,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe09195c2-42d2-411d-976e-6d231f2d04f7_144x144.png"><img src="https://substackcdn.com/image/fetch/w_66,h_66,c_fill,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fe09195c2-42d2-411d-976e-6d231f2d04f7_144x144.png" sizes="100vw" alt="" width="66" height="66" class="_img_16u6n_1 pencraft pc-reset"></picture></div></a></div></div></td><td class="comment-rest"><div class="comment-meta"><span class="commenter-name"><div class="pencraft pc-display-flex pc-gap-4 pc-alignItems-center pc-reset pc-display-inline-flex"><div class="profile-hover-card-target _profileHoverCardTarget_c9bh7_50"><a href="https://substack.com/profile/58235475-shu"><div class="pencraft pc-reset _color-pub-primary-text_q8zsn_187 _line-height-20_q8zsn_80 _font-text_q8zsn_106 _size-13_q8zsn_39 _weight-semibold_q8zsn_148 _reset_q8zsn_1">Shu</div></a></div></div></span><a href="https://blog.hyperknot.com/p/understanding-round-robin-dns/comment/74511356" rel="nofollow" native="" class="comment-timestamp">Oct 28</a></div><div class="comment-body"><p><span>Hey, thanks for such an insightful post. You can get free arm based servers from Oracle. It all depends on availability though. Attaching link below:</span></p><p><span><a href="https://www.oracle.com/cloud/free/" target="_blank" rel="nofollow ugc noopener" class="linkified">https://www.oracle.com/cloud/free/</a></span></p><div role="button" class="show-all-toggle"><div class="show-all-toggle-label">Expand full comment</div></div></div><div class="pencraft pc-display-flex pc-gap-16 pc-paddingTop-8 pc-justifyContent-flex-start pc-alignItems-center pc-reset comment-actions _withShareButton_mhaex_5"><span class="pencraft pc-reset _decoration-hover-underline_q8zsn_290 _reset_q8zsn_1"><a class="pencraft pc-reset _link_mhaex_1 _link_uqs75_1"><div class="pencraft pc-display-flex pc-gap-6 pc-alignItems-center pc-reset"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary-themed)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg><div class="pencraft pc-reset _color-pub-secondary-text_q8zsn_190 _line-height-20_q8zsn_80 _font-meta_q8zsn_115 _size-11_q8zsn_31 _weight-medium_q8zsn_145 _transform-uppercase_q8zsn_234 _reset_q8zsn_1 _meta_q8zsn_434">Reply</div></div></a></span><span class="pencraft pc-reset _decoration-hover-underline_q8zsn_290 _reset_q8zsn_1"><a class="pencraft pc-reset _link_mhaex_1 _link_uqs75_1"><div class="pencraft pc-display-flex pc-gap-6 pc-alignItems-center pc-reset"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-secondary-themed)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" x2="12" y1="2" y2="15"></line></svg><div class="pencraft pc-reset _color-pub-secondary-text_q8zsn_190 _line-height-20_q8zsn_80 _font-meta_q8zsn_115 _size-11_q8zsn_31 _weight-medium_q8zsn_145 _transform-uppercase_q8zsn_234 _reset_q8zsn_1 _meta_q8zsn_434">Share</div></div></a></span><button tabindex="0" type="button" id="trigger38609" aria-expanded="false" aria-haspopup="dialog" aria-controls="dialog38610" arialabel="View more" class="pencraft pc-reset _iconButton_1r1ly_154 _iconButtonBase_1r1ly_154 _buttonBase_1r1ly_1 _buttonOldColors_1r1ly_65 _priority_secondary-theme_1r1ly_259 _fill_empty_1r1ly_320"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ellipsis"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button></div></td></tr></tbody></table>
-
-[1 reply by Zsolt Ero][33]
-
-[7 more comments...][34]
-
-Top
-
-Latest
-
-Discussions
-
-No posts
-
-Ready for more?
-
-[1]: https://substack.com/profile/121308039-zsolt-ero
-[2]: https://substack.com/@hyperknot
-[3]: https://blog.hyperknot.com/p/understanding-round-robin-dns/comments
-[4]: https://openfreemap.org/
-[5]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F15591e83-689a-4821-8309-919e0528a434_768x140.png
-[6]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0c97e110-0b2c-429b-b764-acb2331afa7e_792x268.png
-[7]: https://datatracker.ietf.org/doc/html/rfc8305
-[8]: https://datatracker.ietf.org/doc/html/rfc6724#section-6
-[9]: https://datatracker.ietf.org/doc/html/rfc8305#section-4
-[10]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F13e623d8-a8c8-44e9-ad80-0e61b53323f6_1186x516.png
-[11]: https://assets.openfreemap.com/share/2024-10/rr.html
-[12]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F82985913-6f42-4fd2-b009-61fedac5294f_958x570.png
-[13]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F36c86eaa-335c-4ceb-af52-e4db28fefcf4_958x570.png
-[14]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F67cfbcbe-87f8-4d83-a46e-a970b4f34fd7_958x570.png
-[15]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa86d8b48-6660-4c76-b063-b10c73ec6fee_958x570.png
-[16]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4261f746-b85e-4407-bf6e-d01c5962e7bb_958x570.png
-[17]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb15577b7-7255-4c5f-bb86-0a66ed463bce_958x570.png
-[18]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F03015118-9864-4c4b-ab35-9e04b42b08f3_958x570.png
-[19]: https://developers.cloudflare.com/fundamentals/basic-tasks/protect-your-origin-server/#zero-downtime-failover
-[20]: https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F86323993-bbaa-4d0b-b21c-72c2b44a2fcc_1388x622.png
-[21]: https://news.ycombinator.com/item?id=41955912
-[22]: https://t.co/MefximeFqU
-[23]: https://t.co/IlYL4Emgz7
-[24]: https://t.co/GKE4mdUiNH
-[25]: https://x.com/eastdakota/status/1850103009826554285
-[26]: https://blog.hyperknot.com/p/understanding-round-robin-dns/comments
-[27]: https://substack.com/profile/76382232-josh-enders
-[28]: https://substack.com/profile/76382232-josh-enders
-[29]: https://substack.com/profile/58235475-shu
-[30]: https://substack.com/profile/58235475-shu
-[31]: https://blog.hyperknot.com/p/understanding-round-robin-dns/comment/74511356
-[32]: https://www.oracle.com/cloud/free/
-[33]: https://blog.hyperknot.com/p/understanding-round-robin-dns/comment/74511356
-[34]: https://blog.hyperknot.com/p/understanding-round-robin-dns/comments
+  
+[1]: https://openfreemap.org/
+[2]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F15591e83-689a-4821-8309-919e0528a434_768x140.png
+[3]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0c97e110-0b2c-429b-b764-acb2331afa7e_792x268.png
+[4]: https://datatracker.ietf.org/doc/html/rfc8305
+[5]: https://datatracker.ietf.org/doc/html/rfc6724#section-6
+[6]: https://news.ycombinator.com/item?id=41955912
+[7]: https://x.com/eastdakota/status/1850103009826554285
+[8]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F13e623d8-a8c8-44e9-ad80-0e61b53323f6_1186x516.png
+[9]: https://assets.openfreemap.com/share/2024-10/rr.html
+[10]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F82985913-6f42-4fd2-b009-61fedac5294f_958x570.png
+[11]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F86323993-bbaa-4d0b-b21c-72c2b44a2fcc_1388x622.png
+[12]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F36c86eaa-335c-4ceb-af52-e4db28fefcf4_958x570.png
+[13]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa86d8b48-6660-4c76-b063-b10c73ec6fee_958x570.png
+[14]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4261f746-b85e-4407-bf6e-d01c5962e7bb_958x570.png
+[15]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb15577b7-7255-4c5f-bb86-0a66ed463bce_958x570.png
+[16]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F03015118-9864-4c4b-ab35-9e04b42b08f3_958x570.png
+[17]: https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F86323993-bbaa-4d0b-b21c-72c2b44a2fcc_1388x622.png
+[18]: https://news.ycombinator.com/item?id=41955912
+[19]: https://x.com/eastdakota/status/1850103009826554285
+[20]: https://t.co/MefximeFqU
+[21]: https://t.co/IlYL4Emgz7
+[22]: https://t.co/GKE4mdUiNH
