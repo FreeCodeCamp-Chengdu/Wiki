@@ -1,5 +1,5 @@
 ---
-title: Julia Evans
+title: 使用更少的内存来查找 Mess With DNS 中的 IP 地址
 date: 2024-10-27T07:47:04.000Z
 authorURL: ""
 originalURL: https://jvns.ca/blog/2024/10/27/asn-ip-address-memory/
@@ -7,7 +7,7 @@ translator: ""
 reviewer: ""
 ---
 
-在过去的 3 年左右时间里，我一直遇到一个问题:[Mess With DNS](https://messwithdns.net/) 会周期性地耗尽内存并被 OOM killer 终止。
+在过去的 3 年左右时间里，我一直遇到一个问题:[Mess With DNS][1] 会周期性地耗尽内存并被 OOM killer 终止。
 
 这对我来说并不是一个大问题:通常它只会在重启时停机几分钟,而且最多每天发生一次,所以我一直在忽略它。但是上周它开始真的造成问题了,所以我决定研究一下。
 
