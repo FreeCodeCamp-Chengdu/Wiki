@@ -1,5 +1,5 @@
 ---
-title: "How I write code using Cursor: A review"
+title: "我如何使用 Cursor 编写代码:一篇评测"
 date: 2024-11-05T08:50:21.566Z
 authorURL: ""
 originalURL: https://www.arguingwithalgorithms.com/posts/cursor-review.html
@@ -7,110 +7,103 @@ translator: ""
 reviewer: ""
 ---
 
-In forums relating to AI and AI coding in particular, I see a common inquiry from experienced software developers: _Is anyone getting value out of tools like Cursor, and is it worth the subscription price?_
+在 AI 和 AI 编程相关的论坛中,我经常看到有经验的软件开发者提出这样的问题:_有人真的从 Cursor 这类工具中获得价值吗?它值得订阅吗?_
 
 <!-- more -->
 
-A few months into using Cursor as my daily driver for both personal and work projects, I have some observations to share about whether this is a "need-to-have" tool or just a passing fad, as well as strategies to get the most benefit quickly which may help you if you'd like to trial it. Some of you may have tried Cursor and found it underwhelming, and maybe some of these suggestions might inspire you to give it another try.
+在将 Cursor 作为我个人和工作项目的日常开发工具使用了几个月后,我想分享一些观察心得,包括这是否是一个"必备"工具还是昙花一现的潮流,以及如何快速获得最大收益的策略,这些建议可能对想要试用它的人有帮助。有些人可能已经尝试过 Cursor 并觉得平平无奇,也许这些建议能激发你重新尝试一下。
 
-I am not sponsored by Cursor, and I am not a product reviewer. I am neither championing nor dunking on this as a product, but rather sharing my own experience with it.
+我没有受到 Cursor 的赞助,我也不是产品评测人员。我既不是在为这个产品摇旗呐喊,也不是在贬低它,而是分享我自己使用它的经历。
 
-**Who am I, and who is the audience for this article?**
+**我是谁,这篇文章的目标读者是谁?**
 
-I have been writing code for 36 years in a number of languages, but professionally focused on C-heavy computer game engines and Go/Python/JS web development. I am expecting readers to be similarly reasonably comfortable and productive working in large codebases, writing and debugging code in their chosen language, etc. I would give very different advice to novices who might want an AI to teach them programming concepts or write code for them that is way beyond their level!
+我已经有 36 年的编程经验,使用过多种编程语言,但专业上主要专注于以 C 语言为主的电脑游戏引擎和 Go/Python/JS 网页开发。我期望读者也同样能够在大型代码库中得心应手,能够用自己选择的语言编写和调试代码等。对于想要通过 AI 学习编程概念或者让 AI 编写远超出他们水平的代码的新手,我会给出非常不同的建议!
 
-For me, the appeal of an AI copilot is in taking care of boilerplate and repetitive tasks for me so I can focus on the interesting logic for any given problem. I am also not especially interested in cranking out large quantities of code automatically; I am highly skeptical of "lines of code written" as an efficiency metric. I would prefer to spend less time writing the same amount of code and more time thinking through edge cases, maintainability, etc.
+对我来说,AI 辅助编程的吸引力在于它能帮我处理样板代码和重复性任务,这样我就可以专注于任何给定问题的有趣逻辑部分。我也对自动生成大量代码不太感兴趣;我对"编写的代码行数"作为效率指标持高度怀疑态度。我更愿意花更少的时间写同样数量的代码,把更多时间用于思考边界情况、可维护性等方面。
 
-So, without further ado:
+那么,让我们开始吧:
 
-## What is Cursor?
+## Cursor 是什么?
 
-Cursor[1][1] is a fork of Visual Studio Code (VS Code) which has Large Language Model (LLM) powered features integrated into the core UI. It is a proprietary product with a free tier and a subscription option; however, the pricing sheet doesn't cover what the actual subscriber benefits are and how they compare to competing products. I'll try to clarify that when discussing the features below based on my own understanding, but a quick summary:
+[Cursor][1] 是 Visual Studio Code (VS Code) 的一个分支,它在核心 UI 中集成了大语言模型(LLM)驱动的功能。它是一个有免费版和订阅选项的专有产品;不过,定价表并没有说明实际的订阅者权益以及它们与竞争产品的比较。基于我自己的理解,我会在讨论下面的功能时尽量澄清这一点,但这里先简单总结一下:
 
--   **Tab completion**: This is a set of proprietary fine-tuned models that both provide code completion in the editor, as well as navigate to the next recommended action, all triggered by the Tab key. Only available to subscribers.
--   **Inline editing**: This is a chat-based interface for making edits to selected code with a simple diff view using a foundation model such as GPT or Claude. Available to free and paid users.
--   **Chat sidebar**: This is also a chat-based interface for making larger edits in a sidebar view, allowing more room for longer discussion, code sample suggestions across multiple files, etc. using a foundation model such as GPT or Claude. Available to free and paid users.
--   **Composer**: This is yet another chat-based interface specifically meant for larger cross-codebase refactors, generating diffs for multiple files that you can page through and approve, also using a foundation model such as GPT or Claude. Available to free and paid users.
+-   **Tab 自动补全**: 这是一组专有的微调模型,不仅在编辑器中提供代码补全,还能导航到下一个推荐的操作,所有这些都通过 Tab 键触发。仅对订阅用户开放。
+-   **内联编辑（Inline Editing）**: 这是一个基于聊天的界面,使用 GPT 或 Claude 等基础模型,通过简单的差异视图对选定的代码进行编辑。对免费和付费用户都可用。
+-   **聊天侧边栏（Chat Sidebar）**: 这也是一个基于聊天的界面,在侧边栏视图中进行更大的编辑,使用 GPT 或 Claude 等基础模型,允许更多空间进行更长的讨论、跨多个文件的代码示例建议等。对免费和付费用户都可用。
+-   **Composer**: 这是另一个专门用于大型跨代码库重构的聊天界面,也使用 GPT 或 Claude 等基础模型,为多个文件生成差异,你可以逐页浏览和批准。对免费和付费用户都可用。
 
-## Tab completion
+## Tab 自动补全
 
-While other LLM-powered coding tools focus on a chat experience, so far in my usage of Cursor it's the tab completion that fits most naturally into my day-to-day practice of coding and saves the most time. A lot of thought and technical research has apparently gone into this feature, so that it can not only suggest completions for a line, several lines, or a whole function, but it can also suggest the next line to go to for the next edit. What this amounts to is being able to make part of a change, and then auto-complete related changes throughout the entire file just by repeatedly pressing Tab.
+虽然其他基于 LLM 的编码工具都专注于聊天体验,但到目前为止,在我使用 Cursor 的过程中,Tab 自动补全最自然地融入了我的日常编码实践,并且节省了最多的时间。显然在这个功能上投入了大量的思考和技术研究,使它不仅能为一行、几行或整个函数提供补全建议,还能建议下一步编辑的位置。这意味着我可以做出部分更改,然后仅通过反复按 Tab 键就能自动完成整个文件中的相关更改。
 
-One way to use this is as a code refactoring tool on steroids. For example, suppose I have a block of code with variable names in `under_score` notation that I want to convert to `camelCase`. It is sufficient to rename one instance of one variable, and then tab through all the lines that should be updated, including the other related variables. Many tedious, error-prone tasks can be automated in this way without having to write a script to do so:
+使用这个功能的一种方式是作为超级代码重构工具。例如,假设我有一个代码块,其中的变量名使用了 `under_score` 表示法,我想把它转换成 `camelCase`。只需要重命名一个变量的一个实例,然后按 Tab 键浏览所有需要更新的行,包括其他相关变量。许多繁琐、容易出错的任务都可以通过这种方式自动化,而不需要编写脚本:
 
-<video controls=""><source src="../videos/cursor-review/example1.webm" type="video/webm"><p>Your browser doesn't support HTML video. Here is a <a href="../videos/cursor-review/example1.webm" download="example1.webm">link to the video</a> instead.</p></video>
+<video controls=""><source src="https://www.arguingwithalgorithms.com/videos/cursor-review/example1.webm" type="video/webm"><p>如果你的浏览器不支持 HTML 视频。这里是<a href="https://www.arguingwithalgorithms.com/videos/cursor-review/example1.webm" download="example1.webm">视频链接</a>供下载。</p></video>
 
-Sometimes tab completion will indepedently find a bug and propose a fix. Many times it will suggest imports when I add a dependency in Python or Go. If I wrap a string in quotes, it will escape the contents appropriately. And, as with other tools, it can write whole functions based on just the function signature and optional docstring:
+有时 Tab 自动补全会独立发现 bug 并提出修复建议。很多时候,当我在 Python 或 Go 中添加依赖时,它会建议导入。如果我用引号包裹字符串,它会适当地转义内容。而且,和其他工具一样,它可以仅基于函数签名和可选的文档字符串来编写整个函数:
 
-<video controls=""><source src="../videos/cursor-review/example2.webm" type="video/webm"><p>Your browser doesn't support HTML video. Here is a <a href="../videos/cursor-review/example2.webm" download="example2.webm">link to the video</a> instead.</p></video>
+<video controls=""><source src="https://www.arguingwithalgorithms.com/videos/cursor-review/example2.webm" type="video/webm"><p>你的浏览器不支持 HTML 视频。这里是<a href="https://www.arguingwithalgorithms.com/videos/cursor-review/example2.webm" download="example2.webm">视频链接</a>供下载。</p></video>
 
-All in all, this tool feels like it is reading my mind, guessing at my next action, and allowing me to think less about the code and more about the architecture of I am building.
+总的来说,这个工具感觉像是在读我的心思,猜测我的下一步行动,让我能够少想代码,多想我正在构建的架构。
 
-Also worth noting: The completions are _incredibly fast_, and I never felt a delay waiting for a suggestion. They appear basically as soon as I stop typing. Having too long a wait would surely be a deal-breaker for me.
+还值得注意的是:补全速度*非常快*,我从未感觉到等待建议的延迟。它们基本上在我停止打字的瞬间就出现了。如果等待时间太长,对我来说肯定是个致命缺陷。
 
-So, what are my complaints with Tab completion? One is a minor annoyance: Sometimes I don't see the suggestion in time and continue typing, and the completion disappears. Once it is gone, there doesn't appear to be any way to get it to come back, so I have to type something else and hope.
+那么,我对 Tab 自动补全有什么不满呢?一个是小烦恼:有时我来不及看到建议就继续打字,补全就消失了。一旦消失,似乎就没有办法让它重新出现,所以我必须输入其他内容并期待它再次出现。
 
-My other complaint is the exact opposite situation: Sometimes a completion is dead wrong, and I intentionally dismiss it. Subsequently, but very infrequently, I will accept a totally different completion and the previously-declined suggestion will quietly be applied as well. This has already caused some hard-to-track-down bugs because I wasn't aware the wrong logic had been accepted. I haven't found these cases to be frequent enough to cancel out the productivity boost of tab completion, but they do detract from it.
+我的另一个抱怨恰恰相反:有时补全完全错误,我故意忽略它。随后,虽然很少见,但我接受了一个完全不同的补全,而之前被拒绝的建议会悄悄地也被应用。这已经导致了一些难以追踪的 bug,因为我没有意识到错误的逻辑被接受了。我发现这些情况并不足够频繁到抵消 Tab 自动补全带来的生产力提升,但确实会影响它。
 
-## Inline editing, chat sidebar, and composer
+## 内联编辑、聊天侧边栏和 composer
 
-As far as I can tell, these features are all very similar in their interaction with a foundational model - I use Claude 3.5 Sonnet almost exclusively - and the variance is in the user interface.
+据我所知,这些功能在与基础模型的交互方面都非常相似 - 我几乎只使用 Claude 3.5 Sonnet - 差异主要在用户界面上。
 
-Inline editing can be invoked by selecting some code and pressing Ctrl-K/Cmd-K. I type in the desired changes, and get a nice diff in the file that I can accept or reject. I use this mostly to implement bits of code inside a function or make minor refactors.
+内联编辑可以通过选择一些代码并按 Ctrl-K/Cmd-K 来调用。我输入想要的更改,然后在文件中得到一个漂亮的差异视图,我可以接受或拒绝。我主要用它来实现函数内的代码片段或进行小的重构。
 
-A good example of where this works great is if I have a loop over some tasks and I want to parallelize them:
+这个功能的一个很好的例子是,如果我有一个任务循环,我想把它们并行化:
 
-<video controls=""><source src="../videos/cursor-review/example3.webm" type="video/webm"><p>Your browser doesn't support HTML video. Here is a <a href="../videos/cursor-review/example3.webm" download="example3.webm">link to the video</a> instead.</p></video>
+<video controls=""><source src="https://www.arguingwithalgorithms.com/videos/cursor-review/example3.webm" type="video/webm"><p>如果你的浏览器不支持 HTML 视频。这里是<a href="https://www.arguingwithalgorithms.com/videos/cursor-review/example3.webm" download="example3.webm">视频链接</a>供下载。</p></video>
 
-The chat sidebar is opened with Ctrl+L/Cmd+L, and gives more real estate for a multi-turn conversation, though one pet peeve I have with the LLM models I've tested so far is they will _always_ return code first, rather than ask for clarification if there is any ambiguity. The suggested code has an Apply button that will create a diff in the currently selected file. This is useful for larger refactors within a single file, or creating a brand new file based on the file I have open. If additional files are relevant they can be added manually to the context, but Cursor will try to guess which files are relevant based on the query and an index it generates in the background.
+聊天侧边栏通过 Ctrl+L/Cmd+L 打开,为多轮对话提供更多空间,不过我对目前测试过的 LLM 模型有一个小抱怨,那就是它们*总是*先返回代码,而不是在有任何歧义时先寻求澄清。建议的代码有一个应用按钮,会在当前选择的文件中创建差异。这对于单个文件内的大型重构,或基于我打开的文件创建全新文件很有用。如果其他文件相关,可以手动添加到上下文中,但 Cursor 会根据查询和它在后台生成的索引尝试猜测哪些文件是相关的。
 
-Here is an example which takes an application's database API and creates a REST API to access it, with parameter validation and correct HTTP status codes, _then_ writes a client library to access that REST API:
+这里有一个例子,它接受应用程序的数据库 API 并创建一个 REST API 来访问它,包括参数验证和正确的 HTTP 状态码,*然后*编写一个客户端库来访问该 REST API:
 
-<video controls=""><source src="../videos/cursor-review/example4.webm" type="video/webm"><p>Your browser doesn't support HTML video. Here is a <a href="../videos/cursor-review/example4.webm" download="example4.webm">link to the video</a> instead.</p></video>
+<video controls=""><source src="https://www.arguingwithalgorithms.com/videos/cursor-review/example4.webm" type="video/webm"><p>如果你的浏览器不支持 HTML 视频。这里是<a href="https://www.arguingwithalgorithms.com/videos/cursor-review/example4.webm" download="example4.webm">视频链接</a>供下载。</p></video>
 
-As another example, here I am using the chat sidebar to convert the client library from Python to Go. Note how the loosely-typed Python is converted to well-defined struct types and idiomatic Go including error handling! This is not a 1:1 rewrite at all:
+另一个例子,我正在使用聊天侧边栏将客户端库从 Python 转换为 Go。注意松散类型的 Python 是如何转换为定义良好的结构类型和惯用的 Go,包括错误处理!这根本不是 1:1 的重写:
 
-<video controls=""><source src="../videos/cursor-review/example5.webm" type="video/webm"><p>Your browser doesn't support HTML video. Here is a <a href="../videos/cursor-review/example5.webm" download="example5.webm">link to the video</a> instead.</p></video>
+<video controls=""><source src="https://www.arguingwithalgorithms.com/videos/cursor-review/example5.webm" type="video/webm"><p>如果你的浏览器不支持 HTML 视频。这里是<a href="https://www.arguingwithalgorithms.com/videos/cursor-review/example5.webm" download="example5.webm">视频链接</a>供下载。</p></video>
 
-Finally, Composer is specifically meant for cross-file refactors. This is also the feature I use least, but provides a better user experience for reviewing multiple file diffs one at a time.
+最后,Composer 专门用于跨文件重构。这也是我使用最少的功能,但它为一次一个地审查多个文件差异提供了更好的用户体验。
 
-## .cursorrules file
+## .cursorrules 文件
 
-I did not realize this feature existed until I came across it in the (in my opinion too minimal) documentation, but the various chat modalities always include the contents of a `.cursorrules` file located at the root of the workspace to provide additional context. I've been experimenting with using this to inform the LLM of the repository's coding standards, common packages, and other documentation.
+直到我在(我认为过于简单的)文档中偶然发现这个功能,我才意识到它的存在,但各种聊天模式总是包含工作区根目录下的 `.cursorrules` 文件的内容来提供额外的上下文。我一直在尝试使用这个功能来告诉 LLM 仓库的编码标准、常用包和其他文档。
 
-This feature might help to solve one of the big roadblocks I have observed with Cursor: It does not follow coding styles and patterns unless they already exist in the same file you are editing. For example, at Khan Academy we use a proprietary library [2][7] for passing context between functions in Go. This is used for logging, HTTP requests, etc. so the LLM needs to be able to use it. This has been difficult in the past, but perhaps a well-written `.cursorrules` is a good first step.
+这个功能可能有助于解决我在 Cursor 中观察到的一个大障碍:除非这些编码风格和模式已经存在于你正在编辑的同一个文件中,否则它不会遵循这些风格和模式。例如,在 Khan Academy,我们使用一个专有库[2][7]在 Go 中的函数之间传递上下文。这用于日志记录、HTTP 请求等,所以 LLM 需要能够使用它。这在过去一直很困难,但也许一个写得好的 `.cursorrules` 是一个好的第一步。
 
-One current limitation is that there is only one of these files per workspace, so a monorepo like ours containing code in multiple languages is going to be more difficult to set up than a small repository with a small set of very consistently styled code.
+目前的一个限制是每个工作区只能有一个这样的文件,所以像我们这样包含多种语言代码的单体仓库比一个只有一小组非常一致风格代码的小仓库更难设置。
 
-Also the documentation suggests that the `.cursorrules` file is only used for the chat modalities, not the tab completion. However I've experimented with having that file open in a pinned tab in the workspace and confirmed that it is possible to include it in the tab completion context that way at least.
+另外文档表明 `.cursorrules` 文件只用于聊天模式,不用于 Tab 自动补全。不过我尝试过在工作区中将该文件固定在标签页中,并确认至少可以通过这种方式将其包含在 Tab 自动补全的上下文中。
 
-## Changes to my workflow
+## 我的工作流程的变化
 
-The most exciting thing about a tool like Cursor is not that I can write code faster, because honestly the actual writing of code is not the bottleneck; in fact, I often have to slow myself down to avoid focusing too much on the code and not enough on the high-level problem being solved. The real value is in changing _how_ I code.
+像 Cursor 这样的工具最令人兴奋的不是我可以更快地写代码,因为说实话,实际写代码并不是瓶颈;事实上,我经常需要放慢速度,以避免过于关注代码而不是正在解决的高层次问题。真正的价值在于改变我编码的*方式*。
 
-It's still early days with this technology, but this is what I've found has changed about how I work and what I expect to see changing in the near future:
+这项技术仍处于早期阶段,但以下是我发现的关于我的工作方式的变化,以及我期望在不久的将来看到的变化:
 
-1.  I am _much_ less likely to reach for a new library or a framework. No, I'm not going to start writing my own crypto libraries, but for small utilities it's easy enough to let the LLM write them to my bespoke needs than to pull in a general-purpose library. These libraries tend to start small and lightweight and then, because they are open and used by many people, accumulate functionality and cruft that I don't need.
-    
-    Many of these libraries only exist to reduce boilerplate, which felt like a necessary tradeoff when balanced against my time writing and maintaining that boilerplate but now that I can have the LLM do it for me it feels less worth the cost. And the cost can be substantial: Have you tried getting a Node.js project running a year or more after it was written? You may as well start from scratch.
-    
-2.  I also worry less about adhering to DRY (Don't Repeat Yourself) in my own code. Prematurely defining abstractions can create a lot of technical debt later on, so being able to create a lot of code with reference to other code without trying to pull it into a function or class allows me more flexibility, and I know that if I have to refactor shared logic out later, the LLM can help with that too.
-    
-3.  My willingness to use a language or framework I am less familiar with is much higher. For example, I've dabbled in R for years, especially for visualizing data. However, to be frank, I suck at it. I don't have a deep understanding of `dplyr` and it seems like there are always a dozen different ways to accomplish the same task. Now I describe the visualization I want, and I get correct data manipulation and `ggplot` visualization for it. Tasks that took an hour or more now take five minutes, so I am much less likely to give up and do it in Python instead.
-    
-    Maybe one of these days I'll even write something in Rust. Maybe.
-    
-4.  I find myself iterating quickly on small components before integrating them into the larger codebase. This is partly to work around the limitations of LLMs when working with larger codebases, but it also opens up interesting ways of working I hadn't considered before. As per the example above, I can prototype some logic in a dynamically typed language like Python, work out the technical details and then convert it to well-typed Go instantly to integrate into a web application. I can have the LLM generate test data automatically, or mock up a backend for me to write a frontend against. Why pay the tax of working in a mature codebase while I'm still proving out an idea?
-    
+1. 我*更不*可能去寻找新的库或框架。不,我不会开始编写自己的加密库,但对于小型实用程序来说,让 LLM 根据我的特定需求编写它们比引入一个通用库更容易。这些库往往一开始很小巧轻便,然后,因为它们是开放的并被许多人使用,就会积累我不需要的功能和冗余代码。
 
-## Summary
+    许多这样的库存在的唯一目的是减少样板代码,当权衡我编写和维护这些样板代码的时间时,这感觉是一个必要的权衡,但现在我可以让 LLM 为我做这件事,感觉不太值得付出这个代价。而且代价可能很大:你试过在写完一年或更长时间后运行一个 Node.js 项目吗?你可能还不如从头开始。
 
-Whether I'll be using Cursor in a few years or have moved on to another tool, I can't really tell. I am confident that at the time of writing this, Cursor is the best example of the potential of LLM coding assistants, and if you want to explore how this type of tool might be of value I suggest you give it a spin.
+2. 我也不太担心在自己的代码中遵循 DRY(Don't Repeat Yourself,不要重复自己)原则。过早定义抽象可能会在以后产生大量技术债务,所以能够参考其他代码创建大量代码而不试图将其提取到函数或类中给了我更多的灵活性,而且我知道如果以后需要重构共享逻辑,LLM 也可以帮助我。
 
-[1]: #fn:1
-[2]: ../videos/cursor-review/example1.webm
-[3]: ../videos/cursor-review/example2.webm
-[4]: ../videos/cursor-review/example3.webm
-[5]: ../videos/cursor-review/example4.webm
-[6]: ../videos/cursor-review/example5.webm
-[7]: #fn:2
+3. 我使用不太熟悉的语言或框架的意愿更高了。例如,我多年来一直在涉猎 R,特别是用于数据可视化。但是,坦白说,我很不擅长。我对 `dplyr` 没有深入的理解,而且似乎总有十几种不同的方法来完成同一个任务。现在我描述我想要的可视化,就能得到正确的数据操作和 `ggplot` 可视化。以前需要一个小时或更长时间的任务现在只需要五分钟,所以我不太可能放弃而改用 Python。
+
+    也许有一天我甚至会用 Rust 写点东西。也许吧。
+
+4. 我发现自己在将小组件集成到更大的代码库之前会快速迭代。这部分是为了解决 LLM 在处理更大代码库时的限制,但它也开启了我以前没有考虑过的有趣工作方式。如上例所示,我可以在像 Python 这样的动态类型语言中原型化一些逻辑,解决技术细节,然后立即将其转换为类型良好的 Go 来集成到 web 应用程序中。我可以让 LLM 自动生成测试数据,或者为我模拟一个后端来编写前端。当我还在验证一个想法时,为什么要承担在成熟代码库中工作的成本呢?
+
+## 总结
+
+我是否会在几年后继续使用 Cursor 还是转向另一个工具,我现在还说不准。我确信在写这篇文章时,Cursor 是 LLM 编码助手潜力的最佳范例,如果你想探索这类工具可能带来的价值,我建议你试一试。
+
+[1]: https://www.cursor.com/
