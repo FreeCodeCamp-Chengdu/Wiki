@@ -9,8 +9,6 @@ reviewer: ""
 
 # Why I still self host my servers (and what I've recently learned)
 
-<!-- more -->
-
 ## Introduction
 
 I self host everything but email. I wrote about this [here][20], [here][21], or [here][22].
@@ -202,11 +200,10 @@ Anyways, Proxmox, by default, uses up to 50% of memory for the `zfs` cache, whic
 
 But, it turns out, you can [configure][49] that in the ZFS kernel settings!
 
-<table style="border-spacing:0;padding:0;margin:0;border:0"><tbody><tr><td style="vertical-align:top;padding:0;margin:0;border:0"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
-</span></code></pre></td><td style="vertical-align:top;padding:0;margin:0;border:0;width:100%"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="display:flex"><span><span style="color:#0086b3">echo</span> <span style="color:#d14">'options zfs zfs_arc_max="8589934592"'</span> &gt;&gt; /etc/modprobe.d/zfs.conf
-</span></span><span style="display:flex"><span>update-initramfs -u
-</span></span></code></pre></td></tr></tbody></table>
+```bash
+echo 'options zfs zfs_arc_max="8589934592"' >> /etc/modprobe.d/zfs.conf
+update-initramfs -u
+```
 
 This limits `zfs` to 8 GiB.
 
@@ -222,39 +219,24 @@ While it _did_ restart automatically, including the VMs, it of course couldn’t
 
 Well, sorting through logs revealed: 23:25 is when another Proxmox nodes backs up its VM to that server, to a single, non-redundant, ancient harddrive, with SMART values like this:
 
-<table style="border-spacing:0;padding:0;margin:0;border:0"><tbody><tr><td style="vertical-align:top;padding:0;margin:0;border:0"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">10
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">11
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">12
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">13
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">14
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">15
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">16
-</span></code></pre></td><td style="vertical-align:top;padding:0;margin:0;border:0;width:100%"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="display:flex"><span>Error <span style="color:#099">4</span> occurred at disk power-on lifetime: <span style="color:#099">27469</span> hours <span style="color:#000;font-weight:700">(</span><span style="color:#099">1144</span> days + <span style="color:#099">13</span> hours<span style="color:#000;font-weight:700">)</span>
-</span></span><span style="display:flex"><span>  When the <span style="color:#0086b3">command</span> that caused the error occurred, the device was active or idle.
-</span></span><span style="display:flex"><span>
-</span></span><span style="display:flex"><span>  After <span style="color:#0086b3">command</span> completion occurred, registers were:
-</span></span><span style="display:flex"><span>  ER ST SC SN CL CH DH
-</span></span><span style="display:flex"><span>  -- -- -- -- -- -- --
-</span></span><span style="display:flex"><span>  <span style="color:#099">04</span> <span style="color:#099">51</span> <span style="color:#099">00</span> ff ff ff 0f
-</span></span><span style="display:flex"><span>
-</span></span><span style="display:flex"><span>  Commands leading to the <span style="color:#0086b3">command</span> that caused the error were:
-</span></span><span style="display:flex"><span>  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
-</span></span><span style="display:flex"><span>  -- -- -- -- -- -- -- --  ----------------  --------------------
-</span></span><span style="display:flex"><span>  ea <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> <span style="color:#099">00</span> a0 <span style="color:#099">00</span>   6d+03:38:11.728  FLUSH CACHE EXT
-</span></span><span style="display:flex"><span>  <span style="color:#099">61</span> <span style="color:#099">00</span> <span style="color:#099">08</span> ff ff ff 4f <span style="color:#099">00</span>   6d+03:38:11.726  WRITE FPDMA QUEUED
-</span></span><span style="display:flex"><span>  <span style="color:#099">61</span> <span style="color:#099">00</span> <span style="color:#099">08</span> ff ff ff 4f <span style="color:#099">00</span>   6d+03:38:11.726  WRITE FPDMA QUEUED
-</span></span><span style="display:flex"><span>  <span style="color:#099">61</span> <span style="color:#099">00</span> <span style="color:#099">08</span> ff ff ff 4f <span style="color:#099">00</span>   6d+03:38:11.725  WRITE FPDMA QUEUED
-</span></span><span style="display:flex"><span>  <span style="color:#099">61</span> <span style="color:#099">00</span> b0 ff ff ff 4f <span style="color:#099">00</span>   6d+03:38:11.725  WRITE FPDMA QUEUED
-</span></span></code></pre></td></tr></tbody></table>
+```
+Error 4 occurred at disk power-on lifetime: 27469 hours (1144 days + 13 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  04 51 00 ff ff ff 0f
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  ea 00 00 00 00 00 a0 00   6d+03:38:11.728  FLUSH CACHE EXT
+  61 00 08 ff ff ff 4f 00   6d+03:38:11.726  WRITE FPDMA QUEUED
+  61 00 08 ff ff ff 4f 00   6d+03:38:11.726  WRITE FPDMA QUEUED
+  61 00 08 ff ff ff 4f 00   6d+03:38:11.725  WRITE FPDMA QUEUED
+  61 00 b0 ff ff ff 4f 00   6d+03:38:11.725  WRITE FPDMA QUEUED
+```
 
 …which then caused weird deadlocks and such and the machine became unresponsive and got killed.
 
@@ -358,9 +340,9 @@ So, because of that, I looked for alternatives. I wanted a cheap VPS in the US f
 
 Much to my surprise, that machine was faster in benchmarks than my (nominally much more powerful) Contabo VPS:
 
-<table style="border-spacing:0;padding:0;margin:0;border:0"><tbody><tr><td style="vertical-align:top;padding:0;margin:0;border:0"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span></code></pre></td><td style="vertical-align:top;padding:0;margin:0;border:0;width:100%"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="display:flex"><span>sysbench --threads<span style="color:#000;font-weight:700">=</span><span style="color:#099">4</span>   --time<span style="color:#000;font-weight:700">=</span><span style="color:#099">30</span> --cpu-max-prime<span style="color:#000;font-weight:700">=</span><span style="color:#099">20000</span> cpu run
-</span></span></code></pre></td></tr></tbody></table>
+```bash
+sysbench --threads=4 --time=30 --cpu-max-prime=20000 cpu run
+```
 
 Got me
 
@@ -394,27 +376,21 @@ In any case, I tried using the official approach and benchmarked a bit because i
 
 Well, that’s because it was. Here’s three benchmarks, two with `cifs` (V3), with a strict and loose cache, as well as `sshfs`.
 
+```bash
+SIZE="256M"
+# Sequential
+fio --name=job-r --rw=read --size=$SIZE --ioengine=libaio --iodepth=4 --bs=128K --direct=1
+fio --name=job-w --rw=write --size=$SIZE --ioengine=libaio --iodepth=4 --bs=128k --direct=1
+# Random
+fio --name=job-randr --rw=randread --size=$SIZE --ioengine=libaio --iodepth=32 --bs=4K --direct=1 
+fio --name=job-randw --rw=randwrite --size=$SIZE --ioengine=libaio --iodepth=32 --bs=4k --direct=1
+```
+
 ![Storage Benchmark 1/2](/assets/image-20240825111920987.png)
 
 Storage Benchmark 1/2 [\[by me\]][72]
 
 Here’s what I used to test this:
-
-<table style="border-spacing:0;padding:0;margin:0;border:0"><tbody><tr><td style="vertical-align:top;padding:0;margin:0;border:0"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">2
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">3
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">4
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">5
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">6
-</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">7
-</span></code></pre></td><td style="vertical-align:top;padding:0;margin:0;border:0;width:100%"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="display:flex"><span><span style="color:teal">SIZE</span><span style="color:#000;font-weight:700">=</span><span style="color:#d14">"256M"</span>
-</span></span><span style="display:flex"><span><span style="color:#998;font-style:italic"># Sequential</span>
-</span></span><span style="display:flex"><span>fio --name<span style="color:#000;font-weight:700">=</span>job-r --rw<span style="color:#000;font-weight:700">=</span><span style="color:#0086b3">read</span> --size<span style="color:#000;font-weight:700">=</span><span style="color:teal">$SIZE</span> --ioengine<span style="color:#000;font-weight:700">=</span>libaio --iodepth<span style="color:#000;font-weight:700">=</span><span style="color:#099">4</span> --bs<span style="color:#000;font-weight:700">=</span>128K --direct<span style="color:#000;font-weight:700">=</span><span style="color:#099">1</span>
-</span></span><span style="display:flex"><span>fio --name<span style="color:#000;font-weight:700">=</span>job-w --rw<span style="color:#000;font-weight:700">=</span>write --size<span style="color:#000;font-weight:700">=</span><span style="color:teal">$SIZE</span> --ioengine<span style="color:#000;font-weight:700">=</span>libaio --iodepth<span style="color:#000;font-weight:700">=</span><span style="color:#099">4</span> --bs<span style="color:#000;font-weight:700">=</span>128k --direct<span style="color:#000;font-weight:700">=</span><span style="color:#099">1</span>
-</span></span><span style="display:flex"><span><span style="color:#998;font-style:italic"># Random</span>
-</span></span><span style="display:flex"><span>fio --name<span style="color:#000;font-weight:700">=</span>job-randr --rw<span style="color:#000;font-weight:700">=</span>randread --size<span style="color:#000;font-weight:700">=</span><span style="color:teal">$SIZE</span> --ioengine<span style="color:#000;font-weight:700">=</span>libaio --iodepth<span style="color:#000;font-weight:700">=</span><span style="color:#099">32</span> --bs<span style="color:#000;font-weight:700">=</span>4K --direct<span style="color:#000;font-weight:700">=</span><span style="color:#099">1</span> 
-</span></span><span style="display:flex"><span>fio --name<span style="color:#000;font-weight:700">=</span>job-randw --rw<span style="color:#000;font-weight:700">=</span>randwrite --size<span style="color:#000;font-weight:700">=</span><span style="color:teal">$SIZE</span> --ioengine<span style="color:#000;font-weight:700">=</span>libaio --iodepth<span style="color:#000;font-weight:700">=</span><span style="color:#099">32</span> --bs<span style="color:#000;font-weight:700">=</span>4k --direct<span style="color:#000;font-weight:700">=</span><span style="color:#099">1</span>
-</span></span></code></pre></td></tr></tbody></table>
 
 Not a new finding either, as I’m not the first to [benchmark][73] this.
 
@@ -482,9 +458,9 @@ The neat thing about CrowdSec is that, as the name implies, the threat detection
 
 It also comes with a neat cli that gives you stats about what it’s doing:
 
-<table style="border-spacing:0;padding:0;margin:0;border:0"><tbody><tr><td style="vertical-align:top;padding:0;margin:0;border:0"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:.4em;padding:0 .4em;color:#7f7f7f">1
-</span></code></pre></td><td style="vertical-align:top;padding:0;margin:0;border:0;width:100%"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="display:flex"><span>cscli metrics
-</span></span></code></pre></td></tr></tbody></table>
+```bash
+cscli metrics
+```
 
 Which, for instance, will tell me it banned 33 IPs for `crowdsecurity/CVE-2019-18935`, a rule for [this][87] CVE.
 
