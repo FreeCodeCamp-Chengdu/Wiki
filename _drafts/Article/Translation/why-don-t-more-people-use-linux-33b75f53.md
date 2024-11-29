@@ -7,13 +7,8 @@ translator: ""
 reviewer: ""
 ---
 
-[![](/dhh/avatar-fb368b1ee9b185dc2a09b03eabdb61678dd55244)
-
-<!-- more -->
-
-David Heinemeier Hansson
-
-][1]
+<img src=https://world.hey.com/dhh/avatar-fb368b1ee9b185dc2a09b03eabdb61678dd55244 width="4  8px" >
+[David Heinemeier Hansson][1]
 
 2024 年 9 月 2 日
 
@@ -43,7 +38,7 @@ David Heinemeier Hansson
 
 [使用 HEY 发送到世界][15]
 
-[1]: /dhh
+[1]: https://world.hey.com/dhh
 [2]: https://x.com/yacineMTB/status/1825361755133952326
 [3]: https://omakub.org/
 [4]: https://www.basecamp.com/
