@@ -17,7 +17,7 @@ As a summary, at home, I run a 3 node Proxmox cluster with several services, pow
 
 This article is about two things: Why I still bother and what it has recently taught me. Think of it as a brief retrospective and an encouragement for readers to go down the same rabbit hole.
 
-![heimdall.lan](/assets/image-20240825124525084.png)
+![heimdall.lan][88]
 
 heimdall.lan [\[Background from HBO promo material\]][23]
 
@@ -51,7 +51,7 @@ In addition to that, I _also_ have had an external VPS for 10+ years, which host
 
 As you can imagine, this can be quite a bit of work. I, despite common sentiment, also have a live outside of computers. Matter of fact, I’d rather spend my weekends outside (provided it’s not 90 degrees). Which sometimes conflicts with hosting all this.
 
-![For those unfamiliar: Outdoors! (Sample image from our garden)](/assets/image-20240825135445550.png)
+![For those unfamiliar: Outdoors! (Sample image from our garden)][89]
 
 For those unfamiliar: Outdoors! (Sample image from our garden) [\[by me\]][24]
 
@@ -99,7 +99,7 @@ One of my pet projects at work is an [Apache Flink][29] pipeline (itself an inhe
 
 VPCs and a bunch of networking, Kubernetes, GRPC, exactly-once/at-least-once semantics, eventual consistency, transactional locks, some [compiler building][35], protobufs & schema evolution, Kafka (or general data storage replication and multi tenancy), blob storage, a ton of metrics & monitoring (and hence, timeseries databases for lack of a better umbrella term) and so on.
 
-![Here's a picture out our neighborhood barn cat, so you don't get too bored while we talk about protobuf compilers](/assets/image-20240825131026074.png)
+![Here's a picture out our neighborhood barn cat, so you don't get too bored while we talk about protobuf compilers][90]
 
 Here's a picture out our neighborhood barn cat, so you don't get too bored while we talk about protobuf compilers [\[by me\]][36]
 
@@ -126,7 +126,7 @@ This is a simple, but neat one: The OS part of VS Code is something that runs in
 
 Very useful to use VS Code on a device like an iPad or a Mac (or Windows) that wants a Linux box. Mine runs on `Ubuntu`.
 
-![Useful on an iPhone? Eh...](/assets/image-20240825131634407.png)
+![Useful on an iPhone? Eh...][91]
 
 Useful on an iPhone? Eh... [\[by me\]][39]
 
@@ -138,11 +138,9 @@ UPS batteries, at least consumer ones like my simple 1U Cyberpower 1500VA only l
 
 I learned that the hard way after getting hit by brown outs and power outages that are pretty common here, and seemingly randomly, “the internet” was down. Turns out, without a redundant DNS, the internet doesn’t work.
 
-Changing these batteries was actually pretty straightforward (thanks to RefurbUPS).
+Changing these batteries was actually pretty straightforward (thanks to RefurbUPS). Nowadays, I actually have `powerst -test` scheduled monthly and will take testing my other, analog backup batteries more frequently.
 
-Nowadays, I actually have `powerst -test` scheduled monthly and will take testing my other, analog backup batteries more frequently.
-
-![pwrstat](/assets/image-20240824101120003.png)
+![pwrstat][92]
 
 pwrstat [\[by me\]][40]
 
@@ -154,7 +152,7 @@ The reason I never did - I use Pi-Hole, which runs `dnsmasq`. I _also_ used it a
 
 To fix that, I used RouterOS (Mikrotik) to set static IPs per device and VLAN/IP pool and re-enabled the DHCP server. I _already_ did that for the non-home VLANs, since they use a public DNS and don’t use the Pi-Hole.
 
-![VLAN](/assets/image-20240607213853924.png)
+![VLAN][93]
 
 VLAN [\[by me\]][41]
 
@@ -162,7 +160,7 @@ I also used this as an opportunity to map IP ranges to physical devices.
 
 I then used that mapping to map hostnames to IPs w/in the Pi-Hole:
 
-![DNS Mapping](/assets/image-20240607214429699.png)
+![DNS Mapping][94]
 
 DNS Mapping [\[by me\]][42]
 
@@ -182,7 +180,7 @@ But, this [repo][45] on GitHub preps Proxmox for ARM. Because of that, my little
 
 Not recommended and unsupported? Sure! So is using `zfs` via an USB device. Still works (within reason)!
 
-![Promox nodes](/assets/image-20240607214732963.png)
+![Promox nodes][95]
 
 Promox nodes [\[by me\]][46]
 
@@ -211,7 +209,7 @@ This limits `zfs` to 8 GiB.
 
 One of my Proxmox hosts crashed every single night, without fail, at 23:25 and came back online at 23:40. Here’s the monitoring:
 
-![TBD](/assets/image-20240607215257458.png)
+![TBD][96]
 
 TBD [\[by me\]][50]
 
@@ -240,7 +238,7 @@ Error 4 occurred at disk power-on lifetime: 27469 hours (1144 days + 13 hours)
 
 …which then caused weird deadlocks and such and the machine became unresponsive and got killed.
 
-![LibreNMS monitoring](/assets/image-20240607215539705.png)
+![LibreNMS monitoring][97]
 
 LibreNMS monitoring [\[by me\]][51]
 
@@ -270,7 +268,7 @@ I have all devices (that support it) on the network in LibreNMS, using the most 
 
 It does everything a cool, modern, SaaS based tracing and monitoring service does, for free. Well, maybe not _all_ of it - but it’s delightfully in depth. Other options (not necessarily mutually exclusive) are `zabbix` and `munin`, both of which I played with before, but never stuck to. This is a deceptively deep field, turns out, and not one I’m very knowledgeable about.
 
-![LibreNMS](/assets/image-20240824103028884.png)
+![LibreNMS][98]
 
 LibreNMS [\[by me\]][56]
 
@@ -294,13 +292,13 @@ Naturally, DNS was the first thing I checked. See above. My response included an
 
 I tried to offer more insights by doing some more digging. Turns out, I couldn’t even ping the IP directly (i.e., without DNS involvement). It seems like my ISP and their data center could not talk.
 
-![External network path says no](/assets/image-20240607221106538.png)
+![External network path says no][99]
 
 External network path says no [\[by me\]][57]
 
 As well as the fun observation that the VPS couldn’t talk to anything external. The only reason VNC worked is that this would tunnel it through a different machine in the same DC.
 
-![Ping says no internally](/assets/image-20240607221115352.png)
+![Ping says no internally][100]
 
 Ping says no internally [\[by me\]][58]
 
@@ -308,7 +306,7 @@ Ping says no internally [\[by me\]][58]
 
 More curiously, an `arp` scan gave me back 207.244.240.1, which is their data center in Missouri. Which, while available, was spotty to reach from the outside at best:
 
-![Flakey](/assets/image-20240607221122749.png)
+![Flakey][101]
 
 Flakey [\[by me\]][60]
 
@@ -328,7 +326,7 @@ I don’t expect [99.999%][61] availability from a more budget VPS, and they do 
 
 Unfortunately, this _interaction_, not necessarily the downtime itself was so bad that I stopped recommending Contabo entirely and since moved to Hetzner - and, of course, my own physical hardware, which had 99.995% uptime:
 
-![Uptime](/assets/image-20240825104016231.png)
+![Uptime][102]
 
 Uptime [\[by me\]][64]
 
@@ -346,13 +344,13 @@ sysbench --threads=4 --time=30 --cpu-max-prime=20000 cpu run
 
 Got me
 
-![VPS Benchmark 1/2](/assets/GPGtDkkXoAAW9XD.png)
+![VPS Benchmark 1/2][103]
 
 VPS Benchmark 1/2 [\[by me\]][66]
 
 And
 
-![VPS Benchmark 2/2](/assets/GPGtEuXXYAAdzJ4.png)
+![VPS Benchmark 2/2][104]
 
 VPS Benchmark 2/2 [\[by me\]][67]
 
@@ -386,7 +384,7 @@ fio --name=job-randr --rw=randread --size=$SIZE --ioengine=libaio --iodepth=32 -
 fio --name=job-randw --rw=randwrite --size=$SIZE --ioengine=libaio --iodepth=32 --bs=4k --direct=1
 ```
 
-![Storage Benchmark 1/2](/assets/image-20240825111920987.png)
+![Storage Benchmark 1/2][105]
 
 Storage Benchmark 1/2 [\[by me\]][72]
 
@@ -398,7 +396,7 @@ In any case, that’s pretty slow. The combination of a slow protocol - `cifs` -
 
 To give you some perspective, here’s the same chart with the same benchmark run on a local Proxmox VM:
 
-![Storage Benchmark 2/2](/assets/image-20240825134453828.png)
+![Storage Benchmark 2/2][106]
 
 Storage Benchmark 2/2 [\[by me\]][74]
 
@@ -408,7 +406,7 @@ Now, not even _using_ a “disk”, that’s what all the cool kids do nowadays.
 
 _Tangent_: Since the world “blob” is now indexed, please remember the following before you shame a helpless fish for the failures of your storage architecture:
 
-![Poor fish](/assets/blob.jpeg)
+![Poor fish][107]
 
 Poor fish [\[by Naila Latif\]][75]
 
@@ -426,7 +424,7 @@ Wasabi charges a minimum of **$6.99/mo** (which is the price per TB) _and_ 90 da
 
 Given that I spent $35 egress to get my 500GB server backups out of S3 during the migration and after reading [this][78], I went with Wasabi and moved my files there:
 
-![Wasabi](/assets/image-20240825112653613.png)
+![Wasabi][108]
 
 Wasabi [\[by me\]][79]
 
@@ -438,7 +436,7 @@ For $6.99 a TiB, it works _okay_. Listing files on a cold cache (e.g., a new dev
 
 Seeing this screen for several seconds is normal:
 
-![Nextcloud on iOS](/assets/image-20240825114612035.png)
+![Nextcloud on iOS][109]
 
 Nextcloud on iOS [\[by me\]][82]
 
@@ -493,9 +491,7 @@ By hosting stuff yourself, also get a reasonable level of autonomy - or, at the 
 [19]: #conclusion
 [20]: /blog/2019/04/building-a-home-server/
 [21]: /blog/2023/04/migrating-a-home-server-to-proxmox-truenas-and-zfs-or-how-to-make-your-home-network-really-complicated-for-no-good-reason/
-[22]: /blog/2023/10/moving-a-proxmox-host-with-a-sas-hba-as-pci-passthrough-for-zfs--truenas/
 [23]: https://www.hbo.com/curb-your-enthusiasm
-[24]: https://chollinger.com
 [25]: https://ngrok.com/blog-post/how-ngrok-uses-dagster-to-run-our-data-platform
 [26]: https://www.howtogeek.com/449691/what-is-swapiness-on-linux-and-how-to-change-it/
 [27]: https://www.hpc.dtu.dk/?page_id=1180
@@ -507,50 +503,31 @@ By hosting stuff yourself, also get a reasonable level of autonomy - or, at the 
 [33]: https://iceberg.apache.org/
 [34]: https://kafka.apache.org/
 [35]: https://github.com/scalapb/ScalaPB/pull/1674
-[36]: https://chollinger.com
 [37]: https://superset.apache.org/
 [38]: https://github.com/coder/code-server
-[39]: https://chollinger.com
-[40]: https://chollinger.com
-[41]: https://chollinger.com
-[42]: https://chollinger.com
 [43]: https://github.com/linuxserver/Heimdall
 [44]: https://github.com/mattwebbio/orbital-sync
 [45]: https://github.com/jiangcuo/Proxmox-Port
-[46]: https://chollinger.com
 [47]: https://www.youtube.com/watch?v=hNrr0aJgxig
 [48]: /blog/2023/10/moving-a-proxmox-host-with-a-sas-hba-as-pci-passthrough-for-zfs--truenas/
 [49]: https://openzfs.github.io/openzfs-docs/Performance%20and%20Tuning/Module%20Parameters.html#zfs-arc-max
-[50]: https://chollinger.com
-[51]: https://chollinger.com
 [52]: https://www.librenms.org/
 [53]: https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol?useskin=vector
 [54]: https://ngrok.com/
 [55]: https://www.cisa.gov/news-events/alerts/2017/06/05/reducing-risk-snmp-abuse
-[56]: https://chollinger.com
-[57]: https://chollinger.com
-[58]: https://chollinger.com
 [59]: http://example.org/
-[60]: https://chollinger.com
 [61]: https://uptime.is/99.999
 [62]: https://contabo.com/en-us/legal/terms-and-conditions/
 [63]: https://uptime.is/95
-[64]: https://chollinger.com
 [65]: https://www.hetzner.com/
-[66]: https://chollinger.com
-[67]: https://chollinger.com
 [68]: https://www.hetzner.com/storage/storage-box/
-[69]: https://rsync.net/
 [70]: https://docs.hetzner.com/robot/storage-box/access/access-samba-cifs/
 [71]: https://github.com/libfuse/sshfs
-[72]: https://chollinger.com
 [73]: https://blog.ja-ke.tech/2019/08/27/nas-performance-sshfs-nfs-smb.html
-[74]: https://chollinger.com
 [75]: https://nailalatif002.medium.com/on-ugliness-of-blobfish-culpable-ignorance-and-gods-guilt-14fd3b226908
 [76]: https://wasabi.com/
 [77]: https://www.backblaze.com/
 [78]: https://help.nextcloud.com/t/high-aws-s3-costs-due-to-nextcloud-requests/68687/4
-[79]: https://chollinger.com
 [80]: https://docs.nextcloud.com/server/29/admin_manual/configuration_files/external_storage_configuration_gui.html
 [81]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html
 [82]: https://chollinger.com
@@ -559,3 +536,25 @@ By hosting stuff yourself, also get a reasonable level of autonomy - or, at the 
 [85]: https://github.com/crowdsecurity/crowdsec
 [86]: https://app.crowdsec.net/hub?q=next&page=1
 [87]: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-18935
+[88]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825124525084.png
+[89]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825135445550.png
+[90]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825131026074.png
+[91]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825131634407.png
+[92]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240824101120003.png
+[93]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240607213853924.png
+[94]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240607214429699.png
+[95]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240607214732963.png
+[96]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240607215257458.png
+[97]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240607215539705.png
+[98]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240824103028884.png
+[99]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240607221106538.png
+[100]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240607221115352.png
+[101]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240607221122749.png
+[102]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825104016231.png
+[103]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/GPGtDkkXoAAW9XD.png
+[104]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/GPGtEuXXYAAdzJ4.png
+[105]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825111920987.png
+[106]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825134453828.png
+[107]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/blob.jpeg
+[108]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825112653613.png
+[109]: https://chollinger.com/blog/2024/08/why-i-still-self-host-my-servers-and-what-ive-recently-learned/assets/image-20240825114612035.png
