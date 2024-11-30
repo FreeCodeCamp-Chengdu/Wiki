@@ -7,215 +7,207 @@ translator: ""
 reviewer: ""
 ---
 
-# Why I still self host my servers (and what I've recently learned)
-
-## Introduction
-
-I self host everything but email. I wrote about this [here][20], [here][21], or [here][22].
-
-As a summary, at home, I run a 3 node Proxmox cluster with several services, powering a home network with Mikrotik router, Mikrotik switches, and UniFi WiFi, as well as an external VPS.
-
-This article is about two things: Why I still bother and what it has recently taught me. Think of it as a brief retrospective and an encouragement for readers to go down the same rabbit hole.
-
+为什么我仍然自托管服务器(以及最近学到的经验)
+引言
+除了电子邮件之外，我自己托管所有服务。我之前在[这里][20]、[这里][21]和[这里][22]写过相关内容。
+总的来说，在家里，我运行着一个由3个节点组成的Proxmox集群，提供多项服务，为家庭网络提供支持。网络设备包括Mikrotik路由器、Mikrotik交换机和UniFi WiFi，此外还有一台外部VPS。
+本文主要讨论两个方面：为什么我仍然坚持这样做，以及最近从中学到了什么。可以将其视为一个简短的回顾，也是对读者探索相同领域的一种鼓励。
 ![heimdall.lan][88]
+heimdall.lan [背景来自HBO宣传材料][23]
 
-heimdall.lan [\[Background from HBO promo material\]][23]
+## 我的服务
 
-## My Services
+我自托管：
 
-I self host:
+-   `PiHole` 作为DNS（冗余）
+-   RouterOS（可能有点“自托管”，但它确实提供了DHCP、VLAN、防火墙、DNS路由等功能）
+-   `UniFi controller` 作为WiFi控制器
+-   `heimdall` 作为主页
+-   `TrueNAS` 作为文件服务器（冗余）
+-   `gitea` 作为本地git服务器
+-   `wiki.js` 用于一般知识存储
+-   `VS Code` 作为基于浏览器的编辑器
+-   A `Ubuntu` 开发虚拟机用于一般代码杂耍（Debian 否则）
+-   `mariadb` 用于数据库需求
+-   `redis` 用于健忘数据库需求
+-   `InfluxDB` 用于特定数据库需求（即“我打算重新回到的项目”）
+-   `LibreNMS` 作为网络管理器和监控套件
+-   `Calibre Web` 用于电子书和论文
+-   `Komga` 用于漫画
+-   `Jellyfin` 用于一般媒体
+-   `Homebridge` 用于互联网的垃圾（tm）设备我不需要
 
--   `PiHole` as DNS resolver (redundant)
--   RouterOS (probably stretching the “self hosting” a bit, but it does DHCP, VLANs, Firewalls, DNS routing and such)
--   `UniFi controller` as a WiFi controller
--   `heimdall` as a landing page
--   `TrueNAS` as a file server (redundant)
--   `gitea` as a local git server
--   `wiki.js` for general knowledge storing
--   `VS Code` as a browser based editor
--   A `Ubuntu` dev VM for general code shenanigans (Debian otherwise)
--   `mariadb` for database needs
--   `redis` for forgetful database needs
--   `InfluxDB` for specific database needs (aka “projects I mean to get back into”)
--   `LibreNMS` as a network manager and monitoring suite
--   `Calibre Web` for E-Books and papers
--   `Komga` for comics
--   `Jellyfin` for general media
--   `Homebridge` for internet of sh\*t (tm) devices I don’t need
+此外，我还有一台外部VPS，已经运行了10多年，托管了：
 
-In addition to that, I _also_ have had an external VPS for 10+ years, which hosts:
+-   `nginx` 用于我的网站和这个博客
+-   `firefoxsync-rs`，用于同步 Firefox（使用新的 `rust` 版本！）
+-   `Nextcloud` 用于托管文件、日历和联系人
 
--   `nginx` for my website and this blog
--   `firefoxsync-rs`, Firefox sync to sync Firefox synchronously (the new `rust` version, too!)
--   `Nextcloud` to host files, calendar, and contacts
+你可以想象，这确实是一项相当多的工作。我，尽管有普遍的看法，也有一个生活在外面的生活。事实上，我宁愿在周末出去（前提是天气不是90度）。这有时会与托管所有这些事情发生冲突。
 
-As you can imagine, this can be quite a bit of work. I, despite common sentiment, also have a live outside of computers. Matter of fact, I’d rather spend my weekends outside (provided it’s not 90 degrees). Which sometimes conflicts with hosting all this.
+对不熟悉的人来说:户外生活!(来自我们花园的示例图片) [拍摄:我][24]
 
-![For those unfamiliar: Outdoors! (Sample image from our garden)][89]
+那么...为什么要这样做呢?
 
-For those unfamiliar: Outdoors! (Sample image from our garden) [\[by me\]][24]
+## 为什么我要自托管
 
-So… why bother?
+这篇文章并不完全是关于这个问题的,但我不喜欢标题党,所以我会切实回答标题中的问题:有两个原因。
 
-## Why I self host
+首先,我喜欢独立 - 或者至少,尽可能独立。这和我们有备用电源的原因一样,也是为什么我会烤面包、保存食物,以及总体上像一个迫切想要喂饱12个孙子直到他们无法自行移动的祖母那样生活。这让我能够_相对_独立于你当地的`大公司`最近在搞的任何邪恶计划(_提示_:很可能是某种订阅服务)。
 
-Most of this article is not purely about that question, but I dislike clickbait, so I’ll actually answer the question from the title: Two reasons.
+这基本上就是Linux和Firefox的论点 - 竞争是好事,自由也是。
 
-First of all, I like to be independent - or at least, as much as I can. Same reason we have backup power, why I know how to bake bread, preserve food, and generally LARP as a grandmother desperate to feed her 12 grandchildren until they are no longer capable of self propelled movement. It makes me _reasonably_ independent of whatever evil scheme your local `$MEGA_CORP` is up to these days (_hint_: it’s probably a subscription).
+如果这对你来说太抽象了,那么这篇文章_真正_要讲的是,它能教会你很多东西,这是我认为不言而喻的真理:学习是有益且有用的。
 
-It’s basically the Linux and Firefox argument - competition is good, and freedom is too.
+事实证明,强迫自己要么做一些你不是每天都做的事情,要么提高你偶尔做的事情的水平,或者仅仅是学习一些听起来有趣的东西,都能让你变得更好。这是个疯狂的概念,我知道。
 
-If that’s too abstract for you, and what this article is _really_ about, is the fact that it teaches you a lot and that is a truth I hold to be self-evident: Learning things is good & useful.
+在我的实际工作中,我不是系统管理员,而是一名软件工程师。我从事大型分布式数据处理系统的工作。我真的开始厌恶"数据工程师"这个头衔(这是另一个故事了),所以我不会用它。但是,在`$酷炫网络创业公司`领导数据基础设施工作的普通一天,我通常会做以下一项或多项工作:
 
-Turns out, forcing yourself to either do something you don’t do every day, or to get better at something you do occasionally, or to simply learn something that sounds fun makes you better at it. Wild concept, I know.
+-   会议、办公时间、架构讨论,诸如此类
+-   写带有有趣颜色的文本,这些天主要是`Python`、`Scala`、`go`、`typescript`和`sql`
+-   处理实际的基础设施和工具:K8s、Terraform、Docker、VPCs、EC2s、nix等有趣的东西
+-   可能相关的是,盯着AWS成本浏览器或电子表格
+-   照看一堆开源服务,管理更新等
+-   保持项目管理内容合理更新和可展示
+-   等等
 
-In my real job, I’m not a sysadmin, but actually a software engineer. I work on large, distributed data processing systems. I’ve come to genuinely despise the “Data Engineer” title (story for another time), so I won’t use it. But, on an average day leading our data infrastructure efforts at `$coolNetworkingStartup` I would, generally, do one or multiple of the following:
+我确实与系统管理员的工作有一些合理的重叠,主要是因为我支持开源软件,因此决定使用和[托管][25]各种开源工具作为我们数据栈的一部分。虽然大部分都很稳定,但偶尔确实需要一些基础的Linux技巧来让一切回到正轨。
 
--   Meetings, office hours, architecture chats, that sort of thing
--   Write text with funny colors, these days usually `Python`, `Scala`, `go`, `typescript`, and `sql`
--   Deal with actual infrastructure and tooling: K8s, Terraform, Docker, VPCs, EC2s, nix and other fun stuff
--   Perhaps related, stare at AWS Cost Explorer or spreadsheets
--   Babysit a bunch of OSS services, manage updates etc.
--   Keep my project management stuff reasonably up to date and presentable
--   And so on
+## 理解复杂系统
 
-I do have some reasonable overlap with sysadmin tasks, mostly because I’m a proponent of open software and hence, decided to use and [host][25] various OSS tools as part of our data stack. While most of that is very stable, it does occasionally require some mild Linux wizardry to get back on track.
+话虽如此，我很少需要通过`ssh`登录到随机的Linux机器上去检查`nginx`。这并不是说这种情况_不会_发生 - 只是_不经常_发生。
 
-## Reasoning about complex systems
+而当它_确实_发生时，能够通过深入理解底层技术而不是仅停留在表面来分析复杂系统是非常有帮助的。
 
-With that said, relatively rarely am I in the business of `ssh`‘ing into a random Linux machine to check on `nginx`. Not saying it _doesn’t_ happen - it just doesn’t happen _very often_.
+自托管所有这些服务 - 特别是当它们让你比仅仅复制粘贴命令更深入地探索技术细节时 - 会教会你很多有用的新知识。
 
-And when it _does_ happen, being able to reason about complex systems by means of understanding the underlying technology on more than a very rough surface level is tremendously helpful.
+让我举几个现实世界的例子 - 通常，基础的Linux_管理_知识就能派上用场。获取这些知识最好的方式是要么日常使用Linux（就我个人而言，现在使用的是macOS）...要么自托管和自我管理服务器。
 
-Self hosting all these services - especially, if they take you a look deeper into a rabbit hole than just copy pasting commands - will teach you a lot of new things that help with this.
+例如，知道设置[swapiness][26]很少有用，并在代码审查中指出这一点；或者知道修改[`LD_LIBRARY_PATH`][27]必然会带来麻烦。不过，意识到这两者_可能_在特殊情况下是有效的工具也很重要（对于后者，我们混合使用`poetry`和`nix`，你可以想象会发生什么）。
 
-Let me give you a small handful of real-world examples - often times, simple Linux _administration_ basics can be useful. The best ways to acquire those is to either daily drive Linux (personally, I’m on macOS these days)… or self host and self manage servers.
+当然，维护分布式基础设施（如Proxmox）或[从头开始编写一个][28]也有助于维护、设计和/或实现跨越多个概念的_其他_复杂分布式系统。
 
-For instance, knowing that setting [swapiness][26] is seldom useful and calling that out in pull requests or knowing that messing with [`LD_LIBRARY_PATH`][27] is a surefire way to frustration. However, being aware that both _can be_ a valid tool to deal with obscure cases (for the latter, we mix `poetry` and `nix` and you can see where that is going) is helpful.
+我在工作中的一个个人项目是一个[Apache Flink][29]管道（本身就是一个固有的分布式框架），使用Scala 3编写，通过[magnolia][30]和[avro4s][31]进行类型类推导，将[protobuf][32]消息通过[Kafka][34]转换为[Apache Iceberg][33]（它还做了更多事情，但这些是基础部分）。这个项目涉及了以下概念的深入理解，这些概念_不是_核心的"编程"任务，而是_额外_的内容（因为它是`scala`，还包括像tagless final这样的内容）：
 
-Of course babysitting and maintaining a distributed infrastructure (like Proxmox) or [writing one from scratch][28] is also helpful to maintain, design, and/or implement _other_ complex distributed systems that span more than one concept.
+VPC和大量网络知识、Kubernetes、GRPC、exactly-once/at-least-once语义、最终一致性、事务锁、一些[编译器构建][35]、protobuf和模式演进、Kafka（或通用数据存储复制和多租户）、blob存储、大量的指标和监控（因此也包括时序数据库，姑且这么说）等等。
 
-One of my pet projects at work is an [Apache Flink][29] pipeline (itself an inherently distributed framework), written in Scala 3, that uses typeclass derivation via [magnolia][30] and [avro4s][31] to turn [protobuf][32] messages into [Apache Iceberg][33] via [Kafka][34] (it does a bit more, but these are the basics). This project involved, in no particular order, a more-than-surface-level understanding of the following concepts that _aren’t_ core “programming” task, in _addition_ to the core stuff (since it’s `scala`, stuff like tagless final):
+![这是我们社区谷仓猫的照片，这样当我们讨论protobuf编译器时你就不会太无聊][90]
 
-VPCs and a bunch of networking, Kubernetes, GRPC, exactly-once/at-least-once semantics, eventual consistency, transactional locks, some [compiler building][35], protobufs & schema evolution, Kafka (or general data storage replication and multi tenancy), blob storage, a ton of metrics & monitoring (and hence, timeseries databases for lack of a better umbrella term) and so on.
+这是我们社区谷仓猫的照片，这样当我们讨论protobuf编译器时你就不会太无聊[拍摄：我][36]
 
-![Here's a picture out our neighborhood barn cat, so you don't get too bored while we talk about protobuf compilers][90]
+当然，如果你是一个有经验的工程师，之前已经接触过分布式系统，这些主题可能都不会显得特别新颖或可怕 - 但关键是，其中很多内容都与自托管软件时遇到的问题有重叠 - 事实上，在我提到的11个左右的要点中，我敢说在我的自托管历程中至少接触过其中的8个。
 
-Here's a picture out our neighborhood barn cat, so you don't get too bored while we talk about protobuf compilers [\[by me\]][36]
+最后，如上所述，在`work`中我也"拥有"（在这种情况下，这不是一个很糟糕的"企业"用语吗？）几个开源工具，我们在Kubernetes上自托管并进行内部使用，比如[Apache Superset][37]。这与本文主题的相似之处应该相当明显。:-)
 
-Of course, if you are a reasonably seasoned engineer who has worked on distributed systems before, none of these topics will probably inherently new or scary - but the point is that a lot of them overlap with a lot of the things you deal with when you self host software - in fact, out of the 11 or so points I mentioned, I’m willing to wager I’ve dealt with at least 8 of them during my self-hosting adventures.
+## 过去6个月出现的问题
 
-Lastly, as hinted to above, at `$work` I also “own” (isn’t that a horribly “corporate” word in this context?) several Open Source tools, which we self-host and dogfood on Kubernetes, such as [Apache Superset][37]. The parallels to what this article about should be relatively obvious. :-)
+好吧,听起来很有用。但还记得我说过"这需要大量工作"吗?在过去大约6个月里,发生了以下这些事情(我相信这还不是完整的清单):
 
-## Things that broke in the last 6 months
+- 我们遇到了断电,而UPS本应负责为服务器和家庭网络提供备用电源,但它就是...不工作
+- 因此,我们的网络(存在单点故障)在某台服务器宕机时就完全瘫痪了
+- 我唯一外包运维的VPS服务器随机离线了将近一周
+- 我的一台Proxmox主机每天晚上都会准时在23:25崩溃,然后在23:40重新上线
 
-Okay, cool, seems useful. But remember how I said “it’s a lot of work”? Well. Over the past 6 or so months, the following things happened (and I don’t believe that’s an exhaustive list):
+## 过去6个月学到(或回顾)的经验
 
--   We had power outages and the UPS, which was supposed to be responsible for be backup power for the server + home network, just… didn’t work
--   Because of that, our network - which has single point of failures - was down when a single server was down
--   My VPS, the one server I outsource the operations of, was randomly offline for almost a week
--   One of my Proxmox hosts crashed every single night, without fail, at 23:25 and came back online at 23:40
+那么,让我快速分享一下在这段时间内我做的一些事情,部分是为了解决上述问题,部分出于好奇,以及我从中学到和回顾的经验。
 
-## Things I learned (or recalled) in the last 6 months
+### 你可以自托管VS Code
 
-So, allow me to rapid fire a bunch of things I did in the same timeframe, partially to fix some of these issues, and partially out of curiosity, and roughly what I learned and/or recalled by doing that.
+这是一个简单但很巧妙的发现:VS Code的操作系统部分可以在浏览器中运行。这与GitHub的codespaces使用相同的概念,但是自托管:[https://github.com/coder/code-server][38]
 
-### You can self host VS Code
+这在iPad或Mac(或Windows)等需要Linux环境的设备上使用VS Code非常有用。我的运行在`Ubuntu`上。
 
-This is a simple, but neat one: The OS part of VS Code is something that runs in a browser. Same concept that powers GitHub’s codespaces, but self hosted: [https://github.com/coder/code-server][38]
+![在iPhone上好用吗?呃...][91]
 
-Very useful to use VS Code on a device like an iPad or a Mac (or Windows) that wants a Linux box. Mine runs on `Ubuntu`.
+在iPhone上好用吗?呃... [拍摄:我][39]
 
-![Useful on an iPhone? Eh...][91]
+我在思考如何让我那台价格不菲的iPad Pro更有用时偶然发现了这个。事实证明,你确实可以!我不是说你_应该_这么做,但你_可以_。
 
-Useful on an iPhone? Eh... [\[by me\]][39]
+### UPS电池会悄无声息地死亡,而且比你想象的更快
 
-I stumbled upon this while wondering if I can make my overpriced iPad Pro a bit more useful. Turns out, you can! Not saying you _should_, but you _can_.
+UPS电池,至少像我这种简单的1U Cyberpower 1500VA消费级产品,只能用大约_3年_。我的电池已经4年了,_完全_报废了。虽然我在概念上知道不是所有东西都像锂电池那样寿命长,但我_没想到_它们会这么快就达到"无法使用"的程度。
 
-### UPS batteries die silently and quicker than you think
+在经历了这里常见的断电和电压不稳后,我才痛苦地意识到这一点,网络会看似随机地断开。事实证明,没有冗余DNS的话,互联网就无法工作。
 
-UPS batteries, at least consumer ones like my simple 1U Cyberpower 1500VA only last about _3 years_. Mine, being 4 years old, were _completely_ dead. While I’m conceptually aware that not everything is a long-lived lithium based powerhouse, I did _not_ know they go to “unusable capacity” that quickly.
-
-I learned that the hard way after getting hit by brown outs and power outages that are pretty common here, and seemingly randomly, “the internet” was down. Turns out, without a redundant DNS, the internet doesn’t work.
-
-Changing these batteries was actually pretty straightforward (thanks to RefurbUPS). Nowadays, I actually have `powerst -test` scheduled monthly and will take testing my other, analog backup batteries more frequently.
+更换这些电池其实很简单(感谢RefurbUPS)。现在,我实际上每月都会安排运行`powerst -test`,并会更频繁地测试其他模拟备用电池。
 
 ![pwrstat][92]
 
-pwrstat [\[by me\]][40]
+pwrstat [拍摄：我][40]
 
-### Redundant DNS is good DNS
+### 冗余DNS就是好DNS
 
-We all know DNS is inherently redundant, globally distributed, and eventually consistent. But I actually never _hosted_ 2 DNS caches at once.
+我们都知道DNS本质上是冗余的、全球分布的,并且最终一致的。但实际上我从未同时_托管_过2个DNS缓存。
 
-The reason I never did - I use Pi-Hole, which runs `dnsmasq`. I _also_ used it as a DHCP server to see which machine ran which DNS queries. So, by way of laziness and convenience, moving DHCP out of the Pi-Hole interface was annoying.
+我之前没这么做的原因是 - 我使用Pi-Hole,它运行`dnsmasq`。我_还_把它用作DHCP服务器,以便查看哪台机器运行了哪些DNS查询。所以出于懒惰和便利的考虑,将DHCP从Pi-Hole界面移出是很麻烦的。
 
-To fix that, I used RouterOS (Mikrotik) to set static IPs per device and VLAN/IP pool and re-enabled the DHCP server. I _already_ did that for the non-home VLANs, since they use a public DNS and don’t use the Pi-Hole.
+为了解决这个问题,我使用RouterOS(Mikrotik)为每个设备和VLAN/IP池设置静态IP,并重新启用了DHCP服务器。对于不使用Pi-Hole而使用公共DNS的非家庭VLAN,我_已经_这样做了。
 
 ![VLAN][93]
 
-VLAN [\[by me\]][41]
+VLAN [拍摄：我][41]
 
-I also used this as an opportunity to map IP ranges to physical devices.
+我也借此机会将IP范围映射到物理设备。
 
-I then used that mapping to map hostnames to IPs w/in the Pi-Hole:
+然后我使用该映射在Pi-Hole中将主机名映射到IP:
 
-![DNS Mapping][94]
+![DNS映射][94]
 
-DNS Mapping [\[by me\]][42]
+DNS映射 [拍摄：我][42]
 
-Then, it was just a matter of configuring the two Pi-Hole servers in RouterOS to make both available for clients. Poor man’s H/A!
+之后,只需在RouterOS中配置两台Pi-Hole服务器,使它们都可用于客户端。这就是穷人版的高可用性!
 
-Since we don’t add devices that often (and I add all services that _need_ a DNS name to [heimdall][43]), it works well enough to grok Pi-Hole logs to manually copy over configs when something changes.
+由于我们不经常添加设备(而且我会将所有_需要_DNS名称的服务添加到[heimdall][43]),通过查看Pi-Hole日志手动复制配置就足够了。
 
-I’ve got it on my list to host [orbital-sync][44] to simplify this further.
+我已经把托管[orbital-sync][44]列入计划,以进一步简化这个过程。
 
-At this point, you _can_ also enforce the use of said DNS servers (which may be a good idea with kids or in a work setting) by means of firewall rules around port 53 UDP traffic. RouterOS can do that easily.
+在这一点上,你_也可以_通过针对53端口UDP流量的防火墙规则来强制使用这些DNS服务器(这在有孩子或工作环境中可能是个好主意)。RouterOS可以轻松实现这一点。
 
-### Raspberry PIs run ARN, Proxmox does not
+### 树莓派可以运行ARM版Proxmox,而普通Proxmox不行
 
-Normally, Proxmox is x86 only.
+通常情况下,Proxmox只支持x86架构。
 
-But, this [repo][45] on GitHub preps Proxmox for ARM. Because of that, my little Raspberry Pi 5 is now a Proxmox node, which runs UniFi and one of the Pi-Holes.
+但是,这个GitHub上的[仓库][45]可以让Proxmox支持ARM架构。正因如此,我的小树莓派5现在成为了一个Proxmox节点,运行着UniFi和其中一个Pi-Hole。
 
-Not recommended and unsupported? Sure! So is using `zfs` via an USB device. Still works (within reason)!
+不推荐且不受支持?当然!就像通过USB设备使用`zfs`一样。但它就是能用(在合理范围内)!
 
-![Promox nodes][95]
+![Promox节点][95]
 
-Promox nodes [\[by me\]][46]
+Promox节点 [拍摄:我][46]
 
-I mentioned “Poor man’s High Availability” a second ago: Funnily enough, [Linus Tech Tips][47] recently made a video about Proxmox proper H/A VMs and failovers. My DNS setup is not that, but _could_ be, since I now have 3 nodes, thanks to my frankenstein’d ARM node. And as they say: Three’s a quorum, baby!
+我刚才提到了"穷人版的高可用性":有趣的是,[Linus Tech Tips][47]最近做了一个关于Proxmox正式版H/A虚拟机和故障转移的视频。我的DNS设置虽然不是那样,但_可以_做到,因为现在我有3个节点了,多亏了我这个改装过的ARM节点。就像他们说的:三个节点才能构成法定人数,宝贝!
 
-_As another little side tangent_: The first time I dealt with “quorums” was in the early `hadoop` days, where manually configuring `zookeeper`, `hdfs` etc. and making sure your cluster can form a quorum was actually important. It was certainly more complicated than “just deploy this job to AWS” (and I don’t want to do that again), but it certainly taught me a lot about how the sausage is made!
+_再补充一点_:我第一次接触"法定人数"这个概念是在早期的`hadoop`时代,那时候手动配置`zookeeper`、`hdfs`等并确保集群能形成法定人数是非常重要的。这肯定比"只需部署这个作业到AWS"要复杂得多(我也不想再那样做了),但它确实让我学到了很多关于其中运作原理的知识!
 
-### `zfs` + Proxmox eat memmory and will OOM kill your VMS
+### `zfs` + Proxmox会吃掉内存并导致虚拟机被OOM杀死
 
-Did you know OOM kills were “a thing” in `$currentYear`? Sure are! I run `TrueNAS Scale` with a [SAS HBA in PCI passthru mode][48] and had my machines OOM killed occasionally when both Proxmox backups + device backups where running.
+你知道OOM杀死在`$currentYear`年还是"一个问题"吗?确实如此!我运行着带[SAS HBA直通模式][48]的`TrueNAS Scale`,当Proxmox备份和设备备份同时运行时,我的机器偶尔会被OOM杀死。
 
-Now, as a tangent on top of the tangent - running that config for TrueNAS is _also_ unsupported/discouraged by TrueNAS, which wants to run on bare metal.
+说到这里 - 用这种配置运行TrueNAS也是不受支持/不推荐的,因为TrueNAS希望直接运行在物理机上。
 
-Anyways, Proxmox, by default, uses up to 50% of memory for the `zfs` cache, which, in combination with the VM being configured to use ~80%, didn’t work out too well in an environment with limited RAM - and one that consists of almost exclusively refurbished, old RAM sticks from other computers.
+总之,Proxmox默认会使用高达50%的内存作为`zfs`缓存,再加上虚拟机被配置为使用~80%的内存,在RAM有限的环境下 - 而且几乎全是从其他电脑收集来的旧内存条 - 这样运行效果并不好。
 
-But, it turns out, you can [configure][49] that in the ZFS kernel settings!
+但是,原来你可以在ZFS内核设置中[配置][49]这个参数!
 
 ```bash
 echo 'options zfs zfs_arc_max="8589934592"' >> /etc/modprobe.d/zfs.conf
 update-initramfs -u
 ```
 
-This limits `zfs` to 8 GiB.
+这样可以将`zfs`限制在8 GiB内存使用量。
 
-### The mystery of random crashes (Is it hardware? It’s always hardware.)
+### 随机崩溃之谜(是硬件问题吗?一直都是硬件问题。)
 
-One of my Proxmox hosts crashed every single night, without fail, at 23:25 and came back online at 23:40. Here’s the monitoring:
+我的一台Proxmox主机每天晚上都会准时在23:25崩溃,然后在23:40重新上线。这是监控数据:
 
 ![TBD][96]
 
-TBD [\[by me\]][50]
+TBD [拍摄:我][50]
 
-While it _did_ restart automatically, including the VMs, it of course couldn’t decrypt the `zfs` pool. I only noticed when the TimeMachine backups on my Mac were failing!
+虽然它_确实_会自动重启,包括虚拟机,但当然无法解密`zfs`存储池。我只是在Mac的TimeMachine备份失败时才注意到这个问题!
 
-Well, sorting through logs revealed: 23:25 is when another Proxmox nodes backs up its VM to that server, to a single, non-redundant, ancient harddrive, with SMART values like this:
+好吧,查看日志发现:23:25是另一个Proxmox节点将其虚拟机备份到这台服务器的时间,备份到一个单一的、非冗余的老硬盘上,其SMART值如下:
 
 ```
 Error 4 occurred at disk power-on lifetime: 27469 hours (1144 days + 13 hours)
@@ -236,143 +228,96 @@ Error 4 occurred at disk power-on lifetime: 27469 hours (1144 days + 13 hours)
   61 00 b0 ff ff ff 4f 00   6d+03:38:11.725  WRITE FPDMA QUEUED
 ```
 
-…which then caused weird deadlocks and such and the machine became unresponsive and got killed.
+...这导致了各种奇怪的死锁,使得机器无响应并被杀死。
 
-![LibreNMS monitoring][97]
+![LibreNMS监控][97]
 
-LibreNMS monitoring [\[by me\]][51]
+LibreNMS监控 [拍摄:我][51]
 
-Replace drive, problem solved. Funny how that works.
+更换硬盘后,问题解决。就是这么简单。
 
-`$BigHardDrive` will tell you to _only_ use shiny, new, fancy, expensive drives, but the man with the server rack in the basement tells you that you can, in fact, re-use your ancient, assorted pieces of hardware for ultimately unimportant backups with ~no~ almost no issues!
+`大硬盘厂商`会告诉你_只能_使用闪亮的、新的、fancy的、昂贵的硬盘,但地下室里装着服务器机架的人会告诉你,事实上,你完全可以重复使用那些古老的、各式各样的硬件来做一些不那么重要的备份,而且基本上~不会~几乎不会出问题!
 
-### SNMP(v3) is still cool
+### SNMP(v3)仍然很酷
 
-I live precariously through reminders. One I had on my list for a while was “automate network mapping and alerts”. Turns out, a solved problem, even _without_ the modern monitoring & tracing solutions from Datadog (which, for the record, I love), Jaeger, Prometheus and the like.
+我通过提醒来过活。我的待办清单上有一项已经存在一段时间了:"自动化网络映射和告警"。事实证明,这是一个已解决的问题,即使_不使用_现代的监控和追踪解决方案,如Datadog(顺便说一下,我很喜欢它)、Jaeger、Prometheus等。
 
-These graphs above from the decaying HDD? [LibreNMS][52]!
+上面那些关于硬盘衰退的图表?来自[LibreNMS][52]!
 
-Uses Simple Network Management Protocol ([SNMP][53]). An ancient protocol from the 80’s that does _exactly_ that: Monitors your stuff. I just never bothered setting it up, since it is somewhat of an arcane protocol to modern eyes. Not that I allow inbound traffic (we have [ngrok][54] for that), but a paranoid sysadmin is a good sysadmin.
+它使用简单网络管理协议([SNMP][53])。这是一个来自80年代的古老协议,_正好_可以做到这一点:监控你的设备。我之前一直没有去设置它,因为对现代人来说这是一个有点晦涩的协议。虽然我不允许入站流量(我们用[ngrok][54]来处理),但一个偏执的系统管理员才是好系统管理员。
 
-> SNMP depends on secure strings (or “community strings”) that grant access to portions of devices’ management planes. Abuse of SNMP could allow an unauthorized third party to gain access to a network device.
+> SNMP依赖于安全字符串(或"团体字符串"),这些字符串授予对设备管理平面部分的访问权限。SNMP的滥用可能允许未经授权的第三方访问网络设备。
 > 
-> SNMPv3 should be the only version of SNMP employed because SNMPv3 has the ability to authenticate and encrypt payloads. When either SNMPv1 or SNMPv2 are employed, an adversary could sniff network traffic to determine the community string. This compromise could enable a man-in-the-middle or replay attack.
-> 
-> …
-> 
-> Simply using SNMPv3 is not enough to prevent abuse of the protocol. A safer approach is to combine SNMPv3 with management information base (MIB) whitelisting using SNMP views.
-> 
+> 应该只使用SNMPv3,因为SNMPv3具有认证和加密负载的能力。当使用SNMPv1或SNMPv2时,攻击者可能会嗅探网络流量以确定团体字符串。这种妥协可能会导致中间人攻击或重放攻击。
+>
+> ...
+>
+> 仅仅使用SNMPv3还不足以防止协议被滥用。更安全的方法是将SNMPv3与使用SNMP视图的管理信息库(MIB)白名单结合使用。
+>
 > [https://www.cisa.gov/news-events/alerts/2017/06/05/reducing-risk-snmp-abuse][55]
 
-I have all devices (that support it) on the network in LibreNMS, using the most “secure” version of the protocol, V3.
+我在LibreNMS中添加了网络上所有支持的设备,使用最"安全"的协议版本V3。
 
-It does everything a cool, modern, SaaS based tracing and monitoring service does, for free. Well, maybe not _all_ of it - but it’s delightfully in depth. Other options (not necessarily mutually exclusive) are `zabbix` and `munin`, both of which I played with before, but never stuck to. This is a deceptively deep field, turns out, and not one I’m very knowledgeable about.
+它可以免费完成一个很酷的、现代的、基于SaaS的追踪和监控服务所做的一切。好吧,也许不是_全部_ - 但它的深度令人愉悦。其他选项(不一定互斥)包括`zabbix`和`munin`,我之前都尝试过,但从未坚持使用。事实证明,这是一个深不可测的领域,而且不是我非常了解的领域。
 
 ![LibreNMS][98]
+LibreNMS [由我提供][56]
+但我_确实_喜欢图表和漂亮的仪表盘。
+不要相信你的VPS供应商
+我的VPS由Contabo托管,随机宕机了将近4天。你无法读到这个博客。
+只有_通过不同IP的VNC才能工作。我能与自己从_2014_年就持续付费的服务器通信的唯一方式就是VNC。_其他_什么都不行 - ping、SSH,什么都不行。而我为自己写出详细的支持工单并自己检查所有可能的问题而感到自豪 - 这次,问题_不是_出在DNS上。:-)
+事件的简要时间线如下:首先,我提交工单描述问题,包括DNS配置的副本。
+我会避免在此粘贴逐字逐句的互动内容,但他们的回应归结为
+> 你的问题听起来像是没有设置DNS服务器的情况。
+…后面是一些通过resolv.conf设置Google DNS服务器的步骤。
+当然,DNS是我首先检查的东西。见上文。我的回复包括了DNS配置的另一个副本(这次是截图),以及一个友好的提示,说我无法安装apt包,因为机器与他们数据中心之外的任何东西都断开了。
+我试图通过做更多挖掘来提供更多见解。原来,我甚至无法直接ping通IP(即,不涉及DNS)。似乎我的ISP和他们的数据中心无法通信。
 
-LibreNMS [\[by me\]][56]
+![外部网络路径说不][99]
+外部网络路径说不 [由我提供][57]
+还有一个有趣的观察结果是,VPS无法与外部的任何东西通信。VNC之所以有效,是因为它会通过同一数据中心的另一台机器隧道传输。
+![Ping在内部也说不][100]
+Ping在内部也说不 [由我提供][58]
+93.184.215.14是[example.org][59]。这永远不会超时,因为我让它通宵运行。是的,考虑到简单的ping的局限性,我也用netcat做了所有这些调试。
+更奇怪的是,arp扫描给我返回了207.244.240.1,这是他们在密苏里州的数据中心。虽然可以访问,但从外部到达那里充其量也是断断续续的:
+![不稳定][101]
+不稳定 [由我提供][60]
+这里的一切都表明他们那边存在更大的网络问题,而我的服务器已经离线48小时了。
+2天后,我自己的选择已经用尽,机器突然重新上线了 - 据我所知,是在一个不同的数据中心。我没有做进一步的更改,而是着手迁移到Hetzner(见下文)。我收到了这封电子邮件:
+> 感谢您的耐心等待。我们检查了您的VPS M SSD/它对Ping请求有反应,SSH和VNC也都可以访问。因此,我们认为问题已经解决。请您再次检查您那边的情况。
 
-But I _do_ like graphs and pretty dashboards.
-
-### Don’t trust your VPS vendor
-
-My VPS, hosted by Contabo, randomly went down for almost 4 days. You could not read this blog.
-
-_Only_ VNC through a different IP worked. I was able to talk to my server, which I paid for continuously since _2014_, only via VNC. _Nothing_ else worked - ping, SSH, nothing. And I pride myself in writing detailed support tickets and check everything I can myself - this time, it actually _wasn’t_ DNS. :-)
-
-For a short timeline of events: First, I raise a ticket outlining the problem, including a copy of the DNS config.
-
-I’ll refrain from pasting the verbatim interactions here, but their response boiled down to
-
-> Your problem sounds like a case of not having the DNS server set.
-
-… followed by a few steps to set the Google DNS servers via `resolv.conf`.
-
-Naturally, DNS was the first thing I checked. See above. My response included another copy (this time a screenshot) of my DNS configuration and a friendly note that I can’t install `apt` packages, since the machine is cut off from anything outside their data center.
-
-I tried to offer more insights by doing some more digging. Turns out, I couldn’t even ping the IP directly (i.e., without DNS involvement). It seems like my ISP and their data center could not talk.
-
-![External network path says no][99]
-
-External network path says no [\[by me\]][57]
-
-As well as the fun observation that the VPS couldn’t talk to anything external. The only reason VNC worked is that this would tunnel it through a different machine in the same DC.
-
-![Ping says no internally][100]
-
-Ping says no internally [\[by me\]][58]
-
-93.184.215.14 is [example.org][59]. This would never time out, since I let it run overnight. And yes, I did all of this debugging with `netcat` too, given the limitations of a simple `ping`.
-
-More curiously, an `arp` scan gave me back 207.244.240.1, which is their data center in Missouri. Which, while available, was spotty to reach from the outside at best:
-
-![Flakey][101]
-
-Flakey [\[by me\]][60]
-
-Everything here pointed at a larger network issue on their end, and my server had been offline for 48 hrs.
-
-2 days later, my own options exhausted, the machine is suddenly back online - in a different DC, from what I can tell. I made no further changes and worked on on a migration to Hetzner instead (see below). I get this email:
-
-> Thank you for your patience. We checked your VPS M SSD/ It is reacting to Ping requests, SSH and VNC is accessible as well. Therefore we assume that the issue is already solved. Kindly check your side again.
-
-…awesome. I did _nothing_ (see above - don’t think I could have!) and it suddenly works.
-
-I’m certainly not above admitting if I _did_ mess something up - I’ve done it in this article and on this blog many, many times and I _do_ mess up sysadmin stuff frequently - but this time, I promise you I’ve made zero changes to the box before this happened, neither before it magically was fixed.
-
-I don’t expect [99.999%][61] availability from a more budget VPS, and they do only “[advertise][62]” (I use this term lightly - it’s hidden in their T&C) and SLA of [95%][63], which means they allow for over 18 days of downtime a year.
-
-> (1) The Provider will ensure that the physical connectivity of the object storage infrastructure, webspace packages, dedicated servers, virtual dedicated server and VPS is available at an annual average rate of 95%.
-
-Unfortunately, this _interaction_, not necessarily the downtime itself was so bad that I stopped recommending Contabo entirely and since moved to Hetzner - and, of course, my own physical hardware, which had 99.995% uptime:
-
-![Uptime][102]
-
-Uptime [\[by me\]][64]
-
-Realistically, it’s probably more like 98% long-term, but that involves me actively breaking things. Make of that what you will.
-
-### Gotta go fast
-
-So, because of that, I looked for alternatives. I wanted a cheap VPS in the US for latency reasons, with basic creatue comfort. Eventually, after much deliberation, I moved to [Hetzner][65], another German company with at least some North American data centers, on their small, $7ish/mo, CPX21 VPS.
-
-Much to my surprise, that machine was faster in benchmarks than my (nominally much more powerful) Contabo VPS:
+…太棒了。我_什么都没做_(见上文 - 我想我也做不了什么!)然后它突然就工作了。
+如果我_确实_搞砸了什么,我当然不会不承认 - 我在这篇文章和这个博客中已经多次这样做了,我_经常_搞砸系统管理员的事情 - 但这一次,我向你保证在这件事发生之前,我没有对这台机器做任何更改,在它神奇地被修复之前也没有。
+我不指望从更便宜的VPS获得[99.999%][61]的可用性,他们只"[宣传][62]"(我轻描淡写地使用这个词 - 它隐藏在他们的条款和条件中)和[95%][63]的SLA,这意味着他们允许每年超过18天的停机时间。
+> (1) 提供商将确保对象存储基础设施、网页空间包、专用服务器、虚拟专用服务器和VPS的物理连接性以95%的年平均比率可用。
+不幸的是,这种_互动_,不一定是停机时间本身,实在太糟糕了,以至于我完全停止推荐Contabo,并从那时起转移到Hetzner - 当然,还有我自己的物理硬件,它有99.995%的正常运行时间:
+![正常运行时间][102]
+正常运行时间 [由我提供][64]
+实际上,从长远来看,它可能更接近98%,但那涉及到我主动破坏东西。你可以自行判断。
+必须快起来
+所以,因为这个原因,我寻找替代方案。出于延迟原因,我想要一个便宜的美国VPS,具有基本的舒适性。最终,经过多方考虑,我转移到了[Hetzner][65],另一家德国公司,至少在北美有一些数据中心,使用他们每月7美元左右的小型CPX21 VPS。
+让我非常惊讶的是,在基准测试中,该机器比我(名义上更强大的)Contabo VPS还要快:
 
 ```bash
 sysbench --threads=4 --time=30 --cpu-max-prime=20000 cpu run
 ```
 
-Got me
-
-![VPS Benchmark 1/2][103]
-
-VPS Benchmark 1/2 [\[by me\]][66]
-
-And
-
-![VPS Benchmark 2/2][104]
-
-VPS Benchmark 2/2 [\[by me\]][67]
-
-Yes, synthetic benchmarks aren’t perfect, but they also certainly aren’t completely meaningless.
-
-Again, make of these numbers what you will.
-
-### CIFS is still not fast
-
-Unfortunately, the server came with a 80 GB SSD. That’s only about 29,000 3.5" floppy disks! Remember, this server runs Nextcloud which, inherently, requires a lot of storage.
-
-My MacBook uses 1.2/2 **T**B, my Proxmox cluster has something like 50 TB combined capacity (in fairness, lots of redundancy), and even my phone is using ~200GB.
-
-I stumbled upon Hetzner’s “[StorageBox][68]”. Cool concept: Basically what [rsync.net][69] does, but German. You basically get a dumbed down terminal and a slow, shared disk for very little money at all: **~$4/TB**! Unfortunately, no US locations.
-
-You can access these disks via FTP, SFTP or SCP (aka SSH), WebDAV, various backup tools like `borg` and so on.
-
-Overall a pretty promising concept, but once you need to attach said disk to a server to make the local storage bigger and usable w/in Nextcloud, your options are somewhat limited and the official [docs][70] recommend `samba`/`cifs`. [`sshfs`][71] is a valid alternative, the project is in maintenance mode, but I tested it anyways. I suppose conceptually you could make WebDAV work.
-
-In any case, I tried using the official approach and benchmarked a bit because it certainly _felt_ slow.
-
-Well, that’s because it was. Here’s three benchmarks, two with `cifs` (V3), with a strict and loose cache, as well as `sshfs`.
+难住我了
+![VPS基准测试 1/2][103]
+VPS基准测试 1/2 [由我提供][66]
+以及
+![VPS基准测试 2/2][104]
+VPS基准测试 2/2 [由我提供][67]
+是的,合成基准测试并不完美,但它们当然也不是完全没有意义。
+同样,你可以自行判断这些数字的意义。
+CIFS仍然不快
+不幸的是,服务器配备了80 GB的SSD。那只相当于29,000张3.5英寸的软盘!请记住,这台服务器运行Nextcloud,本质上需要大量存储空间。
+我的MacBook使用1.2/2 TB,我的Proxmox集群总容量约为50 TB(公平地说,有很多冗余),甚至我的手机也使用了约200GB。
+我偶然发现了Hetzner的"[StorageBox][68]"。很酷的概念:基本上就是[rsync.net][69]所做的,但是是德国的。你基本上可以以非常低的价格获得一个简化的终端和一个缓慢的共享磁盘:约4美元/TB!不幸的是,没有美国的位置。
+你可以通过FTP、SFTP或SCP(又名SSH)、WebDAV、各种备份工具如borg等访问这些磁盘。
+总的来说是一个非常有前景的概念,但一旦你需要将所述磁盘连接到服务器以增加本地存储并在Nextcloud中可用,你的选择就有些受限,官方[文档][70]推荐使用samba/cifs。[sshfs][71]是一个有效的替代方案,该项目处于维护模式,但我还是测试了它。我想从概念上讲,你可以让WebDAV工作。
+无论如何,我尝试使用官方方法并进行了一些基准测试,因为它确实_感觉_很慢。
+嗯,那是因为它确实很慢。这里有三个基准测试,两个使用cifs(V3),分别使用严格和宽松的缓存,以及sshfs。
 
 ```bash
 SIZE="256M"
@@ -384,91 +329,49 @@ fio --name=job-randr --rw=randread --size=$SIZE --ioengine=libaio --iodepth=32 -
 fio --name=job-randw --rw=randwrite --size=$SIZE --ioengine=libaio --iodepth=32 --bs=4k --direct=1
 ```
 
-![Storage Benchmark 1/2][105]
+![存储基准测试 1/2][105]
+存储基准测试 1/2 [由我提供][72]
+这是我用来测试的内容:
+这也不是一个新发现,因为我不是第一个对此进行[基准测试][73]的人。
+无论如何,这相当慢。缓慢的协议cifs、缓慢的盒子_以及_跨大西洋的延迟相结合,使其不是特别有吸引力。
+为了给你一些视角,这里是同样的图表,使用相同的基准测试在本地Proxmox VM上运行:
+![存储基准测试 2/2][106]
+存储基准测试 2/2 [由我提供][74]
+Blob存储、Blob鱼和文件系统:都是"呃"
+现在,甚至_不使用_"磁盘",这就是现在所有酷孩子都在做的事情。他们简单地抛弃了现代、快速、本地存储的几乎所有优势,包括高质量、经过测试、原子性、纠错(…)文件系统,你猜怎么着,没有_文件系统,而是称之为"对象"(或"blob")存储,并且没有获得这些功能,但获得了大量廉价的存储空间!
+离题:既然"blob"这个词现在被索引了,在你为存储架构的失败而羞辱一条无助的鱼之前,请记住以下内容:
+![可怜的鱼][107]
+可怜的鱼 [由Naila Latif提供][75]
+无论如何 - 尽管有缺点,但这并不是一个新概念。在专业领域,我会为开发人员机器、数据库等使用快速的NVMe驱动器,为不太密集的应用服务器使用常规SSD,为慢速但便宜的数据存储和分布式查询引擎使用blob存储,并在需要时使用可选的缓存。在过去约10年的大多数数据平台项目中,我都基于S3/GCS等,并且通常存储了数百TiB(如果不是PiB)的数据。
+然而 - 这些存储系统_不是_文件系统,试图假装s3和zfs相似,因为它们都存储文件(就像某种疯狂的、表面层次的🦆类型),这不会有好结果。
+但是,考虑到我的访问模式 - 存储文件并偶尔手动访问它们,而不是在其上托管数据库,就像我使用基于慢速HDD的本地文件服务器一样,我仍然在寻找blob存储选项来仅存储我的Nextcloud数据。
+你的选择基本上是大型提供商,如AWS,其中1TB的费用大约为每月20-24美元,具体取决于提供商和地区。
+实现相同协议(例如s3)的第三方替代方案主要是[Wasabi][76]和[Backblaze][77]。
 
-Storage Benchmark 1/2 [\[by me\]][72]
-
-Here’s what I used to test this:
-
-Not a new finding either, as I’m not the first to [benchmark][73] this.
-
-In any case, that’s pretty slow. The combination of a slow protocol - `cifs` - a slow box, _and_ cross-Atlantic latency didn’t make this particularly attractive.
-
-To give you some perspective, here’s the same chart with the same benchmark run on a local Proxmox VM:
-
-![Storage Benchmark 2/2][106]
-
-Storage Benchmark 2/2 [\[by me\]][74]
-
-### Blob storage, blob fish, and file systems: It’s all “meh”
-
-Now, not even _using_ a “disk”, that’s what all the cool kids do nowadays. They simply throw away almost all the advantages of modern, fast, local storage with a high quality, tested, atomic, error correcting (…) file system by, get this, _not having_ a file system and call it “object” (or “blob”) storage and get none of those features, but a lot of storage for cheap!
-
-_Tangent_: Since the world “blob” is now indexed, please remember the following before you shame a helpless fish for the failures of your storage architecture:
-
-![Poor fish][107]
-
-Poor fish [\[by Naila Latif\]][75]
-
-Anyways - despite the drawbacks, it’s really not a new concept. Professionally, I’d use fast NVMe drives for stuff like developer machines, databases and the like, regular SSDs for less intense application servers, and blob storage for slow-but-cheap data storage and distributed query engines, with optional caching where required. Most of my Data Platform project in the past ~10 years have been based on S3/GCS/etc., and often stored many hundreds of TiB (if not PiB) of data.
-
-However - these storage systems are _not_ file systems and trying to pretend `s3` and `zfs` are similar because they both store files (like some sort of deranged, surface level 🦆-typing) is not going to end well.
-
-But, given my access patterns - storing files and accessing them every once in a while by hand and not hosting a database on it, just like I would use a slow, HDD based local file server, I still went looking for blob storage options to store just my Nextcloud data.
-
-Your options essentially are the big providers, like AWS, where 1TB runs you roughly **~$20-24/mo**, depending on the provider and region.
-
-Third party alternatives that implement the same protocol, say `s3`, are mostly [Wasabi][76] and [Backblaze][77].
-
-Wasabi charges a minimum of **$6.99/mo** (which is the price per TB) _and_ 90 days minimum storage (i.e., deleting data doesn’t help). Backblaze is cheaper on paper at **$6/mo/TB**, but they do charge $0.01/GB egress over 3x the average monthly data stored, which is included with Wasabi.
-
-Given that I spent $35 egress to get my 500GB server backups out of S3 during the migration and after reading [this][78], I went with Wasabi and moved my files there:
-
+Wasabi的最低收费为每月6.99美元(这是每TB的价格),并且_最少存储90天(即删除数据无济于事)。Backblaze表面上更便宜,为每月6美元/TB,但如果超出平均每月存储数据的3倍,他们会对出口流量收取每GB 0.01美元的费用,而Wasabi包含了这部分费用。
+考虑到在迁移期间我花了35美元的出口费用才将500GB的服务器备份从S3中取出,并在阅读了[这篇文章][78]后,我选择了Wasabi并将文件移动到那里:
 ![Wasabi][108]
+Wasabi [由我提供][79]
+然后使用Nextcloud的[外部存储][80]界面来挂载驱动器。
+我能说什么呢,它...可以工作。它的行为就像S3一样:如果你需要列出大量文件或对大量小文件进行任何操作,那将是一个巨大的痛苦,而且_不会_很快。这就是为什么半官方建议使用[存储桶生命周期][81]策略来删除大量小文件的原因。
+对于每TB 6.99美元,它工作得_还行_。在冷缓存(例如新设备)上列出文件慢得像糖蜜,搜索文件完全取决于你的索引(与本地NVMe存储上的find或grep相比)。
+看到这个屏幕持续几秒钟是正常的:
+![iOS上的Nextcloud][109]
+iOS上的Nextcloud [由我提供][82]
+公平地说,这实际上只是移动设备上的问题,因为无论如何我在Mac上已经下载了所有文件。
+我可能还会尝试[rsync.net][83],它的价格为每月12美元/TB。
+CrowdSec
+最后但同样重要的是,你还记得[fail2ban][84]吗?你应该记得,因为它仍然是一个非常活跃的项目,可能应该作为简单入侵防御的默认推荐。
+但是,在设置新服务器时,我认为值得检查一些较新的工具,即[CrowdSec]85),它将自己描述为
 
-Wasabi [\[by me\]][79]
-
-And then used the Nextcloud [external storage][80] interface to mount the drive.
-
-And what can I say, it… works. It behaves just like S3 does: If you need to list a lot of files or do anything with a lot of small files, it’s a huge pain and will _not_ be fast. That’s the reason the semi-official recommendation for deleting large amounts of small files is to use [bucket lifecycle][81] policies.
-
-For $6.99 a TiB, it works _okay_. Listing files on a cold cache (e.g., a new device) is slow as molasses, and searching for files puts you entirely at the mercy of your index (compared to a `find` or `grep` on a local NVMe storage).
-
-Seeing this screen for several seconds is normal:
-
-![Nextcloud on iOS][109]
-
-Nextcloud on iOS [\[by me\]][82]
-
-In all fairness, this is really only a problem on mobile devices, since I have all my files downloaded on my Mac anyways.
-
-I might still try [rsync.net][83], which clocks in at $12/mo/TB.
-
-### CrowdSec
-
-Last but not least, do you remember [`fail2ban`][84]? You should, because it’s still very much an active project that should probably stay the default recommendation for simple intrusion prevention.
-
-But, setting up a new server, I figured it would be worth checking some newer tools, namely [`CrowdSec`][85] (not to be confused with CrowdStrike :-) ) which describes itself as
-
-> a free, modern & collaborative behavior detection engine, coupled with a global IP reputation network. It stacks on fail2ban’s philosophy but is IPV6 compatible and 60x faster (Go vs Python) (…)
-
-The neat thing about CrowdSec is that, as the name implies, the threat detection patterns are being shared (anonymously) with their community, which (allegedly) yields a much better threat detection. It also has a plugin [hub][86], with “bouncers” for various tools.
-
-It also comes with a neat cli that gives you stats about what it’s doing:
-
-```bash
-cscli metrics
-```
-
-Which, for instance, will tell me it banned 33 IPs for `crowdsecurity/CVE-2019-18935`, a rule for [this][87] CVE.
-
-Overall, I’m a fan - it certainly feels like a natural evolution of `fail2ban` (even though I suspect they could co-exist) and as long as the company behind it doesn’t exploit its user base at a certain point, I’ll stick to it.
-
-## Conclusion
-
-If you’re a software engineer, I recommend self hosting things. You learn a whole bunch of things through forced exposure to problems that you’ll be less likely to encounter in your day job, which in itself is a benefit. Even better, I do believe you’ll wind up using at least some of these things in your day job eventually, provided you work on something vaguely backend related.
-
-By hosting stuff yourself, also get a reasonable level of autonomy - or, at the very least, some hedging - against the corporate dream of your entire life being a perpetually rented subscription. I think that’s nice.
+> 一个免费、现代和协作的行为检测引擎,与全球IP信誉网络相结合。它基于fail2ban的理念,但兼容IPV6且速度快60倍(Go vs Python)(…)
+CrowdSec的优点在于,顾名思义,威胁检测模式正在与他们的社区(匿名)共享,这(据称)产生了更好的威胁检测效果。它还有一个插件[中心][86],为各种工具提供"保镖"。
+它还附带了一个整洁的命令行界面,可以为你提供它正在做什么的统计信息:
+例如,它会告诉我它因crowdsecurity/CVE-2019-18935(一个针对[此][87] CVE的规则)禁止了33个IP。
+总的来说,我是它的粉丝 - 它无疑感觉像是fail2ban的自然演变(即使我怀疑它们可以共存),只要背后的公司在某个时候不会利用其用户群,我就会坚持使用它。
+结论
+如果你是一名软件工程师,我建议你自己托管一些东西。通过强制接触那些在日常工作中不太可能遇到的问题,你可以学到很多东西,这本身就是一种好处。更好的是,我相信你最终会在日常工作中至少使用其中一些东西,前提是你从事的是与后端有点关系的工作。
+通过自己托管东西,你还可以获得合理程度的自主权 - 或者至少是一些对冲 - 来对抗你的整个生活都是永久租用订阅的企业梦想。我认为这很好。
 
 [1]: #introduction
 [2]: #my-services
