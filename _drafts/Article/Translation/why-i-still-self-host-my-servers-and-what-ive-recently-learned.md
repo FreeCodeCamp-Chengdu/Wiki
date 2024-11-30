@@ -373,27 +373,9 @@ CrowdSec 的优点在于,顾名思义,威胁检测模式正在与他们的社区
 如果你是一名软件工程师,我建议你自己托管一些东西。通过强制接触那些在日常工作中不太可能遇到的问题,你可以学到很多东西,这本身就是一种好处。更好的是,我相信你最终会在日常工作中至少使用其中一些东西,前提是你从事的是与后端有点关系的工作。
 通过自己托管东西,你还可以获得合理程度的自主权 - 或者至少是一些对冲 - 来对抗你的整个生活都是永久租用订阅的企业梦想。我认为这很好。
 
-[1]: #introduction
-[2]: #my-services
-[3]: #why-i-self-host
-[4]: #reasoning-about-complex-systems
-[5]: #things-that-broke-in-the-last-6-months
-[6]: #things-i-learned-or-recalled-in-the-last-6-months
-[7]: #you-can-self-host-vs-code
-[8]: #ups-batteries-die-silently-and-quicker-than-you-think
-[9]: #redundant-dns-is-good-dns
-[10]: #raspberry-pis-run-arn-proxmox-does-not
-[11]: #zfs--proxmox-eat-memmory-and-will-oom-kill-your-vms
-[12]: #the-mystery-of-random-crashes-is-it-hardware-its-always-hardware
-[13]: #snmpv3-is-still-cool
-[14]: #dont-trust-your-vps-vendor
-[15]: #gotta-go-fast
-[16]: #cifs-is-still-not-fast
-[17]: #blob-storage-blob-fish-and-file-systems-its-all-meh
-[18]: #crowdsec
-[19]: #conclusion
-[20]: /blog/2019/04/building-a-home-server/
-[21]: /blog/2023/04/migrating-a-home-server-to-proxmox-truenas-and-zfs-or-how-to-make-your-home-network-really-complicated-for-no-good-reason/
+
+[20]: https://chollinger.com/blog/2019/04/building-a-home-server/
+[21]: https://chollinger.com/blog/2023/04/migrating-a-home-server-to-proxmox-truenas-and-zfs-or-how-to-make-your-home-network-really-complicated-for-no-good-reason/
 [23]: https://www.hbo.com/curb-your-enthusiasm
 [25]: https://ngrok.com/blog-post/how-ngrok-uses-dagster-to-run-our-data-platform
 [26]: https://www.howtogeek.com/449691/what-is-swapiness-on-linux-and-how-to-change-it/
