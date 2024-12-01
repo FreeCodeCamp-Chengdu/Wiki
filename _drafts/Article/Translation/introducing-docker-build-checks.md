@@ -8,56 +8,56 @@ translator: ""
 reviewer: ""
 ---
 
-# 引入Docker构建检查:使用最佳实践优化Dockerfile
+# 引入 Docker 构建检查:使用最佳实践优化 Dockerfile
 
 
 ![][49]
 
 [Colin Hemmings][1]  
 
-今天,我们很高兴地宣布[Docker Desktop 4.33][3]发布了[Docker构建检查][2]。Docker构建检查帮助您的团队学习并遵循构建容器镜像的最佳实践。当您运行[Docker构建][4]时,您将获得构建中检测到的任何检查违规的警告列表。采取主动方法并及早解决构建警告和问题将为您节省下游的时间和麻烦。 
+今天,我们很高兴地宣布[Docker Desktop 4.33][3]发布了[Docker 构建检查][2]。Docker 构建检查帮助您的团队学习并遵循构建容器镜像的最佳实践。当您运行[Docker 构建][4]时,您将获得构建中检测到的任何检查违规的警告列表。采取主动方法并及早解决构建警告和问题将为您节省下游的时间和麻烦。 
 
 ![Banner how to set up the weaviate vector database on docker][50]
 
-## 我们为什么创建Docker构建检查?
+## 我们为什么创建 Docker 构建检查?
 
-在与开发人员的对话中,我们发现许多人在学习和遵循构建容器镜像的最佳实践方面存在困难。根据我们的[2024年应用程序开发状态报告][5],35%的Docker用户将创建和编辑[Dockerfiles][6]列为执行的三大任务之一。然而,55%的受访者表示创建Dockerfile是他们最常求助的任务。
-开发人员通常没有时间通读[Docker构建文档][7],进行必要的更改以使其工作,然后继续前进。当您运行docker build时,Docker构建可能"有效",但编写不当的Dockerfile可能会引入质量问题,例如:
+在与开发人员的对话中,我们发现许多人在学习和遵循构建容器镜像的最佳实践方面存在困难。根据我们的[2024 年应用程序开发状态报告][5],35%的 Docker 用户将创建和编辑[Dockerfiles][6]列为执行的三大任务之一。然而,55%的受访者表示创建 Dockerfile 是他们最常求助的任务。
+开发人员通常没有时间通读[Docker 构建文档][7],进行必要的更改以使其工作,然后继续前进。当您运行 docker build 时,Docker 构建可能"有效",但编写不当的 Dockerfile 可能会引入质量问题,例如:
 
 -   难以维护或更新
 -   包含隐藏和意外的错误
 -   性能不佳
 
-在与Docker用户的对话中,我们听到他们希望优化Dockerfile以提高构建性能,不了解当前的最佳实践,并希望在构建过程中得到指导。
-调查和修复构建问题浪费时间。我们创建了Docker构建检查,使开发人员能够从一开始就编写结构良好的Dockerfile,并从现有的最佳实践中学习。使用构建检查,您的团队可以减少在构建问题上花费的时间,而将更多时间用于创新和编码。
+在与 Docker 用户的对话中,我们听到他们希望优化 Dockerfile 以提高构建性能,不了解当前的最佳实践,并希望在构建过程中得到指导。
+调查和修复构建问题浪费时间。我们创建了 Docker 构建检查,使开发人员能够从一开始就编写结构良好的 Dockerfile,并从现有的最佳实践中学习。使用构建检查,您的团队可以减少在构建问题上花费的时间,而将更多时间用于创新和编码。
 
-## 为什么应该使用Docker构建检查? 
+## 为什么应该使用 Docker 构建检查? 
 
-您希望编写更好的Dockerfile并节省时间! 
+您希望编写更好的 Dockerfile 并节省时间! 
 
-我们收集了一套来自构建专家社区的最佳实践,并将其编码为Docker构建工具。您可以使用Docker构建检查来评估本地和CI工作流的所有阶段,包括多阶段构建和[Bake][8],并在[Docker Desktop Builds视图][9]中深入研究。您还可以选择跳过哪些规则。
+我们收集了一套来自构建专家社区的最佳实践,并将其编码为 Docker 构建工具。您可以使用 Docker 构建检查来评估本地和 CI 工作流的所有阶段,包括多阶段构建和[Bake][8],并在[Docker Desktop Builds 视图][9]中深入研究。您还可以选择跳过哪些规则。
 
-您可以在CLI和Docker Desktop Builds视图中访问Docker构建检查。
+您可以在 CLI 和 Docker Desktop Builds 视图中访问 Docker 构建检查。
 
-### 不仅仅是linting:Docker构建检查功能强大且快速
+### 不仅仅是 linting:Docker构建检查功能强大且快速
 
 
-Linting工具通常只评估文本文件集中的规则。作为Docker构建的一部分,Docker构建检查比linting更强大和准确。Docker构建检查评估整个构建,包括传递的参数和使用的基本镜像。这些检查足够快,可以在您编辑Dockerfile时实时运行。您可以快速评估构建,而无需等待完整的构建执行。 
+Linting 工具通常只评估文本文件集中的规则。作为 Docker 构建的一部分,Docker 构建检查比 linting 更强大和准确。Docker 构建检查评估整个构建,包括传递的参数和使用的基本镜像。这些检查足够快,可以在您编辑 Dockerfile 时实时运行。您可以快速评估构建,而无需等待完整的构建执行。 
 
 ### 检查您的本地构建
 
-一个好的做法是在提交或共享更改之前评估新的或更新的Dockerfile。运行`docker build`现在会给您一个关于Dockerfile中问题和警告的概述。
+一个好的做法是在提交或共享更改之前评估新的或更新的 Dockerfile。运行`docker build`现在会给您一个关于 Dockerfile 中问题和警告的概述。
 
 ![Build checks 433 f1][51]
 
-图1:一个带有四个检查警告的Docker构建。
+图 1:一个带有四个检查警告的 Docker 构建。
 
 
-要获取有关这些特定问题的更多信息,您可以指定调试标志到Docker CLI与`docker --debug build`。此信息包括警告类型、发生位置以及如何解决的链接。
+要获取有关这些特定问题的更多信息,您可以指定调试标志到 Docker CLI 与`docker --debug build`。此信息包括警告类型、发生位置以及如何解决的链接。
 
 ![Build checks 433 f2][52]
 
-图2:检查警告的构建调试输出。
+图 2:检查警告的构建调试输出。
 
 ### 快速检查您的构建
 
@@ -67,18 +67,18 @@ Linting工具通常只评估文本文件集中的规则。作为Docker构建的�
 # check标志可以添加到构建命令的任何位置
 docker build . --check
 docker build --check .
-docker build --build-arg VERSION=latest --platfrom linux/arm64 . --check
+docker build --build-arg VERSION=latest --platform linux/arm64 . --check
 ```
 
-如图3所示,将标志附加到现有的构建命令将执行构建配置的完整评估,而无需执行完整的构建。这种更快的反馈通常在不到一秒内完成,使开发过程更加顺畅。
+如图 3 所示,将标志附加到现有的构建命令将执行构建配置的完整评估,而无需执行完整的构建。这种更快的反馈通常在不到一秒内完成,使开发过程更加顺畅。
 ![Build checks 433 f3][53]
 
 
-图3:运行构建检查。
+图 3:运行构建检查。
 
-### 检查您的CI构建
+### 检查您的 CI 构建
 
-默认情况下,运行带有警告的Docker构建不会导致构建失败(返回非零退出代码)。然而,为了捕获CI构建中的任何回归,添加以下声明以指示检查生成错误。
+默认情况下,运行带有警告的 Docker 构建不会导致构建失败(返回非零退出代码)。然而,为了捕获 CI 构建中的任何回归,添加以下声明以指示检查生成错误。
 
 ```dockerfile
 # syntax=docker/dockerfile:1
@@ -88,9 +88,9 @@ FROM alpine
 CMD echo "Hello, world!"
 ```
 
-### 检查CI中的多阶段构建
+### 检查 CI 中的多阶段构建
 
-在构建过程中,仅执行指定的阶段/目标,包括其依赖项。我们建议在您的工件中添加一个阶段检查步骤,以完成对Dockerfile的完整评估。这与您在执行完整构建之前运行自动化测试的方式类似。
+在构建过程中,仅执行指定的阶段/目标,包括其依赖项。我们建议在您的工件中添加一个阶段检查步骤,以完成对 Dockerfile 的完整评估。这与您在执行完整构建之前运行自动化测试的方式类似。
 
 如果检测到任何警告,将返回非零退出代码,这将导致工作流失败,从而捕获任何问题。
 
@@ -98,17 +98,17 @@ CMD echo "Hello, world!"
 docker build --check .
 ```
 
-### 检查Docker Build Cloud中的构建
+### 检查 Docker Build Cloud 中的构建
 
-当然,这也与[Docker Build Cloud][13]无缝协作,无论是本地还是通过CI。使用您的[e][14]xisting云构建器来评估您的构建。您的团队现在可以享受Docker Build Cloud性能和构建将符合最佳实践的保证。事实上,随着我们扩展检查,您应该看到来自Docker Build Cloud构建的更好性能。
+当然,这也与[Docker Build Cloud][13]无缝协作,无论是本地还是通过 CI。使用您的[e][14]xisting 云构建器来评估您的构建。您的团队现在可以享受 Docker Build Cloud 性能和构建将符合最佳实践的保证。事实上,随着我们扩展检查,您应该看到来自 Docker Build Cloud 构建的更好性能。
 
 
 ![Build checks 433 f4][54]
-图4:在Docker Build Cloud中运行检查。
+图 4:在 Docker Build Cloud 中运行检查。
 
 ### 配置规则
 
-您有灵活性来配置Build检查中的规则,使用skip参数。您还可以指定`skip=all`或`skip=none`来打开和关闭规则。以下是跳过`JSONArgsRecommended`和`StageNameCasing`规则的示例:
+您有灵活性来配置 Build 检查中的规则,使用 skip 参数。您还可以指定`skip=all`或`skip=none`来打开和关闭规则。以下是跳过`JSONArgsRecommended`和`StageNameCasing`规则的示例:
 
 ```dockerfile
 # syntax=docker/dockerfile:1
@@ -118,43 +118,43 @@ FROM alpine AS BASE_STAGE
 CMD echo "Hello, world!"
 ```
 
-### 深入了解Docker Desktop Builds视图
+### 深入了解 Docker Desktop Builds 视图
 
-在Docker Desktop Builds视图中,您可以看到构建警告的输出。定位Dockerfile中警告的原因并快速了解如何解决它们现在很容易。
+在 Docker Desktop Builds 视图中,您可以看到构建警告的输出。定位 Dockerfile 中警告的原因并快速了解如何解决它们现在很容易。
 
-与构建错误一样,警告在Docker Desktop中检查构建时显示在Dockerfile中:
+与构建错误一样,警告在 Docker Desktop 中检查构建时显示在 Dockerfile 中:
 
 
 ![Build checks 433 f5][55]
 
-图5:Docker Desktop Builds视图中的构建检查警告。
+图 5:Docker Desktop Builds 视图中的构建检查警告。
 
 ## 下一步是什么? 
 
 ### 更多检查
 
-我们对新的Builds检查感到兴奋,以帮助您应用最佳实践到Dockfiles,但这只是开始。除了[当前的检查集][17],我们计划添加更多以提供更全面的构建评估。此外,我们期待包括自定义检查和策略,以用于您的Docker构建。
+我们对新的 Builds 检查感到兴奋,以帮助您应用最佳实践到 Dockfiles,但这只是开始。除了[当前的检查集][17],我们计划添加更多以提供更全面的构建评估。此外,我们期待包括自定义检查和策略,以用于您的 Docker 构建。
 
 ### IDE integration
 
-尽早识别构建中的问题,解决问题更容易且成本更低。我们计划将Build检查与您喜欢的IDE集成,以便您可以实时反馈。
+尽早识别构建中的问题,解决问题更容易且成本更低。我们计划将 Build 检查与您喜欢的 IDE 集成,以便您可以实时反馈。
 
 ![Build checks 433 f6][56]
 
-图6:在VS Code中显示检查违规。
+图 6:在 VS Code 中显示检查违规。
 
-### GitHub Actions和Docker Desktop
+### GitHub Actions 和 Docker Desktop
 
-您已经在Docker Desktop中看到Build检查警告,但更详细的见解即将到来。正如您可能已经听说,我们最近宣布了[Inspecting Docker Builds in GitHub Actions][19]的beta版本,我们计划在此新功能的基础上,包括对检查警告的支持。
+您已经在 Docker Desktop 中看到 Build 检查警告,但更详细的见解即将到来。正如您可能已经听说,我们最近宣布了[Inspecting Docker Builds in GitHub Actions][19]的 beta 版本,我们计划在此新功能的基础上,包括对检查警告的支持。
 
 ## 现在开始
 
-要开始使用Docker Build检查,升级到[Docker Desktop 4.33][20]今天并尝试使用现有的Dockerfiles。前往[我们的文档][21]了解更多关于Build检查的详细信息。 
+要开始使用 Docker Build 检查,升级到[Docker Desktop 4.33][20]今天并尝试使用现有的 Dockerfiles。前往[我们的文档][21]了解更多关于 Build 检查的详细信息。 
 
 ## 了解更多
 
--   [进行身份验证和更新][22]以获取您订阅级别的最新Docker Desktop功能。
--   [Docker Desktop 4.33][24]还有什么新功能?Docker Debug和Docker构建检查的GA版本以及增强的配置完整性检查。
+-   [进行身份验证和更新][22]以获取您订阅级别的最新 Docker Desktop 功能。
+-   [Docker Desktop 4.33][24]还有什么新功能?Docker Debug 和 Docker 构建检查的 GA 版本以及增强的配置完整性检查。
 -   新到 Docker?[创建一个账户][25]。
 -   订阅[Docker Newsletter][26]。
 
