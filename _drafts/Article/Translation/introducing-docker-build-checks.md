@@ -11,13 +11,13 @@ reviewer: ""
 # 引入Docker构建检查:使用最佳实践优化Dockerfile
 
 
-![](https://www.docker.com/wp-content/uploads/2023/12/Colin-Hemmings.webp)
+![][49]
 
 [Colin Hemmings][1]  
 
 今天,我们很高兴地宣布[Docker Desktop 4.33][3]发布了[Docker构建检查][2]。Docker构建检查帮助您的团队学习并遵循构建容器镜像的最佳实践。当您运行[Docker构建][4]时,您将获得构建中检测到的任何检查违规的警告列表。采取主动方法并及早解决构建警告和问题将为您节省下游的时间和麻烦。 
 
-![Banner how to set up the weaviate vector database on docker](https://www.docker.com/wp-content/uploads/2023/09/banner_how-to-set-up-the-weaviate-vector-database-on-docker-1110x583.png "- Banner How To Set Up The Weaviate Vector Database On Docker")
+![Banner how to set up the weaviate vector database on docker][50]
 
 ## 我们为什么创建Docker构建检查?
 
@@ -48,14 +48,14 @@ Linting工具通常只评估文本文件集中的规则。作为Docker构建的�
 
 一个好的做法是在提交或共享更改之前评估新的或更新的Dockerfile。运行`docker build`现在会给您一个关于Dockerfile中问题和警告的概述。
 
-![Build checks 433 f1](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f1-1110x545.png "- Build Checks 433 F1")
+![Build checks 433 f1][51]
 
 图1:一个带有四个检查警告的Docker构建。
 
 
 要获取有关这些特定问题的更多信息,您可以指定调试标志到Docker CLI与`docker --debug build`。此信息包括警告类型、发生位置以及如何解决的链接。
 
-![Build checks 433 f2](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f2-1110x948.png "- Build Checks 433 F2")
+![Build checks 433 f2][52]
 
 图2:检查警告的构建调试输出。
 
@@ -71,7 +71,7 @@ docker build --build-arg VERSION=latest --platfrom linux/arm64 . --check
 ```
 
 如图3所示,将标志附加到现有的构建命令将执行构建配置的完整评估,而无需执行完整的构建。这种更快的反馈通常在不到一秒内完成,使开发过程更加顺畅。
-![Build checks 433 f3](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f3-1110x938.png "- Build Checks 433 F3")
+![Build checks 433 f3][53]
 
 
 图3:运行构建检查。
@@ -103,10 +103,7 @@ docker build --check .
 当然,这也与[Docker Build Cloud][13]无缝协作,无论是本地还是通过CI。使用您的[e][14]xisting云构建器来评估您的构建。您的团队现在可以享受Docker Build Cloud性能和构建将符合最佳实践的保证。事实上,随着我们扩展检查,您应该看到来自Docker Build Cloud构建的更好性能。
 
 
-![Build checks 433 f4](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f4-1110x294.png "- Build Checks 433 F4")
-
-][15]
-
+![Build checks 433 f4][54]
 图4:在Docker Build Cloud中运行检查。
 
 ### 配置规则
@@ -128,7 +125,7 @@ CMD echo "Hello, world!"
 与构建错误一样,警告在Docker Desktop中检查构建时显示在Dockerfile中:
 
 
-![Build checks 433 f5](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f5-1110x977.png "- Build Checks 433 F5")
+![Build checks 433 f5][55]
 
 图5:Docker Desktop Builds视图中的构建检查警告。
 
@@ -142,7 +139,7 @@ CMD echo "Hello, world!"
 
 尽早识别构建中的问题,解决问题更容易且成本更低。我们计划将Build检查与您喜欢的IDE集成,以便您可以实时反馈。
 
-![Build checks 433 f6](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f6-1110x740.png "- Build Checks 433 F6")
+![Build checks 433 f6][56]
 
 图6:在VS Code中显示检查违规。
 
@@ -212,3 +209,11 @@ CMD echo "Hello, world!"
 [46]: https://www.docker.com/blog/category/company/
 [47]: https://www.docker.com/blog/category/engineering/
 [48]: https://www.docker.com/blog/category/products/
+[49]:https://www.docker.com/wp-content/uploads/2023/12/Colin-Hemmings.webp
+[50]:https://www.docker.com/wp-content/uploads/2023/09/banner_how-to-set-up-the-weaviate-vector-database-on-docker-1110x583.png
+[51]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f1-1110x545.png
+[52]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f2-1110x948.png
+[53]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f3-1110x938.png 
+[54]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f4-1110x294.png
+[55]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f5-1110x977.png
+[56]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f6-1110x740.png
