@@ -10,9 +10,9 @@
 
 本计划是 [freeCodeCamp 中文社区文章翻译计划][5]的扩展项目，在相同的宗旨和工作流程下翻译 freeCodeCamp 社区之外的优秀开源、技术文章。
 
--   [新增原文][6]
--   翻译文章：[![gitlocalized](https://gitlocalize.com/repo/9653/whole_project/badge.svg)][7]
--   [进度看板][8]
+- [新增原文][6]
+- 翻译文章：[![gitlocalized](https://gitlocalize.com/repo/9653/whole_project/badge.svg)][7]
+- [进度看板][8]
 
 ## 内容授权
 
