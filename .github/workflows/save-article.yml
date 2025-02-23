@@ -5,8 +5,10 @@ on:
             - labeled
 jobs:
     generate-markdown:
-        runs-on: ubuntu-latest
         if: contains(github.event.issue.labels.*.name, 'Article')
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
         steps:
             - uses: actions/checkout@v4
 
@@ -21,8 +23,8 @@ jobs:
               run: |
                   cat <<EOF > _posts/$(echo $CATEGORIES | tr ',' '/')/${{ steps.issue-parser.outputs.issueparser_file_name }}.md
                   ---
-                  title: ${{ github.event.issue.title }}
-                  date: ${{ steps.issue-parser.outputs.issueparser_date }}
+                  title: "${{ github.event.issue.title }}"
+                  date: ${{ steps.issue-parser.outputs.issueparser_date || github.event.issue.created_at }}
                   updated: ${{ steps.issue-parser.outputs.issueparser_updated }}
                   categories: [$CATEGORIES]
                   tags: [${{ steps.issue-parser.outputs.issueparser_tags }}]

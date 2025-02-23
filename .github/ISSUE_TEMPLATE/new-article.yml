@@ -7,17 +7,17 @@ assignees:
     - TechQuery
 body:
     - type: input
+      id: date
+      attributes:
+          label: 开篇时间
+          description: 格式为 YYYY-MM-DD hh:mm
+    - type: input
       id: file_name
       attributes:
           label: Markdown 文件名
           description: 标题翻译成英文后设为本文件的文件名
       validations:
           required: true
-    - type: input
-      id: date
-      attributes:
-          label: 开篇时间
-          description: 格式为 YYYY-MM-DD hh:mm
     - type: input
       id: updated
       attributes:

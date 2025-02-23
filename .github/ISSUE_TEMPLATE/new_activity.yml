@@ -1,0 +1,121 @@
+name: 新活动
+description: 自动生成新活动的 pull request
+title: 【新活动】（替换此处为活动主题）
+labels:
+    - Activity
+assignees:
+    - TechQuery
+body:
+    - type: input
+      id: date
+      attributes:
+          label: 发起时间
+          description: 格式为 YYYY-MM-DD hh:mm
+    - type: input
+      id: file_name
+      attributes:
+          label: Markdown 文件名
+          description: 主题翻译成英文后设为本文件的文件名
+      validations:
+          required: true
+    - type: dropdown
+      id: category
+      attributes:
+          label: 分类
+          options:
+              - Salon
+              - Workshop
+              - Conference
+      validations:
+          required: true
+    - type: dropdown
+      id: type
+      attributes:
+          label: 活动类型
+          options:
+              - online
+              - offline
+      validations:
+          required: true
+    - type: input
+      id: tags
+      attributes:
+          label: 标签
+          description: 与内容相关的更多标签
+          placeholder: 多个则用英文逗号隔开
+      validations:
+          required: true
+    - type: input
+      id: description
+      attributes:
+          label: 活动简介
+      validations:
+          required: true
+    - type: input
+      id: start
+      attributes:
+          label: 活动开始时间
+          description: 格式为 YYYY-MM-DD hh:mm
+      validations:
+          required: true
+    - type: input
+      id: end
+      attributes:
+          label: 活动结束时间
+          description: 格式为 YYYY-MM-DD hh:mm
+      validations:
+          required: true
+    - type: input
+      id: address
+      attributes:
+          label: 线下活动地址
+          description: 市州、区县、路街、楼栋
+    - type: input
+      id: register_link
+      attributes:
+          label: 报名链接
+          description: 如 https://jinshuju.net/f/xxxxxx
+    - type: input
+      id: mentors
+      attributes:
+          label: 讲师、教练们的 GitHub 账号
+          description: 如 https://github.com/TechQuery 中的 TechQuery
+          placeholder: 多个则用英文逗号隔开
+    - type: input
+      id: workers
+      attributes:
+          label: 组织者、志愿者们的 GitHub 账号
+          description: 如 https://github.com/TechQuery 中的 TechQuery
+          placeholder: 多个则用英文逗号隔开
+      validations:
+          required: true
+    - type: input
+      id: partners
+      attributes:
+          label: 合办方、场地方、赞助方
+          placeholder: 多个则用英文逗号隔开
+    - type: textarea
+      id: photos
+      attributes:
+          label: 活动照片
+          description: 第一张为活动封面图，第二张开始为照片画廊
+          placeholder: 请粘贴或上传活动照片
+    - type: textarea
+      id: files
+      attributes:
+          label: 活动资料
+          description: 活动相关的 PDF、PPT 等非纯文本文件
+          placeholder: 请粘贴或上传活动文件
+    - type: textarea
+      id: content
+      attributes:
+          label: 宣传正文
+      validations:
+          required: true
+    - type: input
+      id: remark
+      attributes:
+          label: 备注
+          value: "@FreeCodeCamp-Chengdu/team-1"
+      validations:
+          required: true
