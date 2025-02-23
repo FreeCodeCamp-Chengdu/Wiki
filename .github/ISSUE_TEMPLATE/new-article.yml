@@ -1,0 +1,69 @@
+name: 新文章
+description: 自动生成新文章的 pull request
+title: 【新文章】（替换此处为文章标题）
+labels:
+    - Article
+assignees:
+    - TechQuery
+body:
+    - type: input
+      id: date
+      attributes:
+          label: 开篇时间
+          description: 格式为 YYYY-MM-DD hh:mm
+    - type: input
+      id: file_name
+      attributes:
+          label: Markdown 文件名
+          description: 标题翻译成英文后设为本文件的文件名
+      validations:
+          required: true
+    - type: input
+      id: updated
+      attributes:
+          label: 修订时间
+          description: 格式为 YYYY-MM-DD hh:mm
+    - type: input
+      id: categories
+      attributes:
+          label: 分类
+          description: 每级分类对应一级目录，写在本文件的文件名前面
+          placeholder: 分类名应为一个首字母大写的英文单词，多个则用英文逗号隔开
+      validations:
+          required: true
+    - type: input
+      id: tags
+      attributes:
+          label: 标签
+          description: 与内容相关的更多标签
+          placeholder: 多个则用英文逗号隔开
+      validations:
+          required: true
+    - type: input
+      id: authors
+      attributes:
+          label: 原作者们的 GitHub 账号
+          description: "如 https://github.com/TechQuery 中的 TechQuery"
+          placeholder: 多个则用英文逗号隔开
+    - type: input
+      id: original
+      attributes:
+          label: 文章出处链接
+    - type: textarea
+      id: thumbnail
+      attributes:
+          label: 封面图片
+          description: 请粘贴或上传一张图片
+    - type: textarea
+      id: content
+      attributes:
+          label: 文章正文
+      validations:
+          required: true
+    - type: input
+      id: remark
+      attributes:
+          label: 备注
+          value: "@FreeCodeCamp-Chengdu/team-1"
+      validations:
+          required: true

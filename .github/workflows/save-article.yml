@@ -1,0 +1,43 @@
+name: Generate Markdown
+on:
+    issues:
+        types:
+            - labeled
+jobs:
+    generate-markdown:
+        if: contains(github.event.issue.labels.*.name, 'Article')
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
+        steps:
+            - uses: actions/checkout@v4
+
+            - id: issue-parser
+              uses: stefanbuck/github-issue-parser@v3
+              with:
+                  template-path: ".github/ISSUE_TEMPLATE/new_article.yml"
+
+            - name: Generate Markdown file
+              env:
+                  CATEGORIES: ${{ steps.issue-parser.outputs.issueparser_categories }}
+              run: |
+                  cat <<EOF > _posts/$(echo $CATEGORIES | tr ',' '/')/${{ steps.issue-parser.outputs.issueparser_file_name }}.md
+                  ---
+                  title: "${{ github.event.issue.title }}"
+                  date: ${{ steps.issue-parser.outputs.issueparser_date || github.event.issue.created_at }}
+                  updated: ${{ steps.issue-parser.outputs.issueparser_updated }}
+                  categories: [$CATEGORIES]
+                  tags: [${{ steps.issue-parser.outputs.issueparser_tags }}]
+                  authors: [${{ steps.issue-parser.outputs.issueparser_authors }}]
+                  original: ${{ steps.issue-parser.outputs.issueparser_original }}
+                  toc: true
+                  thumbnail: ${{ steps.issue-parser.outputs.issueparser_thumbnail }}
+                  ---
+
+                  ${{ steps.issue-parser.outputs.issueparser_content }}
+                  EOF
+
+            - uses: peter-evans/create-pull-request@v6
+              with:
+                  title: "[add] ${{ github.event.issue.title }} article"
+                  body: "closes #${{ github.event.issue.number }}"
