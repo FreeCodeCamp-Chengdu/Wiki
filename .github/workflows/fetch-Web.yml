@@ -21,7 +21,7 @@ jobs:
             - id: fetch-md
               uses: freeCodeCamp-China/article-webpage-to-markdown-action@v2
               with:
-                  pageURL: "${{ steps.issue-parser.outputs.issueparser_page_link  }}"
+                  pageURL: "${{ steps.issue-parser.outputs.issueparser_page_link }}"
                   markdownFolder: "./_drafts/Article/Translation/"
                   githubToken: ${{ github.token }}
 

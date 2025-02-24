@@ -9,6 +9,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
+            issues: write
             pull-requests: write
         steps:
             - uses: actions/checkout@v4
@@ -20,10 +21,13 @@ jobs:
 
             - name: Generate Markdown file
               env:
+                  FILE_NAME: ${{ steps.issue-parser.outputs.issueparser_file_name }}
                   CATEGORIES: ${{ steps.issue-parser.outputs.issueparser_categories }}
                   THUMBNAIL: ${{ steps.issue-parser.outputs.issueparser_thumbnail }}
               run: |
-                  cat <<EOF > _posts/$(echo $CATEGORIES | tr ',' '/')/${{ steps.issue-parser.outputs.issueparser_file_name }}.md
+                  FILE_PATH=$(echo $CATEGORIES | tr ',' '/')
+
+                  cat <<EOF > _posts/$FILE_PATH/$FILE_NAME.md
                   ---
                   title: "${{ github.event.issue.title }}"
                   date: ${{ steps.issue-parser.outputs.issueparser_date || github.event.issue.created_at }}
@@ -38,6 +42,12 @@ jobs:
 
                   ${{ steps.issue-parser.outputs.issueparser_content }}
                   EOF
+
+                  POST_URL=$(echo "https://fcc-cd.dev/$FILE_PATH/$FILE_NAME" | tr '[:upper:]' '[:lower:]')
+
+                  COMMENT_BODY="After the linked PR merged, the article will be posted at: $POST_URL"
+
+                  gh issue comment ${{ github.event.issue.number }} --body "$COMMENT_BODY"
 
             - uses: peter-evans/create-pull-request@v7
               with:
