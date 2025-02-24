@@ -4,6 +4,8 @@ title: （译文中文标题）
 labels:
   - Article
   - Translation
+projects:
+  - FreeCodeCamp-Chengdu/4
 body:
   - type: input
     id: page_link

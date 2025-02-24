@@ -5,9 +5,10 @@ on:
             - labeled
 jobs:
     generate-markdown:
-        if: contains(github.event.issue.labels.*.name, 'Salon') || contains(github.event.issue.labels.*.name, 'Workshop') || contains(github.event.issue.labels.*.name, 'Conference')
+        if: contains(github.event.issue.labels.*.name, 'Activity')
         runs-on: ubuntu-latest
         permissions:
+            contents: write
             pull-requests: write
         steps:
             - uses: actions/checkout@v4
@@ -15,12 +16,14 @@ jobs:
             - id: issue-parser
               uses: stefanbuck/github-issue-parser@v3
               with:
-                  template-path: ".github/ISSUE_TEMPLATE/new_activity.yml"
+                  template-path: ".github/ISSUE_TEMPLATE/new-activity.yml"
 
             - name: Generate Markdown file
               env:
                   CATEGORY: ${{ steps.issue-parser.outputs.issueparser_category }}
                   TYPE: ${{ steps.issue-parser.outputs.issueparser_type }}
+                  PHOTOS: ${{ steps.issue-parser.outputs.issueparser_photos }}
+                  FILES: ${{ steps.issue-parser.outputs.issueparser_files }}
               run: |
                   cat <<EOF > _posts/Activity/$CATEGORY/${{ steps.issue-parser.outputs.issueparser_file_name }}.md
                   ---
@@ -34,18 +37,18 @@ jobs:
                   end: ${{ steps.issue-parser.outputs.issueparser_end }}
                   address: "${{ steps.issue-parser.outputs.issueparser_address }}"
                   links:
-                    报名: ${{ steps.issue-parser.outputs.issueparser_links }}
+                    报名: ${{ steps.issue-parser.outputs.issueparser_register_link }}
                   mentors: [${{ steps.issue-parser.outputs.issueparser_mentors }}]
                   workers: [${{ steps.issue-parser.outputs.issueparser_workers }}]
                   partners: [${{ steps.issue-parser.outputs.issueparser_partners }}]
-                  photos: [${{ steps.issue-parser.outputs.issueparser_photos }}]
-                  files: [${{ steps.issue-parser.outputs.issueparser_files }}]
+                  photos: [$(echo $PHOTOS | grep -oE 'https?://[^ \)]+' | tr '\n' ',' | sed 's/,$//')]
+                  files: [$(echo $FILES | grep -oE 'https?://[^ \)]+' | tr '\n' ',' | sed 's/,$//')]
                   ---
 
                   ${{ steps.issue-parser.outputs.issueparser_content }}
                   EOF
 
-            - uses: peter-evans/create-pull-request@v6
+            - uses: peter-evans/create-pull-request@v7
               with:
                   title: "[add] ${{ github.event.issue.title }} activity"
                   body: "closes #${{ github.event.issue.number }}"

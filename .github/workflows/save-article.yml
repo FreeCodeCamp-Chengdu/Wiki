@@ -8,6 +8,7 @@ jobs:
         if: contains(github.event.issue.labels.*.name, 'Article')
         runs-on: ubuntu-latest
         permissions:
+            contents: write
             pull-requests: write
         steps:
             - uses: actions/checkout@v4
@@ -15,11 +16,12 @@ jobs:
             - id: issue-parser
               uses: stefanbuck/github-issue-parser@v3
               with:
-                  template-path: ".github/ISSUE_TEMPLATE/new_article.yml"
+                  template-path: ".github/ISSUE_TEMPLATE/new-article.yml"
 
             - name: Generate Markdown file
               env:
                   CATEGORIES: ${{ steps.issue-parser.outputs.issueparser_categories }}
+                  THUMBNAIL: ${{ steps.issue-parser.outputs.issueparser_thumbnail }}
               run: |
                   cat <<EOF > _posts/$(echo $CATEGORIES | tr ',' '/')/${{ steps.issue-parser.outputs.issueparser_file_name }}.md
                   ---
@@ -31,13 +33,13 @@ jobs:
                   authors: [${{ steps.issue-parser.outputs.issueparser_authors }}]
                   original: ${{ steps.issue-parser.outputs.issueparser_original }}
                   toc: true
-                  thumbnail: ${{ steps.issue-parser.outputs.issueparser_thumbnail }}
+                  thumbnail: $(echo $THUMBNAIL | grep -oE 'https?://[^ \)]+' | head -n 1)
                   ---
 
                   ${{ steps.issue-parser.outputs.issueparser_content }}
                   EOF
 
-            - uses: peter-evans/create-pull-request@v6
+            - uses: peter-evans/create-pull-request@v7
               with:
                   title: "[add] ${{ github.event.issue.title }} article"
                   body: "closes #${{ github.event.issue.number }}"

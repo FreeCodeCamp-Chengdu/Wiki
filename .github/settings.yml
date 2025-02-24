@@ -16,6 +16,10 @@ labels:
     color: "#d73a4a"
     description: auto download an Outer Article to translate
 
+  - name: Activity
+    color: "#f9d0c4"
+    description: 活动一级分类
+
   - name: Salon
     color: "#d7f797"
     description: 小型分享会、讲座
