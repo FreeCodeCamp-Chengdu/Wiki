@@ -3,6 +3,8 @@ description: 自动生成新活动的 pull request
 title: 【新活动】（替换此处为活动主题）
 labels:
     - Activity
+projects:
+    - FreeCodeCamp-Chengdu/5
 assignees:
     - TechQuery
 body:
@@ -35,6 +37,7 @@ body:
           options:
               - online
               - offline
+          multiple: true
       validations:
           required: true
     - type: input
@@ -93,6 +96,7 @@ body:
       id: partners
       attributes:
           label: 合办方、场地方、赞助方
+          description: 合作方 ID 详见：https://github.com/FreeCodeCamp-Chengdu/Wiki/tree/master/_posts/Partner
           placeholder: 多个则用英文逗号隔开
     - type: textarea
       id: photos

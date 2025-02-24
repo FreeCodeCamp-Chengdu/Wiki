@@ -5,9 +5,10 @@ on:
             - labeled
 jobs:
     generate-markdown:
-        if: contains(github.event.issue.labels.*.name, 'Salon') || contains(github.event.issue.labels.*.name, 'Workshop') || contains(github.event.issue.labels.*.name, 'Conference')
+        if: contains(github.event.issue.labels.*.name, 'Activity')
         runs-on: ubuntu-latest
         permissions:
+            contents: write
             pull-requests: write
         steps:
             - uses: actions/checkout@v4

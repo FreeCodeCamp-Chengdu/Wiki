@@ -8,6 +8,7 @@ jobs:
         if: contains(github.event.issue.labels.*.name, 'Article')
         runs-on: ubuntu-latest
         permissions:
+            contents: write
             pull-requests: write
         steps:
             - uses: actions/checkout@v4
