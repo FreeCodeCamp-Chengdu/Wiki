@@ -132,7 +132,7 @@ BGP 有两个主要的故障模式：
 
 请启用 JavaScript 以查看由[Disqus][31]提供的评论。
 
-[][32]
+
 
 [1]: https://quantum5.ca/category/bgp/
 [2]: https://qt.ax/bgp "边界网关协议"
