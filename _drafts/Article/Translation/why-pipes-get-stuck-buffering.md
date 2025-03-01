@@ -126,7 +126,7 @@ tail -f /some/log/file | grep thing1 | grep thing2
 
 历史上，我的解决方案是完全避免`命令缓慢写入管道`的情况，而是运行一个会快速结束的程序，比如：
 
-```
+```bash
 cat /some/log/file | grep thing1 | grep thing2 | tail
 ```
 
@@ -146,13 +146,13 @@ tail -f /some/log/file | grep --line-buffered thing1 | grep thing2
 
 有些人说，如果他们遇到多个 `grep` 的情况，他们会改用单个 `awk` 来重写命令，比如：
 
-```
+```bash
 tail -f /some/log/file |  awk '/thing1/ && /thing2/'
 ```
 
 或者你可以写一个更复杂的 `grep`，比如：
 
-```
+```bash
 tail -f /some/log/file |  grep -E 'thing1.*thing2'
 ```
 
