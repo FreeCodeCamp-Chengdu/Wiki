@@ -1,5 +1,5 @@
 ---
-title: 为什么管道有时会“卡住”：缓冲机制
+title: 为什么管道有时会卡住：缓冲机制
 date: 2024-11-29T08:23:31.000Z
 authorURL: ""
 originalURL: https://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/
@@ -15,13 +15,13 @@ tail -f /some/log/file | grep thing1 | grep thing2
 
 如果日志文件中的新行添加得比较慢，结果就是……什么也没有！无论日志文件中是否有匹配项，都不会有任何输出。
 
-我过去一直认为“管道有时会卡住，不显示输出，这很奇怪”，然后我会通过直接运行 `grep thing1 /some/log/file | grep thing2` 来解决这个问题，这样确实有效。
+我过去一直认为`管道有时会卡住，不显示输出，这很奇怪`，然后我会通过直接运行`grep thing1 /some/log/file | grep thing2` 来解决这个问题，这样确实有效。
 
 所以，最近几个月我在深入研究终端时，终于搞清楚了这背后的原因。
 
 ### [原因：缓冲机制](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#why-this-happens-buffering)
 
-“管道卡住”的原因在于，程序在将数据写入管道或文件之前通常会先进行缓冲。所以管道本身工作正常，问题在于程序根本没有将数据写入管道！
+`管道卡住`的原因在于，程序在将数据写入管道或文件之前通常会先进行缓冲。所以管道本身工作正常，问题在于程序根本没有将数据写入管道！
 
 这是出于性能考虑：立即输出所有数据会使用更多的系统调用，因此更高效的做法是积累数据，直到有大约 8KB 的数据（或者程序退出时）才一次性写入管道。
 
@@ -41,13 +41,13 @@ tail -f /some/log/file | grep thing1 | grep thing2
 
 *   使用 `isatty` 函数检查标准输出是否是终端
     *   如果是终端，则使用行缓冲（立即输出每一行）
-    *   否则，使用“块缓冲”——只有在有至少 8KB 的数据时才输出
+    *   否则，使用`块缓冲`——只有在有至少 8KB 的数据时才输出
 
 所以，如果 `grep` 直接写入终端，你会立即看到输出，但如果它写入管道，你就不会看到。
 
 当然，缓冲区大小并不总是 8KB，这取决于具体实现。对于 `grep`，缓冲由 libc 处理，libc 的缓冲区大小由 `BUFSIZ` 变量定义。[这是 glibc 中的定义](https://github.com/bminor/glibc/blob/c69e8cccaff8f2d89cee43202623b33e6ef5d24a/libio/stdio.h#L100)。
 
-（顺便说一句：“程序在写入终端时不使用 8KB 输出缓冲区”并不是终端物理学的定律，程序完全可以在写入终端时使用 8KB 缓冲区，只是这样做会非常奇怪，我想不出有任何程序会这样做）
+（顺便说一句：`程序在写入终端时不使用 8KB 输出缓冲区`,并不是终端物理学的定律，程序完全可以在写入终端时使用 8KB 缓冲区，只是这样做会非常奇怪，我想不出有任何程序会这样做）
 
 ### [会缓冲的命令和不会缓冲的命令](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#commands-that-buffer-commands-that-don-t)
 
@@ -73,7 +73,7 @@ tail -f /some/log/file | grep thing1 | grep thing2
 
 此外，我尽力测试了 Mac OS 和 GNU 版本的这些命令，但有很多变体，我可能犯了一些错误。
 
-### [默认“print”语句会缓冲的编程语言](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#programming-languages-where-the-default-print-statement-buffers)
+### [默认`print`语句会缓冲的编程语言](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#programming-languages-where-the-default-print-statement-buffers)
 
 此外，以下是一些默认 `print` 语句在写入管道时会缓冲输出的编程语言，以及一些禁用缓冲的方法：
 
@@ -110,7 +110,7 @@ sudo tcpdump -ni any port 53 | grep example.com
 sudo tcpdump -ni any port 53 > output.txt
 ```
 
-重定向到文件不会有“`Ctrl-C` 会完全破坏缓冲区内容”的问题——根据我的经验，它通常会表现得像你期望的那样，缓冲区的内容会在程序退出前写入文件。我不完全确定这是否总是可靠的。
+重定向到文件不会有 `Ctrl-C` 会完全破坏缓冲区内容的问题——根据我的经验，它通常会表现得像你期望的那样，缓冲区的内容会在程序退出前写入文件。我不完全确定这是否总是可靠的。
 
 ### [一些避免缓冲的方法](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#a-bunch-of-potential-ways-to-avoid-buffering)
 
@@ -124,7 +124,7 @@ tail -f /some/log/file | grep thing1 | grep thing2
 
 #### [方法 1：运行一个快速结束的程序](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-1-run-a-program-that-finishes-quickly)
 
-历史上，我的解决方案是完全避免“命令缓慢写入管道”的情况，而是运行一个会快速结束的程序，比如：
+历史上，我的解决方案是完全避免`命令缓慢写入管道`的情况，而是运行一个会快速结束的程序，比如：
 
 ```
 cat /some/log/file | grep thing1 | grep thing2 | tail
@@ -132,9 +132,9 @@ cat /some/log/file | grep thing1 | grep thing2 | tail
 
 这与原始命令不同，但它确实意味着你可以避免思考这些奇怪的缓冲问题。
 
-（你也可以直接运行 `grep thing1 /some/log/file`，但我通常更喜欢使用“不必要的” `cat`）
+（你也可以直接运行 `grep thing1 /some/log/file`，但我通常更喜欢使用不必要的 `cat`）
 
-#### [方法 2：记住 grep 的“行缓冲”标志](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-2-remember-the-line-buffer-flag-to-grep)
+#### [方法 2：记住 grep 的`行缓冲`标志](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-2-remember-the-line-buffer-flag-to-grep)
 
 你可以记住 grep 有一个避免缓冲的标志，并像这样传递它：
 
@@ -182,7 +182,7 @@ tail -f /some/log/file | unbuffer grep thing1 | grep thing2
 
 ### [这就是我知道的所有解决方案！](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#that-s-all-the-solutions-i-know-about)
 
-很难说哪个是“最好的”，我个人最有可能使用 `unbuffer`，因为我知道它总是有效。
+很难说哪个是`最好的`，我个人最有可能使用 `unbuffer`，因为我知道它总是有效。
 
 如果我了解到更多的解决方案，我会尝试将它们添加到这篇文章中。
 
@@ -210,4 +210,4 @@ tail -f /some/log/file | unbuffer grep thing1 | grep thing2
 *   行缓冲和完全无缓冲输出的区别
 *   缓冲到 stderr 与缓冲到 stdout 的不同
 *   这篇文章只讨论了**程序内部**的缓冲，你的操作系统的 TTY 驱动程序有时也会做一些缓冲
-*   除了“你正在写入管道”之外，你可能需要刷新输出的其他原因
+*   除了`你正在写入管道`之外，你可能需要刷新输出的其他原因
