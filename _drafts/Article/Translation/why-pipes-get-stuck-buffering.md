@@ -1,213 +1,213 @@
 ---
-title: Why pipes sometimes get "stuck": buffering
+title: 为什么管道有时会“卡住”：缓冲机制
 date: 2024-11-29T08:23:31.000Z
 authorURL: ""
 originalURL: https://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/
-translator: ""
+translator: "luojiyin"
 reviewer: ""
 ---
 
-Here’s a niche terminal problem that has bothered me for years but that I never really understood until a few weeks ago. Let’s say you’re running this command to watch for some specific output in a log file:
+这是一个困扰我多年的终端小问题，直到几周前我才真正理解它。假设你运行以下命令来监控日志文件中的某些特定输出：
 
-```
+```bash
 tail -f /some/log/file | grep thing1 | grep thing2
 ```
 
-If log lines are being added to the file relatively slowly, the result I’d see is… nothing! It doesn’t matter if there were matches in the log file or not, there just wouldn’t be any output.
+如果日志文件中的新行添加得比较慢，结果就是……什么也没有！无论日志文件中是否有匹配项，都不会有任何输出。
 
-I internalized this as “uh, I guess pipes just get stuck sometimes and don’t show me the output, that’s weird”, and I’d handle it by just running `grep thing1 /some/log/file | grep thing2` instead, which would work.
+我过去一直认为“管道有时会卡住，不显示输出，这很奇怪”，然后我会通过直接运行 `grep thing1 /some/log/file | grep thing2` 来解决这个问题，这样确实有效。
 
-So as I’ve been doing a terminal deep dive over the last few months I was really excited to finally learn exactly why this happens.
+所以，最近几个月我在深入研究终端时，终于搞清楚了这背后的原因。
 
-### [why this happens: buffering](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#why-this-happens-buffering)
+### [原因：缓冲机制](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#why-this-happens-buffering)
 
-The reason why “pipes get stuck” sometimes is that it’s VERY common for programs to buffer their output before writing it to a pipe or file. So the pipe is working fine, the problem is that the program never even wrote the data to the pipe!
+“管道卡住”的原因在于，程序在将数据写入管道或文件之前通常会先进行缓冲。所以管道本身工作正常，问题在于程序根本没有将数据写入管道！
 
-This is for performance reasons: writing all output immediately as soon as you can uses more system calls, so it’s more efficient to save up data until you have 8KB or so of data to write (or until the program exits) and THEN write it to the pipe.
+这是出于性能考虑：立即输出所有数据会使用更多的系统调用，因此更高效的做法是积累数据，直到有大约 8KB 的数据（或者程序退出时）才一次性写入管道。
 
-In this example:
+在这个例子中：
 
-```
+```bash
 tail -f /some/log/file | grep thing1 | grep thing2
 ```
 
-the problem is that `grep thing1` is saving up all of its matches until it has 8KB of data to write, which might literally never happen.
+问题在于 `grep thing1` 会保存所有匹配项，直到有 8KB 的数据才写入，而这可能永远不会发生。
 
-### [programs don’t buffer when writing to a terminal](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#programs-don-t-buffer-when-writing-to-a-terminal)
+### [程序在写入终端时不会缓冲](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#programs-don-t-buffer-when-writing-to-a-terminal)
 
-Part of why I found this so disorienting is that `tail -f file | grep thing` will work totally fine, but then when you add the second `grep`, it stops working!! The reason for this is that the way `grep` handles buffering depends on whether it’s writing to a terminal or not.
+让我感到困惑的部分是，`tail -f file | grep thing` 会完全正常工作，但当你添加第二个 `grep` 时，它就不工作了！原因是 `grep` 的缓冲行为取决于它是否在写入终端。
 
-Here’s how `grep` (and many other programs) decides to buffer its output:
+以下是 `grep`（以及许多其他程序）决定如何缓冲输出的方式：
 
-*   Check if stdout is a terminal or not using the `isatty` function
-    *   If it’s a terminal, use line buffering (print every line immediately as soon as you have it)
-    *   Otherwise, use “block buffering” – only print data if you have at least 8KB or so of data to print
+*   使用 `isatty` 函数检查标准输出是否是终端
+    *   如果是终端，则使用行缓冲（立即输出每一行）
+    *   否则，使用“块缓冲”——只有在有至少 8KB 的数据时才输出
 
-So if `grep` is writing directly to your terminal then you’ll see the line as soon as it’s printed, but if it’s writing to a pipe, you won’t.
+所以，如果 `grep` 直接写入终端，你会立即看到输出，但如果它写入管道，你就不会看到。
 
-Of course the buffer size isn’t always 8KB for every program, it depends on the implementation. For `grep` the buffering is handled by libc, and libc’s buffer size is defined in the `BUFSIZ` variable. [Here’s where that’s defined in glibc](https://github.com/bminor/glibc/blob/c69e8cccaff8f2d89cee43202623b33e6ef5d24a/libio/stdio.h#L100).
+当然，缓冲区大小并不总是 8KB，这取决于具体实现。对于 `grep`，缓冲由 libc 处理，libc 的缓冲区大小由 `BUFSIZ` 变量定义。[这是 glibc 中的定义](https://github.com/bminor/glibc/blob/c69e8cccaff8f2d89cee43202623b33e6ef5d24a/libio/stdio.h#L100)。
 
-(as an aside: “programs do not use 8KB output buffers when writing to a terminal” isn’t, like, a law of terminal physics, a program COULD use an 8KB buffer when writing output to a terminal if it wanted, it would just be extremely weird if it did that, I can’t think of any program that behaves that way)
+（顺便说一句：“程序在写入终端时不使用 8KB 输出缓冲区”并不是终端物理学的定律，程序完全可以在写入终端时使用 8KB 缓冲区，只是这样做会非常奇怪，我想不出有任何程序会这样做）
 
-### [commands that buffer & commands that don’t](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#commands-that-buffer-commands-that-don-t)
+### [会缓冲的命令和不会缓冲的命令](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#commands-that-buffer-commands-that-don-t)
 
-One annoying thing about this buffering behaviour is that you kind of need to remember which commands buffer their output when writing to a pipe.
+这种缓冲行为的一个烦人之处在于，你需要记住哪些命令在写入管道时会缓冲输出。
 
-Some commands that **don’t** buffer their output:
+一些**不会**缓冲输出的命令：
 
 *   tail
 *   cat
 *   tee
 
-I think almost everything else will buffer output, especially if it’s a command where you’re likely to be using it for batch processing. Here’s a list of some common commands that buffer their output when writing to a pipe, along with the flag that disables block buffering.
+我认为几乎所有其他命令都会缓冲输出，尤其是那些你可能用于批处理的命令。以下是一些在写入管道时会缓冲输出的常见命令，以及禁用块缓冲的标志。
 
 *   grep (`--line-buffered`)
 *   sed (`-u`)
-*   awk (there’s a `fflush()` function)
+*   awk（有 `fflush()` 函数）
 *   tcpdump (`-l`)
 *   jq (`-u`)
 *   tr (`-u`)
-*   cut (can’t disable buffering)
+*   cut（无法禁用缓冲）
 
-Those are all the ones I can think of, lots of unix commands (like `sort`) may or may not buffer their output but it doesn’t matter because `sort` can’t do anything until it finishes receiving input anyway.
+这些是我能想到的所有命令，许多 Unix 命令（如 `sort`）可能会或可能不会缓冲输出，但这并不重要，因为 `sort` 在完成接收输入之前无法做任何事情。
 
-Also I did my best to test both the Mac OS and GNU versions of these but there are a lot of variations and I might have made some mistakes.
+此外，我尽力测试了 Mac OS 和 GNU 版本的这些命令，但有很多变体，我可能犯了一些错误。
 
-### [programming languages where the default “print” statement buffers](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#programming-languages-where-the-default-print-statement-buffers)
+### [默认“print”语句会缓冲的编程语言](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#programming-languages-where-the-default-print-statement-buffers)
 
-Also, here are a few programming language where the default print statement will buffer output when writing to a pipe, and some ways to disable buffering if you want:
+此外，以下是一些默认 `print` 语句在写入管道时会缓冲输出的编程语言，以及一些禁用缓冲的方法：
 
-*   C (disable with `setvbuf`)
-*   Python (disable with `python -u`, or `PYTHONUNBUFFERED=1`, or `sys.stdout.reconfigure(line_buffering=False)`, or `print(x, flush=True)`)
-*   Ruby (disable with `STDOUT.sync = true`)
-*   Perl (disable with `$| = 1`)
+*   C（使用 `setvbuf` 禁用）
+*   Python（使用 `python -u`，或 `PYTHONUNBUFFERED=1`，或 `sys.stdout.reconfigure(line_buffering=False)`，或 `print(x, flush=True)` 禁用）
+*   Ruby（使用 `STDOUT.sync = true` 禁用）
+*   Perl（使用 `$| = 1` 禁用）
 
-I assume that these languages are designed this way so that the default print function will be fast when you’re doing batch processing.
+我认为这些语言这样设计是为了在批处理时默认的 `print` 函数会更快。
 
-Also whether output is buffered or not might depend on how you print, for example in C++ `cout << "hello\n"` buffers when writing to a pipe but `cout << "hello" << endl` will flush its output.
+此外，输出是否缓冲可能取决于你如何打印，例如在 C++ 中，`cout << "hello\n"` 在写入管道时会缓冲，但 `cout << "hello" << endl` 会刷新输出。
 
-### [when you press `Ctrl-C` on a pipe, the contents of the buffer are lost](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#when-you-press-ctrl-c-on-a-pipe-the-contents-of-the-buffer-are-lost)
+### [当你按下 `Ctrl-C` 时，缓冲区的内容会丢失](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#when-you-press-ctrl-c-on-a-pipe-the-contents-of-the-buffer-are-lost)
 
-Let’s say you’re running this command as a hacky way to watch for DNS requests to `example.com`, and you forgot to pass `-l` to tcpdump:
+假设你运行以下命令作为一种监控 `example.com` 的 DNS 请求的临时方法，但你忘记给 tcpdump 传递 `-l` 参数：
 
-```
+```bash
 sudo tcpdump -ni any port 53 | grep example.com
 ```
 
-When you press `Ctrl-C`, what happens? In a magical perfect world, what I would _want_ to happen is for `tcpdump` to flush its buffer, `grep` would search for `example.com`, and I would see all the output I missed.
+当你按下 `Ctrl-C` 时，会发生什么？在一个完美的世界里，我希望 `tcpdump` 刷新它的缓冲区，`grep` 会搜索 `example.com`，然后我会看到所有错过的输出。
 
-But in the real world, what happens is that all the programs get killed and the output in `tcpdump`’s buffer is lost.
+但在现实世界中，所有程序都会被杀死，`tcpdump` 缓冲区中的输出会丢失。
 
-I think this problem is probably unavoidable – I spent a little time with `strace` to see how this works and `grep` receives the `SIGINT` before `tcpdump` anyway so even if `tcpdump` tried to flush its buffer `grep` would already be dead.
+我认为这个问题可能无法避免——我用 `strace` 研究了一下，发现 `grep` 会在 `tcpdump` 之前收到 `SIGINT`，所以即使 `tcpdump` 尝试刷新缓冲区，`grep` 也已经死了。
 
-After a little more investigation, there is a workaround: if you find `tcpdump`’s PID and `kill -TERM $PID`, then tcpdump will flush the buffer so you can see the output. That’s kind of a pain but I tested it and it seems to work.
+经过进一步研究，有一个变通方法：如果你找到 `tcpdump` 的 PID 并执行 `kill -TERM $PID`，那么 tcpdump 会刷新缓冲区，这样你就能看到输出。这有点麻烦，但我测试过，它似乎有效。
 
-### [redirecting to a file also buffers](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#redirecting-to-a-file-also-buffers)
+### [重定向到文件也会缓冲](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#redirecting-to-a-file-also-buffers)
 
-It’s not just pipes, this will also buffer:
+不仅仅是管道，以下命令也会缓冲：
 
-```
+```bash
 sudo tcpdump -ni any port 53 > output.txt
 ```
 
-Redirecting to a file doesn’t have the same “`Ctrl-C` will totally destroy the contents of the buffer” problem though – in my experience it usually behaves more like you’d want, where the contents of the buffer get written to the file before the program exits. I’m not 100% sure whether this is something you can always rely on or not.
+重定向到文件不会有“`Ctrl-C` 会完全破坏缓冲区内容”的问题——根据我的经验，它通常会表现得像你期望的那样，缓冲区的内容会在程序退出前写入文件。我不完全确定这是否总是可靠的。
 
-### [a bunch of potential ways to avoid buffering](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#a-bunch-of-potential-ways-to-avoid-buffering)
+### [一些避免缓冲的方法](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#a-bunch-of-potential-ways-to-avoid-buffering)
 
-Okay, let’s talk solutions. Let’s say you’ve run this command:
+好了，让我们来谈谈解决方案。假设你运行了以下命令：
 
-```
+```bash
 tail -f /some/log/file | grep thing1 | grep thing2
 ```
 
-I asked people on Mastodon how they would solve this in practice and there were 5 basic approaches. Here they are:
+我在 Mastodon 上询问了人们在实际中如何解决这个问题，有五种基本方法。以下是它们：
 
-#### [solution 1: run a program that finishes quickly](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-1-run-a-program-that-finishes-quickly)
+#### [方法 1：运行一个快速结束的程序](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-1-run-a-program-that-finishes-quickly)
 
-Historically my solution to this has been to just avoid the “command writing to pipe slowly” situation completely and instead run a program that will finish quickly like this:
+历史上，我的解决方案是完全避免“命令缓慢写入管道”的情况，而是运行一个会快速结束的程序，比如：
 
 ```
 cat /some/log/file | grep thing1 | grep thing2 | tail
 ```
 
-This doesn’t do the same thing as the original command but it does mean that you get to avoid thinking about these weird buffering issues.
+这与原始命令不同，但它确实意味着你可以避免思考这些奇怪的缓冲问题。
 
-(you could also do `grep thing1 /some/log/file` but I often prefer to use an “unnecessary” `cat`)
+（你也可以直接运行 `grep thing1 /some/log/file`，但我通常更喜欢使用“不必要的” `cat`）
 
-#### [solution 2: remember the “line buffer” flag to grep](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-2-remember-the-line-buffer-flag-to-grep)
+#### [方法 2：记住 grep 的“行缓冲”标志](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-2-remember-the-line-buffer-flag-to-grep)
 
-You could remember that grep has a flag to avoid buffering and pass it like this:
+你可以记住 grep 有一个避免缓冲的标志，并像这样传递它：
 
-```
+```bash
 tail -f /some/log/file | grep --line-buffered thing1 | grep thing2
 ```
 
-#### [solution 3: use awk](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-3-use-awk)
+#### [方法 3：使用 awk](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering
 
-Some people said that if they’re specifically dealing with a multiple greps situation, they’ll rewrite it to use a single `awk` instead, like this:
+有些人说，如果他们遇到多个 `grep` 的情况，他们会改用单个 `awk` 来重写命令，比如：
 
 ```
 tail -f /some/log/file |  awk '/thing1/ && /thing2/'
 ```
 
-Or you would write a more complicated `grep`, like this:
+或者你可以写一个更复杂的 `grep`，比如：
 
 ```
 tail -f /some/log/file |  grep -E 'thing1.*thing2'
 ```
 
-(`awk` also buffers, so for this to work you’ll want `awk` to be the last command in the pipeline)
+（`awk` 也会缓冲，所以为了让这个方法有效，你需要让 `awk` 成为管道中的最后一个命令）
 
-#### [solution 4: use `stdbuf`](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-4-use-stdbuf)
+#### [方法 4：使用 `stdbuf`](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-4-use-stdbuf)
 
-`stdbuf` uses LD\_PRELOAD to turn off libc’s buffering, and you can use it to turn off output buffering like this:
+`stdbuf` 使用 `LD_PRELOAD` 来关闭 libc 的缓冲，你可以像这样使用它来关闭输出缓冲：
 
-```
+```bash
 tail -f /some/log/file | stdbuf -o0 grep thing1 | grep thing2
 ```
 
-Like any `LD_PRELOAD` solution it’s a bit unreliable – it doesn’t work on static binaries, I think won’t work if the program isn’t using libc’s buffering, and doesn’t always work on Mac OS. Harry Marr has a really nice [How stdbuf works](https://hmarr.com/blog/how-stdbuf-works/) post.
+像任何 `LD_PRELOAD` 解决方案一样，它有点不可靠——它不适用于静态二进制文件，我认为如果程序没有使用 libc 的缓冲，它也不会工作，而且在 Mac OS 上也不总是有效。Harry Marr 有一篇很好的 [How stdbuf works](https://hmarr.com/blog/how-stdbuf-works/) 文章。
 
-#### [solution 5: use `unbuffer`](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-5-use-unbuffer)
+#### [方法 5：使用 `unbuffer`](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#solution-5-use-unbuffer)
 
-`unbuffer program` will force the program’s output to be a TTY, which means that it’ll behave the way it normally would on a TTY (less buffering, colour output, etc). You could use it in this example like this:
+`unbuffer program` 会强制程序的输出为 TTY，这意味着它会像在 TTY 上一样行为（减少缓冲，彩色输出等）。你可以在这个例子中这样使用它：
 
-```
+```bash
 tail -f /some/log/file | unbuffer grep thing1 | grep thing2
 ```
 
-Unlike `stdbuf` it will always work, though it might have unwanted side effects, for example `grep thing1`’s will also colour matches.
+与 `stdbuf` 不同，它总是有效，尽管可能会有一些不想要的副作用，例如 `grep thing1` 也会对匹配项进行着色。
 
-If you want to install unbuffer, it’s in the `expect` package.
+如果你想安装 `unbuffer`，它在 `expect` 包中。
 
-### [that’s all the solutions I know about!](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#that-s-all-the-solutions-i-know-about)
+### [这就是我知道的所有解决方案！](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#that-s-all-the-solutions-i-know-about)
 
-It’s a bit hard for me to say which one is “best”, I think personally I’m mostly likely to use `unbuffer` because I know it’s always going to work.
+很难说哪个是“最好的”，我个人最有可能使用 `unbuffer`，因为我知道它总是有效。
 
-If I learn about more solutions I’ll try to add them to this post.
+如果我了解到更多的解决方案，我会尝试将它们添加到这篇文章中。
 
-### [I’m not really sure how often this comes up](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#i-m-not-really-sure-how-often-this-comes-up)
+### [我不太确定这种情况有多常见](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#i-m-not-really-sure-how-often-this-comes-up)
 
-I think it’s not very common for me to have a program that slowly trickles data into a pipe like this, normally if I’m using a pipe a bunch of data gets written very quickly, processed by everything in the pipeline, and then everything exits. The only examples I can come up with right now are:
+我认为这种情况对我来说并不常见，通常如果我使用管道，大量数据会非常快速地写入，由管道中的所有内容处理，然后所有内容退出。我现在能想到的唯一例子是：
 
 *   tcpdump
 *   `tail -f`
-*   watching log files in a different way like with `kubectl logs`
-*   the output of a slow computation
+*   以其他方式监控日志文件，比如使用 `kubectl logs`
+*   缓慢计算的输出
 
-### [what if there were an environment variable to disable buffering?](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#what-if-there-were-an-environment-variable-to-disable-buffering)
+### [如果有一个环境变量来禁用缓冲会怎样？](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#what-if-there-were-an-environment-variable-to-disable-buffering)
 
-I think it would be cool if there were a standard environment variable to turn off buffering, like `PYTHONUNBUFFERED` in Python. I got this idea from a [couple](https://blog.plover.com/Unix/stdio-buffering.html) of [blog posts](https://blog.plover.com/Unix/stdio-buffering-2.html) by Mark Dominus in 2018. Maybe `NO_BUFFER` like [NO\_COLOR](https://no-color.org/)?
+我认为如果有一个标准的环境变量来关闭缓冲，比如 Python 中的 `PYTHONUNBUFFERED`，那会很酷。这个想法来自 Mark Dominus 在 2018 年的[几篇](https://blog.plover.com/Unix/stdio-buffering.html) [博客文章](https://blog.plover.com/Unix/stdio-buffering-2.html)。也许可以像 [NO_COLOR](https://no-color.org/) 一样叫 `NO_BUFFER`？
 
-The design seems tricky to get right; Mark points out that NETBSD has [environment variables called `STDBUF`, `STDBUF1`, etc](https://man.netbsd.org/setbuf.3) which gives you a ton of control over buffering but I imagine most developers don’t want to implement many different environment variables to handle a relatively minor edge case.
+设计似乎很难做到完美；Mark 指出 NETBSD 有[名为 `STDBUF`、`STDBUF1` 等的环境变量](https://man.netbsd.org/setbuf.3)，它们让你对缓冲有很多控制，但我想大多数开发者不想实现许多不同的环境变量来处理一个相对较小的边缘情况。
 
-I’m also curious about whether there are any programs that just automatically flush their output buffers after some period of time (like 1 second). It feels like it would be nice in theory but I can’t think of any program that does that so I imagine there are some downsides.
+我也很好奇是否有任何程序会自动在一段时间后（比如 1 秒）刷新它们的输出缓冲区。理论上这似乎不错，但我想不出有任何程序这样做，所以我想可能有一些缺点。
 
-### [stuff I left out](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#stuff-i-left-out)
+### [我遗漏的内容](http://jvns.ca/blog/2024/11/29/why-pipes-get-stuck-buffering/#stuff-i-left-out)
 
-Some things I didn’t talk about in this post since these posts have been getting pretty long recently and seriously does anyone REALLY want to read 3000 words about buffering?
+由于这些文章最近变得很长，而且真的有人想读 3000 字关于缓冲的内容吗？所以我在这篇文章中没有谈到以下内容：
 
-*   the difference between line buffering and having totally unbuffered output
-*   how buffering to stderr is different from buffering to stdout
-*   this post is only about buffering that happens **inside the program**, your operating system’s TTY driver also does a little bit of buffering sometimes
-*   other reasons you might need to flush your output other than “you’re writing to a pipe”
+*   行缓冲和完全无缓冲输出的区别
+*   缓冲到 stderr 与缓冲到 stdout 的不同
+*   这篇文章只讨论了**程序内部**的缓冲，你的操作系统的 TTY 驱动程序有时也会做一些缓冲
+*   除了“你正在写入管道”之外，你可能需要刷新输出的其他原因
