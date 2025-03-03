@@ -37,7 +37,7 @@ reviewer: ""
 我目前使用的设置在过去几年中一直相当稳定，只有一些小的调整。每次我做出重大改变时，我都会至少保留几个月，以尝试建立肌肉记忆，并看看我是否会永久采用这种调整。
 
 
-![screenshot of an empty hyprland desktop showing waybar at the top](https://jnsgr.uk/2024/07/how-i-computer-in-2024/06_hu19d68ad61b5dede6fd1f1d19283c6ff2_18899216_660x0_resize_box_3.png)
+![screenshot of an empty hyprland desktop showing waybar at the top][134]
 
 ## Hardware 
 
@@ -64,7 +64,7 @@ reviewer: ""
 
 
 
-![一张我的桌面的照片，包括一个巨大的超宽显示器](https://jnsgr.uk/2024/07/how-i-computer-in-2024/01_hu930cbab5a5dfad6c7189f290c5bed7dd_1798110_660x0_resize_box_3.png)
+![一张我的桌面的照片，包括一个巨大的超宽显示器][135]
 
 在撰写本文时，我在 [Canonical][45] 工作，这是一家完全远程的公司。公司性质加上我作为工程副总裁的角色，意味着我每天有相当一部分时间都在视频会议中度过。在我看来，投资一套可靠的音视频设备是对同事的一种服务，尤其是当你的角色涉及管理他人时。我目前使用 [Sony ILME-FX3][46] 相机，搭配标准的 [FE 28-70mm F3.5-5.6][47] 镜头，并通过 [Elgato Cam Link 4K][48] 连接。音频方面，我使用 [RODE VideoMic GO II][49] 麦克风和一对 [Audioengine A2+][50] 音箱。
 
@@ -123,7 +123,7 @@ reviewer: ""
 我尝试过 [Zettelkasten][81] 方法，但发现维护起来有点……无聊？我最终采用了一个简单的结构，这在我的日常工作中确实帮助很大。每天都会有一个"每日笔记"，其中包括我的议程，链接到与相关人员或定期会议的笔记。每日笔记也是我整理零散笔记的地方，这些笔记可能会在以后被搜索到：
 
 
-![obsidian.md 截图显示我的每日笔记模板](https://jnsgr.uk/2024/07/how-i-computer-in-2024/02_huf93b0c707cf46312a8fd9228e1b4cdb5_92067_660x0_resize_box_3.png)
+![obsidian.md 截图显示我的每日笔记模板][136]
 
 议程和链接是通过我编写的一个小型 Go 应用程序自动生成的——这个应用程序会抓取我的 Google 日历，并根据一些规则和它对笔记库的了解，生成 Markdown 格式的议程并复制到剪贴板。每天，我坐下来在命令行中输入 `agenda`，然后将其粘贴到 Obsidian 中。每个人的笔记都包含我与该人或小组的按日期记录的笔记。
 
@@ -133,7 +133,7 @@ reviewer: ""
 
 
 
-![obsidian and todoist side-by-side showing the integration](https://jnsgr.uk/2024/07/how-i-computer-in-2024/03_hu961bfa5d6384c4efa7dfa90c87eca21a_361619_660x0_resize_box_3.png)
+![obsidian and todoist side-by-side showing the integration][137]
 
 ## 开发环境 
 
@@ -141,13 +141,13 @@ reviewer: ""
 
 
 
-![Alacritty 终端模拟器显示加载了 Neovim 的 tmux 会话](https://jnsgr.uk/2024/07/how-i-computer-in-2024/04_hu05bf6628177fb41deef80d4a55f42632_404501_660x0_resize_box_3.png)
+![Alacritty 终端模拟器显示加载了 Neovim 的 tmux 会话][138]
 
 我主要通过命令行使用 `git`，但最近我开始使用 [Sublime Merge][101] 来处理复杂的 rebase 操作，或者当我想暂存文件中的多个小块时。我曾经是 [Sublime Text][102] 的忠实用户，但后来觉得它在功能上逐渐落后于 Visual Studio Code——尽管我仍然对 Sublime Text 的极速体验有些上瘾。
 
 
 
-![Visual Studio Code 和 Sublime Merge 并排显示](https://jnsgr.uk/2024/07/how-i-computer-in-2024/05_hu2d6d25863bc408587fe8518d526b1cf7_752958_660x0_resize_box_3.png)
+![Visual Studio Code 和 Sublime Merge 并排显示][139]
 
 ## OS / Desktop 
 
@@ -161,7 +161,7 @@ reviewer: ""
 
 
 
-[Hyprland 桌面的截图，显示了编辑器、浏览器等](https://jnsgr.uk/2024/07/how-i-computer-in-2024/07_hu19d68ad61b5dede6fd1f1d19283c6ff2_2075377_660x0_resize_box_3.png)
+[Hyprland 桌面的截图，显示了编辑器、浏览器等][141]
 
 ## Server / Homelab [#][113]
 
@@ -171,7 +171,7 @@ reviewer: ""
 
 
 
-![使用 gethomepage.dev 的个人仪表盘](https://jnsgr.uk/2024/07/how-i-computer-in-2024/08_hu7f790721995065d374827ee567548c83_94865_660x0_resize_box_3.png)
+![使用 gethomepage.dev 的个人仪表盘][140]
 
 每天晚上，我的 iCloud 照片库的内容会通过 [icloud-photos-downloader][123] 进行备份，这样如果我的 iCloud 账户发生任何意外，我仍然可以在本地保留一份照片的备份。
 
@@ -192,9 +192,7 @@ Jon Seager
 
 [←→ 使用 LXD 和 Multipass 的工作站虚拟机 2024 年 6 月 25 日][133]
 
-
 [3]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/
-[21]: https://www.bequiet.com/en/case/1501
 [22]: https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-9-7950x.html
 [23]: https://www.xfxforce.com/shop/xfx-speedster-merc310-7900xt
 [24]: https://www.gskill.com/product/165/390/1665020865/F5-6000J3040G32GX2-TZ5NR
@@ -207,16 +205,9 @@ Jon Seager
 [31]: https://www.bequiet.com/en/casefans/3703
 [32]: https://www.durgod.com/product/k320-space-gray/
 [33]: https://www.razer.com/ap-en/gaming-mice/razer-deathadder-v2-pro
-[34]: https://www.samsung.com/uk/monitors/gaming/odyssey-neo-g9-g95nc-57-inch-240hz-curved-dual-uhd-ls57cg952nuxxu/
-[35]: https://www.sony.co.uk/interchangeable-lens-cameras/products/ilme-fx3-body---kit
-[36]: https://www.sony.co.uk/electronics/camera-lenses/sel2870
-[37]: https://www.elgato.com/uk/en/p/cam-link-4k
-[38]: https://audioengineeu.com/products/audioengine-a2-wireless-bluetooth-computer-speakers-60w-bluetooth-speaker-system-for-home-studio-gaming
-[39]: https://rode.com/en/microphones/on-camera/videomic-go-ii
 [40]: https://www.samsung.com/uk/monitors/gaming/odyssey-neo-g9-g95nc-57-inch-240hz-curved-dual-uhd-ls57cg952nuxxu/
 [41]: https://www.amazon.co.uk/gp/product/B0B73XXDP5/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1
 [42]: https://www.lg.com/us/monitors/lg-27un850-w-4k-uhd-led-monitor
-[43]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/01.png
 [44]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/01.png
 [45]: https://canonical.com
 [46]: https://www.sony.co.uk/interchangeable-lens-cameras/products/ilme-fx3-body---kit
@@ -247,19 +238,16 @@ Jon Seager
 [74]: https://addons.mozilla.org/en-US/firefox/addon/multi-account-containers/
 [75]: https://nextcloud.com/
 [76]: https://github.com/jnsgruk/nextcloud-docker-compose
-[77]: https://syncthing.net/
 [78]: https://obsidian.md/
 [79]: https://blacksmithgu.github.io/obsidian-dataview/
 [80]: https://publish.obsidian.md/tasks/Queries/About+Queries
 [81]: https://zettelkasten.de/introduction/
-[82]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/02.png
 [83]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/02.png
 [84]: https://github.com/SilentVoid13/Templater
 [85]: https://github.com/chhoumann/quickadd
 [86]: https://github.com/scambier/obsidian-omnisearch
 [87]: https://github.com/platers/obsidian-linter
 [88]: https://todoist.com/
-[89]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/03.png
 [90]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/03.png
 [92]: https://alacritty.org/
 [93]: https://code.visualstudio.com/
@@ -268,18 +256,15 @@ Jon Seager
 [96]: https://github.com/itchyny/lightline.vim
 [97]: https://github.com/nvim-telescope/telescope.nvim
 [98]: https://github.com/nvim-tree/nvim-tree.lua
-[99]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/04.png
 [100]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/04.png
 [101]: https://www.sublimemerge.com/
 [102]: https://www.sublimetext.com/
-[103]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/05.png
 [104]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/05.png
 [106]: https://www.knopper.net/knoppix/index-en.html
 [107]: https://swaywm.org/
 [108]: https://hyprland.org/
 [109]: https://github.com/catppuccin/catppuccin
 [110]: https://github.com/jnsgruk/nixos-config
-[111]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/07.png
 [112]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/07.png
 [114]: https://www.freedesktop.org/software/systemd/man/latest/systemd-nspawn.html
 [115]: https://nixos.wiki/wiki/NixOS_Containers
@@ -288,7 +273,6 @@ Jon Seager
 [118]: https://tailscale.com/kb/1190/caddy-certificates
 [119]: https://gethomepage.dev/latest/
 [120]: https://jnsgr.uk/2024/03/a-homelab-dashboard-for-nixos/
-[121]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/08.png
 [122]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/08.png
 [123]: https://github.com/icloud-photos-downloader/icloud_photos_downloader
 [124]: https://www.home-assistant.io/
@@ -300,3 +284,11 @@ Jon Seager
 [131]: https://linkedin.com/in/jnsgruk
 [132]: https://t.me/jnsgruk
 [133]: https://jnsgr.uk/2024/06/desktop-vms-lxd-multipass/
+[134]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/06_hu19d68ad61b5dede6fd1f1d19283c6ff2_18899216_660x0_resize_box_3.png
+[135]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/01_hu930cbab5a5dfad6c7189f290c5bed7dd_1798110_660x0_resize_box_3.png
+[136]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/02_huf93b0c707cf46312a8fd9228e1b4cdb5_92067_660x0_resize_box_3.png
+[137]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/03_hu961bfa5d6384c4efa7dfa90c87eca21a_361619_660x0_resize_box_3.png
+[138]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/04_hu05bf6628177fb41deef80d4a55f42632_404501_660x0_resize_box_3.png
+[139]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/05_hu2d6d25863bc408587fe8518d526b1cf7_752958_660x0_resize_box_3.png
+[140]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/08_hu7f790721995065d374827ee567548c83_94865_660x0_resize_box_3.png
+[141]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/07_hu19d68ad61b5dede6fd1f1d19283c6ff2_2075377_660x0_resize_box_3.png
