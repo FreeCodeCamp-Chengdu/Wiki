@@ -3,7 +3,7 @@ title: 我在2024年的计算机使用方式
 date: 2024-07-31T00:00:00.000Z
 authorURL: ""
 originalURL: https://jnsgr.uk/2024/07/how-i-computer-in-2024/
-translator: ""
+translator: "luojiyin"
 reviewer: ""
 ---
 
