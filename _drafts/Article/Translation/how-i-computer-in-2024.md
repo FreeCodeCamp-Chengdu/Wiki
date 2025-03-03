@@ -7,9 +7,7 @@ translator: ""
 reviewer: ""
 ---
 
-1.  [][1]/
-2.  [Blog][2]/
-3.  [How I Computer in 2024][3]/
+
 
 <!-- more -->
 
@@ -19,20 +17,20 @@ reviewer: ""
 
 Table of Contents
 
--   [Introduction][4]
--   [Hardware][5]
-    -   [Desktop][6]
-    -   [Server][7]
-    -   [Laptop][8]
-    -   [Phone][9]
--   [Connectivity & Security][10]
--   [Productivity Apps][11]
--   [Development][12]
--   [OS / Desktop][13]
--   [Server / Homelab][14]
--   [Summary][15]
+-   [Introduction]
+-   [Hardware]
+    -   [Desktop]
+    -   [Server]
+    -   [Laptop]
+    -   [Phone]
+-   [Connectivity & Security]
+-   [Productivity Apps]
+-   [Development]
+-   [OS / Desktop]
+-   [Server / Homelab]
+-   [Summary]
 
-## Introduction [#][16]
+## Introduction 
 
 I’m always fascinated to see how people use their computers - which applications they choose, how they set up their desktop environments and even how their screens are laid out on their desk. I’ve learned some great tricks from friends and colleagues over the years, so I thought I’d write up how I use my machines in 2024.
 
@@ -40,11 +38,11 @@ The setup I’m using today has been quite static for a couple of years, with on
 
 [][17]
 
-[![screenshot of an empty hyprland desktop showing waybar at the top](/2024/07/how-i-computer-in-2024/06_hu19d68ad61b5dede6fd1f1d19283c6ff2_18899216_660x0_resize_box_3.png)][18]
+[![screenshot of an empty hyprland desktop showing waybar at the top](https://jnsgr.uk/2024/07/how-i-computer-in-2024/06_hu19d68ad61b5dede6fd1f1d19283c6ff2_18899216_660x0_resize_box_3.png)][18]
 
-## Hardware [#][19]
+## Hardware 
 
-### Desktop [#][20]
+### Desktop 
 
 My main machine is a custom built desktop machine. It’s in a sombre looking, all black [beQuiet Silent Base 600][21] case. I’ve never been into RGB lights - I’m much more into good thermals and _silent_ operation. The full spec is as follows:
 
@@ -65,9 +63,9 @@ My main machine is a custom built desktop machine. It’s in a sombre looking, a
 
 On my desk, you’ll find a [57" Samsung G95NC Odessey Neo G9][40] monitor mounted on a [gas spring arm][41], which is the newest addition to my setup. For 5 years, I’d been running a pair of 27" [LG 27" UN850 4K][42] monitors mounted on a dual monitor arm and had toyed with the idea of moving to an ultra-wide for a while. The Samsung display is the first I have found that doesn’t compromise on resolution - it’s the same resolution as my two LG monitors combined, but on a single panel. I must admit that I’m quite surprised how much of a productivity booster it is _not_ having the split down the middle.
 
-[][43]
 
-[![a photograph of my desk including a huge ultra-wide monitor](/2024/07/how-i-computer-in-2024/01_hu930cbab5a5dfad6c7189f290c5bed7dd_1798110_660x0_resize_box_3.png)][44]
+
+[![a photograph of my desk including a huge ultra-wide monitor](https://jnsgr.uk/2024/07/how-i-computer-in-2024/01_hu930cbab5a5dfad6c7189f290c5bed7dd_1798110_660x0_resize_box_3.png)][44]
 
 At the time of writing, I work for [Canonical][45] which is an all remote company. The combination of the company itself and my role as VP Engineering means I spend a good portion of my day on video calls. In my opinion, investing in a solid AV setup is a service to your colleagues, particularly where your role involves managing people. I’m currently running a [Sony ILME-FX3][46] with the standard [FE 28-70mm F3.5-5.6][47] lens, hooked up to an [Elgato Cam Link 4K][48]. For audio, I use a [RODE VideoMic GO II][49] and a pair of [Audioengine A2+][50] speakers.
 
@@ -91,7 +89,7 @@ I can’t rate this machine highly enough. The build quality is a cut above even
 
 I tend towards ultralight machines when I travel because I can always use my desktop machine remotely if I need more grunt (more on that later…), and I’m certainly not interested in trying to make dual integrated/discrete GPUs work properly.
 
-### Phone [#][55]
+### Phone 
 
 I carry an [Apple iPhone 15 Pro][56]. I’ve been an iPhone user since around 2011 and likely won’t change any time soon. My family all use iPhones (and therefore FaceTime) and I like the particular trade-off of convenience/privacy that’s provided by Apple - however flawed that might be in absolute terms. The phone works great with my Airpods, the camera is better than I am at taking photos, and the battery life seems pretty good too.
 
@@ -99,7 +97,7 @@ I wrap the phone in a [Mous Limitless 5.0 Aramid Fibre][57] case to avoid too ma
 
 I find it difficult to get too excited about phones these days, I see them more as a commodity.
 
-## Connectivity & Security [#][58]
+## Connectivity & Security 
 
 In 2021 I started using [Tailscale][59] in place of my hand-rolled Wireguard setup, and I haven’t looked back. It has to be one of my favourite pieces of technology ever. It runs on all of my things - desktops, laptops, servers, phones, tablets, etc.
 
@@ -115,7 +113,7 @@ I also have a small collection of [Yubikeys][70] with different connectors. One 
 
 One of my favourite things about the Yubikey is their ability to store TOTP codes. It’s a bit of a pain when I onboard a new account having to add the new secret to each key, but the upside is I don’t have to work out how to update/transfer them all each time I get a new phone! It’s also handy on the desktop to be able to run `ykman oath accounts code <name>`.
 
-## Productivity Apps [#][72]
+## Productivity Apps 
 
 A lot of my work is done in a browser. Canonical uses [Google Workspace][73] for emails, documents, slides, etc., so my default mode since joining has been to use Google Chrome for work things, and Firefox for personal things. I know that Firefox has [Account Containers][74] and other features that would help segregate the two, but I’ve found keeping my work and personal concerns in completely separate browsers to be useful.
 
@@ -125,9 +123,8 @@ All of my notes, both work and personal, live in [Obsidian][78]. When I first di
 
 I tried to get into [Zettelkasten][81] but found the maintenance a little… boring? I’ve ended up with a simple structure that I find really helps me in my day-to-day at work. Each day gets its own “Daily Note” which includes my agenda, linking to ongoing notes with the people or regular meetings I’m in. The daily notes are also a place for me to collate loose notes which might be searched later:
 
-[][82]
 
-[![obsidian.md screenshot showing my daily note template](/2024/07/how-i-computer-in-2024/02_huf93b0c707cf46312a8fd9228e1b4cdb5_92067_660x0_resize_box_3.png)][83]
+[![obsidian.md screenshot showing my daily note template](https://jnsgr.uk/2024/07/how-i-computer-in-2024/02_huf93b0c707cf46312a8fd9228e1b4cdb5_92067_660x0_resize_box_3.png)][83]
 
 The agenda and the links are automatically generated using a small Go application I wrote - this application scrapes my Google Calendar, and according to some rules and the knowledge it has of my vault, generates the Markdown for the agenda and copies it to the clipboard. Each day, I sit down and type `agenda` at the command line, then paste into Obsidian. The notes for each person contain a running log of my notes with that person or group by date.
 
@@ -135,25 +132,25 @@ I use a few Obsidian plugins to help here - including [Templater][84], [QuickAdd
 
 I moved away from tracking tasks in Obsidian, and started using [Todoist][88] late last year. Todoist is great - I like to keep running lists of tasks per person, so that when I next meet them in a 1:1 or otherwise, I have a quick reference of all the things I’m meant to speak with them about - and I can achieve that very easily with Todoist labels. The Obsidian integration means I can integrate the agenda with the meeting note for a specific person:
 
-[][89]
 
-[![obsidian and todoist side-by-side showing the integration](/2024/07/how-i-computer-in-2024/03_hu961bfa5d6384c4efa7dfa90c87eca21a_361619_660x0_resize_box_3.png)][90]
+
+[![obsidian and todoist side-by-side showing the integration](https://jnsgr.uk/2024/07/how-i-computer-in-2024/03_hu961bfa5d6384c4efa7dfa90c87eca21a_361619_660x0_resize_box_3.png)][90]
 
 ## Development [#][91]
 
 I’ve been a long-time user of [Alacritty][92] as a terminal emulator. I mostly use [Visual Studio Code][93] on the desktop - I like the community support for plugins, themes, etc. I’m also pretty handy in vim - I still have quite a snazzy [Neovim][94] setup which I use whenever I’m at the terminal. You can see my [neovim config][95] on Github - I don’t go too wild on plugins, but I’ve come to like [lightline][96], [telescope][97], and [nvim-tree-lua][98].
 
-[][99]
 
-[![the alacritty terminal emulator showing a tmux session with neovim loaded](/2024/07/how-i-computer-in-2024/04_hu05bf6628177fb41deef80d4a55f42632_404501_660x0_resize_box_3.png)][100]
+
+[![the alacritty terminal emulator showing a tmux session with neovim loaded](https://jnsgr.uk/2024/07/how-i-computer-in-2024/04_hu05bf6628177fb41deef80d4a55f42632_404501_660x0_resize_box_3.png)][100]
 
 I mostly drive `git` from the command line, but I’ve recently taken to using [Sublime Merge][101] for complicated rebases, or where I want to stage lots of small hunks in files. I was a dedicated user of [Sublime Text][102] for some years, but felt like it lagged behind Visual Studio Code on features after a while - despite being somewhat addicted to how lightning fast Sublime Text felt in comparison.
 
-[][103]
 
-[![visual studio code and sublime merge side-by-side](/2024/07/how-i-computer-in-2024/05_hu2d6d25863bc408587fe8518d526b1cf7_752958_660x0_resize_box_3.png)][104]
 
-## OS / Desktop [#][105]
+[![visual studio code and sublime merge side-by-side](https://jnsgr.uk/2024/07/how-i-computer-in-2024/05_hu2d6d25863bc408587fe8518d526b1cf7_752958_660x0_resize_box_3.png)][104]
+
+## OS / Desktop 
 
 If you’ve read my blog before, it’ll be no surprise to you that I’m all-in on NixOS for all the things. I started that journey around 2 years ago and haven’t looked back. My journey on the Linux desktop has been quite varied over the years: my first ever Linux desktop experience was with [Knoppix][106] back in 2003. I then spent a few years dabbling with the various releases of Ubuntu before starting to use Linux on the desktop full-time in around 2014. From there I spent years on Arch Linux swapping between Plasma and GNOME about every 12 months.
 
@@ -165,7 +162,7 @@ You can see all the gory details of my Hyprland, waybar, rofi, mako, etc. [on Gi
 
 [][111]
 
-[![screenshot of a very busy hyprland desktop with editors, browsers, etc.](/2024/07/how-i-computer-in-2024/07_hu19d68ad61b5dede6fd1f1d19283c6ff2_2075377_660x0_resize_box_3.png)][112]
+[![screenshot of a very busy hyprland desktop with editors, browsers, etc.](https://jnsgr.uk/2024/07/how-i-computer-in-2024/07_hu19d68ad61b5dede6fd1f1d19283c6ff2_2075377_660x0_resize_box_3.png)][112]
 
 ## Server / Homelab [#][113]
 
@@ -173,9 +170,9 @@ My server machine also runs NixOS, with a collection of media services and utili
 
 I run [Caddy][116] as a reverse proxy ([recently switched][117] from Traefik). It can [talk directly to the Tailscale daemon][118] to issue LetsEncrypt certs for devices on your tailnet. This Caddy instance acts as a reverse proxy onto all the services running on the server, along with some other services on my home LAN, all over TLS. I tend to access each of these services through [Homepage][119] (which I previously [blogged about][120]):
 
-[][121]
 
-[![my personal dashboard using gethomepage.dev](/2024/07/how-i-computer-in-2024/08_hu7f790721995065d374827ee567548c83_94865_660x0_resize_box_3.png)][122]
+
+[![my personal dashboard using gethomepage.dev](https://jnsgr.uk/2024/07/how-i-computer-in-2024/08_hu7f790721995065d374827ee567548c83_94865_660x0_resize_box_3.png)][122]
 
 Each night, the contents of my iCloud Photos library is dumped using [icloud-photos-downloader][123] so that I have a local (and backed up) copy of my photos should anything untoward ever happen to my iCloud account.
 
@@ -183,11 +180,10 @@ It also runs a [Home Assistant][124] instance which runs my (in-progress!) custo
 
 This machine’s data is backed up nightly to [Borgbase][125]. As mentioned above, I use [Syncthing][126] to move files around, and I configure this server to act as a “receive only” target for all the directories that I sync. This means that my data is always in at least three places: on my desktop or laptop, on my server, and backed up to Borgbase. Sometimes I’ll ad-hoc access files that aren’t synced to a given machine using [Files][127], which is a nice looking, single PHP-file gallery for your files. I keep meaning to replace this with something that _isn’t PHP_, but I’ve yet to find a more compelling blend of simplicity and compelling user experience.
 
-## Summary [#][128]
+## Summary 
 
 I don’t know how many other people are interested in how other people use their computers - but I hope you enjoyed the article. Feel free to reach out if you think I could be doing something better, or if you think you’ve got a killer app I might enjoy using!
 
-![Jon Seager](/img/author_hu3d111dc2308fa236e24e25d87c063d2d_261462_660x0_resize_q75_box.jpg)
 
 Author
 
@@ -195,32 +191,12 @@ Jon Seager
 
 Husband, father, leader, software engineer, geek.
 
-[][129][][130][][131][][132]
-
 ---
 
 [←→ Workstation VMs with LXD & Multipass 25 June 2024][133]
 
-[1]: /
-[2]: /posts/
-[3]: /2024/07/how-i-computer-in-2024/
-[4]: #introduction
-[5]: #hardware
-[6]: #desktop
-[7]: #server
-[8]: #laptop
-[9]: #phone
-[10]: #connectivity--security
-[11]: #productivity-apps
-[12]: #development
-[13]: #os--desktop
-[14]: #server--homelab
-[15]: #summary
-[16]: #introduction
-[17]: 06.png
-[18]: 06.png
-[19]: #hardware
-[20]: #desktop
+
+[3]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/
 [21]: https://www.bequiet.com/en/case/1501
 [22]: https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-9-7950x.html
 [23]: https://www.xfxforce.com/shop/xfx-speedster-merc310-7900xt
@@ -243,19 +219,16 @@ Husband, father, leader, software engineer, geek.
 [40]: https://www.samsung.com/uk/monitors/gaming/odyssey-neo-g9-g95nc-57-inch-240hz-curved-dual-uhd-ls57cg952nuxxu/
 [41]: https://www.amazon.co.uk/gp/product/B0B73XXDP5/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1
 [42]: https://www.lg.com/us/monitors/lg-27un850-w-4k-uhd-led-monitor
-[43]: 01.png
-[44]: 01.png
+[43]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/01.png
+[44]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/01.png
 [45]: https://canonical.com
 [46]: https://www.sony.co.uk/interchangeable-lens-cameras/products/ilme-fx3-body---kit
 [47]: https://www.sony.co.uk/electronics/camera-lenses/sel2870
 [48]: https://www.elgato.com/uk/en/p/cam-link-4k
 [49]: https://rode.com/en/microphones/on-camera/videomic-go-ii
 [50]: https://audioengineeu.com/products/audioengine-a2-wireless-bluetooth-computer-speakers-60w-bluetooth-speaker-system-for-home-studio-gaming
-[51]: #server
 [52]: https://ark.intel.com/content/www/us/en/ark/products/89187/intel-nuc-kit-nuc6i7kyk.html
-[53]: #laptop
 [54]: https://www.lenovo.com/gb/en/p/laptops/thinkpad/thinkpadz/thinkpad-z13-%2813-inch-amd%29/len101t0036?srsltid=AfmBOor-8ic5yZrW3rlDXTTRwK8r05y-gjCpJK04fA4qtote0u2HZ7I6
-[55]: #phone
 [56]: https://www.apple.com/uk/iphone-15-pro/
 [57]: https://uk.mous.co/products/limitless-5-0-magsafe-compatible-phone-case-aramid_fibre
 [58]: #connectivity--security
@@ -282,16 +255,15 @@ Husband, father, leader, software engineer, geek.
 [79]: https://blacksmithgu.github.io/obsidian-dataview/
 [80]: https://publish.obsidian.md/tasks/Queries/About+Queries
 [81]: https://zettelkasten.de/introduction/
-[82]: 02.png
-[83]: 02.png
+[82]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/02.png
+[83]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/02.png
 [84]: https://github.com/SilentVoid13/Templater
 [85]: https://github.com/chhoumann/quickadd
 [86]: https://github.com/scambier/obsidian-omnisearch
 [87]: https://github.com/platers/obsidian-linter
 [88]: https://todoist.com/
-[89]: 03.png
-[90]: 03.png
-[91]: #development
+[89]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/03.png
+[90]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/03.png
 [92]: https://alacritty.org/
 [93]: https://code.visualstudio.com/
 [94]: https://neovim.io/
@@ -299,21 +271,19 @@ Husband, father, leader, software engineer, geek.
 [96]: https://github.com/itchyny/lightline.vim
 [97]: https://github.com/nvim-telescope/telescope.nvim
 [98]: https://github.com/nvim-tree/nvim-tree.lua
-[99]: 04.png
-[100]: 04.png
+[99]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/04.png
+[100]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/04.png
 [101]: https://www.sublimemerge.com/
 [102]: https://www.sublimetext.com/
-[103]: 05.png
-[104]: 05.png
-[105]: #os--desktop
+[103]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/05.png
+[104]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/05.png
 [106]: https://www.knopper.net/knoppix/index-en.html
 [107]: https://swaywm.org/
 [108]: https://hyprland.org/
 [109]: https://github.com/catppuccin/catppuccin
 [110]: https://github.com/jnsgruk/nixos-config
-[111]: 07.png
-[112]: 07.png
-[113]: #server--homelab
+[111]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/07.png
+[112]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/07.png
 [114]: https://www.freedesktop.org/software/systemd/man/latest/systemd-nspawn.html
 [115]: https://nixos.wiki/wiki/NixOS_Containers
 [116]: https://caddyserver.com/
@@ -321,16 +291,15 @@ Husband, father, leader, software engineer, geek.
 [118]: https://tailscale.com/kb/1190/caddy-certificates
 [119]: https://gethomepage.dev/latest/
 [120]: https://jnsgr.uk/2024/03/a-homelab-dashboard-for-nixos/
-[121]: 08.png
-[122]: 08.png
+[121]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/08.png
+[122]: https://jnsgr.uk/2024/07/how-i-computer-in-2024/08.png
 [123]: https://github.com/icloud-photos-downloader/icloud_photos_downloader
 [124]: https://www.home-assistant.io/
 [125]: https://www.borgbase.com/
 [126]: https://syncthing.net/
 [127]: https://www.files.gallery/
-[128]: #summary
 [129]: https://github.com/jnsgruk
 [130]: https://hachyderm.io/@jnsgruk
 [131]: https://linkedin.com/in/jnsgruk
 [132]: https://t.me/jnsgruk
-[133]: /2024/06/desktop-vms-lxd-multipass/
+[133]: https://jnsgr.uk/2024/06/desktop-vms-lxd-multipass/
