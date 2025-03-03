@@ -21,24 +21,24 @@ You are reading this in the [RxDB][5] docs. RxDB is a JavaScript database that h
 
 [![Image 1: JavaScript Database][1]][5]
 
-The available Storage APIs in a modern Browser[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#the-available-storage-apis-in-a-modern-browser "Direct link to The available Storage APIs in a modern Browser")
+The available Storage APIs in a modern Browser
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 First lets have a brief overview of the different APIs, their intentional use case and history:
 
-### What are Cookies[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#what-are-cookies "Direct link to What are Cookies")
+### What are Cookies
 
 Cookies were first introduced by [netscape in 1994][7]. Cookies store small pieces of key-value data that are mainly used for session management, personalization, and tracking. Cookies can have several security settings like a time-to-live or the `domain` attribute to share the cookies between several subdomains.
 
 Cookies values are not only stored at the client but also sent with **every http request** to the server. This means we cannot store much data in a cookie but it is still interesting how good cookie access performance compared to the other methods. Especially because cookies are such an important base feature of the web, many performance optimizations have been done and even these days there is still progress being made like the [Shared Memory Versioning][8] by chromium or the asynchronous [CookieStore API][9].
 
-### What is LocalStorage[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#what-is-localstorage "Direct link to What is LocalStorage")
+### What is LocalStorage
 
 The [localStorage API][10] was first proposed as part of the [WebStorage specification in 2009][11]. LocalStorage provides a simple API to store key-value pairs inside of a web browser. It has the methods `setItem`, `getItem`, `removeItem` and `clear` which is all you need from a key-value store. LocalStorage is only suitable for storing small amounts of data that need to persist across sessions and it is [limited by a 5MB storage cap][12]. Storing complex data is only possible by transforming it into a string for example with `JSON.stringify()`. The API is not asynchronous which means if fully blocks your JavaScript process while doing stuff. Therefore running heavy operations on it might block your UI from rendering.
 
 > There is also the **SessionStorage** API. The key difference is that localStorage data persists indefinitely until explicitly cleared, while sessionStorage data is cleared when the browser tab or window is closed.
 
-### What is IndexedDB[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#what-is-indexeddb "Direct link to What is IndexedDB")
+### What is IndexedD
 
 IndexedDB was first introduced as "Indexed Database API" [in 2015][13].
 
@@ -48,7 +48,7 @@ In 2018, IndexedDB version 2.0 [was introduced][15]. This added some major impro
 
 IndexedDB [version 3.0][16] is in the workings which contains many improvements. Most important the addition of `Promise` based calls that makes modern JS features like `async/await` more useful.
 
-### What is OPFS[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#what-is-opfs "Direct link to What is OPFS")
+### What is OPFS
 
 The [Origin Private File System][17] (OPFS) is a [relatively new][18] API that allows web applications to store large files directly in the browser. It is designed for data-intensive applications that want to write and read **binary data** in a simulated file system.
 
@@ -59,7 +59,7 @@ OPFS can be used in two modes:
 
 Because only binary data can be processed, OPFS is made to be a base filesystem for library developers. You will unlikely directly want to use the OPFS in your code when you build a "normal" application because it is too complex. That would only make sense for storing plain files like images, not to store and query [JSON data][20] efficiently. I have build a [OPFS based storage][17] for RxDB with proper indexing and querying and it took me several months.
 
-### What is WASM SQLite[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#what-is-wasm-sqlite "Direct link to What is WASM SQLite")
+### What is WASM SQLite
 
 ![Image 2: WASM SQLite][2]
 
@@ -69,7 +69,7 @@ Many people started to use compiled SQLite as a database inside of the browser w
 
 The compiled byte code of SQLite has a size of [about 938.9 kB][23] which must be downloaded and parsed by the users on the first page load. WASM cannot directly access any persistent storage API in the browser. Instead it requires data to flow from WASM to the main-thread and then can be put into one of the browser APIs. This is done with so called [VFS (virtual file system) adapters][24] that handle data access from SQLite to anything else.
 
-### What was WebSQL[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#what-was-websql "Direct link to What was WebSQL")
+### What was WebSQL
 
 WebSQL **was** a web API [introduced in 2009][25] that allowed browsers to use SQL databases for client-side storage, based on SQLite. The idea was to give developers a way to store and query data using SQL on the client side, similar to server-side databases. WebSQL has been **removed from browsers** in the current years for multiple good reasons:
 
@@ -81,12 +81,12 @@ Therefore in the following we will **just ignore WebSQL** even if it would be po
 
 * * *
 
-Feature Comparison[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#feature-comparison "Direct link to Feature Comparison")
+Feature Comparison
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Now that you know the basic concepts of the APIs, lets compare some specific features that have shown to be important for people using RxDB and browser based storages in general.
 
-### Storing complex JSON Documents[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#storing-complex-json-documents "Direct link to Storing complex JSON Documents")
+### Storing complex JSON Documents
 
 When you store data in a web application, most often you want to store complex JSON documents and not only "normal" values like the `integers` and `strings` you store in a server side database.
 
@@ -95,7 +95,7 @@ When you store data in a web application, most often you want to store complex J
 
 Every of the other APIs can only store strings or binary data. Of course you can transform any JSON object to a string with `JSON.stringify()` but not having the JSON support in the API can make things complex when running queries and running `JSON.stringify()` many times can cause performance problems.
 
-### Multi-Tab Support[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#multi-tab-support "Direct link to Multi-Tab Support")
+### Multi-Tab Support
 
 A big difference when building a Web App compared to [Electron][28] or [React-Native][29], is that the user will open and close the app in **multiple browser tabs at the same time**. Therefore you have not only one JavaScript process running, but many of them can exist and might have to share state changes between each other to not show **outdated data** to the user.
 
@@ -116,7 +116,7 @@ To workaround this problem, there are two solutions:
 *   The first option is to use the [BroadcastChannel API][32] which can send messages across browser tabs. So whenever you do a write to the storage, you also send a notification to other tabs to inform them about these changes. This is the most common workaround which is also used by RxDB. Notice that there is also the [WebLocks API][33] which can be used to have mutexes across browser tabs.
 *   The other solution is to use the [SharedWorker][34] and do all writes inside of the worker. All browser tabs can then subscribe to messages from that **single** SharedWorker and know about changes.
 
-### Indexing Support[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#indexing-support "Direct link to Indexing Support")
+### Indexing Support
 
 The big difference between a database and storing data in a plain file, is that a database is writing data in a format that allows running operations over indexes to facilitate fast performant queries. From our list of technologies only **IndexedDB** and **WASM SQLite** support for indexing out of the box. In theory you can build indexes on top of any storage like localstorage or OPFS but you likely should not want to do that by yourself.
 
@@ -128,7 +128,7 @@ In IndexedDB for example, we can fetch a bulk of documents by a given index rang
 
 Notice that IndexedDB has the limitation of [not having indexes on boolean values][35]. You can only index strings and numbers. To workaround that you have to transform boolean to numbers and backwards when storing the data.
 
-### WebWorker Support[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#webworker-support "Direct link to WebWorker Support")
+### WebWorker Support
 
 When running heavy data operations, you might want to move the processing away from the JavaScript main thread. This ensures that our app keeps being responsive and fast while the processing can run in parallel in the background. In a browser you can either use the [WebWorker][36], [SharedWorker][34] or the [ServiceWorker][37] API to do that. In RxDB you can use the [WebWorker][38] or [SharedWorker][39] plugins to move your storage inside of a worker.
 
@@ -140,7 +140,7 @@ Everything else can be used from inside a WebWorker. The fast version of OPFS wi
 
 * * *
 
-Storage Size Limits[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#storage-size-limits "Direct link to Storage Size Limits")
+Storage Size Limit
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 *   **Cookies** are limited to about `4 KB` of data in [RFC-6265][42]. Because the stored cookies are send to the server with every HTTP request, this limitation is reasonable. You can test your browsers cookie limits [here][43]. Notice that you should never fill up the full `4 KB` of your cookies because your websserver will not accept too long headers and reject the requests with `HTTP ERROR 431 - Request header fields too large`. Once you have reached that point you can not even serve updated JavaScript to your user to clean up the cookies and you will have locked out that user until the cookies get cleaned up manually.
@@ -157,14 +157,14 @@ Storage Size Limits[​](https://rxdb.info/articles/localstorage-indexeddb-cooki
 
 * * *
 
-Performance Comparison[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#performance-comparison "Direct link to Performance Comparison")
+Performance Comparison
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Now that we've reviewed the features of each storage method, let's dive into performance comparisons, focusing on initialization times, read/write latencies, and bulk operations.
 
 Notice that we only run simple tests and for your specific use case in your application the results might differ. Also we only compare performance in google chrome (version 128.0.6613.137). Firefox and Safari have similar **but not equal** performance patterns. You can run the test by yourself on your own machine from this [github repository][47]. For all tests we throttle the network to behave like the average german internet speed. (download: 135,900 kbit/s, upload: 28,400 kbit/s, latency: 125ms). Also all tests store an "average" JSON object that might be required to be stringified depending on the storage. We also only test the performance of storing documents by id because some of the technologies (cookies, OPFS and localstorage) do not support indexed range operations so it makes no sense to compare the performance of these.
 
-### Initialization Time[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#initialization-time "Direct link to Initialization Time")
+### Initialization Time
 
 Before you can store any data, many APIs require a setup process like creating databases, spawning WebAssembly processes or downloading additional stuff. To ensure your app starts fast, the initialization time is important.
 
@@ -186,7 +186,7 @@ Here we can notice a few things:
 *   The latency overhead of sending data from the main thread to a WebWorker OPFS is about 4 milliseconds. Here we only send minimal data to init the OPFS file handler. It will be interesting if that latency increases when more data is processed.
 *   Downloading and parsing WASM SQLite and creating a single table takes about half a second. Using also the IndexedDB VFS to store data persistently adds additional 31 milliseconds. Reloading the page with enabled caching and already prepared tables is a bit faster with 420 milliseconds (memory).
 
-### Latency of small Writes[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#latency-of-small-writes "Direct link to Latency of small Writes")
+### Latency of small Writes
 
 Next lets test the latency of small writes. This is important when you do many small data changes that happen independent from each other. Like when you stream data from a websocket or persist pseudo randomly happening events like mouse movements.
 
@@ -208,7 +208,7 @@ Here we can notice a few things:
 
 The OPFS operations take about 1.5 milliseconds to write the JSON data into one document per file. We can see the sending the data to a webworker first is a bit slower which comes from the overhead of serializing and deserializing the data on both sides. If we would not create on OPFS file per document but instead append everything to a single file, the performance pattern changes significantly. Then the faster file handle from the `createSyncAccessHandle()` only takes about 1 millisecond per write. But this would require to somehow remember at which position the each document is stored. Therefore in our tests we will continue using one file per document.
 
-### Latency of small Reads[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#latency-of-small-reads "Direct link to Latency of small Reads")
+### Latency of small Reads
 
 Now that we have stored some documents, lets measure how long it takes to read single documents by their `id`.
 
@@ -227,7 +227,7 @@ Here we can notice a few things:
 *   LocalStorage reads are **really really fast** with only 0.0052 milliseconds per read.
 *   The other technologies perform reads in a similar speed to their write latency.
 
-### Big Bulk Writes[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#big-bulk-writes "Direct link to Big Bulk Writes")
+### Big Bulk Writes
 
 As next step, lets do some big bulk operations with 200 documents at once.
 
@@ -246,7 +246,7 @@ Here we can notice a few things:
 *   Sending the data to a WebWorker and running it via the faster OPFS API is about twice as fast.
 *   WASM SQLite performs better on bulk operations compared to its single write latency. This is because sending the data to WASM and backwards is faster if it is done all at once instead of once per document.
 
-### Big Bulk Reads[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#big-bulk-reads "Direct link to Big Bulk Reads")
+### Big Bulk Reads
 
 Now lets read 100 documents in a bulk request.
 
@@ -265,7 +265,7 @@ Here we can notice a few things:
 *   Reading many files in the OPFS webworker is about **twice as fast** compared to the slower main thread mode.
 *   WASM SQLite is surprisingly fast. Further inspection has shown that the WASM SQLite process keeps the documents in memory cached which improves the latency when we do reads directly after writes on the same data. When the browser tab is reloaded between the writes and the reads, finding the 100 documents takes about **35 milliseconds** instead.
 
-Performance Conclusions[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#performance-conclusions "Direct link to Performance Conclusions")
+Performance Conclusions
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 *   LocalStorage is really fast but remember that is has some downsides:
@@ -276,7 +276,7 @@ Performance Conclusions[​](https://rxdb.info/articles/localstorage-indexeddb-c
 
 * * *
 
-Possible Improvements[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#possible-improvements "Direct link to Possible Improvements")
+Possible Improvements
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 There is a wide range of possible improvements and performance hacks to speed up the operations.
@@ -292,7 +292,7 @@ Here you can see the [performance comparison][52] of various RxDB storage implem
 
 ![Image 3: RxStorage performance - browser][3]
 
-Future Improvements[​](https://rxdb.info/articles/localstorage-indexeddb-cookies-opfs-sqlite-wasm.html#future-improvements "Direct link to Future Improvements")
+Future Improvements
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 You are reading this in 2024, but the web does not stand still. There is a good chance that browser get enhanced to allow faster and better data operations.
