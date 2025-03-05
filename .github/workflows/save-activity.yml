@@ -21,13 +21,16 @@ jobs:
 
             - name: Generate Markdown file
               env:
+                  GH_TOKEN: ${{ github.token }}
                   FILE_NAME: ${{ steps.issue-parser.outputs.issueparser_file_name }}
                   CATEGORY: ${{ steps.issue-parser.outputs.issueparser_category }}
                   TYPE: ${{ steps.issue-parser.outputs.issueparser_type }}
                   PHOTOS: ${{ steps.issue-parser.outputs.issueparser_photos }}
                   FILES: ${{ steps.issue-parser.outputs.issueparser_files }}
               run: |
-                  cat <<EOF > _posts/Activity/$CATEGORY/$FILE_NAME.md
+                  FILE_PATH=Activity/$CATEGORY/$FILE_NAME
+
+                  cat <<EOF > _posts/$FILE_PATH.md
                   ---
                   title: "${{ github.event.issue.title }}"
                   date: ${{ steps.issue-parser.outputs.issueparser_date || github.event.issue.created_at }}
@@ -50,7 +53,7 @@ jobs:
                   ${{ steps.issue-parser.outputs.issueparser_content }}
                   EOF
 
-                  POST_URL=$(echo "https://fcc-cd.dev/activity/$CATEGORY/$FILE_NAME" | tr '[:upper:]' '[:lower:]')
+                  POST_URL=$(echo "https://fcc-cd.dev/$FILE_PATH" | tr '[:upper:]' '[:lower:]')
 
                   COMMENT_BODY="After the linked PR merged, the activity will be posted at: $POST_URL"
 
@@ -60,3 +63,4 @@ jobs:
               with:
                   title: "[add] ${{ github.event.issue.title }} activity"
                   body: "closes #${{ github.event.issue.number }}"
+                  author: "${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>"
