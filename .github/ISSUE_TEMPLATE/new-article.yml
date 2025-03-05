@@ -23,12 +23,17 @@ body:
       attributes:
           label: 修订时间
           description: 格式为 YYYY-MM-DD hh:mm
-    - type: input
-      id: categories
+    - type: dropdown
+      id: category
       attributes:
           label: 分类
-          description: 每级分类对应一级目录，写在本文件的文件名前面
-          placeholder: 分类名应为一个首字母大写的英文单词，多个则用英文逗号隔开
+          options:
+              - Algorithm
+              - Engineering
+              - Propaganda
+              - Summary
+              - Theory
+              - Translation
       validations:
           required: true
     - type: input
