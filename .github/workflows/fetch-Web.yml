@@ -5,7 +5,7 @@ on:
             - labeled
 jobs:
     Fetch-and-Save:
-        if: github.event.label.name == 'Translation'
+        if: github.event.issue.state == 'open' && contains(github.event.issue.labels.*.name, 'Translation')
         runs-on: ubuntu-latest
         permissions:
             contents: write
@@ -28,14 +28,14 @@ jobs:
             - name: 将输出发至评论区
               run: gh issue comment "$NUMBER" --body "$BODY"
               env:
-                GH_TOKEN: ${{ github.token }}
-                GH_REPO: ${{ github.repository }}
-                NUMBER: ${{ github.event.issue.number }}
-                BODY: |
-                  - 原文网址: [${{ steps.fetch-md.outputs.title }}](${{ steps.fetch-md.outputs.original_url }})
-                  - 原文作者: [${{ steps.fetch-md.outputs.author || 'anonymous' }}](${{ steps.fetch-md.outputs.author_url }})
-                  - Markdown 文件: [点击编辑](${{ steps.fetch-md.outputs.editor_url }})
-                  
+                  GH_TOKEN: ${{ github.token }}
+                  GH_REPO: ${{ github.repository }}
+                  NUMBER: ${{ github.event.issue.number }}
+                  BODY: |
+                      - 原文网址: [${{ steps.fetch-md.outputs.title }}](${{ steps.fetch-md.outputs.original_url }})
+                      - 原文作者: [${{ steps.fetch-md.outputs.author || 'anonymous' }}](${{ steps.fetch-md.outputs.author_url }})
+                      - Markdown 文件: [点击编辑](${{ steps.fetch-md.outputs.editor_url }})
+
             - uses: stefanzweifel/git-auto-commit-action@v5
               with:
                   commit_message: "${{ github.event.issue.title }}"
