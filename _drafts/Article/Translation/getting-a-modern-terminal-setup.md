@@ -1,5 +1,5 @@
 ---
-title: 安装 “现代化 ”终端需要什么？
+title: 安装 "现代化 "终端需要什么？
 date: 2025-01-11T09:46:01.000Z
 authorURL: ""
 originalURL: https://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/
@@ -11,129 +11,127 @@ reviewer: ""
 
 
 
-Hello! Recently I ran a terminal survey and I asked people what frustrated them. One person commented:
+你好！最近我进行了一项终端调查，询问了人们在使用终端时遇到的困扰。有人评论道：
+>  要获得现代化的终端体验，需要配置的东西太多了。我希望这些功能都能开箱即用。
 
-> There are so many pieces to having a modern terminal experience. I wish it all came out of the box.
+我的第一反应是"哦，获得现代化的终端体验并不难，你只需要……"，但越想越觉得这个"你只需要……"的清单越来越长，而且我不断想到更多的注意事项。
+所以我想写下一些笔记，记录下我个人认为什么是"现代化"的终端体验，以及为什么人们可能难以实现这一点。
 
-My immediate reaction was “oh, getting a modern terminal experience isn’t that hard, you just need to….”, but the more I thought about it, the longer the “you just need to…” list got, and I kept thinking about more and more caveats.
+### [什么是"现代化终端体验"？][1]
 
-So I thought I would write down some notes about what it means to me personally to have a “modern” terminal experience and what I think can make it hard for people to get there.
+以下是一些对我来说很重要的功能，以及它们由系统的哪部分负责：
 
-### [what is a “modern terminal experience”?][1]
+*   **多行复制粘贴支持**: 如果你在 shell 中粘贴了 3 条命令，它不应该立即全部执行！这很危险！ (**shell**, **终端模拟器**)
+*   **无限 shell 历史记录**: 如果我在 shell 中运行了一条命令，它应该被永久保存，而不是在 500 条历史记录后被删除。此外，我希望命令在运行时立即保存到历史记录中，而不是仅在退出 shell 会话时保存 (**shell**)
+*   **有用的提示符**: 我无法忍受提示符中没有**当前目录**和**当前 git 分支** (**shell**)
+*   **24 位色支持**: 这对我来说很重要，因为我发现使用 24 位色支持来配置 neovim 比在仅支持 256 色的终端中要容易得多(**终端模拟器**)
+*   **vim 和操作系统之间的剪贴板集成**, 这样当我在 Firefox 中复制时，我可以在 vim 中按 `p` 粘贴 (**文本编辑器**, 可能还有操作系统/终端模拟器)
+*   **良好的自动补全**: 例如，像 git 这样的命令应该有特定于命令的自动补全(**shell**)
+*   **在 `ls` 中显示颜色** (**shell 配置**)
+*   **我喜欢的终端主题**: 我在终端中花费了大量时间，我希望它看起来漂亮，并且它的主题与我的终端编辑器的主题相匹配。(**终端模拟器** **文本编辑器**)
+*   **自动终端修复**: 如果程序打印了一些奇怪的转义代码，搞乱了我的终端，我希望它能自动重置，这样我的终端就不会被搞乱 (**shell**)
+*   **快捷键绑定**: 我希望 `Ctrl+左箭头` 能正常工作 (**shell** 或者 **应用程序**)
+*   **能够在像 `less` 样的程序中使用滚轮**: (**终端模拟器r** and **应用程序**)
 
-Here are a few things that are important to me, with which part of the system is responsible for them:
+还有无数其他终端便利功能，不同的人看重不同的东西，但这些都是我无法接受没有的功能。
 
-*   **multiline support for copy and paste**: if you paste 3 commands in your shell, it should not immediately run them all! That’s scary! (**shell**, **terminal emulator**)
-*   **infinite shell history**: if I run a command in my shell, it should be saved forever, not deleted after 500 history entries or whatever. Also I want commands to be saved to the history immediately when I run them, not only when I exit the shell session (**shell**)
-*   **a useful prompt**: I can’t live without having my **current directory** and **current git branch** in my prompt (**shell**)
-*   **24-bit colour**: this is important to me because I find it MUCH easier to theme neovim with 24-bit colour support than in a terminal with only 256 colours (**terminal emulator**)
-*   **clipboard integration** between vim and my operating system so that when I copy in Firefox, I can just press `p` in vim to paste (**text editor**, maybe the OS/terminal emulator too)
-*   **good autocomplete**: for example commands like git should have command-specific autocomplete (**shell**)
-*   **having colours in `ls`** (**shell config**)
-*   **a terminal theme I like**: I spend a lot of time in my terminal, I want it to look nice and I want its theme to match my terminal editor’s theme. (**terminal emulator**, **text editor**)
-*   **automatic terminal fixing**: If a programs prints out some weird escape codes that mess up my terminal, I want that to automatically get reset so that my terminal doesn’t get messed up (**shell**)
-*   **keybindings**: I want `Ctrl+left arrow` to work (**shell** or **application**)
-*   **being able to use the scroll wheel in programs like `less`**: (**terminal emulator** and **applications**)
+### [我如何实现"现代化体验"][2]
 
-There are a million other terminal conveniences out there and different people value different things, but those are the ones that I would be really unhappy without.
+我的基本方法：
 
-### [how I achieve a “modern experience”][2]
+1.  使用 `fish` shell。基本上不配置它，除了：
+    *   将 `EDITOR` 环境变量设置为我最喜欢的终端编辑器
+    *   将 `ls` 别名为 `ls --color=auto`
+2.  使用任何支持 24 位色的终端模拟器。过去我使用过 GNOME Terminal、Terminator 和 iTerm，但我不太挑剔。除了选择字体外，我基本上不配置它。
+3.  使用 `neovim`，并配置一个我过去 9 年左右一直在慢慢构建的配置（我上次删除 vim 配置并从头开始是 9 年前）
+4.  使用 [base16 框架][3] 来为主题化一切
 
-My basic approach is:
+影响我方法的一些因素：
 
-1.  use the `fish` shell. Mostly don’t configure it, except to:
-    *   set the `EDITOR` environment variable to my favourite terminal editor
-    *   alias `ls` to `ls --color=auto`
-2.  use any terminal emulator with 24-bit colour support. In the past I’ve used GNOME Terminal, Terminator, and iTerm, but I’m not picky about this. I don’t really configure it other than to choose a font.
-3.  use `neovim`, with a configuration that I’ve been very slowly building over the last 9 years or so (the last time I deleted my vim config and started from scratch was 9 years ago)
-4.  use the [base16 framework][3] to theme everything
+*   我不经常 SSH 到其他机器
+*   我宁愿使用鼠标一点，也不愿想出基于键盘的方法来做所有事情
+*   我从事许多小型项目，而不是一个大型项目
 
-A few things that affect my approach:
+### [一些"开箱即用"的"现代化"体验选项][4]
 
-*   I don’t spend a lot of time SSHed into other machines
-*   I’d rather use the mouse a little than come up with keyboard-based ways to do everything
-*   I work on a lot of small projects, not one big project
+如果你想要一个良好的体验，但不想花太多时间在配置上呢？弄清楚如何配置 vim 让我满意确实花了我大约十年的时间，这太长了！
 
-### [some “out of the box” options for a “modern” experience][4]
+我关于如何以最少的配置获得合理的终端体验的最佳想法是：
 
-What if you want a nice experience, but don’t want to spend a lot of time on configuration? Figuring out how to configure vim in a way that I was satisfied with really did take me like ten years, which is a long time!
+*   shell：`fish` 或带有 [oh-my-zsh][5] 的 `zsh`
+*   终端模拟器：几乎任何支持 24 位色的东西，例如以下这些都很受欢迎：
+    *   linux：GNOME Terminal、Konsole、Terminator、xfce4-terminal
+    *   mac：iTerm（Terminal.app 不支持 256 色）
+    *   跨平台：kitty、alacritty、wezterm 或 ghostty
+*   shell 配置：
+    *   将 `EDITOR` 环境变量设置为你最喜欢的终端文本编辑器
+    *   可能将 `ls` 别名为 `ls --color=auto`
+*   文本编辑器：这是一个棘手的问题，也许是 [micro][6] 或 [helix][7]？我没有认真使用过它们，但它们看起来都是非常酷的项目，我认为在 micro 中你可以使用所有常见的 GUI 编辑器命令（`Ctrl-C` 复制，`Ctrl-V` 粘贴，`Ctrl-A` 全选）并且它们会按预期工作，这真是太棒了。我可能会尝试切换到 helix，只是重新训练我的 vim 肌肉记忆似乎太难了。此外，helix 还没有 GUI 或插件系统。
 
-My best ideas for how to get a reasonable terminal experience with minimal config are:
+我个人**不会**使用 xterm、rxvt 或 Terminal.app 作为终端模拟器，因为我过去发现它们缺少一些核心功能（例如 Terminal.app 不支持 24 位色），这让我更难使用终端。
 
-*   shell: either `fish` or `zsh` with [oh-my-zsh][5]
-*   terminal emulator: almost anything with 24-bit colour support, for example all of these are popular:
-    *   linux: GNOME Terminal, Konsole, Terminator, xfce4-terminal
-    *   mac: iTerm (Terminal.app doesn’t have 256-colour support)
-    *   cross-platform: kitty, alacritty, wezterm, or ghostty
-*   shell config:
-    *   set the `EDITOR` environment variable to your favourite terminal text editor
-    *   maybe alias `ls` to `ls --color=auto`
-*   text editor: this is a tough one, maybe [micro][6] or [helix][7]? I haven’t used either of them seriously but they both seem like very cool projects and I think it’s amazing that you can just use all the usual GUI editor commands (`Ctrl-C` to copy, `Ctrl-V` to paste, `Ctrl-A` to select all) in micro and they do what you’d expect. I would probably try switching to helix except that retraining my vim muscle memory seems way too hard. Also helix doesn’t have a GUI or plugin system yet.
+不过，我不想假装获得"现代化"终端体验比实际更容易——我认为有两个问题让它变得困难。让我们来谈谈它们！
 
-Personally I **wouldn’t** use xterm, rxvt, or Terminal.app as a terminal emulator, because I’ve found in the past that they’re missing core features (like 24-bit colour in Terminal.app’s case) that make the terminal harder to use for me.
+### [获得"现代化"体验的第一个问题：shell][8]
 
-I don’t want to pretend that getting a “modern” terminal experience is easier than it is though – I think there are two issues that make it hard. Let’s talk about them!
+bash 和 zsh 是迄今为止最流行的两种 shell，它们都没有提供我开箱即用就能满意的默认体验，例如：
 
-### [issue 1 with getting to a “modern” experience: the shell][8]
+*   你需要自定义你的提示符
+*   它们默认不提供 git 补全，你必须自己设置
+*   默认情况下，bash 只存储 500 行历史记录，而（至少在 Mac OS 上）zsh 只配置为存储 2000 行，这仍然不多
+*   我发现 bash 的 tab 补全非常令人沮丧，如果有多个匹配项，你无法通过 tab 键浏览它们
 
-bash and zsh are by far the two most popular shells, and neither of them provide a default experience that I would be happy using out of the box, for example:
+尽管[我喜欢 fish][9]，但它不是 POSIX 兼容的事实确实让很多人难以切换。
 
-*   you need to customize your prompt
-*   they don’t come with git completions by default, you have to set them up
-*   by default, bash only stores 500 (!) lines of history and (at least on Mac OS) zsh is only configured to store 2000 lines, which is still not a lot
-*   I find bash’s tab completion very frustrating, if there’s more than one match then you can’t tab through them
+当然，学习如何在 bash 或其他 shell 中自定义提示符是完全可能的，而且它甚至不需要那么复杂（在 bash 中，我可能会从类似 `export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '` 的东西开始，或者使用 [starship][10]）。但每一个"不复杂"的事情确实会累积起来，如果你需要在多个系统上保持配置同步，这尤其困难。
 
-And even though [I love fish][9], the fact that it isn’t POSIX does make it hard for a lot of folks to make the switch.
+获得"现代化" shell 体验的一个非常流行的解决方案是 [oh-my-zsh][5]。它看起来是一个很棒的项目，我知道很多人非常高兴地使用它，但过去我在使用类似的配置系统时遇到了困难——看起来现在基本的 oh-my-zsh 增加了大约 3000 行配置，而且我经常发现，拥有一个额外的配置系统会让调试出问题时变得更加困难。我个人倾向于使用该系统添加大量额外的插件，使我的系统变慢，对它的缓慢感到沮丧，然后完全删除它并从头开始编写一个新的配置。
 
-Of course it’s totally possible to learn how to customize your prompt in bash or whatever, and it doesn’t even need to be that complicated (in bash I’d probably start with something like `export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '`, or maybe use [starship][10]). But each of these “not complicated” things really does add up and it’s especially tough if you need to keep your config in sync across several systems.
+### [获得"现代化"体验的第二个问题：文本编辑器][11]
 
-An extremely popular solution to getting a “modern” shell experience is [oh-my-zsh][5]. It seems like a great project and I know a lot of people use it very happily, but I’ve struggled with configuration systems like that in the past – it looks like right now the base oh-my-zsh adds about 3000 lines of config, and often I find that having an extra configuration system makes it harder to debug what’s happening when things go wrong. I personally have a tendency to use the system to add a lot of extra plugins, make my system slow, get frustrated that it’s slow, and then delete it completely and write a new config from scratch.
+在我最近进行的终端调查中，最受欢迎的终端文本编辑器是 `vim`、`emacs` 和 `nano`。
 
-### [issue 2 with getting to a “modern” experience: the text editor][11]
+我认为终端文本编辑器的主要选择是：
 
-In the terminal survey I ran recently, the most popular terminal text editors by far were `vim`, `emacs`, and `nano`.
+*   使用 vim 或 emacs 并按照你的喜好进行配置，如果你投入精力，你可能会拥有任何你想要的功能
+*   使用 nano 并接受你将拥有一个相当有限的体验（例如，我认为你无法在 nano 中用鼠标选择文本然后"剪切"它）
+*   使用 `micro` 或 `helix`，它们似乎提供了相当好的开箱即用体验，但可能会偶尔遇到使用不太主流的文本编辑器的问题
+*   尽量避免使用终端文本编辑器，也许使用 VSCode，使用 VSCode 的终端来满足你所有的终端需求，并且基本上不在终端中编辑文件。或者我知道很多人使用 `code` 作为他们在终端中的 `EDITOR`。
 
-I think the main options for terminal text editors are:
+### [问题 3：个别应用程序][12]
 
-*   use vim or emacs and configure it to your liking, you can probably have any feature you want if you put in the work
-*   use nano and accept that you’re going to have a pretty limited experience (for example I don’t think you can select text with the mouse and then “cut” it in nano)
-*   use `micro` or `helix` which seem to offer a pretty good out-of-the-box experience, potentially occasionally run into issues with using a less mainstream text editor
-*   just avoid using a terminal text editor as much as possible, maybe use VSCode, use VSCode’s terminal for all your terminal needs, and mostly never edit files in the terminal. Or I know a lot of people use `code` as their `EDITOR` in the terminal.
+最后一个问题是，有时我使用的个别程序有点烦人。例如，在我的 Mac OS 机器上，`/usr/bin/sqlite3` 不支持 `Ctrl+左箭头` 快捷键。为了解决这个问题以获得在 SQLite 中的合理终端体验，我不得不：
 
-### [issue 3: individual applications][12]
+*   意识到为什么会发生这种情况（Mac OS 不会提供 GNU 工具，而"Ctrl-左箭头"支持来自 GNU readline）
+*   找到一个解决方法（从 homebrew 安装 sqlite，它确实支持 readline）
+*   调整我的环境（将 Homebrew 的 sqlite3 放入我的 PATH 中）
 
-The last issue is that sometimes individual programs that I use are kind of annoying. For example on my Mac OS machine, `/usr/bin/sqlite3` doesn’t support the `Ctrl+Left Arrow` keyboard shortcut. Fixing this to get a reasonable terminal experience in SQLite was a little complicated, I had to:
+我发现调试像这样的应用程序特定问题真的不容易，而且通常感觉"不值得"——通常我最终会处理各种小不便，因为我不想花几个小时去调查它们。我之所以能够解决这个问题，唯一的原因是我最近花了大量时间思考终端。
 
-*   realize why this is happening (Mac OS won’t ship GNU tools, and “Ctrl-Left arrow” support comes from GNU readline)
-*   find a workaround (install sqlite from homebrew, which does have readline support)
-*   adjust my environment (put Homebrew’s sqlite3 in my PATH)
+使用终端程序获得"现代化"体验的一个重要部分就是使用更新的终端程序，例如，我懒得学习一个键盘快捷键来在 `top` 中排序列，但在 `htop` 中，我只需用鼠标点击列标题即可排序。所以我使用 htop 代替！但发现新的更"现代化"的命令行工具并不容易（尽管我在这里做了一个[列表][13]），找到我实际喜欢使用的工具需要时间，而且如果你 SSH 到另一台机器，它们并不总是存在。
 
-I find that debugging application-specific issues like this is really not easy and often it doesn’t feel “worth it” – often I’ll end up just dealing with various minor inconveniences because I don’t want to spend hours investigating them. The only reason I was even able to figure this one out at all is that I’ve been spending a huge amount of time thinking about the terminal recently.
+### [一切都会影响其他一切][14]
 
-A big part of having a “modern” experience using terminal programs is just using newer terminal programs, for example I can’t be bothered to learn a keyboard shortcut to sort the columns in `top`, but in `htop` I can just click on a column heading with my mouse to sort it. So I use htop instead! But discovering new more “modern” command line tools isn’t easy (though I made [a list here][13]), finding ones that I actually like using in practice takes time, and if you’re SSHed into another machine, they won’t always be there.
+我发现配置终端使一切"美好"的一个棘手之处是，改变我工作流程中看似很小的一件事可能会真正影响其他一切。例如，现在我不使用 tmux。但如果我需要再次使用 tmux（例如，因为我在 SSH 到另一台机器上做了很多工作），我需要考虑几件事，比如：
 
-### [everything affects everything else][14]
+*   如果我想要 tmux 的复制通过 SSH 与我的系统剪贴板同步，我需要确保我的终端模拟器有 [OSC 52 支持][15]
+*   如果我想使用 iTerm 的 tmux 集成（它将 tmux 标签变成 iTerm 标签），我需要改变我配置颜色的方式——现在我用一个 [shell 脚本][16] 在 shell 启动时设置它们，但这意味着在恢复 tmux 会话时颜色会丢失。
 
-Something I find tricky about configuring my terminal to make everything “nice” is that changing one seemingly small thing about my workflow can really affect everything else. For example right now I don’t use tmux. But if I needed to use tmux again (for example because I was doing a lot of work SSHed into another machine), I’d need to think about a few things, like:
+还有可能更多我没有想到的事情。"使用 tmux 意味着我必须改变我管理颜色的方式"听起来不太可能，但这确实发生在我身上，我决定"好吧，我现在不想改变我管理颜色的方式，所以我猜我不会使用那个功能！"
 
-*   if I wanted tmux’s copy to synchronize with my system clipboard over SSH, I’d need to make sure that my terminal emulator has [OSC 52 support][15]
-*   if I wanted to use iTerm’s tmux integration (which makes tmux tabs into iTerm tabs), I’d need to change how I configure colours – right now I set them with a [shell script][16] that I run when my shell starts, but that means the colours get lost when restoring a tmux session.
+记住我依赖哪些功能也很难——例如，也许我当前的终端确实有 OSC 52 支持，而且因为从 tmux 通过 SSH 复制一直都能正常工作，我甚至没有意识到这是我需要的东西，然后当我切换终端时，它神秘地停止工作。
 
-and probably more things I haven’t thought of. “Using tmux means that I have to change how I manage my colours” sounds unlikely, but that really did happen to me and I decided “well, I don’t want to change how I manage colours right now, so I guess I’m not using that feature!”.
+### [慢慢改变][17]
 
-It’s also hard to remember which features I’m relying on – for example maybe my current terminal _does_ have OSC 52 support and because copying from tmux over SSH has always Just Worked I don’t even realize that that’s something I need, and then it mysteriously stops working when I switch terminals.
+虽然我认为我的设置并不是那么复杂，但我花了 20 年才达到这一点！因为终端配置的变化很可能会产生意外和难以理解的后果，我发现如果我一次性改变大量终端配置，会使我更难理解如果出现问题是什么出错了，这可能会让人非常迷失方向。
 
-### [change things slowly][17]
+所以我通常更喜欢做相当小的改变，并接受改变可能需要我很长时间才能适应。例如，一两年前我从使用 `ls` 切换到 [eza][18]，虽然我喜欢它（因为 `eza -l` 默认打印人类可读的文件大小），但我仍然不太确定。但有时做一个大的改变也是值得的，比如 10 年前我从 bash 切换到 fish，我很高兴我这样做了。
 
-Personally even though I think my setup is not _that_ complicated, it’s taken me 20 years to get to this point! Because terminal config changes are so likely to have unexpected and hard-to-understand consequences, I’ve found that if I change a lot of terminal configuration all at once it makes it much harder to understand what went wrong if there’s a problem, which can be really disorienting.
+### [获得"现代化"终端并不那么容易][19]
 
-So I usually prefer to make pretty small changes, and accept that changes can might take me a REALLY long time to get used to. For example I switched from using `ls` to [eza][18] a year or two ago and while I like it (because `eza -l` prints human-readable file sizes by default) I’m still not quite sure about it. But also sometimes it’s worth it to make a big change, like I made the switch to fish (from bash) 10 years ago and I’m very happy I did.
+尝试解释配置终端有多"容易"，实际上只是让我认为这有点难，而且我有时仍然会感到困惑。
 
-### [getting a “modern” terminal is not that easy][19]
-
-Trying to explain how “easy” it is to configure your terminal really just made me think that it’s kind of hard and that I still sometimes get confused.
-
-I’ve found that there’s never one perfect way to configure things in the terminal that will be compatible with every single other thing. I just need to try stuff, figure out some kind of locally stable state that works for me, and accept that if I start using a new tool it might disrupt the system and I might need to rethink things.
+我发现在终端中从来没有一种完美的配置方式，可以与其他所有东西兼容。我只需要尝试各种东西，找出一种适合我的本地稳定状态，并接受如果我开始使用一个新工具，它可能会扰乱系统，我可能需要重新思考一些事情。
 
 [1]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#what-is-a-modern-terminal-experience
 [2]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#how-i-achieve-a-modern-experience
