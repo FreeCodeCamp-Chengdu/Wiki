@@ -71,7 +71,7 @@ Bash 有三个可能的配置文件：`~/.bashrc`、`~/.bash_profile` 和 `~/.pr
 
 假设你正在尝试安装并运行一个名为 `http-server` 的程序，但它不起作用，像这样：
 
-```
+```plain
 $ npm install -g http-server
 $ http-server
 bash: http-server: command not found
