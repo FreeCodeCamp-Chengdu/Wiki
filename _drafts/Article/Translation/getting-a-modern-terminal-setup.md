@@ -19,7 +19,7 @@ My immediate reaction was “oh, getting a modern terminal experience isn’t th
 
 So I thought I would write down some notes about what it means to me personally to have a “modern” terminal experience and what I think can make it hard for people to get there.
 
-### [what is a “modern terminal experience”?](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#what-is-a-modern-terminal-experience)
+### [what is a “modern terminal experience”?][1]
 
 Here are a few things that are important to me, with which part of the system is responsible for them:
 
@@ -37,7 +37,7 @@ Here are a few things that are important to me, with which part of the system is
 
 There are a million other terminal conveniences out there and different people value different things, but those are the ones that I would be really unhappy without.
 
-### [how I achieve a “modern experience”](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#how-i-achieve-a-modern-experience)
+### [how I achieve a “modern experience”][2]
 
 My basic approach is:
 
@@ -46,7 +46,7 @@ My basic approach is:
     *   alias `ls` to `ls --color=auto`
 2.  use any terminal emulator with 24-bit colour support. In the past I’ve used GNOME Terminal, Terminator, and iTerm, but I’m not picky about this. I don’t really configure it other than to choose a font.
 3.  use `neovim`, with a configuration that I’ve been very slowly building over the last 9 years or so (the last time I deleted my vim config and started from scratch was 9 years ago)
-4.  use the [base16 framework](https://github.com/chriskempson/base16) to theme everything
+4.  use the [base16 framework][3] to theme everything
 
 A few things that affect my approach:
 
@@ -54,13 +54,13 @@ A few things that affect my approach:
 *   I’d rather use the mouse a little than come up with keyboard-based ways to do everything
 *   I work on a lot of small projects, not one big project
 
-### [some “out of the box” options for a “modern” experience](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#some-out-of-the-box-options-for-a-modern-experience)
+### [some “out of the box” options for a “modern” experience][4]
 
 What if you want a nice experience, but don’t want to spend a lot of time on configuration? Figuring out how to configure vim in a way that I was satisfied with really did take me like ten years, which is a long time!
 
 My best ideas for how to get a reasonable terminal experience with minimal config are:
 
-*   shell: either `fish` or `zsh` with [oh-my-zsh](https://ohmyz.sh/)
+*   shell: either `fish` or `zsh` with [oh-my-zsh][5]
 *   terminal emulator: almost anything with 24-bit colour support, for example all of these are popular:
     *   linux: GNOME Terminal, Konsole, Terminator, xfce4-terminal
     *   mac: iTerm (Terminal.app doesn’t have 256-colour support)
@@ -68,13 +68,13 @@ My best ideas for how to get a reasonable terminal experience with minimal confi
 *   shell config:
     *   set the `EDITOR` environment variable to your favourite terminal text editor
     *   maybe alias `ls` to `ls --color=auto`
-*   text editor: this is a tough one, maybe [micro](https://micro-editor.github.io/) or [helix](https://helix-editor.com/)? I haven’t used either of them seriously but they both seem like very cool projects and I think it’s amazing that you can just use all the usual GUI editor commands (`Ctrl-C` to copy, `Ctrl-V` to paste, `Ctrl-A` to select all) in micro and they do what you’d expect. I would probably try switching to helix except that retraining my vim muscle memory seems way too hard. Also helix doesn’t have a GUI or plugin system yet.
+*   text editor: this is a tough one, maybe [micro][6] or [helix][7]? I haven’t used either of them seriously but they both seem like very cool projects and I think it’s amazing that you can just use all the usual GUI editor commands (`Ctrl-C` to copy, `Ctrl-V` to paste, `Ctrl-A` to select all) in micro and they do what you’d expect. I would probably try switching to helix except that retraining my vim muscle memory seems way too hard. Also helix doesn’t have a GUI or plugin system yet.
 
 Personally I **wouldn’t** use xterm, rxvt, or Terminal.app as a terminal emulator, because I’ve found in the past that they’re missing core features (like 24-bit colour in Terminal.app’s case) that make the terminal harder to use for me.
 
 I don’t want to pretend that getting a “modern” terminal experience is easier than it is though – I think there are two issues that make it hard. Let’s talk about them!
 
-### [issue 1 with getting to a “modern” experience: the shell](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#issue-1-with-getting-to-a-modern-experience-the-shell)
+### [issue 1 with getting to a “modern” experience: the shell][8]
 
 bash and zsh are by far the two most popular shells, and neither of them provide a default experience that I would be happy using out of the box, for example:
 
@@ -83,13 +83,13 @@ bash and zsh are by far the two most popular shells, and neither of them provide
 *   by default, bash only stores 500 (!) lines of history and (at least on Mac OS) zsh is only configured to store 2000 lines, which is still not a lot
 *   I find bash’s tab completion very frustrating, if there’s more than one match then you can’t tab through them
 
-And even though [I love fish](https://jvns.ca/blog/2024/09/12/reasons-i--still--love-fish/), the fact that it isn’t POSIX does make it hard for a lot of folks to make the switch.
+And even though [I love fish][9], the fact that it isn’t POSIX does make it hard for a lot of folks to make the switch.
 
-Of course it’s totally possible to learn how to customize your prompt in bash or whatever, and it doesn’t even need to be that complicated (in bash I’d probably start with something like `export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '`, or maybe use [starship](https://starship.rs/)). But each of these “not complicated” things really does add up and it’s especially tough if you need to keep your config in sync across several systems.
+Of course it’s totally possible to learn how to customize your prompt in bash or whatever, and it doesn’t even need to be that complicated (in bash I’d probably start with something like `export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '`, or maybe use [starship][10]). But each of these “not complicated” things really does add up and it’s especially tough if you need to keep your config in sync across several systems.
 
-An extremely popular solution to getting a “modern” shell experience is [oh-my-zsh](https://ohmyz.sh/). It seems like a great project and I know a lot of people use it very happily, but I’ve struggled with configuration systems like that in the past – it looks like right now the base oh-my-zsh adds about 3000 lines of config, and often I find that having an extra configuration system makes it harder to debug what’s happening when things go wrong. I personally have a tendency to use the system to add a lot of extra plugins, make my system slow, get frustrated that it’s slow, and then delete it completely and write a new config from scratch.
+An extremely popular solution to getting a “modern” shell experience is [oh-my-zsh][5]. It seems like a great project and I know a lot of people use it very happily, but I’ve struggled with configuration systems like that in the past – it looks like right now the base oh-my-zsh adds about 3000 lines of config, and often I find that having an extra configuration system makes it harder to debug what’s happening when things go wrong. I personally have a tendency to use the system to add a lot of extra plugins, make my system slow, get frustrated that it’s slow, and then delete it completely and write a new config from scratch.
 
-### [issue 2 with getting to a “modern” experience: the text editor](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#issue-2-with-getting-to-a-modern-experience-the-text-editor)
+### [issue 2 with getting to a “modern” experience: the text editor][11]
 
 In the terminal survey I ran recently, the most popular terminal text editors by far were `vim`, `emacs`, and `nano`.
 
@@ -100,7 +100,7 @@ I think the main options for terminal text editors are:
 *   use `micro` or `helix` which seem to offer a pretty good out-of-the-box experience, potentially occasionally run into issues with using a less mainstream text editor
 *   just avoid using a terminal text editor as much as possible, maybe use VSCode, use VSCode’s terminal for all your terminal needs, and mostly never edit files in the terminal. Or I know a lot of people use `code` as their `EDITOR` in the terminal.
 
-### [issue 3: individual applications](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#issue-3-individual-applications)
+### [issue 3: individual applications][12]
 
 The last issue is that sometimes individual programs that I use are kind of annoying. For example on my Mac OS machine, `/usr/bin/sqlite3` doesn’t support the `Ctrl+Left Arrow` keyboard shortcut. Fixing this to get a reasonable terminal experience in SQLite was a little complicated, I had to:
 
@@ -110,27 +110,47 @@ The last issue is that sometimes individual programs that I use are kind of anno
 
 I find that debugging application-specific issues like this is really not easy and often it doesn’t feel “worth it” – often I’ll end up just dealing with various minor inconveniences because I don’t want to spend hours investigating them. The only reason I was even able to figure this one out at all is that I’ve been spending a huge amount of time thinking about the terminal recently.
 
-A big part of having a “modern” experience using terminal programs is just using newer terminal programs, for example I can’t be bothered to learn a keyboard shortcut to sort the columns in `top`, but in `htop` I can just click on a column heading with my mouse to sort it. So I use htop instead! But discovering new more “modern” command line tools isn’t easy (though I made [a list here](https://jvns.ca/blog/2022/04/12/a-list-of-new-ish--command-line-tools/)), finding ones that I actually like using in practice takes time, and if you’re SSHed into another machine, they won’t always be there.
+A big part of having a “modern” experience using terminal programs is just using newer terminal programs, for example I can’t be bothered to learn a keyboard shortcut to sort the columns in `top`, but in `htop` I can just click on a column heading with my mouse to sort it. So I use htop instead! But discovering new more “modern” command line tools isn’t easy (though I made [a list here][13]), finding ones that I actually like using in practice takes time, and if you’re SSHed into another machine, they won’t always be there.
 
-### [everything affects everything else](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#everything-affects-everything-else)
+### [everything affects everything else][14]
 
 Something I find tricky about configuring my terminal to make everything “nice” is that changing one seemingly small thing about my workflow can really affect everything else. For example right now I don’t use tmux. But if I needed to use tmux again (for example because I was doing a lot of work SSHed into another machine), I’d need to think about a few things, like:
 
-*   if I wanted tmux’s copy to synchronize with my system clipboard over SSH, I’d need to make sure that my terminal emulator has [OSC 52 support](https://old.reddit.com/r/vim/comments/k1ydpn/a_guide_on_how_to_copy_text_from_anywhere/)
-*   if I wanted to use iTerm’s tmux integration (which makes tmux tabs into iTerm tabs), I’d need to change how I configure colours – right now I set them with a [shell script](https://github.com/chriskempson/base16-shell/blob/588691ba71b47e75793ed9edfcfaa058326a6f41/scripts/base16-solarized-light.sh) that I run when my shell starts, but that means the colours get lost when restoring a tmux session.
+*   if I wanted tmux’s copy to synchronize with my system clipboard over SSH, I’d need to make sure that my terminal emulator has [OSC 52 support][15]
+*   if I wanted to use iTerm’s tmux integration (which makes tmux tabs into iTerm tabs), I’d need to change how I configure colours – right now I set them with a [shell script][16] that I run when my shell starts, but that means the colours get lost when restoring a tmux session.
 
 and probably more things I haven’t thought of. “Using tmux means that I have to change how I manage my colours” sounds unlikely, but that really did happen to me and I decided “well, I don’t want to change how I manage colours right now, so I guess I’m not using that feature!”.
 
 It’s also hard to remember which features I’m relying on – for example maybe my current terminal _does_ have OSC 52 support and because copying from tmux over SSH has always Just Worked I don’t even realize that that’s something I need, and then it mysteriously stops working when I switch terminals.
 
-### [change things slowly](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#change-things-slowly)
+### [change things slowly][17]
 
 Personally even though I think my setup is not _that_ complicated, it’s taken me 20 years to get to this point! Because terminal config changes are so likely to have unexpected and hard-to-understand consequences, I’ve found that if I change a lot of terminal configuration all at once it makes it much harder to understand what went wrong if there’s a problem, which can be really disorienting.
 
-So I usually prefer to make pretty small changes, and accept that changes can might take me a REALLY long time to get used to. For example I switched from using `ls` to [eza](https://github.com/eza-community/eza) a year or two ago and while I like it (because `eza -l` prints human-readable file sizes by default) I’m still not quite sure about it. But also sometimes it’s worth it to make a big change, like I made the switch to fish (from bash) 10 years ago and I’m very happy I did.
+So I usually prefer to make pretty small changes, and accept that changes can might take me a REALLY long time to get used to. For example I switched from using `ls` to [eza][18] a year or two ago and while I like it (because `eza -l` prints human-readable file sizes by default) I’m still not quite sure about it. But also sometimes it’s worth it to make a big change, like I made the switch to fish (from bash) 10 years ago and I’m very happy I did.
 
-### [getting a “modern” terminal is not that easy](http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#getting-a-modern-terminal-is-not-that-easy)
+### [getting a “modern” terminal is not that easy][19]
 
 Trying to explain how “easy” it is to configure your terminal really just made me think that it’s kind of hard and that I still sometimes get confused.
 
 I’ve found that there’s never one perfect way to configure things in the terminal that will be compatible with every single other thing. I just need to try stuff, figure out some kind of locally stable state that works for me, and accept that if I start using a new tool it might disrupt the system and I might need to rethink things.
+
+[1]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#what-is-a-modern-terminal-experience
+[2]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#how-i-achieve-a-modern-experience
+[3]: https://github.com/chriskempson/base16
+[4]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#some-out-of-the-box-options-for-a-modern-experience
+[5]: https://ohmyz.sh/
+[6]: https://micro-editor.github.io/
+[7]: https://helix-editor.com/
+[8]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#issue-1-with-getting-to-a-modern-experience-the-shell
+[9]: https://jvns.ca/blog/2024/09/12/reasons-i--still--love-fish/
+[10]: https://starship.rs/
+[11]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#issue-2-with-getting-to-a-modern-experience-the-text-editor
+[12]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#issue-3-individual-applications
+[13]: https://jvns.ca/blog/2022/04/12/a-list-of-new-ish--command-line-tools/
+[14]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#everything-affects-everything-else
+[15]: https://old.reddit.com/r/vim/comments/k1ydpn/a_guide_on_how_to_copy_text_from_anywhere/
+[16]: https://github.com/chriskempson/base16-shell/blob/588691ba71b47e75793ed9edfcfaa058326a6f41/scripts/base16-solarized-light.sh
+[17]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#change-things-slowly
+[18]: https://github.com/eza-community/eza
+[19]: http://jvns.ca/blog/2025/01/11/getting-a-modern-terminal-setup/#getting-a-modern-terminal-is-not-that-easy
