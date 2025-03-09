@@ -11,65 +11,65 @@ reviewer: ""
 
 <!-- more -->
 
-I was talking to a friend about how to add a directory to your PATH today. It’s something that feels “obvious” to me since I’ve been using the terminal for a long time, but when I searched for instructions for how to do it, I actually couldn’t find something that explained all of the steps – a lot of them just said “add this to `~/.bashrc`”, but what if you’re not using bash? What if your bash config is actually in a different file? And how are you supposed to figure out which directory to add anyway?
+今天我和一个朋友讨论如何将目录添加到你的 PATH。对于我这种长期使用终端的人来说，这感觉很"显而易见"，但当我搜索如何做这件事的说明时，我实际上找不到解释所有步骤的内容——很多只是说"将这个添加到`~/.bashrc`"，但如果你不使用 bash 怎么办？如果你的 bash 配置实际上在不同的文件中怎么办？而且你应该如何确定要添加哪个目录呢？
 
-So I wanted to try to write down some more complete directions and mention some of the gotchas I’ve run into over the years.
+所以我想尝试写下一些更完整的指导，并提及我多年来遇到的一些陷阱。
 
-Here’s a table of contents:
+以下是目录：
 
-*   [step 1: what shell are you using?][2]
-*   [step 2: find your shell’s config file][3]
-    *   [a note on bash’s config file][4]
-*   [step 3: figure out which directory to add][5]
-    *   [step 3.1: double check it’s the right directory][6]
-*   [step 4: edit your shell config][7]
-*   [step 5: restart your shell][8]
-*   problems:
-    *   [problem 1: it ran the wrong program][9]
-    *   [problem 2: the program isn’t being run from your shell][10]
-    *   [problem 3: duplicate PATH entries making it harder to debug][11]
-    *   [problem 4: losing your history after updating your PATH][12]
-*   notes:
-    *   [a note on source][13]
-    *   [a note on fish\_add\_path][14]
+*   [步骤 1：你使用的是什么 shell？][2]
+*   [步骤 2：找到你的 shell 配置文件][3]
+    *   [关于 bash 配置文件的说明][4]
+*   [步骤 3：确定要添加哪个目录][5]
+    *   [步骤 3.1：再次检查它是正确的目录][6]
+*   [步骤 4：编辑你的 shell 配置][7]
+*   [步骤 5：重启你的 shell][8]
+*   问题：
+    *   [问题 1：它运行了错误的程序][9]
+    *   [问题 2：程序不是从你的 shell 运行的][10]
+    *   [问题 3：PATH 条目重复使调试更加困难][11]
+    *   [问题 4：更新 PATH 后丢失历史记录][12]
+*   注释：
+    *   [关于 source 的说明][13]
+    *   [关于 fish_add_path 的说明][14]
 
-### [step 1: what shell are you using?][2]
+### [步骤 1：你使用的是什么 shell？][2]
 
-If you’re not sure what shell you’re using, here’s a way to find out. Run this:
+如果你不确定你使用的是什么 shell，这里有一种方法可以找出来。运行这个：
 
-```
+```bash
 ps -p $$ -o pid,comm=
 ```
 
-*   if you’re using **bash**, it’ll print out `97295 bash`
-*   if you’re using **zsh**, it’ll print out `97295 zsh`
-*   if you’re using **fish**, it’ll print out an error like “In fish, please use $fish\_pid” (`$$` isn’t valid syntax in fish, but in any case the error message tells you that you’re using fish, which you probably already knew)
+*   如果你使用的是 **bash**，它会打印出 `97295 bash`
+*   如果你使用的是 **zsh**，它会打印出 `97295 zsh`
+*   如果你使用的是 **fish**，它会打印出一个错误，比如 "In fish, please use $fish\_pid"（`$$` 在 fish 中不是有效的语法，但无论如何错误消息告诉你你正在使用 fish，这你可能已经知道了）
 
-Also bash is the default on Linux and zsh is the default on Mac OS (as of 2024). I’ll only cover bash, zsh, and fish in these directions.
+另外，bash 是 Linux 的默认 shell，而 zsh 是 Mac OS 的默认 shell（截至 2024 年）。在这些指导中，我只会涵盖 bash、zsh 和 fish。
 
-### [step 2: find your shell’s config file][3]
+### [步骤 2：找到你的 shell 配置文件][3]
 
-*   in zsh, it’s probably `~/.zshrc`
-*   in bash, it might be `~/.bashrc`, but it’s complicated, see the note in the next section
-*   in fish, it’s probably `~/.config/fish/config.fish` (you can run `echo $__fish_config_dir` if you want to be 100% sure)
+*   在 zsh 中，它可能是 `~/.zshrc`
+*   在 bash 中，它可能是 `~/.bashrc`，但这很复杂，请参阅下一节中的说明
+*   在 fish 中，它可能是 `~/.config/fish/config.fish`（如果你想 100% 确定，可以运行 `echo $__fish_config_dir`）
 
-### [a note on bash’s config file][4]
+### [关于 bash 配置文件的说明][4]
 
-Bash has three possible config files: `~/.bashrc`, `~/.bash_profile`, and `~/.profile`.
+Bash 有三个可能的配置文件：`~/.bashrc`、`~/.bash_profile` 和 `~/.profile`。
 
-If you’re not sure which one your system is set up to use, I’d recommend testing this way:
+如果你不确定你的系统设置使用哪一个，我建议通过这种方式测试：
 
-1.  add `echo hi there` to your `~/.bashrc`
-2.  Restart your terminal
-3.  If you see “hi there”, that means `~/.bashrc` is being used! Hooray!
-4.  Otherwise remove it and try the same thing with `~/.bash_profile`
-5.  You can also try `~/.profile` if the first two options don’t work.
+1.  在你的 `~/.bashrc` 中添加 `echo hi there`
+2.  重启你的终端
+3.  如果你看到 "hi there"，这意味着 `~/.bashrc` 正在被使用！太好了！
+4.  否则，删除它并尝试对 `~/.bash_profile` 做同样的事情
+5.  如果前两个选项不起作用，你也可以尝试 `~/.profile`。
 
-(there are a lot of [elaborate flow charts][15] out there that explain how bash decides which config file to use but IMO it’s not worth it to internalize them and just testing is the fastest way to be sure)
+（有很多[复杂的流程图][15]解释了 bash 如何决定使用哪个配置文件，但在我看来，没有必要去内化它们，直接测试是确定的最快方法）
 
-### [step 3: figure out which directory to add][5]
+### [步骤 3：确定要添加哪个目录][5]
 
-Let’s say that you’re trying to install and run a program called `http-server` and it doesn’t work, like this:
+假设你正在尝试安装并运行一个名为 `http-server` 的程序，但它不起作用，像这样：
 
 ```
 $ npm install -g http-server
@@ -77,192 +77,192 @@ $ http-server
 bash: http-server: command not found
 ```
 
-How do you find what directory `http-server` is in? Honestly in general this is not that easy – often the answer is something like “it depends on how npm is configured”. A few ideas:
+你如何找到 `http-server` 在哪个目录中？老实说，一般来说这并不容易——通常答案是"取决于 npm 的配置方式"。一些想法：
 
-*   Often when setting up a new installer (like `cargo`, `npm`, `homebrew`, etc), when you first set it up it’ll print out some directions about how to update your PATH. So if you’re paying attention you can get the directions then.
-*   Sometimes installers will automatically update your shell’s config file to update your `PATH` for you
-*   Sometimes just Googling “where does npm install things?” will turn up the answer
-*   Some tools have a subcommand that tells you where they’re configured to install things, like:
-    *   Node/npm: `npm config get prefix` (then append `/bin/`)
-    *   Go: `go env GOPATH` (then append `/bin/`)
-    *   asdf: `asdf info | grep ASDF_DIR` (then append `/bin/` and `/shims/`)
+*   通常在设置新的安装程序（如 `cargo`、`npm`、`homebrew` 等）时，当你首次设置它时，它会打印出一些关于如何更新你的 PATH 的指导。所以如果你注意的话，你可以在那时获得指导。
+*   有时安装程序会自动更新你的 shell 配置文件以更新你的 `PATH`
+*   有时只是谷歌搜索"npm 在哪里安装东西？"就会找到答案
+*   一些工具有一个子命令，告诉你它们配置安装东西的位置，比如：
+    *   Node/npm：`npm config get prefix`（然后附加 `/bin/`）
+    *   Go：`go env GOPATH`（然后附加 `/bin/`）
+    *   asdf：`asdf info | grep ASDF_DIR`（然后附加 `/bin/` 和 `/shims/`）
 
-### [step 3.1: double check it’s the right directory][6]
+### [步骤 3.1：再次检查它是正确的目录][6]
 
-Once you’ve found a directory you think might be the right one, make sure it’s actually correct! For example, I found out that on my machine, `http-server` is in `~/.npm-global/bin`. I can make sure that it’s the right directory by trying to run the program `http-server` in that directory like this:
+一旦你找到了一个你认为可能是正确的目录，确保它确实是正确的！例如，我发现在我的机器上，`http-server` 在 `~/.npm-global/bin` 中。我可以通过尝试在该目录中运行程序 `http-server` 来确保它是正确的目录，像这样：
 
-```
+```bash
 $ ~/.npm-global/bin/http-server
 Starting up http-server, serving ./public
 ```
 
-It worked! Now that you know what directory you need to add to your `PATH`, let’s move to the next step!
+它工作了！现在你知道你需要添加到 `PATH` 的目录是什么，让我们进入下一步！
 
-### [step 4: edit your shell config][7]
+### [步骤 4：编辑你的 shell 配置][7]
 
-Now we have the 2 critical pieces of information we need:
+现在我们有了需要的 2 个关键信息：
 
-1.  Which directory you’re trying to add to your PATH (like `~/.npm-global/bin/`)
-2.  Where your shell’s config is (like `~/.bashrc`, `~/.zshrc`, or `~/.config/fish/config.fish`)
+1.  你试图添加到 PATH 的目录（如 `~/.npm-global/bin/`）
+2.  你的 shell 配置在哪里（如 `~/.bashrc`、`~/.zshrc` 或 `~/.config/fish/config.fish`）
 
-Now what you need to add depends on your shell:
+现在你需要添加的内容取决于你的 shell：
 
-**bash instructions:**
+**bash 指导：**
 
-Open your shell’s config file, and add a line like this:
+打开你的 shell 配置文件，添加一行像这样的内容：
 
-```
+```bash
 export PATH=$PATH:~/.npm-global/bin/
 ```
 
-(obviously replace `~/.npm-global/bin` with the actual directory you’re trying to add)
+（显然，用你实际尝试添加的目录替换 `~/.npm-global/bin`）
 
-**zsh instructions:**
+**zsh 指令:**
 
-You can do the same thing as in bash, but zsh also has some slightly fancier syntax you can use if you prefer:
+你可以做与 bash 相同的事情，但 zsh 也有一些稍微更高级的语法，如果你喜欢的话：
 
-```
+```bash
 path=(
   $path
   ~/.npm-global/bin
 )
 ```
 
-**fish instructions:**
+**fish 指令:**
 
-In fish, the syntax is different:
+在 fish 中，语法不同：
 
-```
+```bash
 set PATH $PATH ~/.npm-global/bin
 ```
 
-(in fish you can also use `fish_add_path`, some notes on that [further down][14])
+（在 fish 中你也可以使用 `fish_add_path`，关于这个的一些说明[在下面][14]）
 
-### [step 5: restart your shell][8]
+### [步骤 5：重启你的 shell][8]
 
-Now, an extremely important step: updating your shell’s config won’t take effect if you don’t restart it!
+现在，一个非常重要的步骤：如果你不重启 shell，更新 shell 配置不会生效！
 
-Two ways to do this:
+有两种方法可以做到这一点：
 
-1.  open a new terminal (or terminal tab), and maybe close the old one so you don’t get confused
-2.  Run `bash` to start a new shell (or `zsh` if you’re using zsh, or `fish` if you’re using fish)
+1.  打开一个新的终端（或终端标签），也许关闭旧的以避免混淆
+2.  运行 `bash` 启动一个新的 shell（如果你使用的是 zsh，则运行 `zsh`，如果你使用的是 fish，则运行 `fish`）
 
-I’ve found that both of these usually work fine.
+我发现这两种方法通常都可以正常工作。
 
-And you should be done! Try running the program you were trying to run and hopefully it works now.
+你应该完成了！尝试运行你想运行的程序，希望它现在能工作。
 
-If not, here are a couple of problems that you might run into:
+如果不行，这里有一些你可能遇到的问题：
 
-### [problem 1: it ran the wrong program][9]
+### [问题 1：它运行了错误的程序][9]
 
-If the wrong **version** of a program is running, you might need to add the directory to the _beginning_ of your PATH instead of the end.
+如果运行了错误**版本**的程序，你可能需要将目录添加到 PATH 的_开头_而不是结尾。
 
-For example, on my system I have two versions of `python3` installed, which I can see by running `which -a`:
+例如，在我的系统上，我安装了两个版本的 `python3`，我可以通过运行 `which -a` 看到：
 
-```
+```bash
 $ which -a python3
 /usr/bin/python3
 /opt/homebrew/bin/python3
 ```
 
-The one your shell will use is the **first one listed**.
+你的 shell 将使用的是**列出的第一个**。
 
-If you want to use the Homebrew version, you need to add that directory (`/opt/homebrew/bin`) to the **beginning** of your PATH instead, by putting this in your shell’s config file (it’s `/opt/homebrew/bin/:$PATH` instead of the usual `$PATH:/opt/homebrew/bin/`)
+如果你想使用 Homebrew 版本，你需要将该目录（`/opt/homebrew/bin`）添加到 PATH 的**开头**，在你的 shell 配置文件中放入这个（它是 `/opt/homebrew/bin/:$PATH` 而不是通常的 `$PATH:/opt/homebrew/bin/`）
 
-```
+```bash
 export PATH=/opt/homebrew/bin/:$PATH
 ```
 
-or in fish:
+或者在 fish 中：
 
-```
+```bash
 set PATH ~/.cargo/bin $PATH
 ```
 
-### [problem 2: the program isn’t being run from your shell][10]
+### [问题 2：程序不是从你的 shell 运行的][10]
 
-All of these directions only work if you’re running the program **from your shell**. If you’re running the program from an IDE, from a GUI, in a cron job, or some other way, you’ll need to add the directory to your PATH in a different way, and the exact details might depend on the situation.
+所有这些指导只有在你**从你的 shell** 运行程序时才有效。如果你从 IDE、GUI、cron 作业或其他方式运行程序，你需要以不同的方式将目录添加到你的 PATH，具体细节可能取决于情况。
 
-**in a cron job**
+**在 cron 作业中**
 
-Some options:
+一些选项：
 
-*   use the full path to the program you’re running, like `/home/bork/bin/my-program`
-*   put the full PATH you want as the first line of your crontab (something like PATH=/bin:/usr/bin:/usr/local/bin:….). You can get the full PATH you’re using in your shell by running `echo "PATH=$PATH"`.
+*   使用你正在运行的程序的完整路径，如 `/home/bork/bin/my-program`
+*   将你想要的完整 PATH 作为 crontab 的第一行（类似于 PATH=/bin:/usr/bin:/usr/local/bin:……）。你可以通过运行 `echo "PATH=$PATH"` 获取你在 shell 中使用的完整 PATH。
 
-I’m honestly not sure how to handle it in an IDE/GUI because I haven’t run into that in a long time, will add directions here if someone points me in the right direction.
+我老实说不确定如何在 IDE/GUI 中处理它，因为我很久没有遇到这种情况了，如果有人指点我正确的方向，我会在这里添加指导。
 
-### [problem 3: duplicate `PATH` entries making it harder to debug][11]
+### [问题 3：PATH 条目重复使调试更加困难][11]
 
-If you edit your path and start a new shell by running `bash` (or `zsh`, or `fish`), you’ll often end up with duplicate `PATH` entries, because the shell keeps adding new things to your `PATH` every time you start your shell.
+如果你编辑你的 path 并通过运行 `bash`（或 `zsh`，或 `fish`）启动一个新的 shell，你通常会得到重复的 `PATH` 条目，因为每次你启动 shell 时，shell 都会继续向你的 `PATH` 添加新东西。
 
-Personally I don’t think I’ve run into a situation where this kind of duplication breaks anything, but the duplicates can make it harder to debug what’s going on with your `PATH` if you’re trying to understand its contents.
+就我个人而言，我认为我没有遇到过这种重复会破坏任何东西的情况，但如果你试图理解 `PATH` 的内容，重复可能会使调试 `PATH` 发生的事情变得更加困难。
 
-Some ways you could deal with this:
+一些处理方法：
 
-1.  If you’re debugging your `PATH`, open a new terminal to do it in so you get a “fresh” state. This should avoid the duplication.
-2.  Deduplicate your `PATH` at the end of your shell’s config (for example in zsh apparently you can do this with `typeset -U path`)
-3.  Check that the directory isn’t already in your `PATH` when adding it (for example in fish I believe you can do this with `fish_add_path --path /some/directory`)
+1.  如果你正在调试你的 `PATH`，打开一个新的终端来做，这样你就会得到一个"新鲜"的状态。这应该避免重复。
+2.  在你的 shell 配置的末尾去重你的 `PATH`（例如在 zsh 中，显然你可以用 `typeset -U path` 做到这一点）
+3.  添加目录时检查它是否已经在你的 `PATH` 中（例如在 fish 中，我相信你可以用 `fish_add_path --path /some/directory` 做到这一点）
 
-How to deduplicate your `PATH` is shell-specific and there isn’t always a built in way to do it so you’ll need to look up how to accomplish it in your shell.
+如何去重你的 `PATH` 是特定于 shell 的，并且并不总是有内置的方法来做到这一点，所以你需要查找如何在你的 shell 中完成它。
 
-### [problem 4: losing your history after updating your `PATH`][12]
+### [问题 4：更新 PATH 后丢失历史记录][12]
 
-Here’s a situation that’s easy to get into in bash or zsh:
+这里有一个在 bash 或 zsh 中容易陷入的情况：
 
-1.  Run a command (it fails)
-2.  Update your `PATH`
-3.  Run `bash` to reload your config
-4.  Press the up arrow a couple of times to rerun the failed command (or open a new terminal)
-5.  The failed command isn’t in your history! Why not?
+1.  运行一个命令（它失败了）
+2.  更新你的 `PATH`
+3.  运行 `bash` 重新加载你的配置
+4.  按几次向上箭头重新运行失败的命令（或打开一个新的终端）
+5.  失败的命令不在你的历史记录中！为什么？
 
-This happens because in bash, by default, history is not saved until you exit the shell.
+这是因为在 bash 中，默认情况下，历史记录直到你退出 shell 才会保存。
 
-Some options for fixing this:
+一些修复选项：
 
-*   Instead of running `bash` to reload your config, run `source ~/.bashrc` (or `source ~/.zshrc` in zsh). This will reload the config inside your current session.
-*   Configure your shell to continuously save your history instead of only saving the history when the shell exits. (How to do this depends on whether you’re using bash or zsh, the history options in zsh are a bit complicated and I’m not exactly sure what the best way is)
+*   不要运行 `bash` 重新加载你的配置，而是运行 `source ~/.bashrc`（或在 zsh 中运行 `source ~/.zshrc`）。这将在你当前会话中重新加载配置。
+*   配置你的 shell 持续保存你的历史记录，而不是只在 shell 退出时保存历史记录。（如何做到这一点取决于你是使用 bash 还是 zsh，zsh 中的历史选项有点复杂，我不太确定最好的方法是什么）
 
-### [a note on `source`][13]
+### [关于 source 的说明][13]
 
-When you install `cargo` (Rust’s installer) for the first time, it gives you these instructions for how to set up your PATH, which don’t mention a specific directory at all.
+当你第一次安装 `cargo`（Rust 的安装程序）时，它给你这些关于如何设置 PATH 的指导，这些指导根本没有提到特定的目录。
 
-```
+```bash
 This is usually done by running one of the following (note the leading DOT):
 
 . "$HOME/.cargo/env"        	# For sh/bash/zsh/ash/dash/pdksh
 source "$HOME/.cargo/env.fish"  # For fish
 ```
 
-The idea is that you add that line to your shell’s config, and their script automatically sets up your `PATH` (and potentially other things) for you.
+这个想法是你将该行添加到你的 shell 配置中，他们的脚本会自动为你设置 `PATH`（可能还有其他东西）。
 
-This is pretty common (for example [Homebrew][16] suggests you eval `brew shellenv`), and there are two ways to approach this:
+这是相当常见的（例如 [Homebrew][16] 建议你执行 `brew shellenv`），有两种方法可以处理这个：
 
-1.  Just do what the tool suggests (like adding `. "$HOME/.cargo/env"` to your shell’s config)
-2.  Figure out which directories the script they’re telling you to run would add to your PATH, and then add those manually. Here’s how I’d do that:
-    *   Run `. "$HOME/.cargo/env"` in my shell (or the fish version if using fish)
-    *   Run `echo "$PATH" | tr ':' '\n' | grep cargo` to figure out which directories it added
-    *   See that it says `/Users/bork/.cargo/bin` and shorten that to `~/.cargo/bin`
-    *   Add the directory `~/.cargo/bin` to PATH (with the directions in this post)
+1.  只做工具建议的事情（比如将 `. "$HOME/.cargo/env"` 添加到你的 shell 配置中）
+2.  找出他们告诉你运行的脚本会将哪些目录添加到你的 PATH 中，然后手动添加这些目录。以下是我的做法：
+    *   在我的 shell 中运行 `. "$HOME/.cargo/env"`（如果使用 fish，则运行 fish 版本）
+    *   运行 `echo "$PATH" | tr ':' '\n' | grep cargo` 来确定它添加了哪些目录
+    *   看到它说 `/Users/bork/.cargo/bin` 并将其缩短为 `~/.cargo/bin`
+    *   将目录 `~/.cargo/bin` 添加到 PATH（使用本文中的指导）
 
-I don’t think there’s anything wrong with doing what the tool suggests (it might be the “best way”!), but personally I usually use the second approach because I prefer knowing exactly what configuration I’m changing.
+我认为按照工具建议做没有什么问题（它可能是"最好的方法"！），但个人而言，我通常使用第二种方法，因为我更喜欢确切地知道我正在更改什么配置。
 
-### [a note on `fish_add_path`][14]
+### [关于 fish_add_path 的说明][14]
 
-fish has a handy function called `fish_add_path` that you can run to add a directory to your `PATH` like this:
+fish 有一个方便的函数叫做 `fish_add_path`，你可以运行它来将目录添加到你的 `PATH`，像这样：
 
-```
+```bash
 fish_add_path /some/directory
 ```
 
-This is cool (it’s such a simple command!) but I’ve stopped using it for a couple of reasons:
+这很酷（这是一个如此简单的命令！）但我已经停止使用它，原因有几个：
 
-1.  Sometimes `fish_add_path` will update the `PATH` for every session in the future (with a “universal variable”) and sometimes it will update the `PATH` just for the current session and it’s hard for me to tell which one it will do. In theory the docs explain this but I could not understand them.
-2.  If you ever need to _remove_ the directory from your `PATH` a few weeks or months later because maybe you made a mistake, it’s kind of hard to do (there are [instructions in this comments of this github issue though][17]).
+1.  有时 `fish_add_path` 会更新未来每个会话的 `PATH`（使用"通用变量"），有时它只会更新当前会话的 `PATH`，我很难分辨它会做哪一个。理论上文档解释了这一点，但我无法理解它们。
+2.  如果你几周或几个月后需要从你的 `PATH` 中_移除_目录，因为也许你犯了一个错误，这有点难做到（不过在这个 github issue 的评论中有[指导][17]）。
 
-### [that’s all][18]
+### [就是这些][18]
 
-Hopefully this will help some people. Let me know (on Mastodon or Bluesky) if you there are other major gotchas that have tripped you up when adding a directory to your PATH, or if you have questions about this post!
+希望这能帮助一些人。如果你在将目录添加到 PATH 时遇到了其他主要陷阱，或者你对这篇文章有疑问，请让我知道（在 Mastodon 或 Bluesky 上）！
 
 [2]: http://jvns.ca/blog/2025/02/13/how-to-add-a-directory-to-your-path/#step-1-what-shell-are-you-using
 [3]: http://jvns.ca/blog/2025/02/13/how-to-add-a-directory-to-your-path/#step-2-find-your-shell-s-config-file
