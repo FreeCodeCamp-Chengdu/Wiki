@@ -7,192 +7,192 @@ translator: ""
 reviewer: ""
 ---
 
-A few weeks ago I ran a terminal survey (you can [read the results here][1]) and at the end I asked:
+几周前我进行了一项终端调查（你可以[在这里阅读结果][1]），最后我问道：
 
-> What’s the most frustrating thing about using the terminal for you?
+> 对你来说，使用终端最令人沮丧的事情是什么？
 
-1600 people answered, and I decided to spend a few days categorizing all the responses. Along the way I learned that classifying qualitative data is not easy but I gave it my best shot. I ended up building a custom [tool][2] to make it faster to categorize everything.
+1600人回答了这个问题，我决定花几天时间对所有回答进行分类。在此过程中，我了解到对定性数据进行分类并不容易，但我尽力而为。我最终构建了一个自定义[工具][2]，使分类一切变得更快。
 
-As with all of my surveys the methodology isn’t particularly scientific. I just posted the survey to Mastodon and Twitter, ran it for a couple of days, and got answers from whoever happened to see it and felt like responding.
+与我所有的调查一样，方法并不特别科学。我只是将调查发布到Mastodon和Twitter上，运行了几天，并从恰好看到它并愿意回应的人那里获得了答案。
 
-Here are the top categories of frustrations!
+以下是令人沮丧的主要类别！
 
-I think it’s worth keeping in mind while reading these comments that
+我认为在阅读这些评论时值得记住：
 
-*   40% of people answering this survey have been using the terminal for **21+ years**
-*   95% of people answering the survey have been using the terminal for at least 4 years
+* 回答这项调查的人中有40%已经使用终端**21年以上**
+* 回答调查的人中有95%使用终端至少4年
 
-These comments aren’t coming from total beginners.
+这些评论并非来自完全的初学者。
 
-Here are the categories of frustrations! The number in brackets is the number of people with that frustration. I’m mostly writing this up for myself because I’m trying to write a zine about the terminal and I wanted to get a sense for what people are having trouble with.
+以下是令人沮丧的类别！括号中的数字是有这种沮丧的人数。我主要是为自己写这篇文章，因为我正在尝试写一本关于终端的小册子，我想了解人们遇到的问题。
 
-### [remembering syntax (115)][3]
+### [记住语法 (115)][3]
 
-People talked about struggles remembering:
+人们谈到了记住以下内容的困难：
 
-*   the syntax for CLI tools like awk, jq, sed, etc
-*   the syntax for redirects
-*   keyboard shortcuts for tmux, text editing, etc
+* 像awk、jq、sed等CLI工具的语法
+* 重定向的语法
+* tmux、文本编辑等的键盘快捷键
 
-One example comment:
+一个示例评论：
 
-> There are just so many little “trivia” details to remember for full functionality. Even after all these years I’ll sometimes forget where it’s 2 or 1 for stderr, or forget which is which for `>` and `>>`.
+> 要完全发挥功能，有太多小的"琐事"细节需要记住。即使经过这么多年，我有时仍会忘记stderr是2还是1，或者忘记`>`和`>>`哪个是哪个。
 
-### [switching terminals is hard (91)][4]
+### [切换终端很困难 (91)][4]
 
-People talked about struggling with switching systems (for example home/work computer or when SSHing) and running into:
+人们谈到了在切换系统（例如家庭/工作电脑或SSH时）时遇到的困难：
 
-*   OS differences in keyboard shortcuts (like Linux vs Mac)
-*   systems which don’t have their preferred text editor (“no vim” or “only vim”)
-*   different versions of the same command (like Mac OS grep vs GNU grep)
-*   no tab completion
-*   a shell they aren’t used to (“the subtle differences between zsh and bash”)
+* 键盘快捷键的操作系统差异（如Linux与Mac）
+* 没有他们首选文本编辑器的系统（"没有vim"或"只有vim"）
+* 同一命令的不同版本（如Mac OS grep与GNU grep）
+* 没有tab补全
+* 不习惯的shell（"zsh和bash之间的微妙差异"）
 
-as well as differences inside the same system like pagers being not consistent with each other (git diff pagers, other pagers).
+以及同一系统内的差异，如分页器彼此不一致（git diff分页器，其他分页器）。
 
-One example comment:
+一个示例评论：
 
-> I got used to fish and vi mode which are not available when I ssh into servers, containers.
+> 我习惯了fish和vi模式，但当我ssh进入服务器、容器时，这些都不可用。
 
-### [color (85)][5]
+### [颜色 (85)][5]
 
-Lots of problems with color, like:
+关于颜色的许多问题，如：
 
-*   programs setting colors that are unreadable with a light background color
-*   finding a colorscheme they like (and getting it to work consistently across different apps)
-*   color not working inside several layers of SSH/tmux/etc
-*   not liking the defaults
-*   not wanting color at all and struggling to turn it off
+* 程序设置的颜色在浅色背景下不可读
+* 找到他们喜欢的配色方案（并使其在不同应用程序中一致工作）
+* 在多层SSH/tmux等内部颜色不起作用
+* 不喜欢默认设置
+* 完全不想要颜色并努力关闭它
 
-This comment felt relatable to me:
+这个评论对我来说很有共鸣：
 
-> Getting my terminal theme configured in a reasonable way between the terminal emulator and fish (I did this years ago and remember it being tedious and fiddly and now feel like I’m locked into my current theme because it works and I dread touching any of that configuration ever again).
+> 在终端模拟器和fish之间以合理的方式配置我的终端主题（我多年前做过这件事，记得它既繁琐又麻烦，现在感觉我被锁定在当前主题中，因为它能工作，我害怕再次触碰任何那些配置）。
 
-### [keyboard shortcuts (84)][6]
+### [键盘快捷键 (84)][6]
 
-Half of the comments on keyboard shortcuts were about how on Linux/Windows, the keyboard shortcut to copy/paste in the terminal is different from in the rest of the OS.
+关于键盘快捷键的评论中，有一半是关于在Linux/Windows上，终端中的复制/粘贴键盘快捷键与操作系统其余部分不同。
 
-Some other issues with keyboard shortcuts other than copy/paste:
+除了复制/粘贴之外的其他键盘快捷键问题：
 
-*   using `Ctrl-W` in a browser-based terminal and closing the window
-*   the terminal only supports a limited set of keyboard shortcuts (no `Ctrl-Shift-`, no `Super`, no `Hyper`, lots of `ctrl-` shortcuts aren’t possible like `Ctrl-,`)
-*   the OS stopping you from using a terminal keyboard shortcut (like by default Mac OS uses `Ctrl+left arrow` for something else)
-*   issues using emacs in the terminal
-*   backspace not working (2)
+* 在基于浏览器的终端中使用`Ctrl-W`并关闭窗口
+* 终端只支持有限的键盘快捷键（没有`Ctrl-Shift-`，没有`Super`，没有`Hyper`，许多`ctrl-`快捷键不可能，如`Ctrl-,`）
+* 操作系统阻止你使用终端键盘快捷键（比如默认情况下Mac OS将`Ctrl+左箭头`用于其他用途）
+* 在终端中使用emacs的问题
+* 退格键不工作（2）
 
-### [other copy and paste issues (75)][7]
+### [其他复制和粘贴问题 (75)][7]
 
-Aside from “the keyboard shortcut for copy and paste is different”, there were a lot of OTHER issues with copy and paste, like:
+除了"复制和粘贴的键盘快捷键不同"之外，还有很多其他复制和粘贴问题，如：
 
-*   copying over SSH
-*   how tmux and the terminal emulator both do copy/paste in different ways
-*   dealing with many different clipboards (system clipboard, vim clipboard, the “middle click” clipboard on Linux, tmux’s clipboard, etc) and potentially synchronizing them
-*   random spaces added when copying from the terminal
-*   pasting multiline commands which automatically get run in a terrifying way
-*   wanting a way to copy text without using the mouse
+* 通过SSH复制
+* tmux和终端模拟器以不同方式处理复制/粘贴
+* 处理多个不同的剪贴板（系统剪贴板、vim剪贴板、Linux上的"中键点击"剪贴板、tmux的剪贴板等）并可能同步它们
+* 从终端复制时添加的随机空格
+* 粘贴多行命令，这些命令以可怕的方式自动运行
+* 希望有一种不使用鼠标复制文本的方法
 
-### [discoverability (55)][8]
+### [可发现性 (55)][8]
 
-There were lots of comments about this, which all came down to the same basic complaint – it’s hard to discover useful tools or features! This comment kind of summed it all up:
+有很多关于这方面的评论，都归结为同一个基本抱怨——很难发现有用的工具或功能！这个评论基本上总结了一切：
 
-> How difficult it is to learn independently. Most of what I know is an assorted collection of stuff I’ve been told by random people over the years.
+> 独立学习有多困难。我所知道的大部分都是多年来从随机人那里听到的各种东西的集合。
 
-### [steep learning curve (44)][9]
+### [学习曲线陡峭 (44)][9]
 
-A lot of comments about it generally having a steep learning curve. A couple of example comments:
+很多评论提到它通常有陡峭的学习曲线。几个示例评论：
 
-> After 15 years of using it, I’m not much faster than using it than I was 5 or maybe even 10 years ago.
+> 使用它15年后，我的使用速度并不比5年甚至10年前快多少。
 
-and
+以及
 
-> That I know I could make my life easier by learning more about the shortcuts and commands and configuring the terminal but I don’t spend the time because it feels overwhelming.
+> 我知道通过学习更多关于快捷键和命令以及配置终端，我可以让我的生活更轻松，但我不花时间，因为感觉太overwhelming了。
 
-### [history (42)][10]
+### [历史记录 (42)][10]
 
-Some issues with shell history:
+一些shell历史记录的问题：
 
-*   history not being shared between terminal tabs (16)
-*   limits that are too short (4)
-*   history not being restored when terminal tabs are restored
-*   losing history because the terminal crashed
-*   not knowing how to search history
+* 历史记录不在终端标签之间共享（16）
+* 限制太短（4）
+* 恢复终端标签时历史记录不被恢复
+* 因为终端崩溃而丢失历史记录
+* 不知道如何搜索历史记录
 
-One example comment:
+一个示例评论：
 
-> It wasted a lot of time until I figured it out and still annoys me that “history” on zsh has such a small buffer; I have to type “history 0” to get any useful length of history.
+> 直到我弄明白它，它浪费了我很多时间，而且仍然让我感到恼火的是，zsh上的"history"缓冲区如此之小；我必须输入"history 0"才能获得任何有用长度的历史记录。
 
-### [bad documentation (37)][11]
+### [糟糕的文档 (37)][11]
 
-People talked about:
+人们谈到：
 
-*   documentation being generally opaque
-*   lack of examples in man pages
-*   programs which don’t have man pages
+* 文档通常晦涩难懂
+* man页面中缺乏示例
+* 没有man页面的程序
 
-Here’s a representative comment:
+这是一个有代表性的评论：
 
-> Finding good examples and docs. Man pages often not enough, have to wade through stack overflow
+> 找到好的例子和文档。Man页面通常不够，必须浏览stack overflow
 
-### [scrollback (36)][12]
+### [回滚 (36)][12]
 
-A few issues with scrollback:
+关于回滚的一些问题：
 
-*   programs printing out too much data making you lose scrollback history
-*   resizing the terminal messes up the scrollback
-*   lack of timestamps
-*   GUI programs that you start in the background printing stuff out that gets in the way of other programs’ outputs
+* 程序打印出太多数据，使你失去回滚历史
+* 调整终端大小会搞乱回滚
+* 缺乏时间戳
+* 在后台启动的GUI程序打印出的东西妨碍了其他程序的输出
 
-One example comment:
+一个示例评论：
 
-> When resizing the terminal (in particular: making it narrower) leads to broken rewrapping of the scrollback content because the commands formatted their output based on the terminal window width.
+> 当调整终端大小（特别是：使其变窄）导致回滚内容的重新换行被破坏，因为命令根据终端窗口宽度格式化了它们的输出。
 
-### [“it feels outdated” (33)][13]
+### ["感觉过时" (33)][13]
 
-Lots of comments about how the terminal feels hampered by legacy decisions and how users often end up needing to learn implementation details that feel very esoteric. One example comment:
+很多评论提到终端感觉受到遗留决策的阻碍，以及用户经常需要学习感觉非常深奥的实现细节。一个示例评论：
 
-> Most of the legacy cruft, it would be great to have a green field implementation of the CLI interface.
+> 大部分遗留的东西，如果能有一个全新实现的CLI界面就太好了。
 
-### [shell scripting (32)][14]
+### [shell脚本 (32)][14]
 
-Lots of complaints about POSIX shell scripting. There’s a general feeling that shell scripting is difficult but also that switching to a different less standard scripting language (fish, nushell, etc) brings its own problems.
+对POSIX shell脚本有很多抱怨。普遍感觉是shell脚本很难，但切换到不同的不太标准的脚本语言（fish、nushell等）也会带来自己的问题。
 
-> Shell scripting. My tolerance to ditch a shell script and go to a scripting language is pretty low. It’s just too messy and powerful. Screwing up can be costly so I don’t even bother.
+> Shell脚本。我放弃shell脚本转向脚本语言的容忍度相当低。它太混乱且功能强大。搞砸可能代价高昂，所以我甚至不去尝试。
 
-### [more issues][15]
+### [更多问题][15]
 
-Some more issues that were mentioned at least 10 times:
+一些被提及至少10次的更多问题：
 
-*   (31) inconsistent command line arguments: is it -h or help or –help?
-*   (24) keeping dotfiles in sync across different systems
-*   (23) performance (e.g. “my shell takes too long to start”)
-*   (20) window management (potentially with some combination of tmux tabs, terminal tabs, and multiple terminal windows. Where did that shell session go?)
-*   (17) generally feeling scared/uneasy (“The debilitating fear that I’m going to do some mysterious Bad Thing with a command and I will have absolutely no idea how to fix or undo it or even really figure out what happened”)
-*   (16) terminfo issues (“Having to learn about terminfo if/when I try a new terminal emulator and ssh elsewhere.”)
-*   (16) lack of image support (sixel etc)
-*   (15) SSH issues (like having to start over when you lose the SSH connection)
-*   (15) various tmux/screen issues (for example lack of integration between tmux and the terminal emulator)
-*   (15) typos & slow typing
-*   (13) the terminal getting messed up for various reasons (pressing `Ctrl-S`, `cat`ing a binary, etc)
-*   (12) quoting/escaping in the shell
-*   (11) various Windows/PowerShell issues
+* (31) 命令行参数不一致：是-h还是help还是--help？
+* (24) 在不同系统之间保持dotfiles同步
+* (23) 性能（例如"我的shell启动时间太长"）
+* (20) 窗口管理（可能结合了tmux标签、终端标签和多个终端窗口。那个shell会话去哪了？）
+* (17) 普遍感到害怕/不安（"使用命令时可能会做一些神秘的坏事，而我将完全不知道如何修复或撤销它，甚至不知道发生了什么，这种令人衰弱的恐惧"）
+* (16) terminfo问题（"如果/当我尝试新的终端模拟器并ssh到其他地方时，必须了解terminfo。"）
+* (16) 缺乏图像支持（sixel等）
+* (15) SSH问题（比如当你失去SSH连接时必须重新开始）
+* (15) 各种tmux/screen问题（例如tmux和终端模拟器之间缺乏集成）
+* (15) 拼写错误和打字慢
+* (13) 终端因各种原因被搞乱（按`Ctrl-S`，`cat`一个二进制文件等）
+* (12) shell中的引用/转义
+* (11) 各种Windows/PowerShell问题
 
-### [n/a (122)][16]
+### [不适用 (122)][16]
 
-There were also 122 answers to the effect of “nothing really” or “only that I can’t do EVERYTHING in the terminal”
+还有122个回答表示"没什么真正的问题"或"只是我不能在终端中做所有事情"
 
-One example comment:
+一个示例评论：
 
-> Think I’ve found work arounds for most/all frustrations
+> 我想我已经找到了解决大多数/所有沮丧的方法
 
-### [that’s all!][17]
+### [就是这些！][17]
 
-I’m not going to make a lot of commentary on these results, but here are a couple of categories that feel related to me:
+我不会对这些结果做太多评论，但这里有几个对我来说感觉相关的类别：
 
-*   remembering syntax & history (often the thing you need to remember is something you’ve run before!)
-*   discoverability & the learning curve (the lack of discoverability is definitely a big part of what makes it hard to learn)
-*   “switching systems is hard” & “it feels outdated” (tools that haven’t really changed in 30 or 40 years have many problems but they do tend to be always _there_ no matter what system you’re on, which is very useful and makes them hard to stop using)
+* 记住语法和历史记录（通常你需要记住的东西是你以前运行过的东西！）
+* 可发现性和学习曲线（缺乏可发现性肯定是使其难以学习的一大部分）
+* "切换系统很困难"和"感觉过时"（30或40年来没有真正改变的工具有很多问题，但它们确实倾向于无论你在什么系统上都_存在_，这非常有用，使它们难以停止使用）
 
-Trying to categorize all these results in a reasonable way really gave me an appreciation for social science researchers’ skills.
+尝试以合理的方式对所有这些结果进行分类，真的让我对社会科学研究人员的技能有了更深的认识。
 
 [1]: https://jvns.ca/terminal-survey/results-bsky
 [2]: https://github.com/jvns/classificator
