@@ -37,7 +37,7 @@ reviewer: ""
 
 首先，我不会费心使用那些 100 个字符长的正则表达式。这是你唯一需要的电子邮件正则表达式：
 
-```plain
+```regex
 ^.+@.+\..+$
 ```
 
@@ -47,7 +47,7 @@ reviewer: ""
 
 以下是我生成这些 OTP 的一些方法：
 
-```plain
+```golang
 bytes := make([]byte, 5)
 rand.Read(bytes)
 // 8个字符，40位熵
@@ -55,7 +55,7 @@ rand.Read(bytes)
 otp := base32.StdEncoding.EncodeToString(bytes)
 ```
 
-```plain
+```golang
 // 8个字符，熵相当于~26位
 // 这引入了微小的偏差。
 // 参见RFC 4226了解为什么这样做没问题。
