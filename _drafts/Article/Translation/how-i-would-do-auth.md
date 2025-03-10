@@ -1,5 +1,5 @@
 ---
-title: How I would do auth
+title: 我会如何实现身份验证
 date: 2025-03-10T03:29:26.732Z
 authorURL: ""
 originalURL: https://pilcrowonpaper.com/blog/how-i-would-do-auth/
@@ -7,101 +7,101 @@ translator: ""
 reviewer: ""
 ---
 
-This is a quick post on how I would implement auth for a public-facing app. This won’t be anything too in-depth or definitive - just a collection of my current opinions. It might be useful as a starting guide for some people though.
+这是一篇关于我如何为面向公众的应用实现身份验证的简短文章。这不会是太深入或权威的内容 - 只是我当前观点的集合。不过，对一些人来说，它可能作为入门指南很有用。
 
-First, if the application is for devs and I need something very quick, I would just use GitHub OAuth. Done in 10 minutes.
+首先，如果应用是为开发者设计的，而我需要一些非常快速的东西，我会直接使用 GitHub OAuth。10分钟内搞定。
 
-Now to the main part - how would I implement password-based auth? The minimum for me would be password with 2FA using authenticator apps. Passkeys aren’t widespread enough and I just find magic-links annoying.
+现在进入主要部分 - 我会如何实现基于密码的身份验证？对我来说，最低要求是密码加上使用认证器应用的双因素认证(2FA)。密钥通行证(Passkeys)还不够普及，而我只是觉得魔术链接(magic-links)很烦人。
 
-> Always implement rate-limiting, even if it’s something very basic!
+> 始终实现速率限制，即使是非常基础的实现！
 
-Session management
+会话管理
 ------------------
 
-Database sessions 100%. I really, really don’t like JWTs and they shouldn’t be used as sessions majority of times.
+100%使用数据库会话。我真的非常不喜欢JWT，大多数情况下它们不应该被用作会话。
 
-Assuming I only have to deal with authenticated sessions, my preferred approach is 30 days expiration but the expiration gets extended every time the session is used. This ensures active users stay authenticated while inactive users are signed out.
+假设我只需要处理已认证的会话，我首选的方法是30天过期，但每次使用会话时都会延长过期时间。这确保活跃用户保持认证状态，而不活跃用户则会被登出。
 
-Registration
+注册
 ------------
 
-Hot take - I think it’s fine for apps to share whether an email exists in their system or not. If the email is already taken, just tell the user that they already have an account. Significantly better UX for minimal security loss. Don’t use emails for auth if you don’t like that.
+有争议的观点 - 我认为应用分享电子邮件是否已存在于系统中是可以的。如果电子邮件已被占用，只需告诉用户他们已经有一个账户。显著更好的用户体验，安全性损失很小。如果你不喜欢这样，就不要使用电子邮件进行身份验证。
 
-Anyway, something more important than preventing user enumeration is checking passwords against previous leaks. The [`haveibeenpwned.com`][1] API is probably the best option for this. This will reduce the effectiveness of credential stuffing attacks, where an attacker targets accounts using leaked passwords from other websites.
+无论如何，比防止用户枚举更重要的是检查密码是否在之前的泄露中出现过。[`haveibeenpwned.com`][1] API可能是这方面的最佳选择。这将减少凭证填充攻击的有效性，即攻击者使用从其他网站泄露的密码来攻击账户。
 
-Passwords are hashed with either Argon2id or Scrypt - they’re both good enough. Bcrypt is ok but it unfortunately has a 50-70 character limit.
+密码使用Argon2id或Scrypt进行哈希处理 - 它们都足够好。Bcrypt也可以，但不幸的是它有50-70个字符的限制。
 
-Rate limiting will be set to around 1 attempt per second per IP address. Captchas if I start to get spams.
+速率限制将设置为每个IP地址每秒约1次尝试。如果开始收到垃圾信息，则使用验证码。
 
-### Email verification
+### 电子邮件验证
 
-First of all, I wouldn’t bother with those 100 character long regex. Here’s the only email regex you’ll ever need:
+首先，我不会费心使用那些100个字符长的正则表达式。这是你唯一需要的电子邮件正则表达式：
 
 ```
 ^.+@.+\..+$
 ```
 
-I would also check if the email starts or ends with a space just to make sure the user didn’t mistype it.
+我还会检查电子邮件是否以空格开头或结尾，以确保用户没有输错。
 
-I personally prefer OTPs for email verification over links, but both work fine. For OTPs, a basic throttling like 5-10 attempts per hour per account should be good enough. The code will be valid for 10, maybe 15 minutes. For verification links, I’d set the expiration to 2 hours.
+对于电子邮件验证，我个人更喜欢一次性密码(OTP)而不是链接，但两者都可以。对于OTP，每个账户每小时5-10次尝试的基本限制应该足够了。验证码将在10分钟，最多15分钟内有效。对于验证链接，我会将过期时间设置为2小时。
 
-Here’s some ways I would generate those OTPs:
+以下是我生成这些OTP的一些方法：
 
 ```
 bytes := make([]byte, 5)
 rand.Read(bytes)
-// 8 characters, 40 bits of entropy
-// I might use a custom character set to remove 1, I, 0, and O.
+// 8个字符，40位熵
+// 我可能会使用自定义字符集来移除1、I、0和O。
 otp := base32.StdEncoding.EncodeToString(bytes)
 ```
 
 ```
-// 8 characters, entropy equivalent to ~26 bits
-// This introduces a tiny bias.
-// See RFC 4226 for why this is fine.
+// 8个字符，熵相当于~26位
+// 这引入了微小的偏差。
+// 参见RFC 4226了解为什么这样做没问题。
 bytes := make([]byte, 4)
 rand.Read(bytes)
 num := int(binary.BigEndian.Uint32(bytes) % 100000000)
 otp := fmt.Sprintf("%08d", num)
 ```
 
-Login
+登录
 -----
 
-Again, if the email is invalid, just return “Account does not exist.”
+同样，如果电子邮件无效，只需返回"账户不存在"。
 
-Login throttling will be based on emails. Increase the timeout period until 5-10 minutes (e.g. 1, 2, 4, 8, 15, 30, 60, 120, 300 seconds). You don’t want to make it longer than that to prevents attackers from blocking legitimate attempt by purposely failing. Rate limiting based on IP addresses will be set to 1 attempt per second per IP. Multiple users can share IP addresses so I don’t want to be too strict here. I’m not too worried about login throttling anyway since we check for passwords strengths during registration and we have 2FA enabled.
+登录限制将基于电子邮件。增加超时时间直到5-10分钟（例如1、2、4、8、15、30、60、120、300秒）。你不希望时间更长，以防止攻击者通过故意失败来阻止合法尝试。基于IP地址的速率限制将设置为每个IP每秒1次尝试。多个用户可以共享IP地址，所以我不想在这里太严格。无论如何，我对登录限制不太担心，因为我们在注册期间检查密码强度，并且我们启用了2FA。
 
-I might consider implementing [device cookies][2] if I’m really worried about account-lockouts, though I probably need to monitor requests and manually block requests if I’m dealing with a such attacks anyway.
+如果我真的担心账户锁定，我可能会考虑实现[设备cookie][2]，尽管如果我处理这类攻击，我可能需要监控请求并手动阻止请求。
 
 2FA
 ---
 
-2FA is a must have for me. 2FA via authenticator apps (TOTP) should always be available. It’s relatively easy for users to use and for me to implement. Passkeys and security keys would be my next priority (users that register passkeys should be allowed to use them instead of password+2FA too). On the other hand, SMS is expensive and vulnerable to SIM-swapping. I would just avoid it. No one likes them anyway.
+对我来说，2FA是必须的。应该始终提供通过认证器应用（TOTP）的2FA。它对用户来说相对容易使用，对我来说也容易实现。密钥通行证和安全密钥将是我的下一个优先事项（注册密钥通行证的用户也应该被允许使用它们代替密码+2FA）。另一方面，SMS成本高且容易受到SIM卡交换攻击。我会避免使用它。反正没人喜欢它们。
 
-For TOTP, again a basic throttling like 5-10 attempts per hour per account should be good enough. For passkeys, maybe 1 attempt per second per IP address. Brute forcing passkeys is impossible but verifying signatures is somewhat resource intensive so it may be vulnerable to DoS attacks.
+对于TOTP，同样每个账户每小时5-10次尝试的基本限制应该足够了。对于密钥通行证，可能是每个IP地址每秒1次尝试。暴力破解密钥通行证是不可能的，但验证签名在某种程度上是资源密集型的，因此可能容易受到DoS攻击。
 
-> Passkeys can be used as a second-factor and as an alternative to passwords, but security keys should only be used as a second-factor.
+> 密钥通行证可以用作第二因素，也可以作为密码的替代品，但安全密钥应该只用作第二因素。
 
-Optional, but if I were to implement recovery codes, I would generate 5 or 10 bytes and base32 encode like I showed in the email verification section. Hash them with either Argon2id/Scrypt, and give users the option to regenerate them anytime. It would be single-use and using it will disconnect all 2FA methods tied to the account. I would be pretty strict with the attempt count here and set it 5 attempts per hour or even day per account.
+可选的，但如果我要实现恢复码，我会生成5或10个字节并进行base32编码，就像我在电子邮件验证部分展示的那样。使用Argon2id/Scrypt对它们进行哈希处理，并给用户随时重新生成它们的选项。它将是一次性使用的，使用它将断开与账户关联的所有2FA方法。我在这里会对尝试次数相当严格，设置为每个账户每小时或甚至每天5次尝试。
 
-Finally, the users should authenticate using one of their second factor before they’re allowed to edit their 2FA methods. This would start to get annoying for the user though so I’d only require it every hour (or less) by storing the last time they used 2FA in the session.
+最后，用户应该使用他们的第二因素之一进行身份验证，然后才能编辑他们的2FA方法。这对用户来说会开始变得烦人，所以我只会每小时（或更少）要求一次，通过在会话中存储他们上次使用2FA的时间。
 
-Password reset
+密码重置
 --------------
 
-Again, I’m fine with telling the user if the email is valid or not.
+同样，我不介意告诉用户电子邮件是否有效。
 
-Login throttling and rate limiting would be pretty similar to login and will be based on both email and IP addresses. Add a Captcha if necessary.
+登录限制和速率限制将与登录非常相似，并将基于电子邮件和IP地址。必要时添加验证码。
 
-Both single-use OTPs and links work and their expiration will be similar to email verification. I would hash the code or token just to be safe, especially since it’s not really hard.
+一次性OTP和链接都可以工作，它们的过期时间将类似于电子邮件验证。我会对代码或令牌进行哈希处理以确保安全，特别是因为这并不难。
 
-2FA should be required even for password resets.
+即使是密码重置，也应该需要2FA。
 
-Did I miss anything?
+我遗漏了什么吗？
 --------------------
 
-Let me know on Twitter or Discord if there’s anything I should add to the post!
+如果有任何我应该添加到文章中的内容，请在Twitter或Discord上告诉我！
 
 [1]: https://haveibeenpwned.com/
 [2]: https://owasp.org/www-community/Slow_Down_Online_Guessing_Attacks_with_Device_Cookies
