@@ -1,5 +1,5 @@
 ---
-title: Your API Shouldn't Redirect HTTP to HTTPS
+title: 你的API不应该将HTTP重定向到HTTPS
 date: 2024-05-23T00:00:00.000Z
 authorURL: ""
 originalURL: https://jviide.iki.fi/http-redirects
@@ -7,171 +7,212 @@ translator: ""
 reviewer: ""
 ---
 
-## Background
+## 背景
 
 <!-- more -->
 
-When an user directs their web browser to an HTTP URL, it's a common practice for the service to redirect the request to a corresponding HTTPS page. This unencrypted part of the communication flow has its flaws. Third parties in shared networks, as well as network intermediaries, could [sniff][1] passwords and other secrets from the initial HTTP traffic or even impersonate the web server with a [MITM][2] attack. Nevertheless, redirection has been an useful first step in the transition from the largely unencrypted early web to the [largely encrypted][3] web of today.
+当用户将他们的网络浏览器指向HTTP URL时，服务通常会将请求重定向到相应的HTTPS页面。这种通信流程中的未加密部分存在缺陷。共享网络中的第三方以及网络中介可能会[嗅探][1]初始HTTP流量中的密码和其他机密信息，甚至可能通过[中间人攻击][2]冒充网络服务器。尽管如此，重定向一直是从早期大部分未加密的网络向如今[大部分加密][3]的网络过渡的有用第一步。
 
-Later techniques tightened the security story further. Servers can now send [HSTS][4] along with the initial HTTP-to-HTTPS redirection response, telling the user's browser to use only HTTPS for that domain from then on. This limits the window of opportunity for trivial sniffing and MITM attacks to the first request. Browsers then added [HSTS preload lists][5] and [HTTPS-Only modes][6] that allow skipping the initial unencrypted request altogether.
+后来的技术进一步加强了安全性。服务器现在可以在初始HTTP到HTTPS重定向响应中发送[HSTS][4]，告诉用户的浏览器从此只对该域名使用HTTPS。这将简单嗅探和中间人攻击的机会窗口限制在第一个请求。浏览器随后添加了[HSTS预加载列表][5]和[仅HTTPS模式][6]，允许完全跳过初始未加密请求。
 
-From the perspective of usability-security tradeoff it all makes sense for user-facing sites. But interestingly, the redirection approach also appears to be widely adopted for APIs. APIs are mostly consumed by other software so the same usability arguments don't apply there. Moreover, many programmatic API clients don't tend to keep browser-like state of things like HSTS headers they have seen.
+从可用性-安全性权衡的角度来看，这对面向用户的网站是有意义的。但有趣的是，重定向方法似乎也被广泛应用于API。API主要被其他软件使用，因此相同的可用性论点在这里并不适用。此外，许多程序化API客户端不会像浏览器那样保持它们所见HSTS头部的状态。
 
-This post argues that, due to these factors, the common practice of redirecting API calls from HTTP to HTTPS should be reconsidered. While the post mostly refers to REST APIs, its points also apply to other styles of APIs that use HTTP(S) as a transport mechanism.
+本文认为，由于这些因素，应该重新考虑将API调用从HTTP重定向到HTTPS的常见做法。虽然本文主要指的是REST API，但其观点也适用于使用HTTP(S)作为传输机制的其他类型的API。
 
-## A Simple Typo Is Enugh
+## 一个简单的拼写错误就足够了
 
-At [work][7], we were building a new integration against a third-party API. The initial code commit contained a mistyped API base URL `"http://..."` instead of `"https://..."`. A pretty easy mistake to make.
+在[工作中][7]，我们正在构建一个针对第三方API的新集成。初始代码提交包含了一个错误输入的API基础URL `"http://..."` 而不是 `"https://..."`。这是一个很容易犯的错误。
 
-The error was essentially masked during runtime: The third-party API responded to every request with a 301 redirect to their HTTPS side. Node.js's built-in [fetch][8] happily and _quietly_ followed those redirects to the HTTPS endpoint.
+这个错误在运行时基本上被掩盖了：第三方API对每个请求都以301重定向到他们的HTTPS端点进行响应。Node.js内置的[fetch][8]愉快且 _悄无声息地_ 跟随这些重定向到HTTPS端点。
 
-**Every single one of our API requests now sent the API keys over the network in plaintext**, before then sending them again to the encrypted endpoint. The one letter omission could have exposed the used API keys to third parties without us realizing it. As the integration would have worked, there's a good chance that code would have leaked any secrets in the API calls for years. In the long run, the probabilities for malice tend to accumulate.
+**我们的每一个API请求现在都以明文形式通过网络发送API密钥**，然后再次将它们发送到加密端点。这一个字母的遗漏可能会在我们不知情的情况下将API密钥暴露给第三方。由于集成可以正常工作，这段代码很可能会在多年内泄露API调用中的任何机密。从长远来看，恶意行为的概率往往会累积。
 
-Luckily we spotted the error during the code review before the error could propagate to production or even testing. We also realized that our _own_ API also did similar HTTP-to-HTTPS redirects.
+幸运的是，我们在代码审查期间发现了这个错误，在错误传播到生产环境甚至测试环境之前。我们还意识到我们_自己的_API也做了类似的HTTP到HTTPS重定向。
 
-## The Fail-fast Principle
+## 快速失败原则
 
-When an API redirect HTTP requests to HTTPS - and the API client silently follows those redirects - it tends to hide mistyped URLs like in the case described above. A simple one-letter omission can easily be ignored, end up in production, and compromise the entire system's confidentiality.
+当API将HTTP请求重定向到HTTPS，而API客户端静默地跟随这些重定向时，它往往会隐藏像上述情况中错误输入的URL。一个简单的单字母遗漏很容易被忽视，最终进入生产环境，并危及整个系统的机密性。
 
-In most cases, it's better to adhere to the [fail-fast principle][9]: unencrypted API calls should fail in a spectacular and visible way so that the developer can easily spot and fix the typo as early as possible during the development process.
+在大多数情况下，最好遵循[快速失败原则][9]：未加密的API调用应该以引人注目且可见的方式失败，以便开发人员能够在开发过程中尽早发现并修复拼写错误。
 
-A great solution for failing fast would be to disable the API server's HTTP interface altogether and not even answer to connections attempts to port 80. If the initial unencrypted connection is never established then the API keys aren't sent, mitigating sniffing attacks and limiting the window of opportunity for MITM attacks to an extremely small time window. This approach is viable for APIs hosted under their own domains like `api.example.com`.
+快速失败的一个很好的解决方案是完全禁用API服务器的HTTP接口，甚至不回应80端口的连接尝试。如果初始未加密连接从未建立，那么API密钥就不会被发送，从而减轻嗅探攻击，并将中间人攻击的机会窗口限制在极小的时间范围内。这种方法适用于在自己域名下托管的API，如`api.example.com`。
 
-Our own API was served under the `/api` path on the same domain as our service's web UI. As such we didn't feel confident completely disabling the HTTP interface, so we picked the second option: All unencrypted HTTP requests made under `/api` path now return a descriptive error message along with the HTTP status code 403. Some initial plaintext requests might be made during development, but they're much easier for developers to notice.
+我们自己的API是在与服务的Web UI相同的域名下的`/api`路径提供的。因此，我们不敢完全禁用HTTP接口，所以我们选择了第二种选择：现在所有在`/api`路径下进行的未加密HTTP请求都会返回一个描述性错误消息，以及HTTP状态码403。在开发过程中可能会进行一些初始明文请求，但开发人员更容易注意到它们。
 
-After the initial publication of this post, Hacker News user u/zepton [made a great point:][10]
+在本文最初发表后，Hacker News用户u/zepton[提出了一个很好的观点：][10]
 
-Indeed! Any API keys sent unencrypted over the public internet should be considered compromised and get automatically revoked on the spot. An error message in the API response is a great place to inform the API consumer both to fix their URL and get new keys after that.
+确实！任何通过公共互联网未加密发送的API密钥都应该被视为已泄露，并立即自动撤销。API响应中的错误消息是一个很好的地方，可以通知API消费者修复他们的URL并在之后获取新的密钥。
 
-## Who Else?
+## 还有谁？
 
-That took care of our own API. We also pinged the third-party API provider and a couple of friends that they might want to check their APIs. And who knows, maybe there were some commonly used APIs that accept API keys (or other credentials) and also redirect from HTTP to HTTPS?
+这解决了我们自己的API问题。我们还联系了第三方API提供商和几个朋友，他们可能想检查一下他们的API。谁知道，也许有一些常用的API接受API密钥（或其他凭证）并且也从HTTP重定向到HTTPS？
 
-I listed a bunch of well-known APIs from the top of my head and did a little survey. Several of them returned HTTP errors or declined to connections altogether. They're listed here with cURL spells for checking out their detailed responses:
+我列出了一堆我能想到的知名API，并做了一个小调查。其中几个返回了HTTP错误或完全拒绝连接。它们在这里列出，并附有cURL命令以查看其详细响应：
 
-1.  **Stripe API**: Responds with [403][11] ("Forbidden") and a descriptive error message.  
-    `curl -i http://api.stripe.com`
-2.  **Google Cloud API**: Responds with 403 and a descriptive error message.  
-    `curl -i http://compute.googleapis.com/compute/v1/projects/project/regions/region/addresses`
-3.  **Shopify API**: Responds with 403 and a descriptive error message.  
-    `curl -i http://shop.myshopify.com/admin/api/2021-07/shop.json`
-4.  **NPM Registry API**: Responds with [426][12] ("Upgrade Required") and a descriptive error message.  
-    `curl -i -X PUT -H 'content-type: application/json' -d '{}' 'http://registry.npmjs.org/-/user/org.couchdb.user:npm'`
-5.  [Fastmail JMAP API][13]: The whole HTTP interface seems to be disabled.  
-    `curl -i -H 'Authorization: Bearer foo' http://api.fastmail.com/jmap/session`
-6.  **Mailjet**: The socket responds with completely empty payload.  
-    `curl -i -X POST --user "user:pass" http://api.mailjet.com/v3.1/send -H 'Content-Type: application/json' -d '{}'`
+1.  **Stripe API**：响应[403][11]（"禁止"）和一个描述性错误消息。  
+    ```bash
+    curl -i http://api.stripe.com
+    ```
+2.  **Google Cloud API**：响应403和一个描述性错误消息。  
+    ```bash
+    curl -i http://compute.googleapis.com/compute/v1/projects/project/regions/region/addresses
+    ```
+3.  **Shopify API**：响应403和一个描述性错误消息。  
+    ```bash
+    curl -i http://shop.myshopify.com/admin/api/2021-07/shop.json
+    ```
+4.  **NPM Registry API**：响应[426][12]（"需要升级"）和一个描述性错误消息。  
+    ```bash
+    curl -i -X PUT -H 'content-type: application/json' -d '{}' 'http://registry.npmjs.org/-/user/org.couchdb.user:npm
+    ```
+5.  [Fastmail JMAP API][13]：整个HTTP接口似乎被禁用。  
+    ```bash
+    curl -i -H 'Authorization: Bearer foo' http://api.fastmail.com/jmap/session
+    ```
+6.  **Mailjet**：套接字响应完全空的负载。  
+    ```bash
+    curl -i -X POST --user "user:pass" http://api.mailjet.com/v3.1/send -H 'Content-Type: application/json' -d '{}'
+    ```
 
-However, the following APIs _did_ respond with HTTP-to-HTTPS redirects:
+然而，以下API_确实_以HTTP到HTTPS重定向进行响应：
 
 1.  [ActiveCampaign API][14]  
-    `curl -i -H "Api-Token: 123abc-def-ghi" http://123456demo.api-us1.com/api/3/accounts`
+    ```bash
+    curl -i -H "Api-Token: 123abc-def-ghi" http://123456demo.api-us1.com/api/3/accounts
+    ```
 2.  [Atlassian Jira REST API][15]  
-    `curl -i http://jira.atlassian.com/rest/api/latest/issue/JRA-9`
+    ```bash
+    curl -i http://jira.atlassian.com/rest/api/latest/issue/JRA-9
+    ```
 3.  [Anthropic API][16]  
-    `curl -i http://api.anthropic.com/v1/messages --header "x-api-key: 1" --header "anthropic-version: 2023-06-01" --header "content-type: application/json" --data '{}'`
-4.  [Auth0][17]  
-    `curl -i 'http://login.auth0.com/api/v2/organizations' -H 'Accept: application/json' -H 'Authorization: Bearer foo'`
-5.  [Cloudflare API][18]  
-    `curl -i http://api.cloudflare.com/client/v4/accounts/abf9b32d38c5f572afde3336ec0ce302/rulesets`
-6.  [Datadog][19]  
-    `curl -i http://api.datadoghq.com/api/v2/integration/gcp/accounts`
-7.  [Deno Subhosting API][20]  
-    `curl -i http://api.deno.com/v1/organizations/11111111-2222-3333-4444-555555555555/projects`
-8.  [DigitalOcean][21]  
-    `curl -i -X GET "http://api.digitalocean.com/v2/actions" -H "Authorization: Bearer foo"`
-9.  [Facebook Graph API][22]  
-    `curl -i 'http://graph.facebook.com/me?access_token=foo`
-10.  [Fastly API][23]  
-    `curl -i -H "Fastly-Key: foo" "http://api.fastly.com/current_customer"`
-11.  [Figma API][24]  
-    `curl -i -H 'X-FIGMA-TOKEN: 123' 'http://api.figma.com/v1/me'`
-12.  [GitHub API][25]  
-    `curl -i http://api.github.com/user`
-13.  [Gitlab API][26]  
-    `curl -i http://gitlab.com/api/v4/audit_events`
-14.  [HackerOne API][27]  
-    `curl -i "http://api.hackerone.com/v1/me/organizations" -X GET -u "user:token" -H 'Accept: application/json'`
-15.  [Hetzner Cloud API][28]  
-    `curl -i -H "Authorization: Bearer 123" "http://api.hetzner.cloud/v1/certificates"`
-16.  [Hubspot API][29]  
-    `curl -i --request GET --url http://api.hubapi.com/account-info/v3/api-usage/daily/private-apps --header 'authorization: Bearer YOUR_ACCESS_TOKEN'`
-17.  [IBM Cloud API][30]  
-    `curl -i "http://iam.cloud.ibm.com/identity/token" -d "apikey=YOUR_API_KEY_HERE&grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey" -H "Content-Type: application/x-www-form-urlencoded" -H "Authorization: Basic Yng6Yng="`
-18.  [Instagram Basic Display API][31]  
-    `curl -i 'http://graph.instagram.com/me/media?fields=id,caption&access_token=foo'`
-19.  [Linear API][32]  
-    `curl -i -X POST -H "Content-Type: application/json" http://api.linear.app/graphql`
-20.  [Mastodon API][33] (on mastodon.social)  
-    `curl -i http://mastodon.social/api/v1/timelines/home`
-21.  [Microsoft Graph API][34]  
-    `curl -i http://graph.microsoft.com/v1.0/me/messages`
-22.  [Netlify API][35]  
-    `curl -i -H "User-Agent: foo" -H "Authorization: Bearer foo" http://api.netlify.com/api/v1/sites`
-23.  [OpenAI API][36] — Updated to return errors [since 2024-05-28][37].  
-    `curl -i -H "Content-Type: application/json" -H "Authorization: Bearer 123" -d '{}' http://api.openai.com/v1/chat/completions`
-24.  [OVHCloud API][38]  
-    `curl -i http://api.us.ovhcloud.com/1.0/auth/details`
-25.  [Resend][39]  
-    `curl -i -X GET 'http://api.resend.com/domains' -H 'Authorization: Bearer re_123456789' -H 'Content-Type: application/json'`
-26.  [Shodan API][40]  
-    `curl -i 'http://api.shodan.io/org?key=12345'`
-27.  [Slack API][41]  
-    `curl -i -X POST -H "Content-Type: application/json" http://slack.com/api/conversations.create`
-28.  [Tailscale API][42]  
-    `curl -i -H "Authorization: Bearer tskey-api-xxxxx" http://api.tailscale.com/api/v2/user-invites/1`
-29.  Twitter  
-    `curl -i http://api.twitter.com/2/users/by/username/jack`
-30.  [Uber API][43]  
-    `curl -F client_secret=1 -F client_id=1 -F grant_type=authorization_code -F redirect_uri=1 -F code=1 https://auth.uber.com/oauth/v2/token`
-31.  [UpCloud API][44]  
-    `curl -i -H 'Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=' http://api.upcloud.com/1.3/account`
-32.  [Vercel API][45]  
-    `curl -i -H 'Authorization: Bearer foo' http://api.vercel.com/v5/user/tokens/5d9f2ebd38ddca62e5d51e9c1704c72530bdc8bfdd41e782a6687c48399e8391`
-33.  [Vultr API][46]  
-    `curl -i "http://api.vultr.com/v2/account" -H "Authorization: Bearer 123"`
+    ```bash
+    curl -i http://api.anthropic.com/v1/messages --header "x-api-key: 1" --header "anthropic-version: 2023-06-01" --header "content-type: application/json" --data '{}'
+    ```
 
-I didn't report these findings separately to all of these API providers. There were some outliers not listed here that I did contact, with varying results. More on that later.
+4.   [HackerOne API][27]  
+     ```bash
+     curl -i "http://api.hackerone.com/v1/me/organizations" -X GET -u "user:token" -H 'Accept: application/json'
+     ```
+5.   [Hetzner Cloud API][28]  
+     ```bash
+     curl -i -H "Authorization: Bearer 123" "http://api.hetzner.cloud/v1/certificates"
+     ```
+6.   [Hubspot API][29]  
+     ```bash
+     curl -i --request GET --url http://api.hubapi.com/account-info/v3/api-usage/daily/private-apps --header 'authorization: Bearer YOUR_ACCESS_TOKEN'
+     ```
+7.   [IBM Cloud API][30]  
+     ```bash
+     curl -i "http://iam.cloud.ibm.com/identity/token" -d "apikey=YOUR_API_KEY_HERE&grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey" -H "Content-Type: application/x-www-form-urlencoded" -H "Authorization: Basic Yng6Yng="
+     ```
+8.   [Instagram Basic Display API][31]  
+     ```bash
+     curl -i 'http://graph.instagram.com/me/media?fields=id,caption&access_token=foo'
+     ```
+9.   [Linear API][32]  
+     ```bash
+     curl -i -X POST -H "Content-Type: application/json" http://api.linear.app/graphql
+     ```
+10.  [Mastodon API][33] (on mastodon.social)  
+     ```bash
+     curl -i http://mastodon.social/api/v1/timelines/home
+     ```
+11.  [Microsoft Graph API][34]  
+     ```bash
+     curl -i http://graph.microsoft.com/v1.0/me/messages
+     ```
+12.  [Netlify API][35]  
+     ```bash
+     curl -i -H "User-Agent: foo" -H "Authorization: Bearer foo" http://api.netlify.com/api/v1/sites
+     ```
+13.  [OpenAI API][36] — 更新为返回错误 [自2024-05-28起][37]。  
+     ```bash
+     curl -i -H "Content-Type: application/json" -H "Authorization: Bearer 123" -d '{}' http://api.openai.com/v1/chat/completions
+     ```
+14.  [OVHCloud API][38]  
+      ```bash
+     curl -i http://api.us.ovhcloud.com/1.0/auth/details
+     ```
+15.  [Resend][39]  
+     ```bash
+     curl -i -X GET 'http://api.resend.com/domains' -H 'Authorization: Bearer re_123456789' -H 'Content-Type: application/json'
+     ```
+16.  [Shodan API][40]  
+     ```bash
+     curl -i 'http://api.shodan.io/org?key=12345'
+     ```
+17.  [Slack API][41]  
+     ```bash
+     curl -i -X POST -H "Content-Type: application/json" http://slack.com/api/conversations.create
+     ```
+18.  [Tailscale API][42]  
+     ```bash
+     curl -i -H "Authorization: Bearer tskey-api-xxxxx" http://api.tailscale.com/api/v2/user-invites/1
+     ```
+19.  Twitter  
+     ```bash
+     curl -i http://api.twitter.com/2/users/by/username/jack
+     ```
+20.  [Uber API][43]  
+     ```bash
+     curl -F client_secret=1 -F client_id=1 -F grant_type=authorization_code -F redirect_uri=1 -F code=1 http://auth.uber.com/oauth/v2/token
+     ```
+21.  [UpCloud API][44]  
+     ```bash
+        curl -i -H 'Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=' http://api.upcloud.com/1.3/account
+     ```
+22.  [Vercel API][45]  
+     ```bash
+     curl -i -H 'Authorization: Bearer foo' http://api.vercel.com/v5/user/tokens/5d9f2ebd38ddca62e5d51e9c1704c72530bdc8bfdd41e782a6687c48399e8391
+     ```
+23.  [Vultr API][46]  
+     ```bash
+     curl -i "http://api.vultr.com/v2/account" -H "Authorization: Bearer 123"
+     ```
 
-Take each individual result with a grain of salt: I had to test some of these APIs without valid credentials, or with credentials used in documentation examples. But the overall pattern indicates that the habit of APIs redirecting HTTP requests to HTTPS is quite widespread. Why is that?
+我没有单独向所有这些API提供商报告这些发现。这里没有列出的一些特例我确实联系了，结果各不相同。稍后会详细介绍。
 
-## Best Practices Need Practice Too
+对每个单独的结果持保留态度：我不得不在没有有效凭证的情况下测试一些API，或者使用文档示例中的凭证。但总体模式表明，API重定向HTTP请求到HTTPS的习惯相当普遍。为什么会这样呢？
 
-When speaking with people about this topic, many have noted that HTTP-to-HTTPS redirects from APIs have obvious downsides - in hindsight.
+## 最佳实践也需要实践
 
-Redirects for user-facing applications are often mentioned in lists best practices and cheat sheets, [like the ones published by OWASP (The Open Worldwide Application Security Project)][47]. Recommendations specifically aimed for APIs seem rare in contrast. I found just few mentions, for example an excellent PDF slideset called ["Common API Security Pitfalls"][48] by [Philippe De Ryck][49], buried deep within the OWASP website:
+在与人们讨论这个话题时，许多人指出API从HTTP到HTTPS的重定向有明显的缺点 - 事后看来是这样。
 
-![Slide 8 of "Common API Security Pitfalls": "API-only endpoints should disable HTTP and only need to support HTTPS."](/deryck-slide-8.png)
+面向用户的应用程序的重定向经常在最佳实践列表和备忘单中提及，[比如OWASP（开放式Web应用程序安全项目）发布的那些][47]。相比之下，专门针对API的建议似乎很少。我只找到了几处提及，例如[Philippe De Ryck][49] 的一个名为["常见API安全陷阱"][48]的优秀PDF幻灯片集，深藏在OWASP网站内：
 
-Slide 8 of "Common API Security Pitfalls". Emphasis added to highlight the relevant section.
+![幻灯片8，"常见API安全陷阱"："仅API的端点应禁用HTTP，只需支持HTTPS。"][55]
 
-My Google-fu might just be bad. But maybe each best practice item recommending HTTP-to-HTTPS redirects for user-facing sites should have an explicit caveat attached, prominently advising against such redirects for APIs. Therefore I opened [an issue][50] that suggests amending OWASP's Transport Layer Security Cheat Sheet accordingly.
+"常见API安全陷阱"的幻灯片8。添加强调以突出相关部分。
 
-## Bonus Round: Popular APIs That Respond In Plaintext
+我的Google搜索能力可能不太好。但也许每个推荐面向用户的站点进行HTTP到HTTPS重定向的最佳实践项目都应该附带一个明确的警告，明确建议API不要进行此类重定向。因此，我开了[一个问题][50]，建议相应修改OWASP的传输层安全备忘单。
 
-While reviewing the list of APIs, I bumped into some popular ones that neither redirected nor failed unencrypted requests. They just responded to unencrypted HTTP requests with unencrypted HTTP responses, without enforcing HTTPS at any stage.
+## 额外内容：以明文响应的流行API
 
-Maybe they had their reasons, or maybe they had just accidentally misconfigured their reverse proxies. Regardless, seeing that they all handle potentially sensitive data, I contacted these API providers through their respective security channels and explained the problem. The providers are listed below in the order of reporting. I'll unredact their names and details when they've given a definite response, or otherwise after a reasonable amount of time has passed.
+在审查API列表时，我遇到了一些既不重定向也不拒绝未加密请求的流行API。它们只是以未加密的HTTP响应回应未加密的HTTP请求，没有在任何阶段强制使用HTTPS。
 
--   **Provider A**: Reported on 2024-05-17 through their vulnerability reporting email address. Awaiting response.
--   **Provider B**: Reported on 2024-05-21 through their HackerOne program. Got a prompt triage response, stating that attacks requiring MITM (or physical access to a user's device) are outside the scope of the program. Sent back a response explaining that MITM or physical access was not required for sniffing. Awaiting response.
--   **Provider C**: Reported on 2024-05-21 through their security email address. Awaiting response.
--   [VirusTotal API][51]: Reported on 2024-05-21 through Google's [Bug Hunters][52] site (VirusTotal is owned by a Google subsidiary that got merged into Google Cloud). The API responds in plaintext to requests like for example this (where `$API_KEY` is a valid API key):
+也许他们有他们的理由，或者也许他们只是意外地错误配置了他们的反向代理。无论如何，看到它们都处理潜在的敏感数据，我通过各自的安全渠道联系了这些API提供商并解释了问题。提供商按照报告顺序列出。当他们给出明确回应时，或者在合理的时间过去后，我会取消对他们名称和详细信息的编辑。
+
+-   **提供商A**：2024-05-17通过他们的漏洞报告电子邮件地址报告。等待回应。
+-   **提供商B**：2024-05-21通过他们的HackerOne计划报告。得到了迅速的分类响应，声明需要中间人攻击（或对用户设备的物理访问）的攻击超出了计划范围。发回解释不需要中间人攻击或物理访问进行嗅探的回应。等待回应。
+-   **提供商C**：2024-05-21通过他们的安全电子邮件地址报告。等待回应。
+-   [VirusTotal API][51]：2024-05-21通过Google的[Bug Hunters][52]网站报告（VirusTotal由Google子公司拥有，该子公司已合并到Google Cloud）。API以明文响应请求，例如（其中`$API_KEY`是有效的API密钥）：
     
-    `curl -i -H 'x-apikey: $API_KEY' http://www.virustotal.com/api/v3/ip_addresses/1.1.1.1`
+    ```bash
+    curl -i -H 'x-apikey: $API_KEY' http://www.virustotal.com/api/v3/ip_addresses/1.1.1.1
+    ```
     
-    The report got promptly triaged. Received a response on 2024-05-24, cited in part below:
+    报告迅速被分类。2024-05-24收到回应，部分引用如下：
     
 
-## Conclusion
+## 结论
 
-Redirecting HTTP to HTTPS for APIs can be more harmful than helpful due to the nature of APIs. Unlike user-facing web pages, APIs are primarily consumed by other software. API clients often follow redirects automatically and do not maintain state or support security headers like HSTS. This can lead to silent failures where sensitive data in each API request is initially transmitted in plaintext over the network, unencrypted.
+由于API的性质，将HTTP重定向到HTTPS对API的危害可能大于帮助。与面向用户的网页不同，API主要由其他软件使用。API客户端通常会自动跟随重定向，并且不维护状态或支持HSTS等安全头部。这可能导致静默失败，每个API请求中的敏感数据最初以明文形式通过网络传输，未加密。
 
-Let's adopt a fail-fast approach and disable the HTTP interface entirely or return clear error responses for unencrypted requests. This ensures that developers can quickly notice and fix accidental use `http://` URLs to `https://`. We should consider API credentials sent over unencrypted connections compromised and revoke them on the spot, automatically.
+让我们采用快速失败方法，完全禁用HTTP接口或对未加密的请求返回明确的错误响应。这确保开发人员可以快速注意到并修复意外使用`http://`URL到`https://`的情况。我们应该认为通过未加密连接发送的API凭证已被泄露，并立即自动撤销它们。
 
-Several well-known and popular APIs did redirect HTTP requests to HTTPS at the time of writing this post. This behavior seems to be widespread. Maybe it's time we amend best practices to explicitly recommend that APIs flat out refuse to handle unencrypted requests.
+在撰写本文时，几个知名和流行的API确实将HTTP请求重定向到HTTPS。这种行为似乎很普遍。也许是时候我们修改最佳实践，明确建议API完全拒绝处理未加密的请求。
 
-_Huge thanks to Juhani Eronen ([NCSC-FI][53]) and Marko Laakso ([OUSPG][54]) for their help and guidance during writing this post._
+_非常感谢Juhani Eronen ([NCSC-FI][53])和Marko Laakso ([OUSPG][54])在撰写本文期间的帮助和指导。_
 
 [1]: https://en.wikipedia.org/wiki/Sniffing_attack
 [2]: https://en.wikipedia.org/wiki/Man-in-the-middle_attack
@@ -227,3 +268,4 @@ _Huge thanks to Juhani Eronen ([NCSC-FI][53]) and Marko Laakso ([OUSPG][54]) for
 [52]: https://bughunters.google.com/
 [53]: https://www.kyberturvallisuuskeskus.fi/en/homepage
 [54]: https://www.oulu.fi/en/research-groups/oulu-university-secure-programming-group-ouspg
+[55]: https://jviide.iki.fi/deryck-slide-8.png
