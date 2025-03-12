@@ -1,5 +1,5 @@
 ---
-title: How we’ve saved 98% in cloud costs by writing our own database
+title: 通过编写自己的数据库，我们节省了98%的云成本
 date: 2024-06-08T09:01:47.183Z
 authorURL: ""
 originalURL: https://hivekit.io/blog/how-weve-saved-98-percent-in-cloud-costs-by-writing-our-own-database/
@@ -7,87 +7,87 @@ translator: ""
 reviewer: ""
 ---
 
-![Image 1: Two Mechanics working on a database][1]
+<img src="https://hivekit.io/blog/how-weve-saved-98-percent-in-cloud-costs-by-writing-our-own-database/title.png" alt="两名机械师正在维护数据库" width="200" height="200">
 
-What is the first rule of programming? Maybe something like “do not repeat yourself” or “if it works, don’t touch it”? Or, how about “do not write your own database!”… That’s a good one.
+编程的第一条规则是什么？可能是类似"不要重复自己"或"如果它能工作，就不要动它"？或者，"不要编写自己的数据库！"……这是一条很好的规则。
 
-Databases are a nightmare to write, from Atomicity, Consistency, Isolation, and Durability (ACID) requirements to sharding to fault recovery to administration - everything is hard beyond belief.
+编写数据库是一场噩梦，从原子性、一致性、隔离性和持久性(ACID)要求到分片，再到故障恢复和管理 - 一切都难以置信地困难。
 
-Fortunately, there are amazing databases out there that have been polished over decades and don’t cost a cent. So why on earth would we be foolish enough to write one from scratch?
+幸运的是，市面上有许多经过数十年打磨且分文不取的优秀数据库。那么，我们为什么会愚蠢到从头开始编写一个呢？
 
-Well, here’s the thing…
+嗯，事情是这样的……
 -----------------------
 
-We are running a cloud platform that tracks tens of thousands of people and vehicles simultaneously. Every location update is stored and can be retrieved via a history API.
+我们运行着一个云平台，同时跟踪数万人和车辆。每次位置更新都会被存储，并可以通过历史API检索。
 
-The amount of simultaneously connected vehicles and the frequency of their location updates varies widely over time, but having around 13.000 simultaneous connections, each sending around one update a second, is fairly normal.
+同时连接的车辆数量和它们位置更新的频率随时间变化很大，但拥有大约13,000个同时连接，每个连接每秒发送大约一次更新，这是相当正常的。
 
-Our customers use this data in very different ways. Some use cases are very coarse, e.g. when a car rental company wants to show an outline of the route a customer took that day. This sort of requirement could be handled with 30-100 location points for a one hour trip and would allow us to heavily aggregate and compress the location data before storing it.
+我们的客户以非常不同的方式使用这些数据。有些用例非常粗略，例如当汽车租赁公司想要显示客户当天行驶路线的轮廓时。这种需求可以用30-100个位置点来处理一小时的行程，这将允许我们在存储之前对位置数据进行大量聚合和压缩。
 
-But there are many other use cases where that’s not an option. Delivery companies that want to be able to replay the exact seconds leading up to an accident. Mines with very precise, on-site location trackers that want to generate reports of which worker stepped into which restricted zone - by as little as half a meter.
+但还有许多其他用例，这不是一个选项。快递公司希望能够重放事故发生前的确切几秒钟。矿山拥有非常精确的现场位置跟踪器，希望生成哪个工人踏入哪个受限区域的报告 - 即使只有半米之差。
 
-So - given that we don’t know upfront what level of granularity each customer will need, we store every single location update. At 13k vehicles that’s 3.5 billion updates per month - and that will only grow from here. So far, we’ve been using AWS Aurora with the PostGIS extension for geospatial data storage. But Aurora costs us upwards of $10k a month already, just for the database alone - and that will only become more expensive in the future.
+所以 - 鉴于我们事先不知道每个客户需要什么级别的粒度，我们存储每一次位置更新。以13,000辆车计算，每月有35亿次更新 - 而且这个数字只会从这里增长。到目前为止，我们一直使用带有PostGIS扩展的AWS Aurora进行地理空间数据存储。但Aurora每月已经花费我们超过1万美元，仅用于数据库 - 而且未来只会变得更加昂贵。
 
-But it’s not just about Aurora pricing. While Aurora holds up quite well under load, many of our customers are using our on-premise version. And there, they have to run their own database clusters which are easily overwhelmed by this volume of updates.
+但这不仅仅是关于Aurora的定价。虽然Aurora在负载下表现相当不错，但我们的许多客户正在使用我们的本地版本。在那里，他们必须运行自己的数据库集群，这些集群很容易被这种数量的更新所淹没。
 
-Why aren’t we just using a database, purpose built for geospatial data?
+为什么我们不直接使用专为地理空间数据构建的数据库？
 -----------------------------------------------------------------------
 
-Unfortunately, there is no such thing. (If there is and we somehow overlooked it in our research, [please let me know][3]). Many databases, from Mongo and H2 to Redis support spatial data types like points and areas. And there are “Spatial Databases” - but they are exclusively extensions that sit on top of existing DBs. [PostGIS][4], built on top of PostgreSQL is probably the most famous one, but there are others like [Geomesa][5] that offer great geospatial querying capabilities on top of other storage engines.
+不幸的是，没有这样的东西。(如果有，而我们在研究中忽略了它，[请告诉我][3])。从Mongo和H2到Redis的许多数据库都支持空间数据类型，如点和区域。还有"空间数据库" - 但它们完全是建立在现有数据库之上的扩展。[PostGIS][4]，建立在PostgreSQL之上，可能是最著名的一个，但还有其他如[Geomesa][5]，它们在其他存储引擎之上提供了出色的地理空间查询能力。
 
-Unfortunately, that’s not what we need.
+不幸的是，这不是我们需要的。
 
-Here’s what our requirement profile looks like:
+以下是我们的需求概况：
 
-*   **Extremely high write performance**  
-    We want to be able to handle up to 30k location updates per second per node. They can be buffered before writing, leading to a much lower number of IOPS.
-*   **Unlimited parallelism**  
-    Multiple nodes need to be able to write data simultaneously with no upper limit
-*   **Small size on disk**  
-    Given the volume of data, we need to make sure that it takes as little space on disk as possible
+*   **极高的写入性能**  
+    我们希望每个节点每秒能够处理多达30,000次位置更新。它们可以在写入前缓冲，从而导致IOPS数量大大降低。
+*   **无限并行性**  
+    多个节点需要能够同时写入数据，没有上限
+*   **磁盘上的小尺寸**  
+    考虑到数据量，我们需要确保它在磁盘上占用尽可能少的空间
 
-This means, we’ll have to accept some trade-offs. Here’s what we are ok with:
+这意味着，我们必须接受一些权衡。以下是我们可以接受的：
 
-*   **Moderate performance for reads from disk**  
-    Our server is built around an in-memory architecture. Queries and filters for real time streams run against data in memory and, as a result, are very fast.  
-    Reads from disk only happen when a new server comes online, when a client uses the history API or (soon) when an app user rewinds time on our digital twin interface. These disk reads need to be fast enough for a good user experience, but they are comparatively infrequent and low volume.
+*   **从磁盘读取的中等性能**  
+    我们的服务器是围绕内存架构构建的。实时流的查询和过滤针对内存中的数据运行，因此非常快。  
+    只有当新服务器上线，当客户使用历史API或（即将推出）当应用用户在我们的数字孪生界面上回溯时间时，才会从磁盘读取。这些磁盘读取需要足够快以提供良好的用户体验，但它们相对不频繁且数量较少。
     
-*   **Low consistency guarantees**  
-    We are ok with losing some data. We buffer about one second worth of updates before we write to disk. In the rare instances where a server goes down and another takes over, we are ok with losing that one second of location updates in the current buffer.
+*   **低一致性保证**  
+    我们可以接受丢失一些数据。我们在写入磁盘之前缓冲大约一秒钟的更新。在服务器宕机而另一个接管的罕见情况下，我们可以接受丢失当前缓冲区中的那一秒钟的位置更新。
     
 
-What sort of data do we need to store?
+我们需要存储什么样的数据？
 --------------------------------------
 
-The main type of entity that we need to persist is an “object” - basically any vehicle, person, sensor or machine. Objects have an id label, location and arbitrary key/value data, e.g. for fuel levels or current rider id. Locations consist of longitude, latitude accuracy, speed, heading, altitude and altitude accuracy - though each update can only change a subset of these fields.
+我们需要持久化的主要实体类型是"对象" - 基本上是任何车辆、人员、传感器或机器。对象有一个ID标签、位置和任意的键/值数据，例如燃油水平或当前骑手ID。位置由经度、纬度精度、速度、方向、高度和高度精度组成 - 尽管每次更新可能只改变这些字段的一个子集。
 
-In addition we also need to store areas, tasks (something an “object” has to do), and instructions (tiny bits of spatial logic the hivekit server executes based on the incoming data).
+此外，我们还需要存储区域、任务（"对象"必须执行的事情）和指令（hivekit服务器基于传入数据执行的微小空间逻辑）。
 
-What we’ve built
+我们构建了什么
 ----------------
 
-We’ve created a purpose built, in process storage engine that’s part of the same executable as our core server. It writes a minimal, delta based binary format. A single entry looks like this:
+我们创建了一个专用的进程内存储引擎，它是我们核心服务器可执行文件的一部分。它写入一种最小的、基于增量的二进制格式。单个条目看起来像这样：
 
-![Image 2: Byte Diagram][2]
+![图片2：字节图][2]
 
-Each block represents a byte. The two bytes labeled “flags” are a list of yes/no switches that specify “has latitude”, “has longitude”, “has data” etc. - telling our parser what to look for in the remaining bytes of the entry.
+每个块代表一个字节。标记为"flags"的两个字节是一系列是/否开关，指定"有纬度"、"有经度"、"有数据"等 - 告诉我们的解析器在条目的剩余字节中寻找什么。
 
-We store the full state of an object every 200 writes. Between these, we only store deltas. That means that a single location update, complete with time and id, latitude and longitude only takes 34 bytes. This means, we can cram about 30 million location updates into a Gigabyte of disk space.
+我们每200次写入存储一次对象的完整状态。在这些之间，我们只存储增量。这意味着，一个完整的位置更新，包括时间和ID、纬度和经度，只需要34个字节。这意味着，我们可以将大约3000万个位置更新塞进一个千兆字节的磁盘空间。
 
-We also maintain a separate index file that translates the static string id of each entry and its type (object, area etc.) into a unique, 4 byte identifier. Since we know that this fixed size identifier is always byte index 6-9 of each entry, retrieving the history for a specific object is extremely fast.
+我们还维护一个单独的索引文件，将每个条目的静态字符串ID及其类型（对象、区域等）转换为唯一的4字节标识符。由于我们知道这个固定大小的标识符总是每个条目的字节索引6-9，因此检索特定对象的历史记录非常快。
 
-The result: A 98% reduction in cloud cost and faster everything
+结果：云成本减少98%，一切都更快
 ---------------------------------------------------------------
 
-This storage engine is part of our server binary, so the cost for running it hasn’t changed. What has changed though, is that we’ve replaced our $10k/month Aurora instances with a $200/month Elastic Block Storage (EBS) volume. We are using Provisioned IOPS SSD (io2) with 3000 IOPS and are batching updates to one write per second per node and realm.
+这个存储引擎是我们服务器二进制文件的一部分，所以运行它的成本没有变化。但变化的是，我们用每月200美元的弹性块存储（EBS）卷替换了每月1万美元的Aurora实例。我们使用具有3000 IOPS的预配置IOPS SSD（io2），并将更新批处理为每个节点和领域每秒一次写入。
 
-EBS has automated backups and recovery built in and high uptime guarantees, so we don’t feel that we’ve missed out on any of the reliability guarantees that Aurora offered. We currently produce about 100GB of data per month. But, since customers rarely query entries older than 10 days, we’ve started moving everything above 30GB to AWS Glacier, thus further reducing our EBS costs.
+EBS内置了自动备份和恢复功能，并有高可用性保证，所以我们不觉得我们错过了Aurora提供的任何可靠性保证。我们目前每月产生约100GB的数据。但是，由于客户很少查询超过10天的条目，我们已经开始将所有超过30GB的数据移至AWS Glacier，从而进一步降低我们的EBS成本。
 
-But it’s not just cost. Writing to a local EBS via the file system is a lot quicker and has lower overhead than writing to Aurora. Queries have gotten a lot faster too. It’s hard to quantify since the queries aren’t exactly analogous, but for instance recreating a particular point in time in a realm’s history went from around two seconds to about 13ms.
+但这不仅仅是成本。通过文件系统写入本地EBS比写入Aurora要快得多，开销也更低。查询也变得快了很多。很难量化，因为查询并不完全类似，但例如，重新创建领域历史中的特定时间点从大约两秒减少到约13毫秒。
 
-Of course, that’s an unfair comparison, after all, Postgres is a general purpose database with an expressive query language and what we’ve built is just a cursor streaming a binary file feed with a very limited set of functionality - but then again, it’s the exact functionality we need and we didn’t lose any features.
+当然，这是一个不公平的比较，毕竟，Postgres是一个具有表达性查询语言的通用数据库，而我们构建的只是一个游标流式传输二进制文件，功能非常有限 - 但话又说回来，这正是我们需要的功能，我们没有失去任何特性。
 
-You can learn more about Hivekit’s API and features at [https://hivekit.io/developers/][6]
+你可以在[https://hivekit.io/developers/][6]了解更多关于Hivekit的API和功能
 
 [1]: https://hivekit.io/blog/how-weve-saved-98-percent-in-cloud-costs-by-writing-our-own-database/title.png
 [2]: https://hivekit.io/blog/how-weve-saved-98-percent-in-cloud-costs-by-writing-our-own-database/byte-diagram.png
