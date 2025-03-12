@@ -7,7 +7,7 @@ translator: ""
 reviewer: ""
 ---
 
-![Image 1: image](https://files.oaiusercontent.com/file-SyCerofEEDgemcHfPpquHWxP?se=2024-05-26T17%3A15%3A21Z&sp=r&sv=2023-11-03&sr=b&rscc=max-age%3D31536000%2C%20immutable&rscd=attachment%3B%20filename%3D53c7983c-c33e-4b28-80ff-ad5cdd387868.webp&sig=MN94zDnTPF%2BB0jZFNe434yjt40e6dIcfT%2BQiedrSLBg%3D)
+![Image 1: image][1]
 
 - [Lifecycle of a HTTP request](#lifecycle-of-a-http-request)
   - [1. Sender Makes a Request](#1-sender-makes-a-request)
@@ -28,9 +28,9 @@ reviewer: ""
 
 As a mediocre engineer, I took Internet and HTTPS communication for granted and never dove any deeper. Today we're improving as engineers and learning a rough overview of how internet communication works, specifically focusing on HTTP and TLS.
 
-The Internet is "just" a network of interconnected computer networks. The term "Internet" literally means "between networks." It operates as a packet-switched [mesh network](https://en.wikipedia.org/wiki/Mesh_networking) with best-effort delivery, meaning there are no guarantees on whether a packet will be delivered or how long it will take. The reason why the internet appears to operate so smoothly (at least from a technical perspective) is the layers of abstraction that handle retries, ordering, deduplication, security and so many other things behind the scenes. Letting us developers just focus on the application layer (aka. Writing HTTP requests from San Francisco for $300K/year).
+The Internet is "just" a network of interconnected computer networks. The term "Internet" literally means "between networks." It operates as a packet-switched [mesh network][6] with best-effort delivery, meaning there are no guarantees on whether a packet will be delivered or how long it will take. The reason why the internet appears to operate so smoothly (at least from a technical perspective) is the layers of abstraction that handle retries, ordering, deduplication, security and so many other things behind the scenes. Letting us developers just focus on the application layer (aka. Writing HTTP requests from San Francisco for $300K/year).
 
-Each layer provides certain functionalities, which can be fulfilled by different [protocols](https://en.wikipedia.org/wiki/Communication_protocol). Such modularization makes it possible to replace the protocol on one layer without affecting the protocols on the other layers.
+Each layer provides certain functionalities, which can be fulfilled by different [protocols][7]. Such modularization makes it possible to replace the protocol on one layer without affecting the protocols on the other layers.
 
 Here's a simple table of the layers.
 
@@ -40,7 +40,7 @@ We'll go over these layers more in-depth layer, but first, let's see this in act
 
 Here is the path of an HTTP request through these layers (Skipping physical layer for brevity).
 
-![Image 2: image](https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/a391823a-fee1-403b-b844-bb42d82d2238/HTTP_Request/w=3840,quality=90,fit=scale-down)
+![Image 2: image][2]
 
 ### 1. Sender Makes a Request
 
@@ -159,7 +159,7 @@ Content-Length: 3456
 
 You may have seen something like this when debugging requests.
 
-![Image 3: image](https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/c06f5733-3c3b-4311-83f6-fad123fa5c4e/Screenshot_2024-05-26_at_12.22.31_AM/w=3840,quality=90,fit=scale-down)
+![Image 3: image][3]
 
 ### **7. Content Rendering**:
 
@@ -181,7 +181,7 @@ While we're here, let's do a brief review of the layers and their purpose, while
 * **Network Layer**: Responsible for exchanging packets across network boundaries via routing the packets through various intermediate routers. Primary protocol: Internet Protocol (IP).
 * **Link Layer**: Manages local network communications without routers. Defines local network topology and interfaces for transmitting datagrams to neighboring hosts.
 
-Specifically pay attention to the **Security Layer**, as that layer is the defining difference between an HTTP request (which we just covered) and an HTTPS request ([~86% of the current internet](https://devonperoutky.super.site/blog-posts/intro-to-llms-for-engineers-1) and growing).
+Specifically pay attention to the **Security Layer**, as that layer is the defining difference between an HTTP request (which we just covered) and an HTTPS request ([~86% of the current internet][8] and growing).
 
 ## HTTPS = HTTP + Encryption
 
@@ -191,7 +191,7 @@ TLS is how the client and server can verify each other identities and ensure all
 
 The flow of an HTTPS is the exact same as the HTTP request we covered previously, with the addition of a Security Layer in between the Application Layer and the Transport Layer (although typically TCP is used for the TLS handshake).
 
-![Image 4: image](https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/1bf738a0-d2ec-40ab-9b7c-6b595c3568bf/HTTPS_Request/w=3840,quality=90,fit=scale-down)
+![Image 4: image][4]
 
 ## TLS Handshake
 
@@ -203,7 +203,7 @@ This collection of algorithms are referred to as **cipher suites.** To be specif
 
 By agreeing on all these algorithms, exchanging random seeds, and the server's SSL certificate containing the private key; the client and server can generate a symmetric key that will be used to encrypt and verify the messages being passed back and forth. This process of agreeing on cipher suites and distributing the necessary information (seeds and SSL cert) is referred to as the TLS handshake.
 
-![Image 5: s](https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/90ee7477-92fc-45c0-95e1-4bebe176aee7/Untitled/w=3840,quality=90,fit=scale-down)
+![Image 5: s][5]
 
 source: Cloudflare
 
@@ -277,7 +277,7 @@ There you go. Go out and ace your technical interviews now.
 
 If you want to read more posts like these, you can subscribe.
 
-In addition to writing mediocre [technical blog posts](https://devonperoutky.super.site/), I also offer consultancy services and run a [development agency](http://jedsoftware.com/). I have [built a lot of things](https://devonperoutky.super.site/), including
+In addition to writing mediocre [technical blog posts][9], I also offer consultancy services and run a [development agency][10]. I have [built a lot of things][9], including
 
 …an RAG AI chatbot and search tool for corporate knowledge bases - acquired by Brex
 
@@ -285,4 +285,16 @@ In addition to writing mediocre [technical blog posts](https://devonperoutky.sup
 
 …award-winning Military Recall App chosen by SAIC for the US Department of Defense
 
-I've also helped lead teams at some of these elite startups. If you are looking for software development services or consultation for a project, I might be able to help. Feel free to reach out at [devonperoutky@gmail.com](mailto:devonperoutky@gmail.com).
+I've also helped lead teams at some of these elite startups. If you are looking for software development services or consultation for a project, I might be able to help. Feel free to reach out at [devonperoutky@gmail.com][11].
+
+[1]: https://files.oaiusercontent.com/file-SyCerofEEDgemcHfPpquHWxP?se=2024-05-26T17%3A15%3A21Z&sp=r&sv=2023-11-03&sr=b&rscc=max-age%3D31536000%2C%20immutable&rscd=attachment%3B%20filename%3D53c7983c-c33e-4b28-80ff-ad5cdd387868.webp&sig=MN94zDnTPF%2BB0jZFNe434yjt40e6dIcfT%2BQiedrSLBg%3D
+[2]: https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/a391823a-fee1-403b-b844-bb42d82d2238/HTTP_Request/w=3840,quality=90,fit=scale-down
+[3]: https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/c06f5733-3c3b-4311-83f6-fad123fa5c4e/Screenshot_2024-05-26_at_12.22.31_AM/w=3840,quality=90,fit=scale-down
+[4]: https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/1bf738a0-d2ec-40ab-9b7c-6b595c3568bf/HTTPS_Request/w=3840,quality=90,fit=scale-down
+[5]: https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/90ee7477-92fc-45c0-95e1-4bebe176aee7/Untitled/w=3840,quality=90,fit=scale-down
+[6]: https://en.wikipedia.org/wiki/Mesh_networking
+[7]: https://en.wikipedia.org/wiki/Communication_protocol
+[8]: https://devonperoutky.super.site/blog-posts/intro-to-llms-for-engineers-1
+[9]: https://devonperoutky.super.site/
+[10]: http://jedsoftware.com/
+[11]: mailto:devonperoutky@gmail.com
