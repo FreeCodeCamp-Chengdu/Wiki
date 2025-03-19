@@ -98,7 +98,7 @@ plugins=(
 
 上面，我们看到我在`.zshrc`中添加了这个
 
-```plain
+```zsh
 # in ~/.zshrc
 plugins=(
   git <--- 我们现在要讨论这个
@@ -122,7 +122,7 @@ git 插件为 git 命令添加了别名。我使用的一些是：
 
 这里有两个例子
 
-```plain
+```zsh
 # in ~/.zshrc
 alias addalias='code ~/.zshrc' <-- 打开zshrc文件进行编辑
 alias reload='source ~/.zshrc' <-- 重新加载zshrc文件以应用更改
@@ -237,11 +237,11 @@ alias reload='source ~/.zshrc' <-- 重新加载zshrc文件以应用更改
 
 它让我可以快速将一个窗口放在左侧，一个窗口放在右侧，全屏显示另一个窗口等。它为我节省了大量时间。
 
-[
+
 
 ![][10]
 
-](https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F604f5344-87ae-41fd-86ac-0486512a1b19_800x452.gif)
+
 
 ## 💭 结束语
 
