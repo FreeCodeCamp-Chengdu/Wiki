@@ -1,5 +1,5 @@
 ---
-title: karpathy
+title: 追加和回顾笔记法
 date: 2025-03-19T07:00:00.000Z
 authorURL: ""
 originalURL: https://karpathy.bearblog.dev/the-append-and-review-note/
@@ -7,7 +7,6 @@ translator: ""
 reviewer: ""
 ---
 
-# 追加和回顾笔记法
 
 关于一种我偶然发现的笔记方法的几点说明，这种方法多年来对我来说效果很好。我称之为"追加和回顾笔记法"。我发现这种方法在保持超级简单易用的同时，也能满足大多数日常记笔记的使用场景。
 
