@@ -1,60 +1,46 @@
 ---
-title: karpathy
+title: 追加和回顾笔记法
 date: 2025-03-19T07:00:00.000Z
 authorURL: ""
 originalURL: https://karpathy.bearblog.dev/the-append-and-review-note/
-translator: ""
-reviewer: ""
+translator: "luojiyin"
+reviewer: "yiwei"
 ---
 
-[
 
-<!-- more -->
-
-# karpathy
-
-][1]
-
-[Home][2] [Blog][3]
-
-# The append-and-review note
-
-A few words on an approach to note taking that I stumbled on and has worked for me quite well for many years. I call it the _"append-and-review note"_. I find that this approach strikes a good balance of being super simple and easy to use but it also captures the majority of day-to-day note taking use cases.
+关于一种我偶然发现的笔记方法的几点说明，这种方法多年来对我来说效果很好。我称之为 _追加和回顾笔记法_。我发现这种方法在保持超级简单易用的同时，也能满足大多数日常记笔记的使用场景。
 
 ![Screenshot 2025-03-19 at 10](https://bear-images.sfo2.cdn.digitaloceanspaces.com/karpathy/26am.webp)
 
-**Data structure.** I maintain one single text note in the Apple Notes app just called "notes". Maintaining more than one note and managing and sorting them into folders and recursive substructures costs way too much cognitive bloat. A single note means CTRL+F is simple and trivial. Apple does a good job of optional offline editing, syncing between devices, and backup.
+**数据结构** 我在 Apple Notes 应用中只维护一个叫做 `notes`的文本笔记。维护多个笔记并将它们管理和分类到文件夹和递归子结构中会带来太多认知负担。单个笔记意味着 CTRL+F 搜索简单直接。Apple 在离线编辑、设备间同步和备份方面做得很好。
 
-**Append.** Any time any idea or any todo or anything else comes to mind, I append it to the note on top, simply as text. Either when I'm on my computer when working, or my iPhone when on the go. I don't find that tagging these notes with any other structured metadata (dates, links, concepts, tags) is that useful and I don't do it by default. The only exception is that I use tags like "watch:", "listen:", or "read:", so they are easy to CTRL+F for when I'm looking for something to watch late at night, listen to during a run/walk, or read during a flight, etc.
+**追加** 任何时候有任何想法或待办事项或其他任何事情出现在脑海中，我都会将其作为文本简单地追加到笔记的顶部。无论是在电脑工作时，还是在外出时用 iPhone。我发现用其他结构化元数据（日期、链接、概念、标签）标记这些笔记并不是那么有用，我默认不这样做。唯一的例外是我使用"watch:"、"listen:"或"read:"这样的标签，这样当我深夜想找点东西看，跑步/散步时想听，或在飞机上想读时，可以很容易地用`CTRL+F`找到。
 
-**Review.** As things get added to the top, everything else starts to sink towards the bottom, almost as if under gravity. Every now and then, I fish through the notes by scrolling downwards and skimming. If I find anything that deserves to not leave my attention, I rescue it towards the top by simply copy pasting. Sometimes I merge, process, group or modify notes when they seem related. I delete a note only rarely. Notes that repeatedly don't deserve attention will naturally continue to sink. They are never lost, they just don't deserve the top of mind.
+**回顾** 随着内容被添加到顶部，其他所有内容开始下沉到底部，就像在重力作用下一样。我时不时会通过向下滚动并浏览来查看笔记。如果我发现任何值得我持续关注的内容，我会通过简单的复制粘贴将其救回顶部。当笔记看起来相关时，我有时会合并、处理、分组或修改它们。我很少删除笔记。反复不值得关注的笔记自然会继续下沉。它们永远不会丢失，只是不值得放在心上。
 
-Example usage:
+使用示例：
 
--   Totally random idea springs to mind but I'm on the go and can't think about it, so I add it to the note, to get back around to later.
--   Someone at a party mentions a movie I should watch.
--   I see a glowing review of a book while doom scrolling through X.
--   I sit down in the morning and write a small TODO list for what I'd like to achieve that day.
--   I just need some writing surface for something I'm thinking about.
--   I was going to post a tweet but I think it needs a bit more thought. Copy paste into notes to think through a bit more later.
--   I find an interesting quote and I want to be reminded of it now and then.
--   My future self should really think about this thing more.
--   I'm reading a paper and I want to note some interesting numbers down.
--   I'm working on something random and I just need a temporary surface to CTRL+C and CTRL+V a few things around.
--   I keep forgetting that shell command that lists all Python files recursively so now I keep it in the note.
--   I'm running a hyperparameter sweep of my neural network and I record the commands I ran and the eventual outcome of the experiment.
--   I feel stressed that there are too many things on my mind and I worry that I'll lose them, so I just sit down and quickly dump them into a bullet point list.
--   I realize while I'm re-ordering some of my notes that I've actually thought about the same thing a lot but from different perspectives. I process it a bit more, merge some of the notes into one. I feel additional insight.
+- 突然冒出一个完全随机的想法，但我在外面无法思考，所以我把它添加到笔记中，以后再回来处理。
+- 有人在派对上提到我应该看的电影。
+- 我在 X 上刷屏时看到一本书的好评。
+- 我早上坐下来写一个小的待办事项清单，列出我想在那天完成的事情。
+- 我只是需要一个写作平台来思考某些事情。
+- 我本来要发推文但我觉得需要更多思考。复制粘贴到笔记中以便稍后更深入思考。
+- 我找到一个有趣的引用，我想时不时被提醒。
+- 我未来的自己应该更多地思考这件事。
+- 我在读一篇论文，我想记下一些有趣的数字。
+- 我在做一些随机的事情，我只是需要一个临时平台来 CTRL+C 和 CTRL+V 一些东西。
+- 我总是忘记那个递归列出所有 Python 文件的 shell 命令，所以现在我把它保存在笔记中。
+- 我正在运行神经网络的超参数扫描，我记录了我运行的命令和实验的最终结果。
+- 我感到压力，因为脑子里有太多事情，我担心会忘记它们，所以我就坐下来快速把它们列成项目清单。
+- 当我重新整理一些笔记时，我意识到我实际上从不同角度思考过同一件事很多次。我进一步处理它，将一些笔记合并成一个。我获得了额外的洞察。
 
-When I note something down, I feel that I can immediately move on, wipe my working memory, and focus fully on something else at that time. I have confidence that I'll be able to revisit that idea later during review and process it when I have more time.
+当我记下某事时，我感觉我可以立即继续前进，清空我的工作记忆，并在那时完全专注于其他事情。我有信心我以后可以在回顾时重新访问那个想法，并在有更多时间时处理它。
 
-My note has grown quite giant over the last few years. It feels nice to scroll through some of the old things/thoughts that occupied me a long time ago. Sometimes ideas don't stand the repeated scrutiny of a review and they just sink deeper down. Sometimes I'm surprised that I've thought about something for so long. And sometimes an idea from a while ago is suddenly relevant in a new light.
+我的笔记在过去几年里变得相当庞大。滚动浏览一些很久以前占据我思维的旧事物/想法感觉很好。有时想法经不起反复审视就会沉得更深。有时我会惊讶于我思考某事如此之久。有时一个很久以前的想法在新的视角下突然变得切合实际。
 
-One text note ftw.
+一个文本笔记就能搞定。
 
-Powered by [Bear ʕ•ᴥ•ʔ][4]
+由 [Bear ʕ•ᴥ•ʔ][4] 提供支持
 
-[1]: /
-[2]: /
-[3]: /blog/
 [4]: https://bearblog.dev
