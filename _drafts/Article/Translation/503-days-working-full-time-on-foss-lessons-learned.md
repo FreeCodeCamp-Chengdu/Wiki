@@ -1,136 +1,128 @@
 ---
-title: "503 days working full-time on FOSS: lessons learned"
+title: "全职参与开源项目 503 天：学到的经验"
 authorURL: ""
 originalURL: https://mathspp.com/blog/503-days-working-full-time-on-foss-lessons-learned
 translator: ""
 reviewer: ""
 ---
 
-## [503 days working full-time on FOSS: lessons learned][1]
+这篇文章分享了我全职参与一个开源项目 503 天以来所学到的一些经验。
 
-<!-- more -->
+从 2022 年 11 月 14 日到 2024 年 3 月 31 日，我全职参与了一个开源项目。这篇文章记录了我在那 503 天里学到的一些东西。
 
-1st Apr 2024 [open source][2] [opinion][3] [python][4]
+现在我不再担任全职职位，我有更多的时间可以投入到**你**身上。如果你正在寻找 Python 培训，请[联系我][6]。我也将投入时间在这个博客和[我的书籍][7]上。
 
-This article shares some of the lessons I learned from working full-time on a FOSS project for 503 days.
+2022 年 11 月 14 日，我加入了 Textualize，这家公司是热门开源 Python 包 [Rich][8] 和 [Textual][9] 的幕后推手。当我加入这家公司并开始在阳光明媚的葡萄牙远程工作时，我的同事有 [Will][10]（Rich 和 Textual 的创建者，也是我的老板）、[Darren][11] 和 [Dave][12]，他们都在苏格兰一起工作。在我的职业生涯中，我第一次成为了“房间里 Python 技术最差”[1][13] 的开发者。这意味着在这 503 天里，我的技术知识有了长足的进步，尤其是在以下方面：
 
-# 503 days working full-time on FOSS: lessons learned[][5]
+-   异步代码执行和 Python 的 `asyncio` 库；
+-   Python 类型提示；
+-   测试 / `pytest`；以及
+-   软件工程最佳实践。
 
-From the 14th of November of 2022 to the 31st of March of 2024 I worked full-time on a FOSS project. This article is an account of some of the things that I learned during those 503 days.
+然而，这篇文章将聚焦于我在这 503 天经历中学到的非技术性教训，这些教训大致分为以下四个类别：
 
-I have much more time to devote to _**you**_ now that I don't have this full-time position. If you're looking for Python training, [reach out to me][6]. I'll also be investing my time in this blog and in [my books][7].
+1. 网络存在如何能够带来工作机会；
+2. 你的自我不应该妨碍你的工作；
+3. 如何与用户和贡献者互动；
+4. 如何在你不完全了解的庞大代码库上工作。
 
-I joined Textualize, the company behind the popular FOSS Python packages [Rich][8] and [Textual][9], on the 14th of November of 2022. When I joined to work remotely from sunny Portugal, I joined [Will][10] (the creator of Rich & Textual, and my boss), [Darren][11], and [Dave][12], all of whom worked together in Scotland. For the first time in my professional life, I was the worst Python developer in the room[1][13]. This means that my technical knowledge improved substantially over the course of these 503 days, namely in areas such as:
+让我们直接深入讨论吧。
 
--   asynchronous code execution and Python's `asyncio`;
--   Python tipe hinting;
--   testing / `pytest`; and
--   software engineering best practices in general.
+## 你在网上所做的一切都像是个人品牌
 
-However, this article will focus on the non-technical lessons I learned during this 503-day experience, that fall under these four broad categories:
+我学到的一件有趣的事情是，甚至在我开始全职工作之前，你就绝对可以通过非传统的方式找到（工作）机会。这种情况一直存在，但互联网让这一切变得更容易。
 
-1.  how an online presence can lead to a job offer;
-2.  how your ego shouldn't be in the way of your work;
-3.  how to interact with users & contributors; and
-4.  how to work on a huge codebase you don't know 100%.
+如果你正在找工作，你可以将你的简历提交到平台或填写表格。我通过这个过程得到过工作机会。但这并不是我得到这份工作的方式，也不是我得到以前任何一份工作的方式。我会或多或少地告诉你我是如何“骗”Will 雇用我的，希望你能理解网络形象的力量有多大。
 
-Let's dive right in.
+我在 X/Twitter 上认识了 Will，[我在那里积极发布关于 Python 的内容][15]。在几个月的时间里，我们偶尔会有互动。有时我会评论他的帖子，有时他会评论我的帖子。我认为 Will 喜欢我发布的 Python 技巧，以及偶尔链接到我的文章。
 
-## Everything you do online works as a banner[][14]
+经过数月的偶尔 Twitter 互动和几次非正式的视频通话后，Will 给我发消息，问我是否有兴趣为 Textualize 工作。几个月前，我曾提到过，我认为自己会在未来与他共事。但我当时说那句话的时候并没有想找工作。事实上，我记得我当时说的是“我认为自己会在 **5 年后** 与你共事”。尽管如此，几个月后，我的收件箱里收到了 Will 的消息！我同意参加招聘流程，最终 Will 向我发出了录用通知。
 
-One interesting thing that I learned even before starting my full-time position is that you can definitely find (job) opportunities in unconventional ways. This has always been the case but the Internet makes it even easier to do so.
+我很遗憾要离开之前的工作，在那里我享受着使用/教授 APL 的乐趣，但我也很高兴能全职参与一个 Python FOSS 项目。
 
-If you're looking for a job, you can submit your CV to a platform or fill out a form. I've gotten job offers by going through that process. But that's not how I got _this_ job nor how I got any of my previous jobs. I'll tell you more or less how I ~fooled Will into hiring me~ got this job in the hope that you understand how powerful an online presence can be.
+得到这份工作邀请证实了你在网上所做的一切都可以成为你和你的工作的旗帜。就我而言，那就是我在社交媒体上发布的 Python 内容、我的博客文章、我的书籍等等。对你来说，它可能是不同的东西。但不要忘记这种**可能性**！
 
-I met Will on X/Twitter, [where I actively post about Python][15]. Over the course of many months we'd interact sporadically. Sometimes I commented on his posts and sometimes he commented on my posts. I think Will enjoyed the Python tips I posted and the occasional link to an article of mine.
+## 放下身段
 
-After many months of occasional Twitter interactions and a couple of informal video calls, Will messaged me asking if I was interested in working for Textualize. Some months before, I had mentioned that I would see myself working with him further down the line. But I wasn't trying to get a job when I said that. In fact, I remember saying something like “I see myself working with you in **5 years**”. Even still, a few months later I had Will's message on my inbox! I agreed to go through the recruitment process and in the end Will made me an offer.
+在加入 Textualize 之前，我一直都是团队里最棒的 Python 开发者……因为我是团队里 _唯一_ 的 Python 开发者！
 
-I was sad to leave my previous position, where I was enjoying myself working with / teaching APL, but I was also pretty ecstatic about working full-time on a Python FOSS project.
+成为某个领域的佼佼者对你的自尊心很有好处，但这也意味着没有人能够拉你一把，教你新东西……而我想要的是这个！我想和那些我在技术技能上敬佩的人一起工作，我意识到 Textualize 可以给我提供这个机会。
 
-Getting this job offer was confirmation that everything you do online can act as a banner for you and your work. In my case, that's my Python posts on social media, my blog articles, my books, etc. For you, it could be something different. But don't forget that _possibility_!
+我加入了 Textualize，并且立刻就明白代码审查将是我学习的绝佳时机。想想看，当你写代码的时候，重要的不仅仅是代码是否实现了预期功能（修复 bug、实现功能等等）。你写的代码本身也很重要，而代码审查正是你的同事们对你写的代码进行评价的机会。
 
-## Put your ego aside[][16]
+### 不要放过任何疑问！
 
-Before joining Textualize I had always been the best Python developer in my team... Because I was the _only_ Python developer in my team[2][17]!
+我做过并且可以推荐的一件事是，在代码审查中提出问题。我经常会阅读别人的代码，然后想：“有意思，为什么他们不用 X、Y 和 Z 来实现呢？”。每当遇到这种情况，我都会留言*询问*同样的问题，即使这个问题听起来有点基础。通常情况下，他们会回复并解释他们的理由，而我也会学到一些新东西。还有一些时候，他们会发现自己没有考虑到我提出的替代方案，然后采纳了我的建议。
 
-Being the best at something is great for your ego but it also means there's no one there to pull you up and to teach you new things... And I wanted that! I wanted to work with people who I looked up to for their technical skills and I realised Textualize would give me that.
+我认为这里的关键点是
 
-I joined Textualize and I immediately understood that code reviews would be moments where I could learn a lot. If you think about it, when you're writing code, it's not only about whether the code does what it's supposed to (fix a bug, implement a feature, etc.). The actual code you write is also relevant and code reviews are when your coworkers get to comment on that.
+1.  你在提出问题时，应该假设你正在审查其代码的人有充分的理由以不同于你预期的方式做事；以及
+2.  你不应该克制自己不问问题，无论这些问题听起来多么愚蠢或基础。
 
-### Ask ALL the questions[][18]
+第一点很重要，因为你不想让对方觉得他们受到了攻击，而且你应该理解作者决策背后的理由。第二点很重要，因为你想尽可能多地学习,而且因为有时人们只是忘记了更简单的替代方案（即使是高级开发人员）。
 
-One thing I did and that I can recommend is that you use code reviews to ask questions. It happened regularly that I would read someone's code and think “interesting, why didn't they do this with X, Y, and Z?”. Whenever that was the case, I left a comment _asking_ that same question, even if the question sounded a bit basic. Often, they would reply explaining their reasoning, and I would get to learn something new. Some other times, it would turn out that they hadn't thought of the alternative I was considering and they took my suggestion.
+我很高兴地告诉大家，我已经完全接受了问问题的思维模式，即使这些问题听起来很愚蠢，所以暴露我在某些领域的知识缺陷并没有对我的自尊心造成太大伤害,但是让别人审查我的代码就完全是另一回事了。
 
-I think the key points here are that
+### 积极面对（代码审查）反馈
 
-1.  you should ask the question(s) with the assumption that the person whose code you're reviewing has a good reason for having done things differently from what you expected; and
-2.  you shouldn't refrain from asking questions, regardless of how silly or basic they may seem.
+我的拉取请求总是会被标记上红色的 X，要求修改我的代码。
 
-Point 1. is important because you don't want the other person to feel they're being attacked and because you should understand the reasoning behind the author's decisions. Point 2. is important because you want to learn as much as possible... And because some times people just forget about simpler alternatives (even senior developers).
+![A screenshot of Will requesting changes on my PR on GitHub](https://mathspp.com/user/pages/02.blog/503-days-working-full-time-on-foss-lessons-learned/_one_request.webp "Will requesting changes on one of my first PRs.")
 
-I'm happy to report that I've fully embraced the mindset of asking questions, even when they may sound silly, so exposing my lack of knowledge in certain areas didn't hurt my ego too much... But having my code reviewed was a whole new story.
+will 在我的一个早期 PR 中代码修改请求。
 
-### Embrace (code review) feedback[][19]
+回到为什么代码审查如此有趣的原因，它不仅仅是关于我是否修复了错误或实现了功能。它还与我编写的实际代码有关。一开始，我所有的工作都要接受审查，这让我很难受。但如果我想提高我的 Python 和软件工程技能，我就必须接受这种审查，以及每当有人要求修改我的代码时我收到的反馈。
 
-My pull requests were invariably flagged with the red X requesting changes in my work:
+我得到了很多练习，因为我收到了很多修改请求：
 
-![A screenshot of Will requesting changes on my PR on GitHub](/user/pages/02.blog/503-days-working-full-time-on-foss-lessons-learned/_one_request.webp "Will requesting changes on one of my first PRs.")
+![A montage with multiple instances of pull requests where someone requested I make changes to my code.](https://mathspp.com/user/pages/02.blog/503-days-working-full-time-on-foss-lessons-learned/_request_montage.webp "Montage of “changes requested” on my work.")
 
-Will requesting changes on one of my first PRs.
+"修改请求" 充斥着我的屏幕。
 
-Going back to the reason code reviews are so interesting, it wasn't just about whether or not I was fixing the bug or implementing the feature. It was also about the actual code that I wrote. In the beginning it was tough to have all of my work scrutinised. But if I wanted to improve my Python and software engineering skills, I'd have to embrace that scrutiny and the feedback I received whenever someone requested changes on my work.
+我学会了欣然接受反馈，我也建议你这样做！假设每个人都是善意的，这是你能做的最好的事情之一。如果你能让别人解释为什么他们推荐不同的方法，那就更好了。
 
-I also got a lot of practice, because I got a lot of changes requested:
+### 每个人都会犯错
 
-![A montage with multiple instances of pull requests where someone requested I make changes to my code.](/user/pages/02.blog/503-days-working-full-time-on-foss-lessons-learned/_request_montage.webp "Montage of “changes requested” on my work.")
+每个人都会有状态不好的时候，糟糕的一天，糟糕的一周，有些星期我会觉得效率低下，或者犯更多的错误。但其他人也是如此！如果你觉得自己不在最佳状态，那就处理一些更简单的任务。这样做是合理的。
 
-Montage of “changes requested” on my work.
+处于低效时期是很糟糕的，但这也是一个很好的时机，可以让你弄清楚你是在和通情达理的人一起工作，还是和混蛋一起工作。想象一下：
 
-I learned to embrace the feedback and I recommend you do the same! Assuming everyone is well-intentioned, it's one of the best things you can do. Bonus points if you can get people to explain why they recommended a different approach.
+-   你发起了一个拉取请求；
+-   它经过了通常的审查流程并被合并；
+-   你实现的功能发布给了公众；以及
+-   几天后，用户报告了你实现的功能中存在`明显的`错误。
 
-### Everyone makes mistakes[][20]
+你会有什么感觉？对我来说，这让我觉得有点傻。我对被报告的错误感到完全负责！毕竟，是我实现了这个功能，而且这个错误并不是一个模糊的交互，这只是我的一个失误。
 
-Everyone has bad moments, bad days, bad weeks... Some weeks I felt less productive or made more mistakes. But so did everyone else! If you're feeling like you're not at your best, tackle a couple of simpler tasks. That's a reasonable thing to do.
+值得庆幸的是，我的团队做出了不同的反应，他们在回应我的责任感时说 `我们不玩责备游戏`。我想这一切都可以归结为我上面已经写过的古老格言：
 
-It sucks to be in a less productive period, but that's also a good time to figure out if you're working with reasonable human beings or with jerks. Picture this:
+> 每个人都会犯错
 
--   you make a pull request;
--   it goes through the usual review process and it gets merged;
--   the feature you implemented is released to the public; and
--   some days later users report “obvious” bugs in the feature you implemented.
+当别人犯错时，要优雅地提供帮助，而不是评判和批评。如果你这样做，当你自己犯错时，别人就更有可能对你优雅地提供帮助。
 
-How would that make you feel? To me, it made me feel a bit silly. I felt utterly responsible for the bug that was being reported! After all, I implemented the feature in question and the bug wasn't about an obscure interaction... It was just a blunder of mine...
+为了缓解尴尬，这里有一张截图，是我在打开一个“错误报告”后感到羞愧的样子，这个错误报告的起因是我对 Python 工作方式的重大判断失误：
 
-Thankfully, my team reacted differently and they said “we don't play the blame game” when reacting to my feeling responsible. I guess it all comes down to the age-old adage that I already wrote above:
+![Screenshot of a GitHub comment after opening a “bug report” that was fueled by a major lapse of judgement regarding the way Python works. The comment reads “can we create a 'shameful' label and add it to this issue, please?”](https://mathspp.com/user/pages/02.blog/503-days-working-full-time-on-foss-lessons-learned/_shameful.webp "Closing the most ridiculous issue I ever opened in my life.")
 
-> “Everyone makes mistakes.”
+关闭我这辈子提交过的最荒谬的问题。
 
-When others make mistakes, be graceful and helpful, instead of judgemental and critical. If you do that, you'll make it more likely that others will be graceful and helpful when if you make mistakes.
+## 与用户和贡献者互动
 
-For comic relief, here is a screenshot of me feeling ashamed after opening a “bug report” that was fueled by a major lapse of judgement regarding the way Python works:
+为一个受欢迎的自由开源软件项目工作，带来了一种意想不到的祝福和诅咒：用户。用户显然是一种祝福。将你的全部心血投入到一个无人使用的项目中听起来并不好玩。但处理用户互动出人意料地耗时且困难！让我与你分享我在做这件事时学到的一些东西。
 
-![Screenshot of a GitHub comment after opening a “bug report” that was fueled by a major lapse of judgement regarding the way Python works. The comment reads “can we create a 'shameful' label and add it to this issue, please?”](/user/pages/02.blog/503-days-working-full-time-on-foss-lessons-learned/_shameful.webp "Closing the most ridiculous issue I ever opened in my life.")
+### 创建贡献指南
 
-Closing the most ridiculous issue I ever opened in my life.
+没有人会读它。或者更确切地说，没有人会在浪费你一点时间之前读它。但是，拥有这份文件，并附上清晰的指导方针和有用的建议，将为你节省大量时间。
 
-## Interacting with users and contributors[][21]
+贡献指南还将在某些情况下支持你。稍后会详细介绍！
 
-Working on a popular FOSS project brings with it an unexpected blessing _and_ curse: users. Users are obviously a blessing. It doesn't sound fun to pour your heart and soul into a project that no one uses. But handling user interactions is surprisingly time consuming and difficult! Let me share with you some of the things I learned while doing this.
+### 向错误报告者提供清晰的提示
 
-### Create a contributing guide[][22]
+我学到的一件事是，如果你想要一份像样的错误报告，你必须手把手地指导你的用户。真正有帮助的一件事是为错误报告设置一个问题模板，这是 GitHub 的一个优秀功能。
 
-No one will read it. Or rather, no one will read it _before_ wasting a bit of your time. But having the document there, with clear guidelines and helpful suggestions, will save you a LOT of time.
+在撰写本文时，我们的错误报告模板问题如下所示：
 
-A contributing guide will also have your back in some situations. More on that later!
-
-### Give clear instructions to bug reporters[][23]
-
-One of the things I learned is that you have to hold the hand of your users if you want decent bug reports. One thing that really helps is setting up an issue template for bug reports, which is an excellent feature that GitHub has.
-
-As of writing this, our bug report template issue looks like this:
-
-```
+```text
 Have you checked closed issues?
 https://github.com/Textualize/textual/issues?q=is%3Aissue+is%3Aclosed
 
@@ -146,197 +138,121 @@ Feel free to add screenshots and / or videos.
 These can be very helpful!
 ```
 
-Something we should probably change is to ask for a _**minimum reproducible example**_ instead of asking for a “complete working example”. Sometimes, people report bugs without showing any code to back it up, which is upsetting. But even more upsetting is when users post hundreds of lines of code! I feel like it is reasonable to ask users to simplify the code that produces the bug as much as they can, so adding that to the issue template can be a huge time saver.
+我们可能应该改变的一件事是要求提供 _**最小可复现示例**_，而不是要求提供“完整的可运行示例”。 有时，人们报告错误时不提供任何代码作为佐证，这令人沮丧。 但更令人沮丧的是，当用户发布数百行代码时！ 我觉得要求用户尽可能简化产生错误的代码是合理的，因此将其添加到问题模板中可以节省大量时间。
 
-Depending on the nature of your project, you may need more specific information from the user. One thing that turned out to be invaluable in our project was the `textual diagnose` command. It prints a lot of useful information to the terminal like OS name and version, Python version and install location, and information about the settings of the terminal that was being used, which heavily influenced the way Textual behaved. You may want to add project-specific instructions in your issue template and/or your [contributing guide][24].
+根据项目的性质，您可能需要用户提供更具体的信息。 在我们的项目中，一项非常宝贵的功能是 `textual diagnose` 命令。 它会向终端打印许多有用信息，例如操作系统名称和版本、Python 版本和安装位置，以及正在使用的终端设置的信息，这些信息会严重影响 Textual 的行为方式。 您可能希望在问题模板和/或贡献指南中添加特定于项目的说明。
 
-### Be so kind it's annoying[][25]
+### 要友善到令人感到烦恼
 
-In general, whenever you're interacting with someone else, you should be as kind as possible. Every person is different and every situation is unique. Often, there are nuances we're not even aware of and that would explain a certain behaviour that maybe we think is not reasonable.
+总的来说，无论何时与他人互动，你都应该尽可能友善。每个人都是不同的，每种情况都是独特的。通常，我们会忽略一些细微差别，而这些细微差别可以解释某种我们可能认为不合理的行为。
 
--   Did a user sound rude or harsh?
+-   用户听起来粗鲁或刻薄吗？
 
-Maybe English is not their first language and they can't express themselves well enough. For example, in a certain PR review I ended up saying that the user should be ashamed of what they did because I mixed up an English word with a Portuguese word.
+也许英语不是他们的第一语言，他们无法很好地表达自己。例如，在某个 PR 审查中，我最终说用户应该为他们所做的事情感到羞耻，因为我把一个英语单词和一个葡萄牙语单词混淆了。
 
--   Did a user ask something that's already explained in the docs?
+-   用户是否询问了文档中已经解释过的内容？
 
-Assume they actually went through the docs and couldn't find the information or maybe they found it but they didn't understand. Point them to the appropriate link(s) and ask whether something there was unclear or lacking detail.
+假设他们实际上已经查阅了文档但找不到信息，或者他们找到了但无法理解。将他们指向适当的链接，并询问是否有不清楚或缺乏细节的地方。
 
-This can be pretty tiring but I find it definitely worth the effort. Interactions that start off seemingly unpleasant can turn out great if you don't escalate the situation. That happened to me more than once!
+这可能非常累，但我发现这绝对值得付出努力。如果你不把情况升级，那些一开始看起来不愉快的互动最终可能会变得很好。这种情况在我身上发生过不止一次！
 
-### Give a first reply quickly[][26]
+### 快速给出第一次回复
 
-One thing I think is very important is to give a first reply to an external user as quickly as possible.
+我认为非常重要的一点是尽快回复外部用户的第一次留言。
 
-If the user opened an issue, thank them for the report and let them know you'll look at it when you have the time. If it's a bug report, take a look to see if it's missing a reproducible example or more information and ask for it right away. If the user opened a pull request, thank them for their time and say you'll review it when you have the chance.
+如果用户提交了一个问题，感谢他们的报告，并让他们知道你将在有时间的时候查看。如果这是一个错误报告，请查看它是否缺少可重现的示例或更多信息，并立即要求提供。如果用户提交了一个拉取请求，感谢他们花费的时间，并说你将在有机会的时候进行审查。
 
-When a user interacts with your project, it's likely that _you_ have something to gain from that interaction. This is obviously true for bug reports and pull requests. So, I believe we shouldn't let the user go for days or weeks without a simple reply.
+当用户与你的项目互动时，很可能 _你_ 会从这种互动中有所收获。对于错误报告和拉取请求来说，这显然是正确的。所以，我认为我们不应该让用户在几天或几周内都没有得到简单的回复。
 
-I'm not saying bug reports have to be fixed immediately or pull requests need to be reviewed immediately. I'm saying we should strive to _say something_ to the user soon. I came to this realisation after thinking about how I feel when I open an issue on another project and months go by without a reply!
+我并不是说错误报告必须立即修复，或者拉取请求需要立即审查。我的意思是，我们应该努力尽快 _向用户说些什么_。我在思考当我向另一个项目提交问题并且几个月都没有得到回复时的感受后，才意识到这一点！
 
-If you're just very busy (which is fine and can definitely be the case) just set up an action that replies automatically with something friendly. “I appreciate your pull request / bug report. I am very busy at the moment and I will get back to you as soon as possible.”
+如果你真的很忙（这很正常，而且绝对有可能发生），那就设置一个自动回复友善内容的操作。“感谢您的拉取请求/错误报告。我现在非常忙，我会尽快回复您。”
 
-### How to handle external pull requests[][27]
+## 参与一个大型项目
 
-Another challenge I faced and that I didn't expect was managing external pull requests.
+Textual 是我长期参与过的最大的代码库。我曾为 _更大的_ 项目做过一些零星贡献，但对大型项目的一次性贡献比持续工作要简单得多。
 
-Much like with bug reports, I found invaluable to have a pull request template with a checklist for external users (and often, for myself as well). Mentioning things like runnnig tests and formatting the code with the appropriate formatter(s) can save everyone a lot of time.
+当代码库达到一定规模时，你几乎不可能一下子记住所有内容。对我来说，Textual 就处于这个阶段。随着时间的推移，我越来越熟悉代码库，但仍然有一些东西我不知道它们是如何工作的，还有一些代码我从未接触过。
 
-Another thing I realised is helpful is to make sure that each pull request is associated with an issue. Sometimes users will open pull requests that implement features without those features ever being discussed. Chances are the user is trying to be helpful, but sometimes those features need a bit of discussion. I find that those are the cases where an associated issue will be the most helpful.
+为了更容易地处理如此庞大的项目，我开发了三个系统：
 
-If a user opens a pull request out of the blue with a non-trivial change, make sure you thank them for their time and ask them to create an issue that discusses the changes they made. They probably wanted to implement a feature that is helpful for them (and possibly for others). Point them to your [contributing guide][28].
+1.  一套我在开发大型功能或修复错误时牢记的戒律；
+2.  一个用于记录大型任务、难题和重要事件的笔记系统；以及
+3.  一个我在提交拉取请求之前会查看的个人拉取请求清单。
 
-Your guide has your back here because it makes it less likely that the user will see your request as a personal attack. (Remember that Humans are animals, really...)
+让我带你逐一了解这三个系统。
 
-When it's time to review the code that the external contributors wrote, remember that if someone went out of their way to make a pull request, it's likely that they are well-intentioned. As long as you're not an idiot, you'll likely be able to get them to comply with your requested changes!
+### 我工作的 4 条戒律
 
-If you're very peculiar about formatting, naming, design, and/or other things, my suggestion is that you mention those in the [contributing guide][29]. If there are tools that automate part of the process, mention them. I personally find it easier to say “as per the contributing guide, we only use variable names that have exactly 5 consonants” – if it's in the guide it obviously applies to everyone and the whole project – versus saying “please use variable names with 5 consonants”, as the user might think you're just being picky with them.
+我记得我做过几次比较大的拉取请求，但第一次尝试都不太顺利。我四处征求关于如何处理这种情况的建议（当你正在实现一个更大的功能或修复一个非常困难的错误时），最后我总结出了四条戒律，我在编写代码时应该始终牢记。
 
-### The dreadful story of when I rejected my first external PR[][30]
+1.  **什么对开发者最有利？** – 在做设计决策时，我应该始终考虑使用我代码的人想要什么，而这应该成为我决策的驱动力。
+2.  **问题的本质是什么？** – 代码是否做了它 _应该_ 做的所有事情，还是我只解决了正在解决的问题中明确提到的那些事情？遵循问题的 _本质_，我还应该做些什么吗？
+3.  **我承担责任，这样别的开发者就不必承担。** 我是那个需要处理所有烦人或困难的边缘情况并编写无聊代码的人，这样用户就不必这样做了。
+4.  **我是否在阻止用户做他们可能想做的事情？** 我的设计决策是否阻止了用户做合理的事情，以及他们 _可能_ 想做的事情，即使我不清楚他们 _为什么_ 想做？
 
-Most of what I'm writing in this section about interacting with users and contributors came as a realisation after one particular interaction that I had with one specific user.
+这四个想法是相关的，而且可能是不言而喻的。事后看来，它们对我来说也是显而易见的。但把它们写下来对我 definitely 有帮助。
 
-One day, someone opened a pull request trying to improve a specific guide in the documentation. These changes came “out of the blue” in the sense that there was not a previously opened issue asking that we improve that guide.
+### 做笔记
 
-The changes were non-trivial and involved changing the order of some things, duplicating some information, and rewriting sentences. We are sure the user was well-intentioned. In fact, we had already interacted with that particular user. And that well-intentioned pull request had some objectively great suggestions, but it also had other changes that were of subjective quality.
+另一件对我有帮助的事情是，记下我正在处理的更大问题的笔记。每当我想修复一个棘手的错误时，我都会记下一些关于我尝试过的事情的笔记。我对错误来源的猜想。尝试修复上述错误。
 
-In the end, I opened a second pull request where I committed the best parts of the original pull request. I made sure to include the author of the first pull request as a co-author. Then, we merged this second pull request. However, the first pull request was closed. When closing it, I made sure to thank the author for their time and I tried to explain why we were closing their pull request. Thankfully, the user accepted my feedback very graciously! However, if I had instructions about changing the documentation [in the contributing guide][31] maybe I could've saved this user some time...
+就我个人而言，记笔记的行为有助于将我一路学到的一些东西记在脑子里。在试图解决某些问题时，哪些策略有效，哪些策略无效。
 
-## Working on a large project[][32]
+记笔记不太可能以同样的方式让每个人都受益，但我相信，记笔记的一些变体可能会让你受益。
 
-Textual was the largest codebase I ever worked on for a sustained period of time. I've made drive-by contributions to _larger_ projects, but a one-time contribution to a large project is much simpler to make than to work consistently on a large project.
+### 个人拉取请求清单
 
-When a codebase reaches a certain size, it becomes virtually impossible to fit all of it in your head at once. For me, Textual was at this point. With time, I grew more and more familiar with the codebase but there are still things I don't know exactly how they work and there are parts of the codebase that I never touched.
+记笔记对我个人很有帮助，但我认为我的个人拉取请求清单可能对其他人更有帮助。每当我在处理一个问题时，我都会或多或少地遵循以下流程图：
 
-To make it easier for me to work on such a huge project, I developed three systems:
+![A flowchart that I used to decide whether I could make a pull request or not. The flowchart emphasises how often I ran the tests.](https://mathspp.com/user/pages/02.blog/503-days-working-full-time-on-foss-lessons-learned/_PR_flowchart.webp "Flowchart for making pull requests.")
 
-1.  a set of commandments that I kept in mind while working on larger features or bug fixes;
-2.  a note-taking system for big tasks, difficult issues, and eventful situations; and
-3.  a personal pull request checklist I went through before making a pull request.
+拉取请求流程图。
 
-Let me walk you through these three systems.
+如果上面的流程图给人的印象是我痴迷于运行测试，那么这还不足以说明我运行测试的 _频率_ 之高。
 
-### 4 commandments for my work[][33]
+在经历了几次事故和有趣的冒险之后，我意识到没有 `运行测试过于频繁` 这回事。在这 503 天里，我设法以最意想不到的方式破坏了测试，或者看到其他人破坏了测试。比如修复代码中的拼写错误、删除未使用的导入、重新格式化代码，等等。每当我认为 `这个改动太微不足道了，我不需要运行测试` 时，我就会破坏 CI。
 
-I remember making a couple of bigger pull requests that didn't go very well on the first try. I asked around for suggestions on how to handle these situations (when you're implementing a bigger feature or fixing a very difficult bug) and I ended up with four commandments that I should always keep in mind when writing code.
+每当我创建一个 PR 时，我总是先把它做成一个草稿 PR，然后我会审查我自己的代码。出于某种原因，在 GitHub 上审查我自己的代码帮助我发现了一些问题，而这些问题有时我在本地工作时会错过。只有在我审查了自己的代码并确保测试在 CI 上通过后，我才会请求其他人进行审查。
 
-1.  What's best for the developer? – When making design decisions, I should always think about what the people using my code will want and that's what should drive my decisions.
-    
-2.  What's the spirit of the issue? – Does the code do everything it _should_, or am I just addressing the things that are explicitly mentioned in the issue I'm solving? Following the _spirit_ of the issue, is there anything else I should do?
-    
-3.  I take the hit so that the dev doesn't. – I am the one who needs to handle all annoying or difficult edge cases and write the boring code so that the user doesn't have to.
-    
-4.  Am I preventing the user from doing something that they might want to do? – Do my design decisions prevent the user from doing things that are reasonable and that they _may_ want to do, even if it's not obvious to me _why_ they'd want to do it?
-    
+有一件事可能很明显，也可能不明显，这是一个有点技术性的评论，那就是测试对我的帮助 _很大_，给了我处理 Textual 代码库所需的信心。代码太多了，我很容易在某个地方做出修改，以为自己做的一切都是对的，然后在代码的其他一些（看似）不相关的部分破坏了测试。如果没有测试，我的工作将会困难得多……
 
-These four ideas are related and they're possibly self-evident. In hindsight, they are obvious to me, too. But it definitely helped me writing them down.
+## 结论
 
-### Take notes[][34]
+在 Textual 工作的这 503 天里，我学到了很多东西。我很伤心自己被解雇了，尤其是考虑到这对 Textual 可能意味着什么，但我并不后悔离开之前的工作加入这个项目。我学到了很多关于 Python、软件工程的知识，以及很多关于开源项目的工作方式。以下是我从这 503 天的经历中学到的：
 
-Another thing that helped me was writing down notes about bigger issues I was tackling. Whenever I was trying to fix a difficult bug, I'd jot down some notes about things I tried. Conjectures I had about the source of the bug. Attempts at fixing said bug.
+-   **你在网上所做的一切都是你的个人品牌。**
+-   **提出所有问题。**
+-   **拥抱（代码审查）反馈。**
+-   **每个人都会犯错。**
+-   **创建贡献指南。**
+-   **向错误报告者提供清晰的说明。**
+-   **友好待人，即使到了烦人的程度。**
+-   **快速做出第一次回复。**
+-   **如何处理外部拉取请求。**
+-   **我的工作四诫。**
+-   **做笔记。**
+-   **个人拉取请求清单。**
 
-Personally, the act of taking notes helped commit to memory some of the things I was learning along the way. Strategies that did or did not work when trying to solve certain issues.
-
-It's unlikely that note-taking will benefit everyone in the same way, but I'm sure there are variants of this that are likely to benefit you.
-
-### Personal pull request checklist[][35]
-
-Taking notes was helpful to me but I reckon my personal pull request checklist is likely to be generally more helpful to others. Whenever I was working on an issue, I followed more or less the following flowchart:
-
-![A flowchart that I used to decide whether I could make a pull request or not. The flowchart emphasises how often I ran the tests.](/user/pages/02.blog/503-days-working-full-time-on-foss-lessons-learned/_PR_flowchart.webp "Flowchart for making pull requests.")
-
-Flowchart for making pull requests.
-
-If the flowchart above gives off the idea that I ran the tests obsessively, then that's not doing justice to _how often_ I ran the tests.
-
-After a couple of mishaps and interesting adventures I realised there was no such thing as running the tests too often. Over the course of these 503 days I managed to break the tests, or see someone else break the tests, in the most unexpected ways. Things like fixing typos in code, removing unused imports, reformatting code, you name it. Whenever I thought “this change is so trivial I don't need to run the tests”, I would break CI.
-
-Whenever I made a PR, I always started by making it a draft PR and then I would review my own code. For some reason, reviewing my own code on GitHub helped me catch things that sometimes I would miss when working locally. I would only request someone else's review after reviewing my own code and making sure the tests were passing on CI.
-
-One thing that may or may not be obvious from this, and that is a bit of a technical comment, is that tests helped me _a lot_ and gave me the confidence I needed to work on the Textual codebase. There was so much code that it was very easy for me to make a change somewhere, thinking I was doing everything right, and then break the tests in some other (seemingly) unrelated part of the code. Without tests, my work would have been so much harder...
-
-## Conclusion[][36]
-
-I learned a lot over the course of these 503 days working on Textual. I'm sad I'm being let go, especially because of what it likely means for Textual, but I don't regret leaving my previous position to join this project. I learned a lot about Python, software engineering, and a lot about working on open-source projects. These are the lessons I take from this 503 experience:
-
--   [Everything you do online works as a banner for you][37].
--   [Ask ALL the questions][38].
--   [Embrace (code review) feedback][39].
--   [Everyone makes mistakes][40].
--   [Create a contributing guide][41].
--   [Give clear instructions to bug reporters][42].
--   [Be so kind it's annoying][43].
--   [Give a first reply quickly][44].
--   [How to handle external pull requests][45].
--   [4 commandments for my work][46].
--   [Take notes][47].
--   [Personal pull request checklist][48].
-
-Now, I will use my time to help _**you**_, your colleagues, and your team. If you're looking for Python training, [reach out to me][49]. I will also be devoting more time to writing books and teaching Python online, so stay tuned for that!
+现在，我会利用我的时间来帮助***你***、你的同事以及你的团队。如果你正在寻找 Python 培训，[请联系我][49]。我还将投入更多时间撰写书籍和在线教授 Python，敬请期待！
 
 ---
 
-1.  At the places I worked previously I was always the only Python developer, so I was technically also the worst Python developer there... But you get what I mean. [↩][50]
-    
-2.  See the previous footnote. [↩][51]
-    
+1.  在我之前工作过的地方，我一直是唯一的 Python 开发人员，所以从技术上来说，我也是那里最差的 Python 开发人员……但你明白我的意思。
 
-## Become a better Python 🐍 developer 🚀[][52]
+## 成为更优秀的 Python 🐍 开发者 🚀
 
-+35 chapters. +400 pages. Hundreds of examples. Over 30,000 readers!
+35+ 章。400+ 页。数百个示例。超过 30,000 名读者！
 
-My book “Pydon'ts” teaches you how to write elegant, expressive, and Pythonic code, to help you become a better developer. [\>>> Download it here 🐍🚀][53].
+我的书 `Pydon'ts` 教你如何编写优雅、富有表现力且地道的 Python 代码，帮助你成为更优秀的开发者。[\>>> 点击此处下载 🐍🚀][53]。
 
-[1]: /blog/503-days-working-full-time-on-foss-lessons-learned
-[2]: /blog/tag:open source#body-wrapper
-[3]: /blog/tag:opinion#body-wrapper
-[4]: /blog/tag:python#body-wrapper
-[5]: #503-days-working-full-time-on-foss-lessons-learned
 [6]: mailto:rodrigo@mathspp.com
-[7]: /books
+[7]: https://mathspp.com/books
 [8]: https://github.com/textualize/rich
 [9]: https://github.com/textualize/textual
 [10]: https://github.com/willmcgugan
 [11]: https://github.com/darrenburns
 [12]: https://github.com/davep
-[13]: #fn:1
-[14]: #everything-you-do-online-works-as-a-banner
 [15]: https://x.com/mathsppblog
-[16]: #put-your-ego-aside
-[17]: #fn:2
-[18]: #ask-all-the-questions
-[19]: #embrace-code-review-feedback
-[20]: #everyone-makes-mistakes
-[21]: #interacting-with-users-and-contributors
-[22]: #create-a-contributing-guide
-[23]: #give-clear-instructions-to-bug-reporters
-[24]: #create-a-contributing-guide
-[25]: #be-so-kind-it-s-annoying
-[26]: #give-a-first-reply-quickly
-[27]: #how-to-handle-external-pull-requests
-[28]: #create-a-contributing-guide
-[29]: #create-a-contributing-guide
-[30]: #the-dreadful-story-of-when-i-rejected-my-first-external-pr
-[31]: #create-a-contributing-guide
-[32]: #working-on-a-large-project
-[33]: #4-commandments-for-my-work
-[34]: #take-notes
-[35]: #personal-pull-request-checklist
-[36]: #conclusion
-[37]: #everything-you-do-online-works-as-a-banner
-[38]: #ask-all-the-questions
-[39]: #embrace-code-review-feedback
-[40]: #everyone-makes-mistakes
-[41]: #create-a-contributing-guide
-[42]: #give-clear-instructions-to-bug-reporters
-[43]: #be-so-kind-its-annoying
-[44]: #give-a-first-reply-quickly
-[45]: #how-to-handle-external-pull-requests
-[46]: #4-commandments-for-my-work
-[47]: #take-notes
-[48]: #personal-pull-request-checklist
 [49]: mailto:rodrigo@mathspp.com
-[50]: #fnref1:1
-[51]: #fnref1:2
-[52]: #become-a-better-python-developer
 [53]: https://gumroad.com/l/pydonts?variant=Free%20for%20ever%20%F0%9F%92%B8&wanted=true
