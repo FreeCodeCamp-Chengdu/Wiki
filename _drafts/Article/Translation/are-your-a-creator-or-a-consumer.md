@@ -1,17 +1,13 @@
 ---
 title: 你是创造者还是消费者？
-# date: 2025-04-27T15:47:27.102Z
 date: 2016-03-14
 authorURL: "https://www.andrewlynch.net/"
 originalURL: https://www.andrewlynch.net/blog/are-your-a-creator-or-a-consumer
 translator: "yiwei"
-reviewer: ""
+reviewer: “luojiyin, 水歌"
 ---
 
 <!-- more -->
-
-<!-- 2016年3月14日
-预计阅读时间：2分钟 -->
 
 我是一个信息成瘾者。
 
