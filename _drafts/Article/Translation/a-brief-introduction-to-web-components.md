@@ -1,189 +1,138 @@
 ---
-title: A Brief Introduction to Web Components
+title: Web Components 简介
 date: 2025-05-08T15:32:15.694Z
 author: Mark Mahoney
 authorURL: https://www.freecodecamp.org/news/author/markm208/
 originalURL: https://www.freecodecamp.org/news/a-brief-introduction-to-web-components/
-translator: ""
+translator: "yiwei"
 reviewer: ""
 ---
 
-/ [#Web Components][1]
-
 <!-- more -->
 
-# A Brief Introduction to Web Components
+在之前的一篇文章中，我简要介绍了 [React][1]。这篇教程介绍了一种构建基于组件的前端的替代方法。它涵盖了 [Web Components][2] 的基础知识，以构建模块化、可复用的网页应用元素。
 
-![Mark Mahoney](https://cdn.hashnode.com/res/hashnode/image/upload/v1742697935887/aa3553a0-8522-481b-bda8-5bf4e1df7249.png)
+Web Components 是一组标准化的浏览器 API，允许你创建具有封装功能的自定义可复用 HTML 元素。它们帮助开发者创建可以跨不同框架甚至无需任何框架使用的独立组件。
 
-[Mark Mahoney][2]
+本教程假设你有一些基本的编程经验，并且能够熟练阅读和编写 JavaScript 代码。你应了解变量、函数、循环、对象、类，以及 JavaScript 在浏览器中的工作原理。你不需要了解任何关于 Web Components 的知识即可开始学习本教程。
 
-  ![A Brief Introduction to Web Components](https://cdn.hashnode.com/res/hashnode/image/upload/v1746625674217/902b1ac1-f7c2-42cd-b12f-d9803e58739d.png)
+这里介绍的四个课程选取自我免费的 Code Playbacks 书籍：
 
-In a previous article, I gave a [brief introduction to React][3]. This tutorial introduces an alternative approach to building a component-based frontend. It covers the fundamentals of [Web Components][4] to build modular, reusable elements for your web applications.
+> [从前端到后端的 Web 开发入门][3]  
+> 作者： Mark Mahoney
 
-Web Components are a set of standardized browser APIs that allow you to create custom, reusable HTML elements with encapsulated functionality. They help developers create self-contained components that can be used across different frameworks or even without any framework at all.
+这本书可以在 [Playback Press][4] 免费获取。该书是现代网页开发的实践指南，涵盖了从 JavaScript 核心特性到使用各种工具和技术构建全栈应用的所有内容。
 
-This tutorial assumes you have some basic programming experience and are comfortable reading and writing JavaScript. You should understand variables, functions, loops, objects, classes, and how JavaScript works in the browser. You don’t need to know anything about Web Components to get started.
+每个课程都以 [Code Playback][5] 的形式呈现，这是一种交互式代码练习，展示了程序随时间的变化过程，并附有我对所发生内容的解释。这种格式帮助你专注于代码变更背后的思考过程。
 
-The four lessons presented here are taken from my free book of code playbacks:
-
-> [An Introduction to Web Development from Back to Front][5]  
-> By Mark Mahoney
-
-This book is available for free on [Playback Press][6]. The book is a hands-on guide to modern web development, covering everything from core JavaScript features to building full-stack apps with various tools and technologies.
-
-Each lesson is presented as a [code playback][7], which is an interactive code walkthrough that shows how a program changes over time along with my explanation about what's happening. This format helps you focus on the reasoning behind the code changes.
-
-To view a playback, click on the comments in the left panel. Each comment updates the code in the editor and highlights the change. Read the explanation, study the code, and use the built-in AI tutor if you have questions. Here's a short video that shows how to use a code playback:
+要查看回放，请点击左侧面板中的评论。每个评论都会更新编辑器中的代码并突出显示更改。阅读解释，研究代码，如果有问题，可以使用内置的 AI 导师。这里有一个简短的视频，展示了如何使用 Code playback：
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uYbHqCNjVDM" style="aspect-ratio: 16 / 9; width: 100%; height: auto;" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" loading="lazy"></iframe>
 
-After this introduction, you might want to explore the official Web Components resources: [MDN Web Components Guide][8].
+在这个视频介绍之后，你可能想探索官方的 Web Components 资源：[MDN Web Components 指南][6]。
 
-## **Table of Contents**
+## **目录**
 
--   [Web Components Part 1: Your First Custom Element][9]
-    
--   [Web Components Part 2: Data Communication][10]
-    
--   [Web Components Part 3: Custom Events][11]
-    
--   [Web Components Part 4: Building a Complete App][12]
-    
--   [React vs Web Components Comparison][13]
-    
+- [**Web Components 第1部分：你的第一个自定义元素**](#web-components-第1部分你的第一个自定义元素)
+- [**Web Components 第2部分：数据通信**](#web-components-第2部分数据通信)
+- [**Web Components 第3部分：自定义事件**](#web-components-第3部分自定义事件)
+- [**Web Components 第4部分: 构建完整应用**](#web-components-第4部分-构建完整应用)
+- [**React 与 Web Components 比较**](#react-与-web-components-比较)
+- [**总结**](#总结)
 
-## **Web Components Part 1: Your First Custom Element**
+## **Web Components 第1部分：你的第一个自定义元素**
 
-This first lesson introduces building user interfaces using Web Components, which let you bundle together HTML, CSS, and JavaScript into a single reusable element.
+本课程首先介绍如何使用 Web Components 构建用户界面，Web Components 允许你将 HTML、CSS 和 JavaScript 打包成一个可复用的单一元素。
 
-These elements can be treated just like built-in HTML elements such as `h1`, `div`, and `img`. They're particularly useful when you want to break a page into smaller, self-contained, and reusable parts like headers, tables, or forms, while keeping the code for each organized and isolated.
+这些元素可以像 `h1`、`div` 和 `img` 等内置 HTML 元素一样使用。当你希望将页面拆分成为更小的、独立的、可复用的部分，如标题、表格或表单时，它们特别有用，同时保持每部分代码有序且隔离。
 
-In this playback, you'll learn:
+在此回放中，你将学习：
 
--   How to create a JavaScript class that represents a custom HTML element
-    
--   How to access the attributes of the web component
-    
--   How to create and use a web component in HTML
-    
+- 如何创建一个表示自定义 HTML 元素的 JavaScript 类   
+- 如何访问 Web Component 的属性    
+- 如何在 HTML 中创建和使用 Web Component
 
-The lesson focuses on creating a `LegendHeader` component that can be reused throughout a web application. You'll see how custom elements can have attributes just like regular HTML elements (such as `src` in an `img` tag), and how these attributes can be changed from JavaScript code, triggering methods in response.
+本课程重点介绍创建一个 `LegendHeader` 组件，该组件可以在整个 Web 应用中重复使用。你将看到自定义元素如何像普通 HTML 元素一样具有属性（例如 `img` 标签中的 `src`），并且如何从 JavaScript 代码中更改这些属性，从而触发相应的方法。
 
-**View the playback here:** [**Web Components Part 1- LegendHeader**][14]
+**在此查看回放：** [**Web Components 第1部分- LegendHeader**][7]
 
-## **Web Components Part 2: Data Communication**
+## **Web Components 第2部分：数据通信**
 
-Building on the previous lesson, this playback demonstrates how to create multiple components that share data. I'll enhance the `LegendHeader` component to display the count of legends being tracked, and add a new `LegendTable` component that displays all the CS legends in a database using an HTML table.
+在上一课的基础上，这个回放演示了如何创建多个共享数据的组件。我将增强 `LegendHeader` 组件以显示正在跟踪的图例数量，并添加一个新的 `LegendTable` 组件，该组件使用 HTML 表格显示数据库中的所有 CS 图例。
 
-A key concept introduced in this lesson is having a top-level element hold the web app's data and letting it communicate changes to the components that rely on it. This approach makes component management more organized and maintainable.
+本课引入的一个关键概念是让顶级元素来承载 Web 应用的数据，并将数据的变更传递给依赖这些数据的组件。这种方法使组件管理更加有序且易于维护。
 
-In this playback, you'll learn:
+在此回放中，你将学习：
 
--   How to create and work with multiple components
-    
--   How to set up and use 'observable attributes' in a web component
-    
--   How a top-level element can manage data and inform components when data changes
-    
+- 如何创建和使用多个组件
+- 如何在 Web 组件中设置和使用“可观察属性”
+- 顶级元素如何管理数据并在数据变化时通知组件
 
-**View the playback here:** [**Web Components Part 2- LegendTable**][15]
+**在此查看回放:** [**Web Components Part 2- LegendTable**][8]
 
-## **Web Components Part 3: Custom Events**
+## **Web Components 第3部分：自定义事件**
 
-This lesson expands the application by adding a `NewLegendForm` component that allows users to add new legends to the database. The playback introduces the concept of custom events that 'bubble' up through the DOM, enabling top-level elements to control requests for data.
+本课通过添加一个 `NewLegendForm` 组件来扩展应用，允许用户向数据库添加新的图例。回放介绍了“冒泡”通过 DOM 的自定义事件概念，使顶层元素能够控制数据请求。
 
-You'll learn why it's often better for components not to manage app-wide data themselves. Having a top-level element manage the entire web app's data makes components simpler and more reusable, as they don't need to know about each other or communicate directly.
+你将了解为什么通常最好不要让组件自己管理应用的数据。由顶级元素管理整个 Web 应用程序的数据使组件更简单、更可复用，因为它们不需要相互了解或直接通信。
 
-In this playback, you'll learn:
+在此回放中，你将学习：
 
--   How components can generate custom events to request data instead of managing it themselves
-    
--   How a top-level element can listen for events and handle them
-    
--   How a top-level element accesses data and passes it to components that need it
-    
+- 组件如何生成自定义事件以请求数据而不是自己管理数据
+- 顶级元素如何监听事件并处理它们
+- 顶级元素如何访问数据并将其传递给需要的组件
 
-**View the playback here:** [**Web Components Part 3- NewLegendForm**][16]
+**在此查看回放：** [**Web Components 第3部分 - NewLegendForm**][9]
 
-## **Web Components Part 4: Building a Complete App**
+## **Web Components 第4部分: 构建完整应用**
 
-In this final lesson, I bring everything together to create a complete application with authentication. I'll add a new `AuthBox` component and implement a light authentication system so that only registered, logged-in users can add new legends to the database.
+在本节最后的课程中，我将把所有内容整合起来，创建一个带有身份验证的完整应用。我将添加一个新的 `AuthBox`组件，并实现一个轻量级身份验证系统，以便只有注册并登录的用户才能向数据库添加新的图例。
 
-The playback uses sessions on the server to control user access and reinforces the importance of centralized data management in component-based architecture.
+Playback 在服务器上使用会话来控制用户访问，并加强了组件化架构中集中数据管理的重要性。
 
-In this playback, you'll learn:
+在此回放中，你将学习：
+- 如何使用 Web Component 实现用户身份验证
+- 如何将所有组件集成到一个完整的、功能齐全的应用中
+- 基于组件的 Web 应用的数据管理最佳实践
 
--   How to implement user authentication with a web component
-    
--   How to integrate all components into a complete, functional application
-    
--   Best practices for data management in component-based web applications
-    
+**在此查看回放：** [**Web Components 第4部分 - AuthBox**][10]
 
-**View the playback here:** [**Web Components Part 4- AuthBox**][17]
+## **React 与 Web Components 比较**
 
-## **React vs Web Components Comparison**
+React 和 Web Components 的主要区别可以总结如下：
 
-Some of the main differences between React and web components can be summarized like this:
-
-| Key Property | React | Web Components |
+| 关键属性 | React | Web Components |
 | --- | --- | --- |
-| **Component Definition** | Uses functions (typically) to define components | Uses JavaScript classes that extend HTMLElement |
-| **Tooling Requirements** | Requires tools for installation, transpilation, bundling (npm, webpack, babel, and so on) | Native browser support with no build tools or installation required |
-| **Template Syntax** | Uses JSX, an HTML-like syntax within JavaScript | Uses standard HTML in strings or HTML templates |
-| **DOM Updates** | Uses Virtual DOM to efficiently batch and minimize actual DOM manipulations | Directly manipulates the DOM, typically less optimized for frequent updates |
-| **Property Types** | Accepts various data types as props (strings, arrays, objects, functions) | Only accepts strings as attributes in HTML |
-| **Rendering Model** | Declarative: describe what the UI should look like, React handles updates | More imperative: directly manipulate the DOM in response to changes |
-| **Style Encapsulation** | No built-in style encapsulation (requires CSS-in-JS or CSS Modules) | Built-in style encapsulation with Shadow DOM |
-| **Browser Support** | Works in all browsers via polyfills | Modern browsers only (may require polyfills for older browsers) |
-| **Ecosystem** | Large ecosystem with many libraries and tools | Smaller ecosystem, but growing |
+| 组件定义 | 通常使用函数定义组件 | 使用扩展 HTMLElement 的 JavaScript 类 |
+| 工具要求 | 需要安装、转译、打包工具（npm、webpack、babel 等） | 原生浏览器支持，无需构建工具或安装 |
+| 模板语法 | 使用 JSX，一种 JavaScript 中的类 HTML 语法 | 在字符串或 HTML 模板中使用标准 HTML |
+| DOM 更新 | 使用虚拟 DOM 高效批处理并最小化实际 DOM 操作 | 直接操作 DOM，通常对频繁更新的优化较少 |
+| 属性类型 | 接受各种数据类型作为 props（字符串、数组、对象、函数） | 在 HTML 中仅接受字符串作为属性 |
+| 渲染模型 | 声明式：描述 UI 应该是什么样子，React 处理更新 | 更具命令性：直接操作 DOM 以响应更改 |
+| 样式封装 | 无内置样式封装（需要 CSS-in-JS 或 CSS 模块） | 使用 Shadow DOM 内置样式封装 |
+| 浏览器支持 | 通过 polyfills 在所有浏览器中工作 | 仅现代浏览器（可能需要对旧浏览器的 polyfills） |
+| 生态系统 | 拥有大量库和工具的大生态系统 | 较小但不断增长的生态系统 |
 
-## Wrapping Up
+## 总结
 
-These four lessons cover the fundamentals of Web Components, but there's much more to explore. Web Components provide a standards-based way to create reusable elements without the need for external libraries or frameworks, making them particularly valuable for building maintainable and portable code.
+这四课涵盖了 Web Components 的基础知识，但还有更多内容可供探索。Web Components 提供了一种基于标准的方法来创建可复用元素，而无需外部库或框架，使其在构建可维护和可移植的代码时特别有价值。
 
-If you found this format helpful, explore the rest of the book to see how full web apps are built from scratch using modern tools and approaches.
+如果你发现这种格式有帮助，请探索本书的其余部分，看看如何使用现代工具和方法从头开始构建完整的 Web 应用程序。
 
-Web Components represent just one approach to component-based web development. Keep building, keep reading, and try out the other playbacks when you're ready to go further.
+Web Components 只是基于组件的 Web 开发的一种方法。继续构建，继续阅读，并在准备好进一步学习时尝试其他 Playback 。
 
-If you have feedback about the playbacks I'd love to hear from you. You can reach me here [mark@playbackpress.com][18].
-
----
-
-![Mark Mahoney](https://cdn.hashnode.com/res/hashnode/image/upload/v1742697935887/aa3553a0-8522-481b-bda8-5bf4e1df7249.png)
-
-[Mark Mahoney][19]
-
-Read [more posts][20].
+如果你对这些 Playback 有任何反馈，我很乐意听取你的意见。你可以通过 [mark@playbackpress.com][11] 联系我。
 
 ---
 
-If this article was helpful, share it.
-
-Learn to code for free. freeCodeCamp's open source curriculum has helped more than 40,000 people get jobs as developers. [Get started][21]
-
-ADVERTISEMENT
-
-[1]: /news/tag/web-components/
-[2]: /news/author/markm208/
-[3]: https://www.freecodecamp.org/news/a-brief-introduction-to-react/
-[4]: https://developer.mozilla.org/en-US/docs/Web/API/Web_components
-[5]: https://playbackpress.com/books/webdevbook/
-[6]: https://playbackpress.com/books/
-[7]: https://markm208.github.io/
-[8]: https://developer.mozilla.org/en-US/docs/Web/API/Web_components
-[9]: #heading-web-components-part-1-your-first-custom-element
-[10]: #heading-web-components-part-2-data-communication
-[11]: #heading-web-components-part-3-custom-events
-[12]: #heading-web-components-part-4-building-a-complete-app
-[13]: #heading-react-vs-web-components-comparison
-[14]: https://playbackpress.com/books/webdevbook/chapter/3/8
-[15]: https://playbackpress.com/books/webdevbook/chapter/3/9
-[16]: https://playbackpress.com/books/webdevbook/chapter/3/10
-[17]: https://playbackpress.com/books/webdevbook/chapter/3/11
-[18]: mailto:mark@playbackpress.com
-[19]: /news/author/markm208/
-[20]: /news/author/markm208/
-[21]: https://www.freecodecamp.org/learn/
+[1]: https://www.freecodecamp.org/news/a-brief-introduction-to-react/
+[2]: https://developer.mozilla.org/en-US/docs/Web/API/Web_components
+[3]: https://playbackpress.com/books/webdevbook/
+[4]: https://playbackpress.com/books/
+[5]: https://markm208.github.io/
+[6]: https://developer.mozilla.org/en-US/docs/Web/API/Web_components
+[7]: https://playbackpress.com/books/webdevbook/chapter/3/8
+[8]: https://playbackpress.com/books/webdevbook/chapter/3/9
+[9]: https://playbackpress.com/books/webdevbook/chapter/3/10
+[10]: https://playbackpress.com/books/webdevbook/chapter/3/11
+[11]: mailto:mark@playbackpress.com
