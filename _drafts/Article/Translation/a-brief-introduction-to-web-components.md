@@ -16,7 +16,7 @@ Web Components 是一组标准化的浏览器 API，允许你创建具有封装�
 
 本教程假设你有一些基本的编程经验，并且能够熟练阅读和编写 JavaScript 代码。你应了解变量、函数、循环、对象、类，以及 JavaScript 在浏览器中的工作原理。你不需要了解任何关于 Web Components 的知识即可开始学习本教程。
 
-这里介绍的四个课程选取自我免费的 Code Playbacks 书籍：
+这里介绍的四个课程选取自我的免费 Code Playbacks 书籍中：  
 
 > [从前端到后端的 Web 开发入门][3]  
 > 作者： Mark Mahoney
@@ -30,15 +30,6 @@ Web Components 是一组标准化的浏览器 API，允许你创建具有封装�
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uYbHqCNjVDM" style="aspect-ratio: 16 / 9; width: 100%; height: auto;" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" loading="lazy"></iframe>
 
 在这个视频介绍之后，你可能想探索官方的 Web Components 资源：[MDN Web Components 指南][6]。
-
-## **目录**
-
-- [**Web Components 第1部分：你的第一个自定义元素**](#web-components-第1部分你的第一个自定义元素)
-- [**Web Components 第2部分：数据通信**](#web-components-第2部分数据通信)
-- [**Web Components 第3部分：自定义事件**](#web-components-第3部分自定义事件)
-- [**Web Components 第4部分: 构建完整应用**](#web-components-第4部分-构建完整应用)
-- [**React 与 Web Components 比较**](#react-与-web-components-比较)
-- [**总结**](#总结)
 
 ## **Web Components 第1部分：你的第一个自定义元素**
 
@@ -84,7 +75,7 @@ Web Components 是一组标准化的浏览器 API，允许你创建具有封装�
 
 **在此查看回放：** [**Web Components 第3部分 - NewLegendForm**][9]
 
-## **Web Components 第4部分: 构建完整应用**
+## **Web Components 第4部分：构建完整应用**
 
 在本节最后的课程中，我将把所有内容整合起来，创建一个带有身份验证的完整应用。我将添加一个新的 `AuthBox`组件，并实现一个轻量级身份验证系统，以便只有注册并登录的用户才能向数据库添加新的图例。
 
@@ -102,7 +93,7 @@ Playback 在服务器上使用会话来控制用户访问，并加强了组件�
 React 和 Web Components 的主要区别可以总结如下：
 
 | 关键属性 | React | Web Components |
-| --- | --- | --- |
+|:---:|:---:|:---:|
 | 组件定义 | 通常使用函数定义组件 | 使用扩展 HTMLElement 的 JavaScript 类 |
 | 工具要求 | 需要安装、转译、打包工具（npm、webpack、babel 等） | 原生浏览器支持，无需构建工具或安装 |
 | 模板语法 | 使用 JSX，一种 JavaScript 中的类 HTML 语法 | 在字符串或 HTML 模板中使用标准 HTML |
@@ -121,7 +112,7 @@ React 和 Web Components 的主要区别可以总结如下：
 
 Web Components 只是基于组件的 Web 开发的一种方法。继续构建，继续阅读，并在准备好进一步学习时尝试其他 Playback 。
 
-如果你对这些 Playback 有任何反馈，我很乐意听取你的意见。你可以通过 [mark@playbackpress.com][11] 联系我。
+如果你对这些 Playback 有任何反馈，我很乐意听取你的意见。你可以通过 mark@playbackpress.com 联系我。
 
 ---
 
