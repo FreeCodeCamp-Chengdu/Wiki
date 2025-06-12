@@ -31,7 +31,9 @@ Web Components 是一组标准化的浏览器 API，允许你创建具有封装�
 
 在这个视频介绍之后，你可能想探索官方的 Web Components 资源：[MDN Web Components 指南][6]。
 
-## **Web Components 第1部分：你的第一个自定义元素**
+## 目录
+
+## **Web Components 第 1 部分：你的第一个自定义元素**
 
 本课程首先介绍如何使用 Web Components 构建用户界面，Web Components 允许你将 HTML、CSS 和 JavaScript 打包成一个可复用的单一元素。
 
@@ -45,9 +47,9 @@ Web Components 是一组标准化的浏览器 API，允许你创建具有封装�
 
 本课程重点介绍创建一个 `LegendHeader` 组件，该组件可以在整个 Web 应用中重复使用。你将看到自定义元素如何像普通 HTML 元素一样具有属性（例如 `img` 标签中的 `src`），并且如何从 JavaScript 代码中更改这些属性，从而触发相应的方法。
 
-**在此查看回放：** [**Web Components 第1部分- LegendHeader**][7]
+**在此查看回放：** [**Web Components 第 1 部分- LegendHeader**][7]
 
-## **Web Components 第2部分：数据通信**
+## **Web Components 第 2 部分：数据通信**
 
 在上一课的基础上，这个回放演示了如何创建多个共享数据的组件。我将增强 `LegendHeader` 组件以显示正在跟踪的图例数量，并添加一个新的 `LegendTable` 组件，该组件使用 HTML 表格显示数据库中的所有 CS 图例。
 
@@ -61,7 +63,7 @@ Web Components 是一组标准化的浏览器 API，允许你创建具有封装�
 
 **在此查看回放:** [**Web Components Part 2- LegendTable**][8]
 
-## **Web Components 第3部分：自定义事件**
+## **Web Components 第 3 部分：自定义事件**
 
 本课通过添加一个 `NewLegendForm` 组件来扩展应用，允许用户向数据库添加新的图例。回放介绍了“冒泡”通过 DOM 的自定义事件概念，使顶层元素能够控制数据请求。
 
@@ -73,11 +75,11 @@ Web Components 是一组标准化的浏览器 API，允许你创建具有封装�
 - 顶级元素如何监听事件并处理它们
 - 顶级元素如何访问数据并将其传递给需要的组件
 
-**在此查看回放：** [**Web Components 第3部分 - NewLegendForm**][9]
+**在此查看回放：** [**Web Components 第 3 部分 - NewLegendForm**][9]
 
-## **Web Components 第4部分：构建完整应用**
+## **Web Components 第 4 部分：构建完整应用**
 
-在本节最后的课程中，我将把所有内容整合起来，创建一个带有身份验证的完整应用。我将添加一个新的 `AuthBox`组件，并实现一个轻量级身份验证系统，以便只有注册并登录的用户才能向数据库添加新的图例。
+在本节最后的课程中，我将把所有内容整合起来，创建一个带有身份验证的完整应用。我将添加一个新的 `AuthBox` 组件，并实现一个轻量级身份验证系统，以便只有注册并登录的用户才能向数据库添加新的图例。
 
 Playback 在服务器上使用会话来控制用户访问，并加强了组件化架构中集中数据管理的重要性。
 
@@ -86,7 +88,7 @@ Playback 在服务器上使用会话来控制用户访问，并加强了组件�
 - 如何将所有组件集成到一个完整的、功能齐全的应用中
 - 基于组件的 Web 应用的数据管理最佳实践
 
-**在此查看回放：** [**Web Components 第4部分 - AuthBox**][10]
+**在此查看回放：** [**Web Components 第 4 部分 - AuthBox**][10]
 
 ## **React 与 Web Components 比较**
 
