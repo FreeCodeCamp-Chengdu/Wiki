@@ -1,5 +1,5 @@
 ---
-title: Career advice, or something like it
+title: 职业建议，或类似的东西
 date: 2025-07-14T07:21:05.833Z
 authorURL: "https://brooker.co.za/blog/"
 originalURL: https://brooker.co.za/blog/2025/06/20/career.html
@@ -7,40 +7,39 @@ translator: "luojiyin"
 reviewer: ""
 ---
 
-Cynicism is bad.
+愤世嫉俗是有害的。
 
-If I could offer you a single piece of career advice, it’s this: avoid negativity echo chambers.
+如果我只能给你一条职业建议，那就是：远离负面情绪的回音室。
 
-Every organization and industry has watering holes where the whiners hang out. The cynical. The jaded. These spots feel attractive. Everybody has something they can complain about, and complaining is fun. These places are inviting and inclusive: as long as you’re whining, or complaining, or cynical, you’re in. If you’re positive, optimistic, or ambitious, you’re out.
+每个组织和行业都有一些“抱怨者”聚集的地方。那些愤世嫉俗、心灰意冷的人。这些地方看起来很有吸引力。每个人都有可以抱怨的事情，而抱怨本身也很有趣。这些地方很有包容性：只要你在抱怨、发牢骚、愤世嫉俗，你就属于这里。如果你积极、乐观、有抱负，你就会被排斥在外。
 
-Avoid these places.
+远离这些地方。
 
-That doesn’t mean you need to be 100% up-beat all the time, or be a pushover, or never complain. Those things are normal human behavior. But strongly avoid communities that make complaining the core of their identity. My personal limit is about 20%. I’ll stop engaging with communities when 20% of the content is negative.
+这并不意味着你需要一直保持百分百的积极，或者变得软弱，或者从不抱怨。这些都是正常的人类行为。但要坚决远离那些把抱怨当作核心身份的群体。我的个人底线是，大约 20%。当一个群体中有 20%的内容是负面的，我就会停止参与。
 
-Nobody but you can decide how much you care about your career. Or how much you like your employer, colleagues, or industry. Not everything is in your control, even in a field like software engineering where autonomy and flexibility are widely available. I recommend you choose one of two paths. If you want to move your career or industry forward, focus on the positive parts of your role, and spend energy making things better. Alternatively, if you don’t want to advance your career, spend the right amount of energy to stay where you are. Then, instead of joining that whiny waterhole, go home and mow the lawn, play with your dog, take a walk in the woods with your kids, or whatever you enjoy.
+只有你自己能决定你有多在乎自己的职业，或者你有多喜欢你的雇主、同事或行业。并不是所有事情都在你的掌控之中，即使是在像软件工程这样高度自主和灵活的领域。我建议你选择两条路之一。如果你想推动自己的职业或行业进步，就专注于你工作中积极的部分，并投入精力去让事情变得更好。或者，如果你不想让职业更进一步，就投入适当的精力保持现状。然后，与其加入那些抱怨的圈子，不如回家割草、陪狗玩、和孩子们去林中散步，或者做你喜欢的事情。
 
-These complaining places aren’t just bad for your career, they’re bad for your mental and physical health too. Avoid them even if the content resonates with you. Especially if the content resonates with you.
+这些抱怨的地方不仅对你的职业有害，对你的心理和身体健康也有害。即使你觉得这些内容很有共鸣，也要远离。尤其是当你觉得有共鸣的时候。
 
-Positive echo chambers can be bad too, but I’ve run into very few of those during my career. What I can say with certainty, though, is that none of the people I look up to in this industry are spending their time in `#everything-sucks` on Slack. They recognize when stuff sucks, and either fix it or accept it.
+正能量的回音室也可能有害，但在我的职业生涯中遇到的很少。不过我可以肯定地说，我在这个行业里敬佩的人，没有一个会把时间花在 Slack 的 `#everything-sucks` 频道里。他们能意识到问题的存在，然后要么去解决，要么去接受。
 
-My advice: find the _yes, and_ communities, and spend time there. Find the people doing cool stuff you admire, and spend time with them. Find the people doing the work you want to do, or living the life you want to live, and find ways to learn from them.
+我的建议是：去找那些“是的，并且……”的群体，花时间和他们在一起。去找那些做着你欣赏的酷事的人，和他们在一起。去找那些做着你想做的工作、过着你想过的生活的人，想办法向他们学习。
 
-You’re not going to find them in `#things-used-to-be-better`.
+你不会在 `#things-used-to-be-better` 里找到他们。
 
-Spend your energy at work doing great work. Spend your energy outside of work taking time with the people you love, doing things you enjoy, and showing up for your community.
+把你的精力花在工作上，做出色的工作。把你的精力花在工作之外，陪伴你爱的人，做你喜欢的事，参与到你的社区中。
 
-This doesn’t imply you shouldn’t work with others to push for change. Just be clear that’s what you’re doing. DMing away about how much things suck doesn’t make change. It just makes you sad and angry. Sadness and anger are seldom the emotions that drive real change.
+这并不意味着你不应该和别人一起推动改变。只是要明确你是在做这件事。私下吐槽事情有多糟糕，并不能带来改变。它只会让你感到悲伤和愤怒。而悲伤和愤怒很少能真正推动改变。
 
-The corollary to the above point is that you should protect your communities. There are communities you care about and love. If those communities become negativity echo chambers, a lot of good folks will disengage. They’ll look more busy, more active, but the conversation will all be one-note. Then, slowly, your community will lose what made it good. The folks who made your community interesting will find other places to be, and other things to do with their time.
+与上述观点相对应的是，你应该保护你所在的群体。有些群体你很在乎、很喜欢。如果这些群体变成了负面情绪的回音室，很多优秀的人会选择退出。他们看起来会更忙、更活跃，但讨论会变得单调。然后，慢慢地，你的群体会失去原本的美好。那些让你的群体变得有趣的人会去别的地方，做别的事情。
 
-Doing this is socially hard. It, at least, requires directly modelling what good looks like. Sharing the perspectives you want to see. Doing the work that needs to be done. It also requires some level of moderation, which is tough. It’s especially tough to turn the trend around once the echo starts.
-
--   06 Feb 2024 » [How Do You Spend Your Time?][1]
--   19 Oct 2020 » [Getting Big Things Done][2]
--   02 Sep 2020 » [Focus on the Good Parts][3]
+做到这一点在社交上很难。至少，你需要直接去示范什么是好的。分享你希望看到的观点。做需要做的事情。这还需要一定程度的管理，这很难。尤其是一旦负面回音形成后，想要扭转趋势就更难了。
+-   06 Feb 2024 » [你如何度过你的时间？][1]
+-   19 Oct 2020 » [完成大事][2]
+-   02 Sep 2020 » [关注美好的一面][3]
 
 <!-- more -->
 
-[1]: /blog/2024/02/06/time.html
-[2]: /blog/2020/10/19/big-changes.html
-[3]: /blog/2020/09/02/learning.html
+[1]: https://brooker.co.za/blog/2024/02/06/time.html
+[2]: https://brooker.co.za/blog/2020/10/19/big-changes.html
+[3]: https://brooker.co.za/blog/2020/09/02/learning.html
