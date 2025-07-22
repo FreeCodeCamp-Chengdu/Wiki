@@ -53,7 +53,7 @@ Systemd
 [Service]
 ```
 
-[默认很重要][5]，配置语言也很重要。我很欣赏 systemd 选择了一个显而易见的方案。
+[约定大于配置][5]，配置语言也很重要。我很欣赏 systemd 选择了一个显而易见的方案。
 
 我还可以举其他例子，但我想强调的是，systemd 有意选择了
 
@@ -85,7 +85,7 @@ Systemd
 
 <img src="https://blog.tjll.net/assets/images/clock-wall.png" alt="clock-wall.png" width="400"/>
 
-我还记得在大学工作时调试 `cron` 脚本：是不是 `$PATH` 配错了？要不要在某处 `echo $USER`？为什么默认输出会发到 _邮件队列_ 里？？？
+我还记得在大学工作时调试 `cron` 脚本：是不是 `$PATH` 配错了？要不要在某处 `echo $USER`？为什么默认输出会发到 _邮件队列_ 里？
 
 如果要评选"最容易理解的替代品"，systemd 的定时器系统可能是最佳候选。每个 Linuxer 看到一串星号就能自豪地知道 `0 0 * * *` 是什么意思，但我们都知道 `OnCalendar=daily` 更容易理解。`OnCalendar=minutely` 是个词吗？语法警察可能不认，但你大概能猜到它的意思！
 
