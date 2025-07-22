@@ -15,7 +15,7 @@ reviewer: ""
 -   1,782 字
 -   预计阅读时间 7 分钟
 
-![he-can-meme.png](https://blog.tjll.net/assets/images/he-can-meme.png)
+<img src="https://blog.tjll.net/assets/images/he-can-meme.png" alt="he-can-meme.png" width="400"/>
 
 图 1：2010 年代的 systemd 之战异常激烈，伤亡惨重。
 
@@ -29,7 +29,7 @@ reviewer: ""
 
 我希望我不需要再抱怨为什么过去的状况并不好——质量参差不齐的 init 脚本、混乱的依赖关系和极不统一的语义都令人沮丧。让我觉得不可思议的是，我作为一名全职软件工程师，竟然还经历过用定制 shell 脚本来编排进程管理的时代。“丢失”或无人管理的进程、用 `S99` 这类目录来排序依赖的怪异方式，以及各种 `/etc/init.d` 脚本的不同接口，这些都是真实存在的问题。
 
-![dino.png](https://blog.tjll.net/assets/images/dino.png)
+<img src="https://blog.tjll.net/assets/images/dino.png" alt="dino.png" width="400"/>
 
 图 2：/etc/init.d，总会找到办法
 
@@ -71,7 +71,7 @@ Systemd
 
 ###### 谁来关心纯文本？
 
-![log-logs.png](https://blog.tjll.net/assets/images/log-logs.png)
+<img src="https://blog.tjll.net/assets/images/log-logs.png" alt="log-logs.png" width="400"/>
 
 图 3：日志的日志在有条不紊地记录
 
@@ -85,7 +85,7 @@ Systemd
 
 ###### 定时器（Time-r Out）
 
-![clock-wall.png](https://blog.tjll.net/assets/images/clock-wall.png)
+<img src="https://blog.tjll.net/assets/images/clock-wall.png" alt="clock-wall.png" width="400"/>
 
 我还记得在大学工作时调试 `cron` 脚本：是不是 `$PATH` 配错了？要不要在某处 `echo $USER`？为什么默认输出会发到 _邮件队列_ 里？？？
 
@@ -105,7 +105,7 @@ Systemd
 
 ###### 一把"单元"
 
-![unit-hand.png](https://blog.tjll.net/assets/images/unit-hand.png)
+<img src="https://blog.tjll.net/assets/images/unit-hand.png" alt="unit-hand.png" width="400"/>
 
 当你把各种单元类型——`service`、`path`、`timer`、`mount`、`socket` 等——组合起来时，你几乎可以把系统变成一个状态机。我在 NixOS 上就这么做过，这是一种强大的方式来建模相互依赖的服务管理。
 
@@ -128,7 +128,7 @@ systemd-analyze security polkit.service
 
 #### 黑粉酱与千禧年的恐怖
 
-![pointing-at-systemd.png](https://blog.tjll.net/assets/images/pointing-at-systemd.png)
+<img src="https://blog.tjll.net/assets/images/pointing-at-systemd.png" alt="pointing-at-systemd.png" width="400"/>
 
 我写这篇文章的部分原因是我总能碰到[这样的讨论串][7]：
 
@@ -156,7 +156,7 @@ systemd-analyze security polkit.service
 
 > red hat 想通过 systemd 控制 linux 生态
 
-![alex-jones.jpg](https://blog.tjll.net/assets/images/alex-jones.jpg)
+<img src="https://blog.tjll.net/assets/images/alex-jones.jpg" alt="alex-jones.jpg" width="400"/>
 
 这是真的。我简直不敢相信我们，**SYSTEMD 全球光明会**，居然被曝光了。
 
