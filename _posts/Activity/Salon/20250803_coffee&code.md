@@ -1,20 +1,30 @@
 ---
-title: "Coffee & Code 周末编程自习室 2025年8月3日"
+title: fCC Coffee & Code 周末编程自习室 2025年8月3日
 date: 2025-08-03
-categories: [Activity, Salon]
-tags: [online, offline, Coffe&Code ChengDu]
+categories: 
+    - Activity
+    - Salon
+tags: 
+    - online
+    - offline
+    - Coffe&Code
+    - ChengDu
 toc: true
-description: "无论你是编程初学者还是有经验的开发者，都欢迎加入 Coffee & Code 【周末编程自习室】"
+description: 无论你是编程初学者还是有经验的开发者，都欢迎加入 Coffee & Code 【周末编程自习室】
 start: 2025-08-03 14:00
 end: 2025-08-03 18:00
-address: "漫咖啡MAAN COFFEE(红唐店) - 成都市武侯区天府大道中段中1388号红唐购物中心1层LA104"
+address: 漫咖啡MAAN COFFEE(红唐店) - 成都市武侯区天府大道中段中1388号红唐购物中心1层LA104
 links:
-  报名: "进群即可"
-mentors: [TechQuery]
-workers: [dethan3, luojiyin1987]
-partners: []
-photos: []
-files: []
+    协作文档: https://open-source-bazaar.feishu.cn/wiki/MYXWwYdfRiLhSfkdS9ocdE86n48
+    视频会议: https://vc.feishu.cn/j/755910722
+mentors: 
+    - TechQuery
+workers: 
+    - dethan3
+partners:
+photos:
+    - https://mockup-api.teespring.com/v3/image/Q7sCRZTzB5LINlodX8FFEEnCl0k/800/800.jpg
+files:
 ---
 
 还在一个人对着屏幕写代码吗？本周末，来和 fCC 成都社区的伙伴们一起结对编程吧！无论你是编程初学者、进阶学习者还是开发者，都能在这里找到志同道合的小伙伴。
@@ -34,7 +44,7 @@ files: []
 * **地点**：漫咖啡MAAN COFFEE(红唐店) - 成都市武侯区天府大道中段中1388号红唐购物中心1层LA104
 * **直播**：https://vc.feishu.cn/j/755910722
 * **人群**：编程初学者、爱好者、从业者
-* **文档**：[fCC 成都社区 Coffee & Code 周末编程自习室 2025年8月3日](https://open-source-bazaar.feishu.cn/wiki/MYXWwYdfRiLhSfkdS9ocdE86n48)
+* **文档**：[fCC 成都社区 Coffee & Code 周末编程自习室 2025年8月3日][1]
 * **费用**：活动免费、饮品自费
 * **装备**：自备电脑
 
@@ -45,8 +55,8 @@ files: []
    * 中国公益数据库 2.0
    * fCC 成都社区官网（2025版）
    * 开源市集官网
-   * [开放会务系统](https://open-source-bazaar.feishu.cn/wiki/KWYyw9fiCiKrO1ksDR6cjum6npd)
-   * [黑客松开放平台 HOP](https://open-source-bazaar.feishu.cn/wiki/RCTxw8GATijLEGkCmuvcOXQwnbb)
+   * [开放会务系统][2]
+   * [黑客松开放平台 HOP][3]
 
 2. Coffee & Code 结对编程体验
 
@@ -58,3 +68,7 @@ files: []
 * 发现灵感、拓展人脉，轻松高效度过周末
 
 无论你是想完成自己的学习计划，还是想在真实场景下提升技术，带上电脑，加入我们，一起分享知识、输出代码、结识朋友！
+
+[1]: https://open-source-bazaar.feishu.cn/wiki/MYXWwYdfRiLhSfkdS9ocdE86n48
+[2]: https://open-source-bazaar.feishu.cn/wiki/KWYyw9fiCiKrO1ksDR6cjum6npd
+[3]: https://open-source-bazaar.feishu.cn/wiki/RCTxw8GATijLEGkCmuvcOXQwnbb
