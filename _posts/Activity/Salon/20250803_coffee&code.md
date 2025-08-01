@@ -7,8 +7,13 @@ categories:
 tags: 
     - online
     - offline
-    - Coffe&Code
-    - ChengDu
+    - Coffee&Code
+    - 成都
+    - NGO
+    - 公益
+    - 官网
+    - 会务
+    - 结对编程
 toc: true
 description: 无论你是编程初学者还是有经验的开发者，都欢迎加入 Coffee & Code 【周末编程自习室】
 start: 2025-08-03 14:00
