@@ -27,9 +27,9 @@ jobs:
                   CATEGORY: ${{ steps.issue-parser.outputs.issueparser_category }}
                   THUMBNAIL: ${{ steps.issue-parser.outputs.issueparser_thumbnail }}
               run: |
-                  FILE_PATH=Article/$CATEGORY/$FILE_NAME
+                  FILE_PATH="Article/$CATEGORY/$FILE_NAME"
 
-                  cat <<EOF > _posts/$FILE_PATH.md
+                  cat <<EOF > "_posts/${FILE_PATH}.md"
                   ---
                   title: "${{ github.event.issue.title }}"
                   date: ${{ steps.issue-parser.outputs.issueparser_date || github.event.issue.created_at }}
