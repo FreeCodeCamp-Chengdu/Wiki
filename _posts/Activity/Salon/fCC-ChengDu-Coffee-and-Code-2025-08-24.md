@@ -9,7 +9,8 @@ start: 2025-08-24 14:00
 end: 2025-08-24 18:00
 address: "漫咖啡MAAN COFFEE(红唐店)，四川省成都市武侯区天府大道中段中1388号红唐购物中心1层LA104"
 links:
-  报名: https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=0dcqe9e3-5f27-4d5d-a30c-0477b64c828b
+  直播: https://vc.feishu.cn/j/482033714
+  群聊: https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=0dcqe9e3-5f27-4d5d-a30c-0477b64c828b
 mentors: [TechQuery,dethan3,hu-qi]
 workers: [luojiyin1987]
 partners: []
