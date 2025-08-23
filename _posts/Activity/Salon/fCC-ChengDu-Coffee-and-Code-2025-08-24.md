@@ -14,7 +14,8 @@ links:
 mentors: [TechQuery,dethan3,hu-qi]
 workers: [luojiyin1987]
 partners: []
-photos: []
+photos:
+  - https://img.alicdn.com/bao/uploaded/i1/2592222097/O1CN01yD7NvL1RMT4meiGQR_!!0-item_pic.jpg
 files: [https://open-source-bazaar.feishu.cn/wiki/DwnvwaAyWidJDakTUiecH8mDnEh]
 ---
 
