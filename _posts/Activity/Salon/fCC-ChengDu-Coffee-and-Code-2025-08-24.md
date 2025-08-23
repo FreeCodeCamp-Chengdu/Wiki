@@ -19,6 +19,19 @@ photos:
 files: [https://open-source-bazaar.feishu.cn/wiki/DwnvwaAyWidJDakTUiecH8mDnEh]
 ---
 
+七夕节又要到了，fCC 成都社区的小伙伴将分享自己”用 AI 耗电“的 AI 开源应用开发经验，用实战让大家体会 —— AI 让人回归”做爱做的事“本身~
+
+## 活动信息
+
+- 时间：2025-08-24 14:00~18:00
+- 地点：漫咖啡MAAN COFFEE(红唐店)，四川省成都市武侯区天府大道中段中1388号红唐购物中心1层LA104
+- 人群：编程初学者、开源爱好者、AI 从业者
+- 费用：参会免费、餐饮自费
+- 文档： https://open-source-bazaar.feishu.cn/wiki/DwnvwaAyWidJDakTUiecH8mDnEh
+- 直播: https://vc.feishu.cn/j/482033714
+- 群聊: https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=0dcqe9e3-5f27-4d5d-a30c-0477b64c828b
+
+<!-- more -->
 ## 活动内容
 
 1. 🦉新项目发布：Tickeye - 轻量股指监测工具 
