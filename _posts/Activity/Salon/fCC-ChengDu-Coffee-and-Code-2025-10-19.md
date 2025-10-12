@@ -18,6 +18,8 @@ photos:
 files: [https://open-source-bazaar.feishu.cn/wiki/L1UqwHif2i4HBHkbZMpcrAutn6d]
 ---
 
+近一个多月真的是中国人的爱国教育月 —— 九三抗战胜利日、九一八国耻日、十一国庆节。吾等平民百姓虽无力左右宏大叙事，但可以从身边小事做起，用开源代码助力公益事业，为爱国尽绵薄之力！  本期 fCC Coffee & Code 将主要分享【开源市集】社区的【开源公益】计划，同时现场展示、演练如何用 AI agent 加速公益 IT 基础设施的建设。
+
 ## 活动信息
 
 - 时间：2025-10-19 14:00~18:00
