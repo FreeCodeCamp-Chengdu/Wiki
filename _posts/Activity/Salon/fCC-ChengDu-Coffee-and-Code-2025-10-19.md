@@ -13,7 +13,8 @@ links:
 mentors: [TechQuery,luojiyin1987]
 workers: [TechQuery]
 partners: []
-photos: []
+photos:
+  - https://reportyak.com/wp-content/uploads/2022/08/NGO_concept_shutterstock_1247512159-1-1-scaled.jpg
 files: [https://open-source-bazaar.feishu.cn/wiki/L1UqwHif2i4HBHkbZMpcrAutn6d]
 ---
 
