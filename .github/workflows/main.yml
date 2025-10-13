@@ -33,9 +33,10 @@ jobs:
 
                   echo "Monitoring workflow run ID: $RUN_ID"
 
-                  # Wait for the workflow to complete
+                  # Wait for the workflow to complete and fail if it fails
                   gh run watch $RUN_ID \
-                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --exit-status
 
             - name: Trigger main branch workflow
               env:
@@ -44,3 +45,26 @@ jobs:
                   gh workflow run main.yml \
                     --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
                     --ref main
+
+            - name: Wait for main workflow to complete
+              env:
+                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+              run: |
+                  echo "Waiting for main workflow to start..."
+                  sleep 10
+
+                  # Get the latest workflow run ID for main branch
+                  RUN_ID=$(gh run list \
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --workflow main.yml \
+                    --branch main \
+                    --limit 1 \
+                    --json databaseId \
+                    --jq '.[0].databaseId')
+
+                  echo "Monitoring workflow run ID: $RUN_ID"
+
+                  # Wait for the workflow to complete and fail if it fails
+                  gh run watch $RUN_ID \
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --exit-status
