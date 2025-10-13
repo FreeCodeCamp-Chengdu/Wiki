@@ -7,7 +7,7 @@ jobs:
     Trigger-Workflows:
         runs-on: ubuntu-latest
         steps:
-            - name: Trigger hexo branch workflow
+            - name: Trigger and wait for hexo branch workflow
               env:
                   GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
               run: |
@@ -15,10 +15,6 @@ jobs:
                     --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
                     --ref hexo
 
-            - name: Wait for hexo workflow to complete
-              env:
-                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-              run: |
                   echo "Waiting for hexo workflow to start..."
                   sleep 10
 
@@ -38,7 +34,7 @@ jobs:
                     --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
                     --exit-status
 
-            - name: Trigger main branch workflow
+            - name: Trigger and wait for main branch workflow
               env:
                   GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
               run: |
@@ -46,10 +42,6 @@ jobs:
                     --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
                     --ref main
 
-            - name: Wait for main workflow to complete
-              env:
-                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-              run: |
                   echo "Waiting for main workflow to start..."
                   sleep 10
 
