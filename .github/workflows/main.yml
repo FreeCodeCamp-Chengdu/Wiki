@@ -4,42 +4,59 @@ on:
         branches:
             - master
 jobs:
-    Build-and-Deploy:
+    Trigger-Workflows:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout Data repository
-              uses: actions/checkout@v5
-              with:
-                  lfs: true
-            - name: Checkout Program repository
-              uses: actions/checkout@v5
-              with:
-                  repository: ${{ secrets.GIT_URI }}
-                  ref: hexo
-                  path: super/
-            - name: Merge Data & Program
+            - name: Trigger and wait for hexo branch workflow
+              env:
+                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
               run: |
-                  shopt -s extglob
-                  mv !(super) super/source/
-                  shopt -s dotglob
-                  rm -rf .git/ .github/
-                  mv super/* .
-            - uses: pnpm/action-setup@v4
-              with:
-                version: 9
-            - uses: actions/setup-node@v4
-              with:
-                node-version: "lts/*"
-                cache: pnpm
-            - name: Install & Build
-              run: pnpm i  &&  pnpm build
+                  gh workflow run main.yml \
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --ref hexo
 
-            - name: Deploy
-              uses: peaceiris/actions-gh-pages@v4
-              with:
-                  publish_dir: ./public
-                  cname: fcc-cd.dev
-                  external_repository: ${{ secrets.GIT_URI }}
-                  publish_branch: master
-                  personal_token: ${{ secrets.PERSONAL_TOKEN }}
-                  force_orphan: true
+                  echo "Waiting for hexo workflow to start..."
+                  sleep 10
+
+                  # Get the latest workflow run ID for hexo branch
+                  RUN_ID=$(gh run list \
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --workflow main.yml \
+                    --branch hexo \
+                    --limit 1 \
+                    --json databaseId \
+                    --jq '.[0].databaseId')
+
+                  echo "Monitoring workflow run ID: $RUN_ID"
+
+                  # Wait for the workflow to complete and fail if it fails
+                  gh run watch $RUN_ID \
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --exit-status
+
+            - name: Trigger and wait for main branch workflow
+              env:
+                  GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+              run: |
+                  gh workflow run main.yml \
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --ref main
+
+                  echo "Waiting for main workflow to start..."
+                  sleep 10
+
+                  # Get the latest workflow run ID for main branch
+                  RUN_ID=$(gh run list \
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --workflow main.yml \
+                    --branch main \
+                    --limit 1 \
+                    --json databaseId \
+                    --jq '.[0].databaseId')
+
+                  echo "Monitoring workflow run ID: $RUN_ID"
+
+                  # Wait for the workflow to complete and fail if it fails
+                  gh run watch $RUN_ID \
+                    --repo FreeCodeCamp-Chengdu/FreeCodeCamp-Chengdu.github.io \
+                    --exit-status
