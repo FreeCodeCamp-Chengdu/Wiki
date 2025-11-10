@@ -1,5 +1,5 @@
 ---
-title: Everything I know about good system design
+title: 我所知道的关于良好系统设计的一切
 date: 2025-08-17T02:16:28.405Z
 authorURL: ""
 originalURL: https://www.seangoedecke.com/good-system-design/
@@ -7,158 +7,162 @@ translator: ""
 reviewer: ""
 ---
 
-# Everything I know about good system design
 
-<!-- more -->
+我见过很多糟糕的系统设计建议。比如在 LinkedIn 上常见的那种"打赌你从没听说过_队列_"的帖子，明显是针对行业新手的。还有 Twitter 上那种"在数据库中存储布尔值的工程师都是糟糕的"的所谓技巧¹。即使是好的系统设计建议，有时也可能不太实用。我很欣赏《设计数据密集型应用》这本书，但我觉得它对大多数工程师日常遇到的系统设计问题帮助有限。
 
-I see a lot of bad system design advice. One classic is the LinkedIn-optimized “bet you never heard of _queues_” style of post, presumably aimed at people who are new to the industry. Another is the Twitter-optimized “you’re a terrible engineer if you ever store booleans in a database” clever trick[1][1]. Even good system design advice can be kind of bad. I love _Designing Data-Intensive Applications_, but I don’t think it’s particularly useful for most system design problems engineers will run into.
+什么是系统设计？简单来说，如果说软件设计是关于如何组织代码，那么系统设计就是关于如何组织服务。软件设计的基本元素是变量、函数、类等；而系统设计的基本元素是应用服务器、数据库、缓存、队列、事件总线、代理等。
 
-What is system design? In my view, if software design is how you assemble lines of code, system design is how you assemble _services_. The primitives of software design are variables, functions, classes, and so on. The primitives of system design are app servers, databases, caches, queues, event buses, proxies, and so on.
+这篇文章我尝试用比较概括的方式，分享我所知道的关于良好系统设计的要点。很多具体的判断确实要靠经验积累，很难在这篇文章里完全说清楚。但我会尽力写下我认为最重要的内容。
 
-This post is my attempt to write down, in broad strokes, everything I know about good system design. A lot of the concrete judgment calls do come down to experience, which I can’t convey in this post. But I’m trying to write down what I can.
+### 识别良好的设计
 
-### Recognizing good design
+什么样的系统设计才算好？我之前写过一篇关于这个话题的文章，提到好的设计[看起来往往很平淡][2]。在实际工作中，好的系统设计表现为长时间稳定运行不出问题。当你发现"咦，这个实现比预想的简单多了"，或者"这部分系统我几乎不用操心，运行得很稳定"时，说明你可能遇到了好的设计。
 
-What does good system design look like? I’ve written before that it [looks underwhelming][2]. In practice, it looks like nothing going wrong for a long time. You can tell that you’re in the presence of good design if you have thoughts like “huh, this ended up being easier than I expected”, or “I never have to think about this part of the system, it’s fine”. Paradoxically, good design is self-effacing: bad design is often more impressive than good. I’m always suspicious of impressive-looking systems. If a system has distributed-consensus mechanisms, many different forms of event-driven communication, CQRS, and other clever tricks, I wonder if there’s some fundamental bad decision that’s being compensated for (or if the system is just straightforwardly over-designed).
+有趣的是，好的设计往往是低调的，而糟糕的设计反而常常更引人注目。我总是对那些看起来很"炫酷"的系统保持警惕。如果一个系统到处都是分布式共识机制、各种事件驱动通信、CQRS 模式和其他巧妙技巧，我就会怀疑：是不是有什么根本性的设计错误需要用这些复杂技术来弥补？或者这个系统本身就是过度设计了。
 
-I’m often alone on this. Engineers look at complex systems with many interesting parts and think “wow, a lot of system design is happening here!” In fact, a complex system usually reflects an absence of good design. I say “usually” because sometimes you do need complex systems. I’ve worked on many systems that earned their complexity. However, a complex system that works always evolves from a simple system that works. Beginning from scratch with a complex system is a really bad idea.
+在这点上，我的看法往往与主流不同。很多工程师看到那些充满复杂组件的系统时会感叹："哇，这里面的系统设计真厉害！"但实际上，复杂的系统往往恰恰说明设计不够好。当然，我说的只是通常情况——有些场景确实需要复杂的系统。我也参与过一些确实需要复杂性的项目。但关键在于：任何能正常运行的复杂系统，都是从能正常运行的简单系统逐步演化而来的。如果一开始就追求复杂，那注定会失败。
 
-### State and statelessness
+### 状态和无状态
 
-The hard part about software design is state. If you’re storing any kind of information for any amount of time, you have a lot of tricky decisions to make about how you save, store and serve it. If you’re not storing information[2][3], your app is “stateless”. As a non-trivial example, GitHub has an internal API that takes a PDF file and returns a HTML rendering of it. That’s a real stateless service. Anything that writes to a database is stateful.
+软件设计中最大的挑战在于状态管理。只要你需要持久化存储任何信息，就会面临很多棘手的问题：如何保存、如何存储、如何提供服务。如果你的应用不需要持久化存储信息²³，那就是"无状态"的。举个例子，GitHub 有个内部 API，专门接收 PDF 文件并返回 HTML 渲染结果，这就是典型的无状态服务。而任何需要写入数据库的应用，都是有状态的。
 
-You should try and minimize the amount of stateful components in any system. (In a sense this is trivially true, because you should try to minimize the amount of _all_ components in a system, but stateful components are particularly dangerous.) The reason you should do this is that **stateful components can get into a bad state**. Our stateless PDF-rendering service will safely run forever, as long as you’re doing broadly sensible things: e.g. running it in a restartable container so that if anything goes wrong it can be automatically killed and restored to working order. A stateful service can’t be automatically repaired like this. If your database gets a bad entry in it (for instance, an entry with a format that triggers a crash in your application), you have to manually go in and fix it up. If your database runs out of room, you have to figure out some way to prune unneeded data or expand it.
+在任何系统中，都应该尽量减少有状态组件的数量。这不仅是因为要减少组件总数，更重要的是有状态组件会带来额外的风险。
 
-What this means in practice is having one service that knows about the state - i.e. it talks to a database - and other services that do stateless things. Avoid having five different services all write to the same table. Instead, have four of them send API requests (or emit events) to the first service, and keep the writing logic in that one service. If you can, it’s worth doing this for the read logic as well, although I’m less absolutist about this. It’s _sometimes_ better for services to do a quick read of the `user_sessions` table than to make a 2x slower HTTP request to an internal sessions service.
+为什么有状态组件特别麻烦？因为**有状态组件可能会进入错误状态**。比如我们的无状态 PDF 渲染服务，只要配置合理，就能一直安全运行。即使出问题，也可以通过容器重启来自动恢复。但有状态服务就没这么简单了。如果数据库里有一条格式错误的数据导致应用崩溃，你必须手动修复；如果数据库空间满了，你必须清理数据或扩容。
 
-### Databases
+基于这个原则，最佳实践是：让一个专门的服务负责状态管理（即与数据库交互），其他服务保持无状态。要避免五个不同的服务都往同一个表里写数据。更好的做法是让其中四个服务通过 API 调用或事件消息，让那个专门的服务来处理写入操作。
 
-Since managing state is the most important part of system design, the most important component is usually where that state lives: the database. I’ve spent most of my time working with SQL databases (MySQL and PostgreSQL), so that’s what I’m going to talk about.
+读取逻辑也可以考虑集中处理，虽然我不那么坚持这点。有时候，让服务直接读取 `user_sessions` 表，比调用一个慢 2 倍的内部会话服务 API 更实际。
 
-#### Schemas and indexes
+### 数据库
 
-If you need to store something in a database, the first thing to do is define a table with the schema you need. Schema design should be flexible, because once you have thousands or millions of records, it can be an enormous pain to change the schema. However, if you make it too flexible (e.g. by sticking everything in a “value” JSON column, or using “keys” and “values” tables to track arbitrary data) you load a ton of complexity into the application code (and likely buy some very awkward performance constraints). Drawing the line here is a judgment call and depends on specifics, but in general I aim to have my tables be human-readable: you should be able to go through the database schema and get a rough idea of what the application is storing and why.
+既然状态管理是系统设计的核心，那么存储状态的组件——也就是数据库——自然就成了系统中最关键的部分。我大部分工作经验都来自 SQL 数据库（主要是 MySQL 和 PostgreSQL），所以接下来的内容主要围绕这个主题。
 
-If you expect your table to ever be more than a few rows, you should put indexes on it. Try to make your indexes match the most common queries you’re sending (e.g. if you query by `email` and `type`, create an index with those two fields). Indexes work like nested dictionaries, so make sure to put the highest-cardinality fields first (otherwise each index lookup will have to scan all users of `type` to find the one with the right `email`). Don’t index on every single thing you can think of, since each index adds write overhead.
+#### 模式和索引
 
-#### Bottlenecks
+要在数据库中存储数据，首先要设计表结构。模式设计需要保持一定的灵活性，因为当数据量达到几十万甚至几百万条时，修改表结构会非常痛苦。
 
-Accessing the database is often the bottleneck in high-traffic applications. This is true even when the compute side of things is relatively inefficient (e.g. Ruby on Rails running on a preforking server like Unicorn). That’s because complex applications need to make a _lot_ of database calls - hundreds and hundreds for every single request, often sequentially (because you don’t know if you need to check whether a user is part of an organization until after you’ve confirmed they’re not abusive, and so on). How can you avoid getting bottlenecked?
+但也不能过度灵活。比如把所有数据都塞进一个 JSON 字段，或者用"键值表"来存储任意数据，这样会把大量复杂性推到应用代码里，还可能带来性能问题。
 
-When querying the database, _query the database_. It’s almost always more efficient to get the database to do the work than to do it yourself. For instance, if you need data from multiple tables, `JOIN` them instead of making separate queries and stitching them together in-memory. Particularly if you’re using an ORM, beware accidentally making queries in an inner loop. That’s an easy way to turn a `select id, name from table` to a `select id from table` and a hundred `select name from table where id = ?`.
+如何在灵活性和简单性之间找到平衡点，这要视具体情况而定。但我的原则是：表结构应该让人容易理解。通过查看数据库模式，就能大致了解应用在存储什么数据以及为什么这样存储。
 
-Every so often you do want to break queries apart. It doesn’t happen often, but I’ve run into queries that were ugly enough that it was easier on the database to split them up than to try to run them as a single query. I’m sure it’s always possible to construct indexes and hints such that the database can do it better, but the occasional tactical query-split is a tool worth having in your toolbox.
+如果预计表中会有较多数据，就应该创建索引。索引设计要匹配最常见的查询模式——比如经常按 `email` 和 `type` 字段查询，就应该创建包含这两个字段的索引。
 
-Send as many read queries as you can to database replicas. A typical database setup will have one write node and a bunch of read-replicas. The more you can avoid reading from the write node, the better - that write node is already busy enough doing all the writes. The exception is when you really, really can’t tolerate any replication lag (since read-replicas are always running at least a handful of ms behind the write node). But in most cases replication lag can be worked around with simple tricks: for instance, when you update a record but need to use it right after, you can fill in the updated details in-memory instead of immediately re-reading after a write.
+索引的原理类似于多层字典，所以要把基数高的字段放在前面。否则，如果要查找特定 `email` 的用户，数据库可能需要扫描所有相同 `type` 的用户才能找到目标。
 
-Beware spikes of queries (particularly write queries, and _particularly_ transactions). Once a database gets overloaded, it gets slow, which makes it more overloaded. Transactions and writes are good at overloading databases, because they require a lot of database work for each query. If you’re designing a service that might generate massive query spikes (e.g. some kind of bulk-import API), consider throttling your queries.
+但也不是什么字段都要建索引，因为每个索引都会增加写入的开销。
 
-### Slow operations, fast operations
+#### 瓶颈
 
-A service has to do some things fast. If a user is interacting with something (say, an API or a web page), they should see a response within a few hundred ms[3][4]. But a service has to do other things that are slow. Some operations just take a long time (converting a very large PDF to HTML, for instance). The general pattern for this is splitting out **the minimum amount of work needed to do something useful for the user** and doing the rest of the work in the background. In the PDF-to-HTML example, you might render the first page to HTML immediately and queue up the rest in a background job.
+在高流量应用中，数据库访问往往是最大的瓶颈。即使应用的计算层效率不高（比如在 Unicorn 服务器上运行的 Ruby on Rails），数据库仍然更容易成为瓶颈。
 
-What’s a background job? It’s worth answering this in detail, because “background jobs” are a core system design primitive. Every tech company will have some kind of system for running background jobs. There will be two main components: a collection of queues, e.g. in Redis, and a job runner service that will pick up items from the queues and execute them. You enqueue a background job by putting an item like `{job_name, params}` on the queue. It’s also possible to schedule background jobs to run at a set time (which is useful for periodic cleanups or summary rollups). Background jobs should be your first choice for slow operations, because they’re typically such a well-trodden path.
+为什么会这样？因为复杂应用需要做大量的数据库操作——单个请求可能触发成百上千次数据库调用，而且这些调用常常是串行的。比如，要先确认用户不是恶意用户，才能检查用户是否属于某个组织，然后才能进行后续操作，这样一步步下来，数据库调用就累积起来了。
 
-Sometimes you want to roll your own queue system. For instance, if you want to enqueue a job to run in a month, you probably shouldn’t put an item on the Redis queue. Redis persistence is typically not guaranteed over that period of time (and even if it is, you likely want to be able to query for those far-future enqueued jobs in a way that would be tricky with the Redis job queue). In this case, I typically create a database table for the pending operation with columns for each param plus a `scheduled_at` column. I then use a daily job to check for these items with `scheduled_at <= today`, and either delete them or mark them as complete once the job has finished.
+如何避免数据库成为瓶颈？
 
-### Caching
+查询数据库时，要**充分利用数据库的能力**。让数据库完成工作通常比在应用代码中处理更高效。比如需要多表数据时，应该用 `JOIN` 而不是分别查询再在内存中合并。
 
-Sometimes an operation is slow because it needs to do an expensive (i.e. slow) task that’s the same between users. For instance, if you’re calculating how much to charge a user in a billing service, you might need to do an API call to look up the current prices. If you’re charging users per-use (like OpenAI does per-token), that could (a) be unacceptably slow and (b) cause a lot of traffic for whatever service is serving the prices. The classic solution here is **caching**: only looking up the prices every five minutes, and storing the value in the meantime. It’s easiest to cache in-memory, but using some fast external key-value store like Redis or Memcached is also popular (since it means you can share one cache across a bunch of app servers).
+使用 ORM 时要特别小心，很容易在循环中触发查询而不自知。这会把一个简单的 `select id, name from table` 变成一个 `select id from table` 查询加上一百个 `select name from table where id = ?` 查询。
 
-The typical pattern is that junior engineers learn about caching and want to cache _everything_, while senior engineers want to cache as little as possible. Why is that? It comes down to the first point I made about the danger of statefulness. A cache is a source of state. It can get weird data in it, or get out-of-sync with the actual truth, or cause mysterious bugs by serving stale data, and so on. You should never cache something without first making a serious effort to speed it up. For instance, it’s silly to cache an expensive SQL query that isn’t covered by a database index. You should just add the database index!
+当然，有时候确实需要拆分查询。这种情况不常见，但我遇到过一些极其复杂的查询，对数据库来说，拆分成多个简单查询比执行单个复杂查询更高效。我相信通过优化索引和查询提示，总能找到让数据库更好地执行单个查询的方法，但适度的查询拆分也是一个有用的技巧。
 
-I use caching a lot. One useful caching trick to have in the toolbox is using a scheduled job and a document storage like S3 or Azure Blob Storage as a large-scale persistent cache. If you need to cache the result of a _really_ expensive operation (say, a weekly usage report for a large customer), you might not be able to fit the result in Redis or Memcached. Instead, stick a timestamped blob of the results in your document storage and serve the file directly from there. Like the database-backed long-term queue I mentioned above, this is an example of using the caching _idea_ without using a specific cache technology.
+尽量把读取请求发送到数据库的只读副本。典型的数据库部署会有一个主节点（负责写入）和多个只读副本。要尽可能避免从主节点读取数据，因为它已经够忙的了。
 
-### Events
+例外情况是当你完全无法接受任何复制延迟时（因为只读副本通常比主节点晚几毫秒）。但在大多数场景下，可以通过一些小技巧来解决延迟问题。比如，更新记录后需要立即使用，可以在内存中保存更新后的数据，而不是马上重新查询数据库。
 
-As well as some kind of caching infrastructure and background job system, tech companies will typically have an _event hub_. The most common implementation of this is Kafka. An event hub is just a queue - like the one for background jobs - but instead of putting “run this job with these params” on the queue, you put “this thing happened” on the queue. One classic example is firing off a “new account created” event for each new account, and then having multiple services consume that event and take some action: a “send a welcome email” service, a “scan for abuse” service, a “set up per-account infrastructure” service, and so on.
+要警惕查询峰值，尤其是写入查询和事务。一旦数据库过载，响应就会变慢，而这又会引发更多请求，形成恶性循环。事务和写入操作特别容易导致数据库过载，因为它们需要大量的数据库资源。
 
-You shouldn’t overuse events. Much of the time it’s better to just have one service make an API request to another service: all the logs are in the same place, it’s easier to reason about, and you can immediately see what the other service responded with. Events are good for when the code sending the event doesn’t necessarily care what the consumers do with the event, or when the events are high-volume and not particularly time-sensitive (e.g. abuse scanning on each new Twitter post).
+如果你在设计可能产生大量查询峰值的服务（比如批量导入 API），应该考虑添加查询限制机制。
 
-### Pushing and pulling
+### 慢操作，快操作
 
-When you need data to flow from one place to a lot of other places, there are two options. The simplest is to _pull_. This is how most websites work: you have a server that owns some data, and when a user wants it they make a request (via their browser) to the server to pull that data down to them. The problem here is that users might do a lot of pulling down the same data - e.g. refreshing their email inbox to see if they have any new emails, which will pull down and reload the entire web application instead of just the data about the emails.
+服务必须快速做一些事情。如果用户正在与某些东西交互（比如 API 或网页），他们应该在几百毫秒内看到响应³⁴。但服务必须做一些缓慢的事情。有些操作只需要很长时间（例如，将非常大的 PDF 转换为 HTML）。这种情况的一般模式是分离出**为用户做有用事情所需的最少工作量**，并在后台完成其余工作。在 PDF 转 HTML 的例子中，你可以立即将第一页渲染为 HTML，并将其余部分排队到后台作业中。
 
-The alternative is to _push_. Instead of allowing users to ask for the data, you allow them to register as clients, and then when the data changes, the server pushes the data down to each client. This is how GMail works: you don’t have to refresh the page to get new emails, because they’ll just appear when they arrive.
+什么是后台作业？值得详细回答这个问题，因为"后台作业"是核心的系统设计原语。每家技术公司都会有某种运行后台作业的系统。将有两个主要组件：队列集合（例如在 Redis 中），以及一个作业运行器服务，它将从队列中拾取项目并执行它们。你通过将类似`{job_name, params}`的项目放入队列来将后台作业加入队列。也可以安排后台作业在设定时间运行（这对定期清理或汇总汇总很有用）。后台作业应该是你慢操作的首选，因为它们通常是经过充分验证的路径。
 
-If we’re talking about background services instead of users with web browsers, it’s easy to see why pushing can be a good idea. Even in a very large system, you might only have a hundred or so services that need the same data. For data that doesn’t change much, it’s much easier to make a hundred HTTP requests (or RPC, or whatever) whenever the data changes than to serve up the same data a thousand times a second.
+有时你想要自己构建队列系统。例如，如果你想要将作业排队在一个月后运行，你可能不应该将项目放在 Redis 队列上。Redis 持久性通常不能在那段时间内得到保证（即使可以，你可能希望能够以 Redis 作业队列难以处理的方式查询那些远期排队的作业）。在这种情况下，我通常会为待处理操作创建一个数据库表，其中包含每个参数的列加上一个`scheduled_at`列。然后我使用每日作业来检查这些`scheduled_at <= today`的项目，并在作业完成后删除它们或将它们标记为完成。
 
-Suppose you did need to serve up-to-date data to a million clients (like GMail, does). Should those clients be pushing or pulling? It depends. Either way, you won’t be able to run it all from a single server, so you’ll need to farm it out to other components of the system. If you’re pushing, that will likely mean sticking each push on an event queue and having a horde of event processors each pulling from the queue and sending out your pushes. If you’re pulling, that will mean standing up a bunch (say, a hundred) of fast[4][5] read-replica cache servers that will sit in front of your main application and handle all the read traffic[5][6].
+### 缓存
 
-### Hot paths
+有时操作很慢，因为它需要在用户之间执行相同的昂贵（即缓慢）任务。例如，如果你在计费服务中计算向用户收取多少费用，你可能需要进行 API 调用来查找当前价格。如果你按使用量向用户收费（像 OpenAI 按 token 收费），这可能会（a）慢得不可接受，（b）为提供价格的任何服务造成大量流量。这里的经典解决方案是**缓存**：每五分钟查找一次价格，并在此期间存储该值。在内存中缓存最容易，但使用一些快速的外部键值存储（如 Redis 或 Memcached）也很受欢迎（因为这意味着你可以在一堆应用服务器之间共享一个缓存）。
 
-When you’re designing a system, there are lots of different ways users can interact with it or data can flow through it. It can get a bit overwhelming. The trick is to mainly focus on the “hot paths”: the part of the system that is most critically important, and the part of the system that is going to handle the most data. For instance, in a metered billing system, those pieces might be the part that decides whether or not a customer gets charged, and the part that needs to hook into all user actions on the platform to identify how much to charge.
+典型的模式是初级工程师了解缓存并想要缓存 _所有东西_，而高级工程师想要尽可能少地缓存。为什么会这样？这归结为我关于状态危险性提出的第一个观点。缓存是状态的来源。它可能包含奇怪的数据，或与实际事实不同步，或通过提供过时数据导致神秘错误等等。你永远不应该在没有首先认真努力加快速度的情况下缓存某些东西。例如，缓存一个没有数据库索引覆盖的昂贵 SQL 查询是很愚蠢的。你应该只添加数据库索引！
 
-Hot paths are important because they have fewer possible solutions than other design areas. There are a thousand ways you can build a billing settings page and they’ll all mainly work. But there might be only a handful of ways that you can sensibly consume the firehose of user actions. Hot paths also go wrong more spectacularly. You have to really screw up a settings page to take down the entire product, but any code you write that’s triggered on all user actions can easily cause huge problems.
+我经常使用缓存。工具箱中一个有用的缓存技巧是使用计划作业和文档存储（如 S3 或 Azure Blob Storage）作为大规模持久缓存。如果你需要缓存 _真正_ 昂贵操作的结果（比如大客户的每周使用报告），你可能无法将结果放入 Redis 或 Memcached。相反，将带时间戳的结果块粘贴到你的文档存储中并直接从那里提供文件。就像我上面提到的数据库支持的长期队列一样，这是使用缓存 _概念_ 而不使用特定缓存技术的例子。
 
-### Logging and metrics
+### 事件
 
-How do you know if you’ve got problems? One thing I’ve learned from my most paranoid colleagues is to log aggressively during unhappy paths. If you’re writing a function that checks a bunch of conditions to see if a user-facing endpoint should respond 422, you should log out the condition that was hit. If you’re writing billing code, you should log every decision made (e.g. “we’re not billing for this event because of X”). Many engineers don’t do this because it adds a bunch of logging boilerplate and makes it hard to write beautifully elegant code, but you should do it anyway. You’ll be happy you did when an important customer is complaining that they’re getting a 422 - even if that customer did something wrong, you still need to figure out _what they did wrong_ for them.
+除了某种缓存基础设施和后台作业系统外，技术公司通常还会有 _事件中心_。最常见的实现是 Kafka。事件中心只是一个队列——就像后台作业的队列一样——但不是在队列上放置"用这些参数运行这个作业"，而是在队列上放置"这件事发生了"。一个经典的例子是为每个新帐户触发"新帐户创建"事件，然后让多个服务消费该事件并采取一些行动："发送欢迎邮件"服务、"扫描滥用"服务、"设置每个帐户基础设施"服务等等。
 
-You should also have basic observability into the operational parts of the system. That means CPU/memory on the hosts or containers, queue sizes, average time per-request or per-job, and so on. For user-facing metrics like time per-request, you also need to watch the p95 and p99 (i.e. how slow your slowest requests are). Even one or two very slow requests are scary, because they’re disproportionately from your largest and most important users. If you’re just looking at averages, it’s easy to miss the fact that some users are finding your service unusable.
+你不应该过度使用事件。大多数时候，最好让一个服务向另一个服务发出 API 请求：所有日志都在同一个地方，更容易推理，你可以立即看到其他服务响应了什么。事件适用于发送事件的代码不一定关心消费者对事件做什么的情况，或者当事件是高容量且不是特别时间敏感的时候（例如，对每个新的 Twitter 帖子进行滥用扫描）。
 
-### Killswitches, retries, and failing gracefully
+### 推送和拉取
 
-I wrote a [whole post][7] about killswitches that I won’t repeat here, but the gist is that you should think carefully about what happens when the system fails badly.
+当你需要数据从一个地方流向许多其他地方时，有两个选择。最简单的是 _拉取_。这是大多数网站的工作方式：你有一个拥有某些数据的服务器，当用户想要它时，他们向服务器发出请求（通过浏览器）将数据拉取到他们那里。这里的问题是用户可能会进行大量拉取相同数据的操作——例如，刷新他们的电子邮件收件箱以查看是否有新邮件，这将拉取并重新加载整个 Web 应用程序，而不仅仅是关于邮件的数据。
 
-Retries are not a magic bullet. You need to make sure you’re not putting extra load on other services by blindly retrying failed requests. If you can, put high-volume API calls inside a “circuit breaker”: if you get too many 5xx responses in a row, stop sending requests for a while to let the service recover. You also need to make sure you’re not retrying write events that may or may not have succeeded (for instance, if you send a “bill this user” request and get back a 5xx, _you don’t know_ if the user has been billed or not). The classic solution to this is to use an “idempotency key”, which is a special UUID in the request that the other service uses to avoid re-running old requests: every time they do something, they save the idempotency key, and if they get another request with the same key, they silently ignore it.
+另一种选择是 _推送_。不是让用户请求数据，而是允许他们注册为客户端，然后当数据更改时，服务器将数据推送到每个客户端。这就是 GMail 的工作方式：你不必刷新页面来获取新邮件，因为它们到达时就会显示出来。
 
-It’s also important to decide what happens when part of your system fails. For instance, say you have some rate limiting code that checks a Redis bucket to see if a user has made too many requests in the current window. What happens when that Redis bucket is unavailable? You have two options: fail _open_ and let the request through, or fail _closed_ and block the request with a 429.
+如果我们谈论的是后台服务而不是使用 Web 浏览器的用户，很容易看出为什么推送可能是个好主意。即使在非常大的系统中，你可能也只有大约一百个服务需要相同的数据。对于不经常更改的数据，每当数据更改时进行一百次 HTTP 请求（或 RPC 或其他请求）比每秒提供相同数据一千次要容易得多。
 
-Whether you should fail open or closed depends on the specific feature. In my view, a rate limiting system should almost always fail open. That means that a problem with the rate limiting code isn’t necessarily a big user-facing incident. However, auth should (obviously) always fail closed: it’s better to deny a user access to their own data than to give a user access to some other user’s data. There are a lot of cases where it’s not clear what the right behavior is. It’s often a difficult tradeoff.
+假设你确实需要向一百万个客户端提供最新数据（像 GMail 那样）。这些客户端应该是推送还是拉取？这取决于具体情况。无论哪种方式，你都无法从单个服务器运行所有内容，因此你需要将其分配给系统的其他组件。如果你在推送，这可能意味着将每个推送到事件队列上，并有一群事件处理器从队列中拉取并发送你的推送。如果你在拉取，这意味着建立一堆（比如一百个）快速⁴⁵只读副本缓存服务器，它们将位于你的主应用程序前面并处理所有读取流量⁵⁶。
 
-### Final thoughts
+### 热路径
 
-There are some topics I’m deliberately not covering here. For instance, whether or when to split your monolith out into different services, when to use containers or VMs, tracing, good API design. Partly this is because I don’t think it matters that much (in my experience, monoliths are fine), or because I think it’s too obvious to talk about (you should use tracing), or because I just don’t have the time (API design is complicated).
+当你设计系统时，有很多不同的方式用户可以与之交互或数据可以流经它。这可能会让人有点不知所措。诀窍是主要关注"热路径"：系统中最重要的部分，以及将要处理最多数据的系统部分。例如，在计量计费系统中，这些部分可能是决定客户是否被收费的部分，以及需要挂钩到平台上所有用户操作以识别收费金额的部分。
 
-The main point I’m trying to make is what I said at the start of this post: good system design is not about clever tricks, it’s about knowing how to use boring, well-tested components in the right place. I’m not a plumber, but I imagine good plumbing is similar: if you’re doing something too exciting, you’re probably going to end up with crap all over yourself.
+热路径很重要，因为它们比其他设计区域有更少的可能解决方案。有一千种方法可以构建计费设置页面，它们都会主要工作。但可能只有少数几种方法可以合理地消费用户操作的消防水管。热路径也会更壮观地出错。你必须真的搞砸一个设置页面才能使整个产品崩溃，但你在所有用户操作上触发的任何代码都可能轻易造成巨大问题。
 
-Especially at large tech companies, where these components already exist off the shelf (i.e. your company already has some kind of event bus, caching service, etc), good system design is going to look like nothing. There are very, very few areas where you want to do the kind of system design you could talk about at a conference. They do exist! I have seen hand-rolled data structures make features possible that wouldn’t have been possible otherwise. But I’ve only seen that happen once or twice in ten years. I see boring system design every single day.
+### 日志记录和指标
 
----
+你怎么知道是否有问题？我从我最偏执的同事那里学到的一件事是在不愉快的路径中积极记录日志。如果你正在编写一个函数来检查一堆条件以查看面向用户的端点是否应该响应 422，你应该记录被触发的条件。如果你正在编写计费代码，你应该记录每个做出的决定（例如，"我们不为此事件收费，因为 X"）。许多工程师不这样做，因为它增加了一堆日志模板代码，使编写优美的代码变得困难，但无论如何你应该这样做。当重要客户抱怨他们收到 422 时，你会高兴你这样做了——即使那个客户做错了什么，你仍然需要找出_他们做错了什么_。
 
-1.  You’re supposed to store timestamps instead, and treat the presence of a timestamp as `true`. I do this sometimes but not always - in my view there’s some value in keeping a database schema immediately-readable.
-    
-    [↩][8]
-2.  Technically any service stores information of some kind for some duration, at least in-memory. Typically what’s meant here is storing information outside of the request-response lifecycle (e.g. persistently on-disk somewhere, such as in a database). If you can stand up a new version of the app by simply spinning up the application server, that’s a stateless app.
-    
-    [↩][9]
-3.  Gamedevs on Twitter will say that anything slower than 10ms is unacceptable. Whether that ought to be the case, it’s just factually not true about successful tech products - users will accept slower responses if the app is doing something that’s useful to them.
-    
-    [↩][10]
-4.  They’re fast because they don’t have to talk to a database in the way the main server does. In theory, this could just be a static file on-disk that they serve up when asked, or even data held in-memory.
-    
-    [↩][11]
-5.  Incidentally, those cache servers will either poll your main server (i.e. pulling) or your main server will send the new data to them (i.e. pushing). I don’t think it matters too much which you do. Pushing will give you more up-to-date data but pulling is simpler.
-    
-    [↩][12]
+你还应该对系统的操作部分有基本的可观察性。这意味着主机或容器上的 CPU/内存、队列大小、每个请求或每个作业的平均时间等等。对于像每个请求时间这样的面向用户的指标，你还需要观察 p95 和 p99（即你最慢的请求有多慢）。即使一两个非常慢的请求也很可怕，因为它们不成比例地来自你最大和最重要的用户。如果你只看平均值，很容易错过一些用户发现你的服务不可用的事实。
 
-If you liked this post, consider [subscribing][13] to email updates about my new posts, or [sharing it on Hacker News][14].
+### 终止开关、重试和优雅失败
 
-June 21, 2025 │ Tags: [good engineers][15], [software design][16]
+我写过一篇关于终止开关的[整篇文章][7]，我在这里不会重复，但要点是当系统严重失败时，你应该仔细考虑会发生什么。
 
----
+重试不是万能药。你需要确保不要通过盲目重试失败的请求来给其他服务增加额外负载。如果可以，将高容量 API 调用放在"断路器"内：如果你连续收到太多 5xx 响应，停止发送请求一段时间以让服务恢复。你还需要确保不要重试可能成功也可能失败的写入事件（例如，如果你发送"向此用户收费"请求并返回 5xx，_你不知道_用户是否已被收费）。对此的经典解决方案是使用"幂等键"，这是请求中的特殊 UUID，其他服务使用它来避免重新运行旧请求：每次他们做某事时，他们保存幂等键，如果他们收到另一个具有相同键的请求，他们会默默地忽略它。
 
-[subscribe][17] │ [contact me][18] │ [rss][19] │ [book][20] │ [what I'm currently working on][21]
+决定系统部分失败时发生什么也很重要。例如，假设你有一些速率限制代码，检查 Redis 桶以查看用户在当前窗口内是否发出了太多请求。当 Redis 桶不可用时会发生什么？你有两个选择：fail _open_并让请求通过，或 fail _closed_并用 429 阻止请求。
 
-[1]: #fn-1
-[2]: /great-software-design
-[3]: #fn-2
-[4]: #fn-3
-[5]: #fn-4
-[6]: #fn-5
-[7]: /killswitches
-[8]: #fnref-1
-[9]: #fnref-2
-[10]: #fnref-3
-[11]: #fnref-4
-[12]: #fnref-5
+你应该 fail open 还是 fail closed 取决于具体功能。在我看来，速率限制系统几乎应该总是 fail open。这意味着速率限制代码的问题不一定是大的面向用户的事件。但是，身份验证应该（显然）总是 fail closed：拒绝用户访问自己的数据比让用户访问其他用户的数据更好。在很多情况下，不清楚正确的行为是什么。这通常是一个困难的权衡。
+
+### 最后的想法
+
+我在这里故意不讨论一些主题。例如，是否或何时将你的单体拆分成不同的服务，何时使用容器或虚拟机，追踪，良好的 API 设计。部分原因是因为我认为这并不那么重要（根据我的经验，单体很好），或者我认为谈论它太明显了（你应该使用追踪），或者只是因为我没有时间（API 设计很复杂）。
+
+我试图表达的主要观点是我在本文开头所说的：良好的系统设计不是关于巧妙的技巧，而是关于知道如何在正确的位置使用无聊的、经过良好测试的组件。我不是水管工，但我想象良好的管道工作类似：如果你做的事情太令人兴奋，你可能会最终把自己弄得一团糟。
+
+特别是在大型技术公司，这些组件已经现成存在（即你的公司已经有某种事件总线、缓存服务等），良好的系统设计看起来就像什么都没做。很少有、非常少的领域你想要做那种可以在会议上谈论的系统设计。它们确实存在！我看到过手写数据结构使否则不可能的功能成为可能。但我在十年中只看到这种情况发生一两次。我每天看到的都是无聊的系统设计。
+
+**注解：**
+
+¹ 你应该存储时间戳，并将时间戳的存在视为`true`。我有时这样做但不总是——在我看来，保持数据库模式立即可读有一些价值。
+
+² 从技术上讲，任何服务都会在某种程度上存储某种信息一段时间，至少在内存中。这里通常的意思是在请求-响应生命周期之外存储信息（例如，在某处持久化在磁盘上，如在数据库中）。如果你可以通过简单地启动应用服务器来推出应用程序的新版本，那就是一个无状态应用程序。
+
+³ Twitter 上的游戏开发者会说任何慢于 10ms 的东西都是不可接受的。无论情况是否应该如此，对于成功的技术产品来说事实并非如此——如果应用程序正在做对他们有用的事情，用户会接受较慢的响应。
+
+⁴ 它们很快，因为它们不必像主服务器那样与数据库对话。理论上，这可能只是它们在被询问时提供的磁盘上的静态文件，甚至是内存中保存的数据。
+
+⁵ 顺便说一句，那些缓存服务器要么轮询你的主服务器（即拉取），要么你的主服务器将新数据发送给它们（即推送）。我认为你采用哪种方式并不太重要。推送会给你更新的数据，但拉取更简单。
+
+
+如果你喜欢这篇文章，考虑[订阅][13]我的新文章的电子邮件更新，或在[Hacker News 上分享][14]。
+
+2025 年 6 月 21 日 │ 标签：[good engineers][15], [software design][16]
+
+[订阅][17] │ [联系我][18] │ [rss 订阅][19] │ [书籍][20] │ [我目前的工作][21]
+
+[2]: https://www.seangoedecke.com/great-software-design/
+[7]: https://www.seangoedecke.com/killswitches/
 [13]: https://buttondown.com/seangoedecke
 [14]: https://news.ycombinator.com/submitlink?u=https://www.seangoedecke.com/good-system-design/
-[15]: /tags/good engineers/
-[16]: /tags/software design/
+[15]: https://www.seangoedecke.com/tags/good%20engineers/
+[16]: https://www.seangoedecke.com/tags/software%20design/
 [17]: https://buttondown.com/seangoedecke
-[18]: /contact
-[19]: /rss.xml
-[20]: /book
+[18]: https://www.seangoedecke.com/about/
+[19]: https://www.seangoedecke.com/rss.xml
+[20]: https://www.seangoedecke.com/book/
 [21]: https://github.blog/ai-and-ml/llms/solving-the-inference-problem-for-open-source-ai-projects-with-github-models/
