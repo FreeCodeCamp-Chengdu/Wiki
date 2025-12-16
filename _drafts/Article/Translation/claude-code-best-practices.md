@@ -227,6 +227,84 @@ Anthropic 的研究员和数据科学家常用 Claude Code 来读写 Jupyter Not
 
 在把 Notebook 发给同事前，也可以让 Claude “美化” 一下，尤其是强调“让图表更好看”，通常能获得更适合演示的结果。
 
+## 4. 优化工作流
+
+以下建议适用于所有场景：
+
+### a. 指令要具体
+
+指令越明确，Claude Code 首次成功的概率越高。开局说明白，后面就少绕路。
+
+示例：
+
+| 不够好                                           | 更好的示例                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| add tests for foo.py                             | 针对 foo.py 再写一个测试用例，覆盖“用户已登出”的边界情况，并且不要使用 mock。                                                                                                                                                                                                                                                                                                       |
+| why does ExecutionFactory have such a weird api? | 查阅 ExecutionFactory 的 git 历史，概括它的 API 是如何逐步演化成现在这样的。                                                                                                                                                                                                                                                                                                       |
+| add a calendar widget                            | 先看看首页现有的挂件实现，理解模式以及代码与接口如何拆分。HotDogWidget.php 是一个好例子。按照该模式实现一个新的日历挂件，让用户能选择月份并前后翻页切换年份，且只使用当前代码库已有的依赖，从零开始实现。                                                                                                                                                                             |
+
+Claude 能理解意图，但无法读心。明确的指令才能让结果符合预期。
+
+![给 Claude 图片](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F75e1b57a0b696e7aafeca1ed5fa6ba7c601a5953-1360x1126.png&w=3840&q=75)
+
+### b. 提供视觉参考
+
+Claude 在处理图片和图表时很擅长，提供方式包括：
+
+-   **粘贴截图**（macOS 可用 `cmd+ctrl+shift+4` 截到剪贴板，再用 `ctrl+v` 粘贴。注意不是 `cmd+v`，远程环境无效）
+-   **拖拽图片** 到输入框
+-   **提供图片路径**
+
+这在依据设计稿实现 UI 或分析可视化图表时尤为重要。即便没有图像，也可以直接告诉 Claude “结果要好看”，帮助它把握方向。
+
+![指明要查看的文件](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F7372868757dd17b6f2d3fef98d499d7991d89800-1450x1164.png&w=3840&q=75)
+
+### c. 点名具体文件
+
+用 Tab 补全可以快速引用仓库中的文件或目录，帮助 Claude 精准找到要查看或修改的内容。
+
+![提供 URL](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2Fe071de707f209bbaa7f16b593cc7ed0739875dae-1306x1088.png&w=3840&q=75)
+
+### d. 附上 URL
+
+在提示中粘贴具体链接，让 Claude 自行抓取阅读。对于常访问的域名（如 docs.foo.com），可通过 `/permissions` 提前添加到允许列表，避免重复确认。
+
+### e. 及时纠偏
+
+虽然自动接受模式（Shift+Tab）能让 Claude 自主工作，但大多数情况下你作为积极合作者效果更好。除了开场解释清楚任务，也可以随时纠偏。
+
+常用的 4 种方式：
+
+-   **先让 Claude 制定计划**，并声明“计划确认前不要写代码”
+-   **在任何阶段按 Esc 中断**（无论思考、调用工具或编辑文件），保留上下文后重新指示
+-   **双击 Esc 回到历史消息**，编辑上一步提示并换个方向再试
+-   **让 Claude 撤销更改**，常与第二步配合使用
+
+即便 Claude 偶尔“一次命中”，善用这些工具通常能更快得到满意答案。
+
+### f. 用 `/clear` 保持上下文干净
+
+会话时间长了，Claude 的上下文会塞进一堆无关内容，既占空间又干扰思路。任务切换时记得借助 `/clear` 重置。
+
+### g. 大任务使用清单和草稿
+
+对于多步骤或需要穷举的任务（大规模迁移、批量修复 lint、复杂构建脚本等），让 Claude 在 Markdown 文件或 GitHub Issue 中维护清单与草稿能大大提升效率。
+
+例如批量修复 lint 错误：
+
+1.  **让 Claude 运行 lint 命令**，把所有错误（含文件名和行号）写成 Markdown 清单
+2.  **让它逐条处理并勾选**，修一个、验一个，再进行下一个
+
+### h. 把数据喂给 Claude
+
+常见方式包括：
+
+-   **复制粘贴** 到提示中（最常用）
+-   **管道输入**（如 `cat foo.txt | claude`），适合日志、CSV、海量数据
+-   **让 Claude 自取**（bash 命令、MCP 工具、自定义斜杠命令等）
+-   **让 Claude 读取文件或 URL**（同样支持图片）
+
+实际上往往会组合使用。比如先把日志通过管道传进去，再让 Claude 用额外工具补充上下文以定位问题。
 
 ## 5. 使用无界面模式自动化基础设施
 
@@ -309,93 +387,14 @@ git worktree 是更轻量的多副本方案，适合互不影响的任务。每�
 
 [想了解更多？欢迎查看相关课程。][19]
 
-## 4. 优化工作流
-
-以下建议适用于所有场景：
-
-### a. 指令要具体
-
-指令越明确，Claude Code 首次成功的概率越高。开局说明白，后面就少绕路。
-
-示例：
-
-| 不够好                                           | 更好的示例                                                                                                                                                                                                                                                                                                                                                                          |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| add tests for foo.py                             | 针对 foo.py 再写一个测试用例，覆盖“用户已登出”的边界情况，并且不要使用 mock。                                                                                                                                                                                                                                                                                                       |
-| why does ExecutionFactory have such a weird api? | 查阅 ExecutionFactory 的 git 历史，概括它的 API 是如何逐步演化成现在这样的。                                                                                                                                                                                                                                                                                                       |
-| add a calendar widget                            | 先看看首页现有的挂件实现，理解模式以及代码与接口如何拆分。HotDogWidget.php 是一个好例子。按照该模式实现一个新的日历挂件，让用户能选择月份并前后翻页切换年份，且只使用当前代码库已有的依赖，从零开始实现。                                                                                                                                                                             |
-
-Claude 能理解意图，但无法读心。明确的指令才能让结果符合预期。
-
-![给 Claude 图片](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F75e1b57a0b696e7aafeca1ed5fa6ba7c601a5953-1360x1126.png&w=3840&q=75)
-
-### b. 提供视觉参考
-
-Claude 在处理图片和图表时很擅长，提供方式包括：
-
--   **粘贴截图**（macOS 可用 `cmd+ctrl+shift+4` 截到剪贴板，再用 `ctrl+v` 粘贴。注意不是 `cmd+v`，远程环境无效）
--   **拖拽图片** 到输入框
--   **提供图片路径**
-
-这在依据设计稿实现 UI 或分析可视化图表时尤为重要。即便没有图像，也可以直接告诉 Claude “结果要好看”，帮助它把握方向。
-
-![指明要查看的文件](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F7372868757dd17b6f2d3fef98d499d7991d89800-1450x1164.png&w=3840&q=75)
-
-### c. 点名具体文件
-
-用 Tab 补全可以快速引用仓库中的文件或目录，帮助 Claude 精准找到要查看或修改的内容。
-
-![提供 URL](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2Fe071de707f209bbaa7f16b593cc7ed0739875dae-1306x1088.png&w=3840&q=75)
-
-### d. 附上 URL
-
-在提示中粘贴具体链接，让 Claude 自行抓取阅读。对于常访问的域名（如 docs.foo.com），可通过 `/permissions` 提前添加到允许列表，避免重复确认。
-
-### e. 及时纠偏
-
-虽然自动接受模式（Shift+Tab）能让 Claude 自主工作，但大多数情况下你作为积极合作者效果更好。除了开场解释清楚任务，也可以随时纠偏。
-
-常用的 4 种方式：
-
--   **先让 Claude 制定计划**，并声明“计划确认前不要写代码”
--   **在任何阶段按 Esc 中断**（无论思考、调用工具或编辑文件），保留上下文后重新指示
--   **双击 Esc 回到历史消息**，编辑上一步提示并换个方向再试
--   **让 Claude 撤销更改**，常与第二步配合使用
-
-即便 Claude 偶尔“一次命中”，善用这些工具通常能更快得到满意答案。
-
-### f. 用 `/clear` 保持上下文干净
-
-会话时间长了，Claude 的上下文会塞进一堆无关内容，既占空间又干扰思路。任务切换时记得借助 `/clear` 重置。
-
-### g. 大任务使用清单和草稿
-
-对于多步骤或需要穷举的任务（大规模迁移、批量修复 lint、复杂构建脚本等），让 Claude 在 Markdown 文件或 GitHub Issue 中维护清单与草稿能大大提升效率。
-
-例如批量修复 lint 错误：
-
-1.  **让 Claude 运行 lint 命令**，把所有错误（含文件名和行号）写成 Markdown 清单
-2.  **让它逐条处理并勾选**，修一个、验一个，再进行下一个
-
-### h. 把数据喂给 Claude
-
-常见方式包括：
-
--   **复制粘贴** 到提示中（最常用）
--   **管道输入**（如 `cat foo.txt | claude`），适合日志、CSV、海量数据
--   **让 Claude 自取**（bash 命令、MCP 工具、自定义斜杠命令等）
--   **让 Claude 读取文件或 URL**（同样支持图片）
-
-实际上往往会组合使用。比如先把日志通过管道传进去，再让 Claude 用额外工具补充上下文以定位问题。
-
-[9]: https://www.anthropic.com/news/coderabbit-...  # Update with actual URL for Claude Code release
-[10]: https://claude.ai/code
-[11]: https://www.anthropic.com/...  # Update with actual prompt improver tool URL
-[12]: https://github.com/anthropics/mcp-servers/tree/main/puppeteer  # Or correct MCP server URL
-[13]: https://github.com/anthropics/mcp-servers/tree/main/ios-simulator  # Or correct MCP server URL
-[14]: https://github.com/anthropic-ai/claude-code-docker-dev-container  # Or correct Docker example URL
-[15]: https://claude.ai/code/docs/headless-mode  # Or correct headless mode documentation URL
-[16]: https://github.com/anthropic-ai/claude-code  # Or correct repository URL
-[17]: https://www.anthropic.com/...  # Update with actual subjective code review documentation URL
-[18]: https://iterm2.com/documentation-notifications.html  # Or specific iTerm2 notification setup guide
-[19]: https://www.anthropic.com/...  # Update with relevant learning resource URL
+[9]: https://www.anthropic.com/news/claude-3-7-sonnet
+[10]: https://claude.ai/redirect/website.v1.5b26d0ac-4219-430f-a7e7-89925ffde624/code
+[11]: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver
+[12]: https://github.com/modelcontextprotocol/servers/tree/c19925b8f0f2815ad72b08d2368f0007c86eb8e6/src/puppeteer
+[13]: https://github.com/joshuayoes/ios-simulator-mcp
+[14]: https://github.com/anthropics/claude-code/tree/main/.devcontainer
+[15]: https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview#automate-ci-and-infra-workflows
+[16]: https://github.com/anthropics/claude-code/blob/main/.github/actions/claude-issue-triage-action/action.yml
+[17]: https://github.com/anthropics/claude-code-action/blob/main/action.yml
+[18]: https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview#notification-setup
+[19]: https://anthropic.skilljar.com/
