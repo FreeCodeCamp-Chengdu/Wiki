@@ -3,7 +3,7 @@ title: "Claude Code：agentic coding 的最佳实践"
 date: 2025-04-18T00:00:00.000Z
 authorURL: ""
 originalURL: https://www.anthropic.com/engineering/claude-code-best-practices
-translator: ""
+translator: "luojiyin1987"
 reviewer: ""
 ---
 
@@ -387,3 +387,15 @@ Claude 在处理图片和图表时很擅长，提供方式包括：
 -   **让 Claude 读取文件或 URL**（同样支持图片）
 
 实际上往往会组合使用。比如先把日志通过管道传进去，再让 Claude 用额外工具补充上下文以定位问题。
+
+[9]: https://www.anthropic.com/news/coderabbit-...  # Update with actual URL for Claude Code release
+[10]: https://claude.ai/code
+[11]: https://www.anthropic.com/...  # Update with actual prompt improver tool URL
+[12]: https://github.com/anthropics/mcp-servers/tree/main/puppeteer  # Or correct MCP server URL
+[13]: https://github.com/anthropics/mcp-servers/tree/main/ios-simulator  # Or correct MCP server URL
+[14]: https://github.com/anthropic-ai/claude-code-docker-dev-container  # Or correct Docker example URL
+[15]: https://claude.ai/code/docs/headless-mode  # Or correct headless mode documentation URL
+[16]: https://github.com/anthropic-ai/claude-code  # Or correct repository URL
+[17]: https://www.anthropic.com/...  # Update with actual subjective code review documentation URL
+[18]: https://iterm2.com/documentation-notifications.html  # Or specific iTerm2 notification setup guide
+[19]: https://www.anthropic.com/...  # Update with relevant learning resource URL
