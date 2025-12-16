@@ -1,5 +1,5 @@
 ---
-title: "Claude Code：代理式编码的最佳实践"
+title: "Claude Code：agentic coding 的最佳实践"
 date: 2025-04-18T00:00:00.000Z
 authorURL: ""
 originalURL: https://www.anthropic.com/engineering/claude-code-best-practices
