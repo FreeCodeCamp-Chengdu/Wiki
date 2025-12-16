@@ -259,9 +259,9 @@ Claude 在处理图片和图表时很擅长，提供方式包括：
 
 ![指明要查看的文件](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2F7372868757dd17b6f2d3fef98d499d7991d89800-1450x1164.png&w=3840&q=75)
 
-### c. 点名具体文件
+### c. 点明具体文件
 
-用 Tab 补全可以快速引用仓库中的文件或目录，帮助 Claude 精准找到要查看或修改的内容。
+用 Tab 补全可以快速引用仓库中的文件或目录，有效点明 Claude 需要查看或修改的具体位置。
 
 ![提供 URL](https://www.anthropic.com/_next/image?url=https%3A%2F%2Fwww-cdn.anthropic.com%2Fimages%2F4zrzovbb%2Fwebsite%2Fe071de707f209bbaa7f16b593cc7ed0739875dae-1306x1088.png&w=3840&q=75)
 
