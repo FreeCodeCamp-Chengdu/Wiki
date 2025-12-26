@@ -24,11 +24,11 @@ title: Chinese title
 date: Original article date
 updated: Translation completion date
 authors:
-  - Translator's GitHub username
+    - Translator's GitHub username
 original: Original article URL
 categories:
-  - Article
-  - Translation
+    - Article
+    - Translation
 toc: true
 ---
 ```
