@@ -1,5 +1,5 @@
 ---
-title: Mediocre Engineer’s guide to HTTPS
+title: 平庸工程师的HTTPS指南
 date: 2024-05-28T04:38:43.572Z
 authorURL: ""
 originalURL: https://devonperoutky.super.site/blog-posts/mediocre-engineers-guide-to-https
@@ -7,218 +7,139 @@ translator: ""
 reviewer: ""
 ---
 
-![image](https://files.oaiusercontent.com/file-SyCerofEEDgemcHfPpquHWxP?se=2024-05-26T17%3A15%3A21Z&sp=r&sv=2023-11-03&sr=b&rscc=max-age%3D31536000%2C%20immutable&rscd=attachment%3B%20filename%3D53c7983c-c33e-4b28-80ff-ad5cdd387868.webp&sig=MN94zDnTPF%2BB0jZFNe434yjt40e6dIcfT%2BQiedrSLBg%3D)
 
-<!-- more -->
 
--   [
-    
-    Lifecycle of a HTTP request
-    
-    ][1]
--   [
-    
-    1\. Sender Makes a Request
-    
-    ][2]
--   [
-    
-    2\. DNS Lookup:
-    
-    ][3]
--   [
-    
-    3\. TCP Handshake:
-    
-    ][4]
--   [
-    
-    4\. Transmit HTTP Request
-    
-    ][5]
--   [
-    
-    5\. Packets routed across Internet to Server
-    
-    ][6]
--   [
-    
-    Step-by-step explanation of how text makes it across the internet
-    
-    ][7]
--   [
-    
-    6\. Server Response
-    
-    ][8]
--   [
-    
-    7\. Content Rendering:
-    
-    ][9]
--   [
-    
-    Little Layer Review
-    
-    ][10]
--   [
-    
-    HTTPS = HTTP + Encryption
-    
-    ][11]
--   [
-    
-    TLS Handshake
-    
-    ][12]
--   [
-    
-    TLS Handshake
-    
-    ][13]
--   [
-    
-    Everything you’ve learned here is a lie.
-    
-    ][14]
--   [
-    
-    What is different about a handshake in TLS 1.3?
-    
-    ][15]
--   [
-    
-    Shameful Plug
-    
-    ][16]
+- [HTTP 请求的生命周期](#http请求的生命周期)
+  - [1. 发送方发起请求](#1-发送方发起请求)
+  - [2. DNS 查询](#2-dns查询)
+  - [3. TCP 握手](#3-tcp握手)
+  - [4. 传输 HTTP 请求](#4-传输http请求)
+  - [5. 数据包通过互联网路由到服务器](#5-数据包通过互联网路由到服务器)
+  - [文本如何穿越互联网的逐步解释](#文本如何穿越互联网的逐步解释)
+  - [6. 服务器响应](#6-服务器响应)
+  - [**7. 内容渲染**:](#7-内容渲染)
+- [层级简要回顾](#层级简要回顾)
+- [HTTPS = HTTP + 加密](#https--http--加密)
+- [TLS 握手](#tls握手)
+  - [TLS 握手](#tls握手-1)
+- [**你在这里学到的一切都是谎言。**](#你在这里学到的一切都是谎言)
+- [**TLS 1.3 中的握手有什么不同？**](#tls-13中的握手有什么不同)
+- [不要脸的广告](#不要脸的广告)
 
-As a mediocre engineer, I took Internet and HTTPS communication for granted and never dove any deeper. Today we’re improving as engineers and learning a rough overview of how internet communication works, specifically focusing on HTTP and TLS.
+作为一名平庸的工程师，我一直把互联网和 HTTPS 通信视为理所当然，从未深入研究过。今天，我们将作为工程师进步，学习互联网通信工作原理的大致概述，特别关注 HTTP 和 TLS。
 
-The Internet is “just” a network of interconnected computer networks. The term "Internet" literally means "between networks." It operates as a packet-switched [mesh network][17] with best-effort delivery, meaning there are no guarantees on whether a packet will be delivered or how long it will take. The reason why the internet appears to operate so smoothly (at least from a technical perspective) is the layers of abstraction that handle retries, ordering, deduplication, security and so many other things behind the scenes. Letting us developers just focus on the application layer (aka. Writing HTTP requests from San Francisco for $300K/year).
+互联网"只是"相互连接的计算机网络的网络。"互联网"一词字面意思是"网络之间"。它作为一个分组交换的[网状网络][6]运行，采用尽力而为的交付方式，这意味着对于数据包是否会被传递或需要多长时间没有任何保证。互联网之所以看起来运行如此顺畅（至少从技术角度看），是因为抽象层处理了重试、排序、去重、安全性和许多其他幕后工作。让我们开发人员只需专注于应用层（也就是在旧金山写 HTTP 请求，年薪 30 万美元）。
 
-Each layer provides certain functionalities, which can be fulfilled by different [protocols][18]. Such modularization makes it possible to replace the protocol on one layer without affecting the protocols on the other layers.
+每一层提供特定功能，可以由不同的[协议][7]实现。这种模块化使得可以替换一层上的协议而不影响其他层上的协议。
 
-Here’s a simple table of the layers.
+这里是各层的简单表格。
 
-<table class="notion-table col-header"><tbody><tr style="color:var(--color-text-default)"><td style="min-width:138px;max-width:138px;background:var(--color-color-default)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Name</strong></span></div></td><td style="min-width:250px;max-width:250px;background:var(--color-color-default)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Description</strong></span></div></td><td style="min-width:143px;max-width:143px;background:var(--color-color-default)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Unit of Communication</strong></span></div></td><td style="min-width:162px;max-width:162px;background:var(--color-color-default)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Unique Identifier</strong></span></div></td><td style="min-width:125px;max-width:125px;background:var(--color-color-default)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Example</strong></span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:138px;max-width:138px"><div class="notion-table__cell"><span class="notion-semantic-string">Application layer</span></div></td><td style="min-width:250px;max-width:250px"><div class="notion-table__cell"><span class="notion-semantic-string">Manages application-specific logic</span></div></td><td style="min-width:143px;max-width:143px"><div class="notion-table__cell"><span class="notion-semantic-string">Messages</span></div></td><td style="min-width:162px;max-width:162px"><div class="notion-table__cell"><span class="notion-semantic-string">Application-specific</span></div></td><td style="min-width:125px;max-width:125px"><div class="notion-table__cell"><span class="notion-semantic-string">HTTP</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:138px;max-width:138px"><div class="notion-table__cell"><span class="notion-semantic-string">Security layer</span></div></td><td style="min-width:250px;max-width:250px"><div class="notion-table__cell"><span class="notion-semantic-string">Provides encryption and authentication</span></div></td><td style="min-width:143px;max-width:143px"><div class="notion-table__cell"><span class="notion-semantic-string">Records</span></div></td><td style="min-width:162px;max-width:162px"><div class="notion-table__cell"><span class="notion-semantic-string">Public Key Certificate</span></div></td><td style="min-width:125px;max-width:125px"><div class="notion-table__cell"><span class="notion-semantic-string">TLS</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:138px;max-width:138px"><div class="notion-table__cell"><span class="notion-semantic-string">Transport layer</span></div></td><td style="min-width:250px;max-width:250px"><div class="notion-table__cell"><span class="notion-semantic-string">Ensures reliable data transfer</span></div></td><td style="min-width:143px;max-width:143px"><div class="notion-table__cell"><span class="notion-semantic-string">Segments (TCP) / Datagrams (UDP)</span></div></td><td style="min-width:162px;max-width:162px"><div class="notion-table__cell"><span class="notion-semantic-string">Port number</span></div></td><td style="min-width:125px;max-width:125px"><div class="notion-table__cell"><span class="notion-semantic-string">TCP</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:138px;max-width:138px"><div class="notion-table__cell"><span class="notion-semantic-string">Network layer</span></div></td><td style="min-width:250px;max-width:250px"><div class="notion-table__cell"><span class="notion-semantic-string">Routes packets across the Internet</span></div></td><td style="min-width:143px;max-width:143px"><div class="notion-table__cell"><span class="notion-semantic-string">Packets</span></div></td><td style="min-width:162px;max-width:162px"><div class="notion-table__cell"><span class="notion-semantic-string">IP address</span></div></td><td style="min-width:125px;max-width:125px"><div class="notion-table__cell"><span class="notion-semantic-string">IP</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:138px;max-width:138px"><div class="notion-table__cell"><span class="notion-semantic-string">Link layer</span></div></td><td style="min-width:250px;max-width:250px"><div class="notion-table__cell"><span class="notion-semantic-string">Manages the physical medium</span></div></td><td style="min-width:143px;max-width:143px"><div class="notion-table__cell"><span class="notion-semantic-string">Frames</span></div></td><td style="min-width:162px;max-width:162px"><div class="notion-table__cell"><span class="notion-semantic-string">MAC address</span></div></td><td style="min-width:125px;max-width:125px"><div class="notion-table__cell"><span class="notion-semantic-string">Wi-Fi</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:138px;max-width:138px"><div class="notion-table__cell"><span class="notion-semantic-string">Physical Layer</span></div></td><td style="min-width:250px;max-width:250px"><div class="notion-table__cell"><span class="notion-semantic-string">Physically transmit raw bits from one device to another</span></div></td><td style="min-width:143px;max-width:143px"><div class="notion-table__cell"><span class="notion-semantic-string">Bits</span></div></td><td style="min-width:162px;max-width:162px"><div class="notion-table__cell"><span class="notion-semantic-string">N/A</span></div></td><td style="min-width:125px;max-width:125px"><div class="notion-table__cell"><span class="notion-semantic-string">Fiber optic, Ethernet cables</span></div></td></tr></tbody></table>
+我们稍后会更深入地讨论这些层，但首先，让我们看看它们的实际运作。
 
-We’ll go over these layers more in-depth layer, but first, let’s see this in action.
+## HTTP 请求的生命周期
 
-# Lifecycle of a HTTP request
+以下是 HTTP 请求通过这些层的路径（为简洁起见跳过物理层）。
 
-Here is the path of an HTTP request through these layers (Skipping physical layer for brevity).
+![图片2: 图片][2]
 
-![image](https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/ca58d5c9-2241-4a54-b3f3-9ec8faf474d3/HTTP_Request/w=3840,quality=90,fit=scale-down)
+### 1. 发送方发起请求
 
-## **1\. Sender Makes a Request**
+这个过程从应用层开始，客户端（通常是网络浏览器）构建一个 HTTP 请求。HTTP 是一种基于文本的协议，这意味着所有数据都以纯文本形式通过网络发送。
 
-The process begins at the Application layer, where the client (usually a web browser) constructs an HTTP request. HTTP is a text-based protocol, meaning that all this data is sent as plain text over the wire.
+第一行通常包括：
 
-The first line typically includes:
+* **HTTP 方法**（GET、POST 等）
+* **请求的资源**（例如：`/index.html`）
+* **协议版本**。
 
--   **HTTP method** (GET, POST, etc)
--   **Requested Resource** (Example: `/index.html` )
--   **Protocol version.**
+HTTP 消息的其余部分包含`键: 值`格式的头部和一个可选的消息体。
 
-The remainder of the HTTP message contains headers in a `key: value` format an an optional message body.
+**示例：HTTP 请求**
 
-**Example: HTTP Request**
-
-Copy
-
-```
+```bash
 GET /index.html HTTP/1.1
 Host: www.example.com
 Accept: text/html
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36
 ```
 
-## **2\. DNS Lookup**:
+### 2. DNS 查询
 
-The Domain Name System (DNS) translates the human-readable domain name (`**www.example.com**`) into an IP address (e.g., `**93.184.216.34**`). The client queries DNS servers to resolve the domain name to its corresponding IP address. This process goes through multiple resolvers until it reaches the authoritative server which does the conversion of domain name to IP address. At a very high level, the three components are
+域名系统（DNS）将人类可读的域名（`**www.example.com**`）转换为 IP 地址（例如，`**93.184.216.34**`）。客户端查询 DNS 服务器以将域名解析为其对应的 IP 地址。这个过程通过多个解析器，直到到达权威服务器，后者完成域名到 IP 地址的转换。在非常高的层面上，三个组件是：
 
--   **Stub resolvers**, which lives on the client machine and routes the request to the appropriate recursive resolver (explained next)
--   **Recursive resolvers**, which receives requests from the stub resolver and queries authoritative servers to resolve the domain name - often caching the result. Your Internet Service Provider (ISP) typically provides a recursive resolver, or you may use a public one like Google DNS (8.8.8.8).
--   **Authoritative servers** which contain the actual DNS records (like A, MX, CNAME, etc.) for a domain and responds to queries with the information in those records. Authoritative servers are the final source of truth for domain name data.
+* **存根解析器**，位于客户端机器上，将请求路由到适当的递归解析器（下面解释）
+* **递归解析器**，接收来自存根解析器的请求并查询权威服务器以解析域名 - 通常会缓存结果。您的互联网服务提供商（ISP）通常提供递归解析器，或者您可能使用公共解析器，如 Google DNS（8.8.8.8）。
+* **权威服务器**，包含域的实际 DNS 记录（如 A、MX、CNAME 等），并用这些记录中的信息响应查询。权威服务器是域名数据的最终真相来源。
 
-When a client issues a request for a resource using a domain name, the **stub resolver** on your computer sends a query to a recursive resolver to resolve the domain name.
+当客户端使用域名请求资源时，计算机上的**存根解析器**向递归解析器发送查询以解析域名。
 
-The recursive resolver, queries authoritative DNS servers as needed to resolve the domain name to an IP address.
+递归解析器根据需要查询权威 DNS 服务器，将域名解析为 IP 地址。
 
-## **3\. TCP Handshake**:
+### 3. TCP 握手
 
-Now that we have the IP address of the server, the client can begin transmitting the HTTP and we move to the Transport Layer. There are two primary protocols for the transport layer, **TCP (Transmission Control Protocol) and UDP (User Datagram Protocol).**
+现在我们有了服务器的 IP 地址，客户端可以开始传输 HTTP，我们进入传输层。传输层有两个主要协议，**TCP（传输控制协议）和 UDP（用户数据报协议）**。
 
 💡
 
-TCP is a connection-oriented protocol that ensures reliable, ordered, and error-checked data delivery between applications.
+TCP 是一种面向连接的协议，确保应用程序之间可靠、有序和经过错误检查的数据传输。
 
-UDP is a connectionless protocol that provides fast, low-overhead data transmission without guaranteeing delivery, order, or error checking.
+UDP 是一种无连接协议，提供快速、低开销的数据传输，但不保证传输、顺序或错误检查。
 
-As of 2024, TCP is the main protocol for managing data transport across the internet, while UDP is less commonly used, typically for real-time applications like streaming or video calls, where low latency is crucial and occasional packet loss is acceptable. Now back to the topic at all.
+截至 2024 年，TCP 是互联网上管理数据传输的主要协议，而 UDP 使用较少，通常用于实时应用，如流媒体或视频通话，其中低延迟至关重要，偶尔的数据包丢失是可接受的。现在回到主题。
 
-Once the client has obtained a the IP address, it initiates a TCP connection with the server on port 80 (the standard port for HTTP). This involves a three-step handshake:
+一旦客户端获得 IP 地址，它就会在端口 80（HTTP 的标准端口）上与服务器建立 TCP 连接。这涉及三步握手：
 
--   **SYN**: The client sends a SYN (synchronize) packet to the server to request a connection.
--   **SYN-ACK**: The server responds with a SYN-ACK (synchronize-acknowledge) packet to acknowledge the request.
--   **ACK**: The client sends an ACK (acknowledge) packet back to the server, establishing a reliable connection.
+* **SYN**：客户端向服务器发送 SYN（同步）数据包请求连接。
+* **SYN-ACK**：服务器以 SYN-ACK（同步-确认）数据包响应，确认请求。
+* **ACK**：客户端向服务器发回 ACK（确认）数据包，建立可靠连接。
 
-## 4\. Transmit HTTP Request
+### 4. 传输 HTTP 请求
 
-With the TCP connection in place, the client sends the actual HTTP request. As mentioned, HTTP is a text-based protocol, so the request headers and the body (if any) are sent as plain text.
+建立 TCP 连接后，客户端发送实际的 HTTP 请求。如前所述，HTTP 是基于文本的协议，因此请求头和正文（如果有）以纯文本形式发送。
 
-## 5\. Packets routed across Internet to Server
+### 5. 数据包通过互联网路由到服务器
 
-**⚠️⚠️⚠️⚠️⚠️ We’re going deep here ⚠️⚠️⚠️⚠️⚠️**
+**⚠️⚠️⚠️⚠️⚠️ 我们要深入了 ⚠️⚠️⚠️⚠️⚠️**
 
-When a client sends a request, the data packets don't travel directly to the server. Instead, they follow a path through various network devices, primarily routers, which determine the best route for the packets to reach the server network gateway. From there, the link layer comes into play.
+当客户端发送请求时，数据包不会直接传输到服务器。相反，它们通过各种网络设备（主要是路由器）遵循路径，这些设备确定数据包到达服务器网络网关的最佳路线。从那里，链路层开始发挥作用。
 
-### Step-by-step explanation of how text makes it across the internet
+### 文本如何穿越互联网的逐步解释
 
-1.  **Initial Transmission**:
+1. **初始传输**：
+客户端设备将 HTTP 请求数据封装到 TCP 段中，然后封装到 IP 数据包中。这些数据包进一步封装成更小的块，称为帧，适合链路层（例如，如果使用有线连接，则为以太网帧）。
 
-The client's device encapsulates the HTTP request data into TCP segments and then into IP packets. These packets are further encapsulated into smaller chunks, referred to as frames, suitable for the Link Layer (e.g., Ethernet frames if using a wired connection).
+3. **本地网络**：
+帧通过本地网络传输到客户端的路由器。链路层处理这个本地网络内的通信，确保帧到达路由器。
 
-3.  **Local Network**:
+5. **本地路由器处理**：
+路由器接收帧，剥离链路层头部，并处理 IP 数据包。路由器检查数据包中的目标 IP 地址，并确定通往服务器的路径上的下一跳。
 
-The frames are transmitted over the local network to the client's router. The Link Layer handles the communication within this local network, ensuring the frames reach the router.
+7. **跨网络路由**：
+路由器将数据包转发到下一个网络，通常通过一个或多个中间路由器。每个中间路由器重复这个过程：接收数据包，确定下一跳，并转发它们。
 
-5.  **Local Router Processing**:
+9. **最终网络**
+最终，数据包到达与目标服务器相同网络上的路由器。这个路由器执行最终的路由决策，并将数据包发送到适当的本地设备（服务器）。
 
-The router receives the frames, strips off the Link Layer headers, and processes the IP packets. The router examines the destination IP address in the packets and determines the next hop on the path to the server.
+11. **服务器接收**：
+服务器的路由器通过本地网络段将数据包转发到服务器。链路层确保帧正确传输到服务器的网络接口。（它一直在为整个过程中的每台机器→机器通信做这件事。）
 
-7.  **Routing Across Networks**:
-
-The router forwards the packets to the next network, often through one or more intermediary routers. Each intermediary router repeats the process: receiving the packets, determining thenext hop, and forwarding them.
-
-9.  **Final Network**
-
-Eventually, the packets reach a router on the same network as the destination server. This router performs the final routing decision and sends the packets to the appropriate local device (the server).
-
-11.  **Server Reception**:
-
-The server's router forwards the packets over the local network segment to the server. The Link Layer ensures the frames are correctly transmitted to the server's network interface. (It has been doing that for every machine → machine communication for this whole time.
-
-13.  **Server Processing**:
-
-The server receives the frames, extracts the IP packets, and processes the encapsulated TCP segments to reconstruct the original HTTP request. The server then generates an HTTP response and the process reverses to send the response back to the client.
+13. **服务器处理**：
+服务器接收帧，提取 IP 数据包，并处理封装的 TCP 段以重建原始 HTTP 请求。然后服务器生成 HTTP 响应，过程反转，将响应发送回客户端。
 
 ⁉️
 
-The process of sending packets across the internet (The Network Layer) is used for essentially all communication over the internet. So it was used for all the steps earlier (like resolving the domain name, the TCP handshake, etc) however there’s only so much that can be explained at once.
+通过互联网发送数据包的过程（网络层）基本上用于互联网上的所有通信。因此它用于之前的所有步骤（如解析域名、TCP 握手等），但一次只能解释这么多。
 
-### 6\. Server Response
+### 6. 服务器响应
 
-The server receives the HTTP request and processes it. After processing the request, the server sends an HTTP response back to the client. The response includes:
+服务器接收 HTTP 请求并处理它。处理请求后，服务器向客户端发送 HTTP 响应。响应包括：
 
--   **Protocol** (The HTTP version being used)
--   **Status information** (The HTML Status code like 200, 404, etc)
--   **Response headers** (Like Request Header but Response)
--   **Requested content/Body** (The actual content, such as HTML of the request page or JSON data)
+* **协议**（使用的 HTTP 版本）
+* **状态信息**（HTML 状态码，如 200、404 等）
+* **响应头**（与请求头类似，但是响应）
+* **请求的内容/正文**（实际内容，如请求页面的 HTML 或 JSON 数据）
 
-Copy
-
-```
+```bash 
 HTTP/1.1 200 OK
 Date: Sat, 26 May 2023 10:00:00 GMT
 Server: Apache/2.4.41 (Ubuntu)
@@ -236,159 +157,144 @@ Content-Length: 3456
 </html>
 ```
 
-You may have seen something like this when debugging requests.
+调试请求时，你可能见过类似这样的内容。
 
-![image](https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/cfcdb0b7-d20d-4a0c-a50f-720d59a0fe82/Screenshot_2024-05-26_at_12.22.31_AM/w=3840,quality=90,fit=scale-down)
+![图片3: 图片][3]
 
-### **7\. Content Rendering**:
+### **7. 内容渲染**
 
-The client receives the HTTP response and processes it. The browser interprets the HTML and renders the content on the screen. If the response includes additional resources (e.g., images, CSS, JavaScript), the browser will make further HTTP requests to fetch these resources, following the same process.
+客户端接收 HTTP 响应并处理它。浏览器解释 HTML 并在屏幕上渲染内容。如果响应包括额外资源（例如，图片、CSS、JavaScript），浏览器将发出进一步的 HTTP 请求来获取这些资源，遵循相同的过程。
 
-So now that we’ve gotten a basic HTTP request out of the way, there’s only one problem. **It’s not secure at all.** Anyone listening on the connection can view 100% of the data being passed back-and-forth. Additionally, someone could pretend to be a server such that the client is tricked into sending valuable information. That’s where the **Security Layer** comes into play
+现在我们已经完成了基本的 HTTP 请求，但有一个问题。**它根本不安全。**任何监听连接的人都可以查看 100%的来回传递的数据。此外，有人可能假装是服务器，使客户端被欺骗发送有价值的信息。这就是**安全层**发挥作用的地方。
 
-## Little Layer Review
+## 层级简要回顾
 
-While we’re here, let’s do a brief review of the layers and their purpose, while we introduce the Security Layer.
+在这里，让我们简要回顾一下各层及其目的，同时介绍安全层。
 
--   **Application Layer**: Where applications create and communicate user data. This is what you have interacted the most with. Uses transport layer services for reliable or unreliable data transmission. Protocols include HTTP, FTP, SSH, SMTP. Uses ports to address processes/services.
--   **Security Layer**: Ensures secure communication by providing encryption, authentication, and data integrity. Common protocols include TLS (Transport Layer Security) and its predecessor SSL (Secure Sockets Layer). This layer protects data in transit and verifies the identity of the communicating parties.
--   **Transport Layer**: Manages host-to-host communications, providing channels for application data. Includes:
+* **应用层**：应用程序创建和通信用户数据的地方。这是你交互最多的层。使用传输层服务进行可靠或不可靠的数据传输。协议包括 HTTP、FTP、SSH、SMTP。使用端口来寻址进程/服务。
+* **安全层**：通过提供加密、认证和数据完整性确保安全通信。常见协议包括 TLS（传输层安全）及其前身 SSL（安全套接字层）。这一层保护传输中的数据并验证通信方的身份。
+* **传输层**：管理主机到主机的通信，为应用数据提供通道。包括：
 
--   **UDP**: Unreliable, connectionless datagram service.
--   **TCP**: Reliable, connection-oriented service with flow control and connection establishment.
+* **UDP**：不可靠、无连接的数据报服务。
+* **TCP**：可靠、面向连接的服务，具有流量控制和连接建立。
 
--   **Network Layer**: Responsible for exchanging packets across network boundaries via routing the packets through various intermediate routers. Primary protocol: Internet Protocol (IP).
--   **Link Layer**: Manages local network communications without routers. Defines local network topology and interfaces for transmitting datagrams to neighboring hosts.
+* **网络层**：负责通过路由将数据包跨网络边界交换，通过各种中间路由器。主要协议：互联网协议（IP）。
+* **链路层**：管理没有路由器的本地网络通信。定义本地网络拓扑和将数据报传输到相邻主机的接口。
 
-Specifically pay attention to the **Security Layer**, as that layer is the defining difference between an HTTP request (which we just covered) and an HTTPS request ([~86% of the current internet][19] and growing).
+特别注意**安全层**，因为该层是 HTTP 请求（我们刚刚介绍的）和 HTTPS 请求（[当前互联网的~86%][8]并且还在增长）之间的决定性区别。
 
-# HTTPS = HTTP + Encryption
+## HTTPS = HTTP + 加密
 
-**HTTPS is HTTP with encryption and verification**. While there are multiple ways of securing HTTP communication over the internet, the current implementation everyone uses is Transport Layer Security (TLS)**.**
+**HTTPS 是带有加密和验证的 HTTP**。虽然有多种方式可以在互联网上保护 HTTP 通信，但目前大家使用的实现是传输层安全（TLS）**。**
 
-TLS is how the client and server can verify each other identities and ensure all the payloads are encrypted in a way both parties will be able to decrypt them. The **TLS handshake process**, specifically, determines how the client and server will exchange encryption and verification keys. Once the keys have been exchanged, the client and server will communicate using HTTP as normal, and use the keys to encrypt and verify messages.
+TLS 是客户端和服务器如何验证彼此身份并确保所有负载以双方都能解密的方式加密。具体来说，**TLS 握手过程**决定了客户端和服务器将如何交换加密和验证密钥。一旦密钥交换完成，客户端和服务器将像正常一样使用 HTTP 通信，并使用密钥加密和验证消息。
 
-The flow of an HTTPS is the exact same as the HTTP request we covered previously, with the addition of a Security Layer in between the Application Layer and the Transport Layer (although typically TCP is used for the TLS handshake).
+HTTPS 的流程与我们之前介绍的 HTTP 请求完全相同，只是在应用层和传输层之间添加了安全层（尽管通常 TCP 用于 TLS 握手）。
 
-![image](https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/6532134b-285a-4eb6-b7cc-f0c40ee67c91/HTTPS_Request/w=3840,quality=90,fit=scale-down)
+![图片4: 图片][4]
 
-## TLS Handshake
+## TLS 握手
 
-The TLS handshake is for the client and server to agree on a few different aspects of the communication. Specifically, the collection of algorithms that will be used for verifying, compressing, and encrypting messages.
-
-<table class="notion-table col-header"><tbody><tr style="color:var(--color-text-default)"><td style="min-width:120px;max-width:240px;background:var(--color-undefined)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Component</strong></span></div></td><td style="min-width:120px;max-width:240px;background:var(--color-undefined)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Description/Purpose</strong></span></div></td><td style="min-width:120px;max-width:240px;background:var(--color-undefined)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Common Implementations</strong></span></div></td><td style="min-width:120px;max-width:240px;background:var(--color-undefined)"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Primarily Currently Used</strong></span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Compression Algorithm</strong></span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">How they client and server will compress data over the wire</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">Gzip, Brotli</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">Brotli</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Key Exchange Algorithm</strong></span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">Securely exchange cryptographic keys over a public channel</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">ECDHE-RSA, ECDHE-ECDSA</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">ECDHE (provides perfect forward secrecy)</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Authentication Algorithm</strong></span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">Authenticate the identity of the parties during the handshake</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">RSA, ECDSA</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">RSA (widely used), ECDSA (gaining popularity)</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>Symmetric Encryption Algorithm</strong></span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">Encrypts the data transmitted between the client and server</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">AES-128-GCM, AES-256-GCM</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">AES-GCM (provides strong security and efficiency)</span></div></td></tr><tr style="color:var(--color-text-default)"><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string"><strong>MAC Algorithm</strong></span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">Ensures the integrity and authenticity of the messages</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">HMAC-SHA256, HMAC-SHA384</span></div></td><td style="min-width:120px;max-width:240px"><div class="notion-table__cell"><span class="notion-semantic-string">HMAC-SHA256 (common), GCM modes in modern cipher suites</span></div></td></tr></tbody></table>
+TLS 握手是为了让客户端和服务器就通信的几个不同方面达成一致。具体来说，用于验证、压缩和加密消息的算法集合。
 
 🔒
 
-This collection of algorithms are referred to as **cipher suites.** To be specific all of them except the compression algorithm are considered the cipher suite, but for brevity I’ll refer to the full collection of them the cipher suite going forward.
+这些算法集合被称为**密码套件**。准确地说，除了压缩算法外，所有算法都被视为密码套件，但为简洁起见，我将在接下来把完整的集合称为密码套件。
 
-By agreeing on all these algorithms, exchanging random seeds, and the server’s SSL certificate containing the private key; the client and server can generate a symmetric key that will be used to encrypt and verify the messages being passed back and forth. This process of agreeing on cipher suites and distributing the necessary information (seeds and SSL cert) is referred to as the TLS handshake.
+通过就所有这些算法达成一致，交换随机种子，以及包含私钥的服务器 SSL 证书；客户端和服务器可以生成一个对称密钥，用于加密和验证来回传递的消息。这个就密码套件达成一致并分发必要信息（种子和 SSL 证书）的过程被称为 TLS 握手。
 
-![source: ](https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/d6a4d9a3-2c45-4d5b-825c-fa99b8e555e7/Untitled/w=3840,quality=90,fit=scale-down)
+![图片5: s][5]
 
-source: [Cloudflare][20]
+来源：Cloudflare
 
-**Note:** All communication happens over TCP, the blue steps indicate the TCP handshake and the yellow steps are TLS handshake .
+**注意：**所有通信都通过 TCP 进行，蓝色步骤表示 TCP 握手，黄色步骤是 TLS 握手。
 
-### TLS Handshake
+### TLS 握手
 
-1.  **Client Hello**
+1. **客户端问候**
 
-1.  The client will send a “Client Hello”, which is an TCP message to the server specifying the **cipher suites** it supports, as well as the supported TLS version and a random number (called the Client Random)
+1. 客户端将发送"客户端问候"，这是一个 TCP 消息，向服务器指定它支持的**密码套件**，以及支持的 TLS 版本和一个随机数（称为客户端随机数）
 
-3.  **Server Hello**
+3. **服务器问候**
 
-1.  The server will respond with a “Server Hello” which is a TCP message containing the chosen TLS version, the chosen cipher suite algorithms, and it’s own random number (the Server Random)
+1. 服务器将以"服务器问候"响应，这是一个 TCP 消息，包含所选的 TLS 版本、所选的密码套件算法和它自己的随机数（服务器随机数）
 
-5.  **Certificate Verification**
+5. **证书验证**
 
-1.  The client verifies the server’s SSL certificate with the Certificate Authority and retrieves the server’s public key.
+1. 客户端通过证书颁发机构验证服务器的 SSL 证书，并检索服务器的公钥。
 
-7.  **Premaster Secret Generation**
+7. **预主密钥生成**
 
-1.  The client generates a premaster secret, encrypts it with the server’s public key, and sends it to the server.
+1. 客户端生成预主密钥，用服务器的公钥加密，并发送给服务器。
 
-9.  **Decryption**
+9. **解密**
 
-1.  The server decrypts the premaster secret using its private key.
+1. 服务器使用其私钥解密预主密钥。
 
-11.  **Session Key Creation**
+11. **会话密钥创建**
 
-1.  Both client and server use the client random, server random, and premaster secret to create session keys.
+1. 客户端和服务器都使用客户端随机数、服务器随机数和预主密钥创建会话密钥。
 
-13.  **Client Ready**
+13. **客户端就绪**
 
-1.  The client sends a "finished" message encrypted with a session key.
+1. 客户端发送用会话密钥加密的"完成"消息。
 
-15.  **Server Ready**
+15. **服务器就绪**
 
-1.  The server sends a "finished" message encrypted with a session key.
+1. 服务器发送用会话密钥加密的"完成"消息。
 
-17.  **Secure HTTP Communication**
+17. **安全 HTTP 通信**
 
-1.  The session keys are used for secure symmetric encryption, ensuring both parties can now communicate securely.
+1. 会话密钥用于安全对称加密，确保双方现在可以安全通信。
 
-Boom. That’s the TLS handshake, except for one more thing, and that is….
+好了。这就是 TLS 握手，除了还有一件事，那就是...
 
-## **Everything you’ve learned here is a lie.**
+**你在这里学到的一切都是谎言**
+--------------------------------------------
 
-The process we just describe is for the original version of TLS, which is outdated compared to the more modern version of TLS 1.3.
+我们刚刚描述的过程是针对 TLS 的原始版本，与更现代的 TLS 1.3 版本相比已经过时。
 
-# **What is different about a handshake in TLS 1.3?**
+**TLS 1.3 中的握手有什么不同？**
+---------------------------------------------------
 
-The process we just went through is a little outdated, but it’s a great place to start due to it introducing the necessary concepts of what needs to be agreed upon for secure server <> client communication.
+我们刚刚经历的过程有点过时，但由于它介绍了安全服务器<\>客户端通信所需达成一致的必要概念，所以是一个很好的起点。
 
-Current version of TLS (>1.3) do not support RSA (and various other cipher suites) for security reasons. The newer versions are more opinionated, allow significantly fewer options, which makes them simpler, more secure, and faster. However, the components and concepts are all very much the same. You still have an TLS handshake process that agrees on the compression method, the server-authentication, and key exchange in the pursuit of generating a symmetric encryption key for securing the data of the packets being exchanged via TCP.
+当前版本的 TLS（>1.3）出于安全原因不支持 RSA（和各种其他密码套件）。较新的版本更加固执己见，允许的选项明显减少，这使它们更简单、更安全、更快。然而，组件和概念都非常相似。你仍然有一个 TLS 握手过程，就压缩方法、服务器认证和密钥交换达成一致，目的是生成对称加密密钥，用于保护通过 TCP 交换的数据包的数据安全。
 
-TLS 1.3 does not support RSA, nor other cipher suites and parameters that are vulnerable to attack. It also shortens the TLS handshake, making a TLS 1.3 handshake both faster and more secure.
+TLS 1.3 不支持 RSA，也不支持其他容易受到攻击的密码套件和参数。它还缩短了 TLS 握手，使 TLS 1.3 握手既更快又更安全。
 
-The basic steps of a TLS 1.3 handshake are:
+TLS 1.3 握手的基本步骤是：
 
--   **Client hello:** The client sends a client hello message with the protocol version, the client random, and a list of cipher suites. Because support for insecure cipher suites has been removed from TLS 1.3, the number of possible cipher suites is vastly reduced. The client hello also includes the parameters that will be used for calculating the premaster secret. Essentially, the client is assuming that it knows the server’s preferred key exchange method (which, due to the simplified list of cipher suites, it probably does). This cuts down the overall length of the handshake — one of the important differences between TLS 1.3 handshakes and TLS 1.0, 1.1, and 1.2 handshakes.
--   **Server generates master secret:** At this point, the server has received the client random and the client's parameters and cipher suites. It already has the server random, since it can generate that on its own. Therefore, the server can create the master secret.
--   **Server hello and "Finished":** The server hello includes the server’s certificate, digital signature, server random, and chosen cipher suite. Because it already has the master secret, it also sends a "Finished" message.
--   **Final steps and client "Finished":** Client verifies signature and certificate, generates master secret, and sends "Finished" message.
--   **Secure symmetric encryption achieved**
+* **客户端问候：** 客户端发送客户端问候消息，包含协议版本、客户端随机数和密码套件列表。由于 TLS 1.3 已移除对不安全密码套件的支持，可能的密码套件数量大大减少。客户端问候还包括将用于计算预主密钥的参数。本质上，客户端假设它知道服务器首选的密钥交换方法（由于简化的密码套件列表，它可能确实知道）。这减少了握手的总体长度——这是 TLS 1.3 握手与 TLS 1.0、1.1 和 1.2 握手之间的重要区别之一。
+* **服务器生成主密钥：** 此时，服务器已收到客户端随机数和客户端的参数及密码套件。它已经有了服务器随机数，因为它可以自己生成。因此，服务器可以创建主密钥。
+* **服务器问候和"完成"：** 服务器问候包括服务器的证书、数字签名、服务器随机数和所选的密码套件。因为它已经有了主密钥，所以它还发送"完成"消息。
+* **最终步骤和客户端"完成"：** 客户端验证签名和证书，生成主密钥，并发送"完成"消息。
+* **实现安全对称加密**
 
-There you go. Go out and ace your technical interviews now.
+就是这样。现在去参加你的技术面试吧。
 
-# Shameful Plug
+## 不要脸的广告
 
-If you want to read more posts like these, you can subscribe.
+如果你想阅读更多像这样的文章，你可以订阅。
 
-<iframe src="https://chilipepper.io/form/xhot-darkbrown-jalapenos-25c28489-cf1f-4231-a35e-4e84d9bf24e5" title="chilipepper.io" sandbox="allow-scripts allow-popups allow-forms allow-same-origin allow-top-navigation-by-user-activation " allowfullscreen="" loading="lazy" frameborder="0"></iframe>
+除了写平庸的[技术博客文章][9]，我还提供咨询服务并运营一家[开发机构][10]。我[构建了很多东西][9]，包括
 
-In addition to writing mediocre [technical blog posts][21], I also offer consultancy services and run a [development agency][22]. I have [built a lot of things][23], including
+...一个用于企业知识库的 RAG AI 聊天机器人和搜索工具 - 被 Brex 收购
 
-…an RAG AI chatbot and search tool for corporate knowledge bases - acquired by Brex
+...在 Twilio 和 Valon 的分布式 Python 和 Scala 服务
 
-…distributed Python and Scala services at Twilio and Valon
+...获奖的 Military Recall App 被 SAIC 选中用于美国国防部
 
-…award-winning Military Recall App chosen by SAIC for the US Department of Defense
+我还帮助领导了一些精英创业公司的团队。如果你正在寻找软件开发服务或项目咨询，我可能能够帮助。请随时通过[devonperoutky@gmail.com][11]联系我。
 
-I’ve also helped lead teams at some of these elite startups. If you are looking for software development services or consultation for a project, I might be able to help. Feel free to reach out at [devonperoutky@gmail.com][24].
-
-[1]: #block-48f58523ccfd407ea9e5bfc91b3e3387
-[2]: #block-22a8490d95884f838d770d5dca6c2e27
-[3]: #block-63b5bd78e0cd4a5c91f14115b45f3c50
-[4]: #block-f968956e32b84f5aaaed3368df807c89
-[5]: #block-5614ab20bd1f445c980ec96553f97ce6
-[6]: #block-145c998254ff4d8c9f1554b68a2849e4
-[7]: #block-e908d8f6125247daad89e708ffc8ee50
-[8]: #block-0ab8d0947866452b9713493cfb3519f5
-[9]: #block-ca9b1955aebd4ed59067e3b73e134d79
-[10]: #block-5b6b6b8f5d5641d8882d359d116c590b
-[11]: #block-9ae044f73fbd4f999ce8add94e367939
-[12]: #block-1fa6c45c12cc415cb427356fbfc72218
-[13]: #block-7fc77a5a056141e8aa638adda7e798ce
-[14]: #block-c7300fc061d5483daaa88154bb2cea66
-[15]: #block-b2d72c0ae8ce49a286ca653d39478c83
-[16]: #block-a4074de1cd2343cd893d699766bd6194
-[17]: https://en.wikipedia.org/wiki/Mesh_networking
-[18]: https://en.wikipedia.org/wiki/Communication_protocol
-[19]: /blog-posts/intro-to-llms-for-engineers-1
-[20]: https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/
-[21]: /
-[22]: http://jedsoftware.com
-[23]: /
-[24]: mailto:devonperoutky@gmail.com
+[1]: https://files.oaiusercontent.com/file-SyCerofEEDgemcHfPpquHWxP?se=2024-05-26T17%3A15%3A21Z&sp=r&sv=2023-11-03&sr=b&rscc=max-age%3D31536000%2C%20immutable&rscd=attachment%3B%20filename%3D53c7983c-c33e-4b28-80ff-ad5cdd387868.webp&sig=MN94zDnTPF%2BB0jZFNe434yjt40e6dIcfT%2BQiedrSLBg%3D
+[2]: https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/a391823a-fee1-403b-b844-bb42d82d2238/HTTP_Request/w=3840,quality=90,fit=scale-down
+[3]: https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/c06f5733-3c3b-4311-83f6-fad123fa5c4e/Screenshot_2024-05-26_at_12.22.31_AM/w=3840,quality=90,fit=scale-down
+[4]: https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/1bf738a0-d2ec-40ab-9b7c-6b595c3568bf/HTTPS_Request/w=3840,quality=90,fit=scale-down
+[5]: https://images.spr.so/cdn-cgi/imagedelivery/j42No7y-dcokJuNgXeA0ig/90ee7477-92fc-45c0-95e1-4bebe176aee7/Untitled/w=3840,quality=90,fit=scale-down
+[6]: https://en.wikipedia.org/wiki/Mesh_networking
+[7]: https://en.wikipedia.org/wiki/Communication_protocol
+[8]: https://devonperoutky.super.site/blog-posts/intro-to-llms-for-engineers-1
+[9]: https://devonperoutky.super.site/
+[10]: http://jedsoftware.com/
+[11]: mailto:devonperoutky@gmail.com
