@@ -8,92 +8,79 @@ translator: ""
 reviewer: ""
 ---
 
-# Introducing Docker Build Checks: Optimize Dockerfiles with Best Practices
+# 引入 Docker 构建检查:使用最佳实践优化 Dockerfile
 
-<!-- more -->
 
-![](https://www.docker.com/wp-content/uploads/2023/12/Colin-Hemmings.webp)
+![][49]
 
 [Colin Hemmings][1]  
 
-Today, we’re excited to announce the release of [Docker Build checks][2] with [Docker Desktop 4.33][3]. Docker Build checks help your team learn and follow best practices for building container images. When you run a [Docker Build][4], you will get a list of warnings for any check violations detected in your build. Taking a proactive approach and resolving Build warnings and issues early will save you time and headaches downstream. 
+今天,我们很高兴地宣布[Docker Desktop 4.33][3]发布了[Docker 构建检查][2]。Docker 构建检查帮助您的团队学习并遵循构建容器镜像的最佳实践。当您运行[Docker 构建][4]时,您将获得构建中检测到的任何检查违规的警告列表。采取主动方法并及早解决构建警告和问题将为您节省下游的时间和麻烦。 
 
-![Banner how to set up the weaviate vector database on docker](https://www.docker.com/wp-content/uploads/2023/09/banner_how-to-set-up-the-weaviate-vector-database-on-docker-1110x583.png "- Banner How To Set Up The Weaviate Vector Database On Docker")
+![Banner how to set up the weaviate vector database on docker][50]
 
-## Why did we create Docker Build checks?
+## 我们为什么创建 Docker 构建检查?
 
-During conversations with developers, we found that many struggle to learn and follow the best practices for building container images. According to our [**2024 State of Application Development Report**][5], 35% of Docker users reported creating and editing [Dockerfiles][6] as one of the top three tasks performed. However, 55% of respondents reported that creating Dockerfiles is the most selected task they refer to support. 
+在与开发人员的对话中,我们发现许多人在学习和遵循构建容器镜像的最佳实践方面存在困难。根据我们的[2024 年应用程序开发状态报告][5],35%的 Docker 用户将创建和编辑[Dockerfiles][6]列为执行的三大任务之一。然而,55%的受访者表示创建 Dockerfile 是他们最常求助的任务。
+开发人员通常没有时间通读[Docker 构建文档][7],进行必要的更改以使其工作,然后继续前进。当您运行 docker build 时,Docker 构建可能"有效",但编写不当的 Dockerfile 可能会引入质量问题,例如:
 
-Developers often don’t have the luxury of reading through the [Docker Build docs][7], making the necessary changes to get things working, and then moving on. A Docker Build might “work” when you run `docker build`, but a poorly written Dockerfiles may introduce quality issues, such as they are:
+-   难以维护或更新
+-   包含隐藏和意外的错误
+-   性能不佳
 
--   Hard to maintain or update
--   Contain hidden and unexpected bugs 
--   Have sub-optimal performance
+在与 Docker 用户的对话中,我们听到他们希望优化 Dockerfile 以提高构建性能,不了解当前的最佳实践,并希望在构建过程中得到指导。
+调查和修复构建问题浪费时间。我们创建了 Docker 构建检查,使开发人员能够从一开始就编写结构良好的 Dockerfile,并从现有的最佳实践中学习。使用构建检查,您的团队可以减少在构建问题上花费的时间,而将更多时间用于创新和编码。
 
-In our conversations with Docker users, we heard that they want to optimize their Dockerfiles to improve build performance, aren’t aware of current best practices, and would like to be guided as they build. 
+## 为什么应该使用 Docker 构建检查? 
 
-Investigating and fixing build issues wastes time. We created Docker Build checks to empower developers to write well-structured Dockerfiles from the get-go and learn from existing best practices. With Build checks, your team spends less time on build issues and more on innovation and coding.   
+您希望编写更好的 Dockerfile 并节省时间! 
 
-## Why should you use Docker Build checks? 
+我们收集了一套来自构建专家社区的最佳实践,并将其编码为 Docker 构建工具。您可以使用 Docker 构建检查来评估本地和 CI 工作流的所有阶段,包括多阶段构建和[Bake][8],并在[Docker Desktop Builds 视图][9]中深入研究。您还可以选择跳过哪些规则。
 
-You want to write better Dockerfiles and save time! 
+您可以在 CLI 和 Docker Desktop Builds 视图中访问 Docker 构建检查。
 
-We have collected a set of best practices from the community of build experts and codified them into Docker Build tooling. You can use Docker Build checks to evaluate all stages of your local and CI workflows, including multi-stage builds and [Bake][8], and deep dive in the [Docker Desktop Builds view][9]. You can also choose which rules to skip. 
+### 不仅仅是 linting:Docker构建检查功能强大且快速
 
-You can access Docker Build checks in the CLI and in the Docker Desktop Builds view. 
 
-### More than just linting: Docker Build checks are powerful and fast 
+Linting 工具通常只评估文本文件集中的规则。作为 Docker 构建的一部分,Docker 构建检查比 linting 更强大和准确。Docker 构建检查评估整个构建,包括传递的参数和使用的基本镜像。这些检查足够快,可以在您编辑 Dockerfile 时实时运行。您可以快速评估构建,而无需等待完整的构建执行。 
 
-Linting tools typically just evaluate the text files against a set of rules. As a native part of Docker Build, the rules in Docker Build checks are more powerful and accurate than just linting. Docker Build checks evaluate the entire build, including the arguments passed in and the base images used. These checks are quick enough to be run in real-time as you edit your Dockerfile. You can quickly evaluate a build without waiting for a full build execution. 
+### 检查您的本地构建
 
-### Check your local builds
+一个好的做法是在提交或共享更改之前评估新的或更新的 Dockerfile。运行`docker build`现在会给您一个关于 Dockerfile 中问题和警告的概述。
 
-A good practice is to evaluate a new or updated Dockerfile before committing or sharing your changes. Running `docker build` will now give you an overview of issues and warnings in your Dockerfile.
+![Build checks 433 f1][51]
 
-[![Build checks 433 f1](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201110%20545'%3E%3C/svg%3E "- Build Checks 433 F1")
+图 1:一个带有四个检查警告的 Docker 构建。
 
-![Build checks 433 f1](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f1-1110x545.png "- Build Checks 433 F1")
 
-][10]
+要获取有关这些特定问题的更多信息,您可以指定调试标志到 Docker CLI 与`docker --debug build`。此信息包括警告类型、发生位置以及如何解决的链接。
 
-Figure 1: A Docker Build with four check warnings displayed.
+![Build checks 433 f2][52]
 
-To get more information about these specific issues, you can specify the debug flag to the Docker CLI with `docker --debug build`. This information includes the type of warning, where it occurs, and a link to more information on how to resolve it. 
+图 2:检查警告的构建调试输出。
 
-[![Build checks 433 f2](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201110%20948'%3E%3C/svg%3E "- Build Checks 433 F2")
+### 快速检查您的构建
 
-![Build checks 433 f2](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f2-1110x948.png "- Build Checks 433 F2")
+运行这些检查时,构建是很好的,但等待完整的构建每次在您进行更改或修复问题时运行可能很耗时。为此,我们添加了`--check`标志作为构建命令的一部分。
 
-][11]
-
-Figure 2: Build debug output for the check warnings.
-
-### Quickly check your build
-
-Running these checks during a build is great, but it can be time-consuming to wait for the complete build to run each time when you’re making changes or fixing issues. For this reason, we added the `--check` flag as part of the build command. 
-
-```
-# The check flag can be added anywhere as part of your build command
+```dockerfile
+# check标志可以添加到构建命令的任何位置
 docker build . --check
 docker build --check .
-docker build --build-arg VERSION=latest --platfrom linux/arm64 . --check
+docker build --build-arg VERSION=latest --platform linux/arm64 . --check
 ```
 
-As illustrated in the following figure, appending the flag to your existing build command will do the same full evaluation of the build configuration without executing the entire build. This faster feedback typically completes in less than a second, making for a smoother development process. 
+如图 3 所示,将标志附加到现有的构建命令将执行构建配置的完整评估,而无需执行完整的构建。这种更快的反馈通常在不到一秒内完成,使开发过程更加顺畅。
+![Build checks 433 f3][53]
 
-[![Build checks 433 f3](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201110%20938'%3E%3C/svg%3E "- Build Checks 433 F3")
 
-![Build checks 433 f3](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f3-1110x938.png "- Build Checks 433 F3")
+图 3:运行构建检查。
 
-][12]
+### 检查您的 CI 构建
 
-Figure 3: Running check of build.
+默认情况下,运行带有警告的 Docker 构建不会导致构建失败(返回非零退出代码)。然而,为了捕获 CI 构建中的任何回归,添加以下声明以指示检查生成错误。
 
-### Check your CI builds
-
-By default, running a Docker build with warnings will not cause the build to fail (return a non-zero exit code). However, to catch any regressions in your CI builds, add the following declarations to instruct the checks to generate errors. 
-
-```
+```dockerfile
 # syntax=docker/dockerfile:1
 # check=error=true
 
@@ -101,33 +88,29 @@ FROM alpine
 CMD echo "Hello, world!"
 ```
 
-### Checking multi-stage builds in CI
+### 检查 CI 中的多阶段构建
 
-During a build, only the specified stage/target, including its dependent, is executed. We recommend adding a stage check step in your workflow to do a complete evaluation of your Dockerfile. This is similar to how you would run automated tests before executing the full build.
+在构建过程中,仅执行指定的阶段/目标,包括其依赖项。我们建议在您的工件中添加一个阶段检查步骤,以完成对 Dockerfile 的完整评估。这与您在执行完整构建之前运行自动化测试的方式类似。
 
-If any warnings are detected, it will return a non-zero exit code, which will cause the workflow to fail, therefore catching any issues.
+如果检测到任何警告,将返回非零退出代码,这将导致工作流失败,从而捕获任何问题。
 
-```
+```dockerfile
 docker build --check .
 ```
 
-### Checking builds in Docker Build Cloud
+### 检查 Docker Build Cloud 中的构建
 
-Of course, this also works seamlessly with [Docker Build Cloud][13], both locally and through CI. Use your [e][14]xisting cloud builders to evaluate your builds. Your team now has the combined benefit of Docker Build Cloud performance with the reassurance that the build will align with best practices. In fact, as we expand our checks, you should see even better performance from your Docker Build Cloud builds.
+当然,这也与[Docker Build Cloud][13]无缝协作,无论是本地还是通过 CI。使用您的[e][14]xisting 云构建器来评估您的构建。您的团队现在可以享受 Docker Build Cloud 性能和构建将符合最佳实践的保证。事实上,随着我们扩展检查,您应该看到来自 Docker Build Cloud 构建的更好性能。
 
-[![Build checks 433 f4](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201110%20294'%3E%3C/svg%3E "- Build Checks 433 F4")
 
-![Build checks 433 f4](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f4-1110x294.png "- Build Checks 433 F4")
+![Build checks 433 f4][54]
+图 4:在 Docker Build Cloud 中运行检查。
 
-][15]
+### 配置规则
 
-Figure 4: Running checks in Docker Build Cloud.
+您有灵活性来配置 Build 检查中的规则,使用 skip 参数。您还可以指定`skip=all`或`skip=none`来打开和关闭规则。以下是跳过`JSONArgsRecommended`和`StageNameCasing`规则的示例:
 
-### Configure rules
-
-You have the flexibility to configure rules in Build checks with a skip argument. You can also specify `skip=all` or `skip=none` to toggle the rules on and off. Here’s an example of skipping the `JSONArgsRecommended` and `StageNameCasing` rules:
-
-```
+```dockerfile
 # syntax=docker/dockerfile:1
 # check=skip=JSONArgsRecommended,StageNameCasing
 
@@ -135,97 +118,48 @@ FROM alpine AS BASE_STAGE
 CMD echo "Hello, world!"
 ```
 
-### Dive deep into Docker Desktop Builds view
+### 深入了解 Docker Desktop Builds 视图
 
-In Docker Desktop Builds view, you can see the output of the build warnings. Locating the cause of warnings in Dockerfiles and understanding how to resolve them quickly is now easy.
+在 Docker Desktop Builds 视图中,您可以看到构建警告的输出。定位 Dockerfile 中警告的原因并快速了解如何解决它们现在很容易。
 
-As with build errors, warnings are shown inline with your Dockerfile when inspecting a build in Docker Desktop:
+与构建错误一样,警告在 Docker Desktop 中检查构建时显示在 Dockerfile 中:
 
-[![Build checks 433 f5](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201110%20977'%3E%3C/svg%3E "- Build Checks 433 F5")
 
-![Build checks 433 f5](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f5-1110x977.png "- Build Checks 433 F5")
+![Build checks 433 f5][55]
 
-][16]
+图 5:Docker Desktop Builds 视图中的构建检查警告。
 
-Figure 5: Build checks warnings in Docker Desktop Builds view.
+## 下一步是什么? 
 
-## What’s next? 
+### 更多检查
 
-### More checks
-
-We are excited about the new Builds checks to help you apply best practices to your Dockfiles, but this is just the start. In addition to the [current set of checks][17], we plan on adding even more to provide a more comprehensive evaluation of your builds. Further, we look forward to including custom checks and policies for your Docker builds.
+我们对新的 Builds 检查感到兴奋,以帮助您应用最佳实践到 Dockfiles,但这只是开始。除了[当前的检查集][17],我们计划添加更多以提供更全面的构建评估。此外,我们期待包括自定义检查和策略,以用于您的 Docker 构建。
 
 ### IDE integration
 
-The earlier you identify issues in your builds, the easier and less costly it is to resolve them. We plan to integrate Build checks with your favorite IDEs so you can get real-time feedback as you type.
+尽早识别构建中的问题,解决问题更容易且成本更低。我们计划将 Build 检查与您喜欢的 IDE 集成,以便您可以实时反馈。
 
-[![Build checks 433 f6](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201110%20740'%3E%3C/svg%3E "- Build Checks 433 F6")
+![Build checks 433 f6][56]
 
-![Build checks 433 f6](https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f6-1110x740.png "- Build Checks 433 F6")
+图 6:在 VS Code 中显示检查违规。
 
-][18]
+### GitHub Actions 和 Docker Desktop
 
-Figure 6: Check violations displaying in VS Code.
+您已经在 Docker Desktop 中看到 Build 检查警告,但更详细的见解即将到来。正如您可能已经听说,我们最近宣布了[Inspecting Docker Builds in GitHub Actions][19]的 beta 版本,我们计划在此新功能的基础上,包括对检查警告的支持。
 
-### GitHub Actions and Docker Desktop
+## 现在开始
 
-You can already see Build checks warnings in Docker Desktop, but more detailed insights are coming soon to Docker Desktop. As you may have heard, we recently announced [Inspecting Docker Builds in GitHub Actions][19]’s beta release, and we plan to build on this new functionality to include support for investigating check warnings.
+要开始使用 Docker Build 检查,升级到[Docker Desktop 4.33][20]今天并尝试使用现有的 Dockerfiles。前往[我们的文档][21]了解更多关于 Build 检查的详细信息。 
 
-## Get started now
+## 了解更多
 
-To get started with Docker Build checks, upgrade to [Docker Desktop 4.33][20] today and try them out with your existing Dockerfiles. Head over to [our documentation][21] for a more detailed breakdown of Build checks. 
-
-## Learn more
-
--   [Authenticate and up][22][date][23] to receive your subscription level’s newest Docker Desktop features.
--   What else is [new Docker Desktop 4.33][24]? GA Releases of Docker Debug and Docker Build Checks Plus Enhanced Configuration Integrity Checks.
--   New to Docker? [Create an account][25]. 
--   Subscribe to the [Docker Newsletter][26].
+-   [进行身份验证和更新][22]以获取您订阅级别的最新 Docker Desktop 功能。
+-   [Docker Desktop 4.33][24]还有什么新功能?Docker Debug 和 Docker 构建检查的 GA 版本以及增强的配置完整性检查。
+-   新到 Docker?[创建一个账户][25]。
+-   订阅[Docker Newsletter][26]。
 
 [build][27], [Docker Desktop][28], [dockerfile][29]
 
-[
-
-][30]
-
-#### [Docker Scout Health Scores: Security Grading for Container Images in Your Docker Hub Repo][31]
-
-By [Tazin Progga][32]
-
-[
-
-][33]
-
-#### [Docker Desktop 4.33: GA Releases of Docker Debug and Docker Build Checks Plus Enhanced Configuration Integrity Checks][34]   
-
-By [Deanna Sparks][35] July 29, 2024
-
-[
-
-][36]
-
-#### [How to Create Dockerfiles with GenAI][37] 
-
-By [Docker Labs][38] July 29, 2024
-
-#### Posted
-
-Jul 29, 2024
-
--   [][39]
--   [][40]
--   [][41]
-
-#### Post Tags
-
-[build][42][Docker Desktop][43][dockerfile][44]
-
-#### Categories
-
--   [Community][45]
--   [Company][46]
--   [Engineering][47]
--   [Products][48]
 
 [1]: https://www.docker.com/author/colin-hemmings/ "Posts by Colin Hemmings"
 [2]: https://docs.docker.com/build/checks/
@@ -275,3 +209,11 @@ Jul 29, 2024
 [46]: https://www.docker.com/blog/category/company/
 [47]: https://www.docker.com/blog/category/engineering/
 [48]: https://www.docker.com/blog/category/products/
+[49]:https://www.docker.com/wp-content/uploads/2023/12/Colin-Hemmings.webp
+[50]:https://www.docker.com/wp-content/uploads/2023/09/banner_how-to-set-up-the-weaviate-vector-database-on-docker-1110x583.png
+[51]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f1-1110x545.png
+[52]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f2-1110x948.png
+[53]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f3-1110x938.png 
+[54]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f4-1110x294.png
+[55]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f5-1110x977.png
+[56]:https://www.docker.com/wp-content/uploads/2024/07/build-checks-433_f6-1110x740.png
