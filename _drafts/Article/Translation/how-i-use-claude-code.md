@@ -1,6 +1,7 @@
 ---
 title: 我如何使用 Claude Code
 date: 2026-02-23T01:45:51.764Z
+authorURL: https://boristane.com/blog
 originalURL: https://boristane.com/blog/how-i-use-claude-code/#phase-2-planning
 translator: "luojiyin"
 reviewer: ""
