@@ -1,5 +1,5 @@
 ---
-title: matduggan.com
+title: Kubernetes 2.0 会是什么样子
 date: 2025-06-19T00:00:00.000Z
 authorURL: ""
 originalURL: https://matduggan.com/what-would-a-kubernetes-2-0-look-like/
@@ -7,121 +7,115 @@ translator: ""
 reviewer: ""
 ---
 
-[Skip to content][1]
 
-<!-- more -->
+-   [RSS 订阅][3]
 
-# [matduggan.com][2]
 
-It's JSON all the way down
+在 2012-2013 年左右，我开始在系统管理员社区中大量听到一种叫做"Borg"的技术。它（显然）是 Google 内部的一种 Linux 容器系统，运行着他们所有的服务。术语有点令人困惑，集群中有"cells"的单元里包含叫做"Borglet"的东西，但基本概念开始流传出来。有"服务"的概念和"作业"的概念，应用程序可以使用服务来响应用户请求，然后使用作业来完成运行时间更长的批处理任务。
 
--   [RSS Feed][3]
+然后在 2014 年 6 月 7 日，我们收到了 Kubernetes 的第一次提交。这是一个希腊语中的"舵手"一词，在前三年里几乎没有人能正确发音。（是 koo-ber-NET-ees？还是 koo-ber-NEET-ees？还是像我们其他人一样放弃，直接叫它 k8s 吧。）
 
-# What Would a Kubernetes 2.0 Look Like
+在此之后不久，Microsoft、RedHat、IBM、Docker 很快加入了 Kubernetes 社区，这使得 Kubernetes 从一个有趣的 Google 项目变成了"也许这是一个真正的产品？"2015 年 7 月 21 日，我们获得了 v1.0 版本发布，同时 CNCF 也成立了。
 
-Around 2012-2013 I started to hear a _lot_ in the sysadmin community about a technology called "Borg". It was (apparently) some sort of Linux container system inside of Google that ran all of their stuff. The terminology was a bit baffling, with something called a "Borglet" inside of clusters with "cells" but the basics started to leak. There was a concept of "services" and a concept of "jobs", where applications could use services to respond to user requests and then jobs to complete batch jobs that ran for much longer periods of time.
+在第一次提交后的十年里，Kubernetes 成了我职业生涯的重要组成部分。我在家里、在工作中、在副项目中使用它——任何有意义的地方。这是一个学习曲线陡峭的工具，但它也是一个巨大的力量倍增器。我们不再在服务器级别"管理基础设施"；一切都是声明式的、可扩展的、可恢复的，并且（如果你幸运的话）是自愈的。
 
-Then on June 7th, 2014, we got our first commit of Kubernetes. The Greek word for 'helmsman' that absolutely no one could pronounce correctly for the first three years. (Is it koo-ber-NET-ees? koo-ber-NEET-ees? Just give up and call it k8s like the rest of us.)
+但这个过程并非一帆风顺。一些常见的趋势已经出现，错误或配置不当源于 Kubernetes 不够规范化。即使在十年后，我们仍然看到生态系统内部存在大量动荡，人们踩在文档完善的陷阱上。那么，既然我们现在已经知道了这些，我们可以做些什么不同的事情，使这个伟大的工具适用于更多的人和问题呢？
 
-Microsoft, RedHat, IBM, Docker join the Kubernetes community pretty quickly after this, which raised Kubernetes from an interesting Google thing to "maybe this is a real product?" On July 21st 2015 we got the v1.0 release as well as the creation of the CNCF.
+### k8s 做对了什么？
 
-In the ten years since that initial commit, Kubernetes has become a large part of my professional life. I use it at home, at work, on side projects—anywhere it makes sense. It's a tool with a steep learning curve, but it's also a massive force multiplier. We no longer "manage infrastructure" at the server level; everything is declarative, scalable, recoverable and (if you’re lucky) self-healing.
+让我们从积极的一面开始。为什么我们现在还在讨论这个平台？
 
-But the journey hasn't been without problems. Some common trends have emerged, where mistakes or misconfiguration arise from where Kubernetes isn't opinionated enough. Even ten years on, we're still seeing a lot of churn inside of ecosystem and people stepping on well-documented landmines. So, knowing what we know now, what could we do differently to make this great tool even more applicable to more people and problems?
+**大规模容器化**
 
-### What did k8s get right?
+容器作为软件开发的工具是非常有意义的。抛弃单个笔记本电脑配置的混乱，采用一个标准的、可丢弃的概念，这个概念可以在整个技术栈中通用。虽然像 Docker Compose 这样的工具允许部署一些容器，但它们很笨重，仍然需要管理员来管理很多步骤。我用部署脚本设置了一个 Compose 堆栈，该脚本会将实例从负载均衡器中移除，拉取新容器，确保它们启动，然后重新添加到负载均衡器中，很多人都这样做。
 
-Let's start with the positive stuff. Why are we still talking about this platform now?
+K8s 允许这个概念扩展，意味着可以将笔记本电脑上的容器部署到数千台服务器上。这种灵活性使组织能够重新审视他们的整个设计策略，放弃单体架构，采用更灵活（通常也更复杂）的微服务设计。
 
-**Containers at scale**
+**低维护成本**
 
-Containers as a tool for software development make perfect sense. Ditch the confusion of individual laptop configuration and have one standard, disposable concept that works across the entire stack. While tools like Docker Compose allowed for some deployments of containers, they were clunky and still required you as the admin to manage a lot of the steps. I set up a Compose stack with a deployment script that would remove the instance from the load balancer, pull the new containers, make sure they started and then re-added it to the LB, as did lots of folks.
+如果你将运维的历史视为一种从"宠物到牛命名的时间线"，我们开始于我亲切地称之为"辛普森时代"。服务器是由团队设置的裸机盒子，它们通常有一次的名称，这些名称在团队内部成为了俚语，一切都是独一无二的。服务器运行的时间越长，它积累的冗余就越多，直到重启它们都成为可怕的操作，更不用说尝试重建它们了。我称之为"辛普森时代"是因为在我当时工作的职位中，用辛普森角色命名它们的情况出奇地普遍。没有任何东西能自我修复，一切都是手动操作。
 
-K8s allowed for this concept to scale out, meaning it was possible to take a container from your laptop and deploy an identical container across thousands of servers. This flexibility allowed organizations to revisit their entire design strategy, dropping monoliths and adopting more flexible (and often more complicated) micro-service designs.
+然后我们过渡到"01时代"。像 Puppet 和 Ansible 这样的工具变得普遍，服务器更加可丢弃，你开始看到像堡垒主机和其他访问控制系统成为常态。服务器并不都面向互联网，它们位于负载均衡器后面，我们放弃了可爱的名称，改用"app01"或"vpn02"这样的名称。组织设计成可以在某些时候丢失一些服务器。然而故障仍然不是自愈的，仍然需要有人 SSH 进入查看什么坏了，在工具中编写修复程序，然后在整个集群中部署。操作系统升级仍然是复杂的事情。
 
-**Low-Maintenance**
+我们现在处于"UUID时代"。服务器的存在是为了运行容器，它们是完全可丢弃的概念。没有人关心特定操作系统版本支持多长时间，你只需要烘焙一个新的 AMI 并替换整台机器。K8s 并不是唯一实现这一点的技术，但它是加速这一点的技术。现在，使用 SSH 密钥连接到底层服务器解决问题的堡垒服务器的想法更多地被视为"破窗"解决方案。几乎所有的解决方案都是"销毁那个节点，让 k8s 根据需要重新组织，创建一个新节点"。
 
-If you think of the history of Operations as a sort of "naming timeline from pets to cattle", we started with what I affectionately call the "Simpsons" era. Servers were bare metal boxes set up by teams, they often had one-off names that became slang inside of teams and everything was a snowflake. The longer a server ran, the more cruft it picked up until it became a scary operation to even reboot them, much less attempt to rebuild them. I call it the "Simpsons" era because among the jobs I was working at the time, naming them after Simpsons characters was surprisingly common. Nothing fixed itself, everything was a manual operation.
+很多对我的职业生涯至关重要的 Linux 技能现在很大程度上只是有了就好，而不是必须具备。对此你可以感到高兴或悲伤，我当然经常在这两种情绪之间切换，但这只是事实。
 
-Then we transition into the "01 Era". Tools like Puppet and Ansible have become common place, servers are more disposable and you start to see things like bastion hosts and other access control systems become the norm. Servers aren't all facing the internet, they're behind a load balancer and we've dropped the cute names for stuff like "app01" or "vpn02". Organizations designed it so they could lose some of their servers some of the time. However failures still weren't self-healing, someone still had to SSH in to see what broke, write up a fix in the tooling and then deploy it across the entire fleet. OS upgrades were still complicated affairs.
+**运行作业**
 
-We're now in the "UUID Era". Servers exist to run containers, they are entirely disposable concepts. Nobody cares about how long a particular version of the OS is supported for, you just bake a new AMI and replace the entire machine. K8s wasn't the only technology enabling this, but it was the one that accelerated it. Now the idea of a bastion server with SSH keys that I go to the underlying server to fix problems is seen as more of a "break-glass" solution. Almost all solutions are "destroy that Node, let k8s reorganize things as needed, make a new Node".
+K8s 作业系统并不完美，但它比多年来工作中极其常见的"雪花 cron01 盒子"要好得多。按照 cron 计划运行或从消息队列运行，现在可以可靠地将作业放入队列，让它们运行，如果它们不工作就重新启动，然后继续你的生活。
 
-A lot of the Linux skills that were critical to my career are largely nice to have now, not need to have. You can be happy or sad about that, I certainly switch between the two emotions on a regular basis, but it's just the truth.
+这不仅将人类从耗时且无聊的任务中解放出来，而且它也是更有效地利用资源。你仍然为队列中的每个项目启动一个 pod，但你的团队在"pod"概念内部有很大的灵活性，可以决定他们需要运行什么以及如何运行。对于很多人来说，这确实是一个生活质量改善，包括我自己，他们只需要能够轻松地后台任务而不必再考虑它们。
 
-**Running Jobs**
+**服务发现和负载均衡**
 
-The k8s jobs system isn't perfect, but it's so much better than the "snowflake cron01 box" that was an extremely common sight at jobs for years. Running on a cron schedule or running from a message queue, it was now possible to reliably put jobs into a queue, have them get run, have them restart if they didn't work and then move on with your life.
+硬编码的 IP 地址存在于应用程序中作为请求应该路由到何处的模板，这多年来一直是一个困扰我的诅咒。如果你幸运的话，这些依赖不是基于 IP 地址，而是实际上是 DNS 条目，你可以在不协调百万应用程序部署的情况下更改 DNS 条目背后的内容。
 
-Not only does this free up humans from a time-consuming and boring task, but it's also simply a more efficient use of resources. You are still spinning up a pod for every item in the queue, but your teams have a lot of flexibility inside of the "pod" concept for what they need to run and how they want to run it. This has really been a quality of life improvement for a lot of people, myself included, who just need to be able to easily background tasks and not think about them again.
+K8s 允许使用简单的 DNS 名称来调用其他服务。它消除了整类错误和麻烦，并将整个事情简化下来。使用 Service API，你有一个稳定的、长期存在的 IP 地址和主机名，你可以将内容指向它而不必考虑任何底层概念。你甚至有像 ExternalName 这样的概念，允许你像集群内部一样处理外部服务。
 
-**Service Discoverability and Load Balancing**
+## 我会在 Kubernetes 2.0 中加入什么？
 
-Hard-coded IP addresses that lived inside of applications as the template for where requests should be routed has been a curse following me around for years. If you were lucky, these dependencies weren't based on IP address but were actually DNS entries and you could change the thing behind the DNS entry without coordinating a deployment of a million applications.
+### 用 HCL 替代 YAML
 
-K8s allowed for simple DNS names to call other services. It removed an entire category of errors and hassle and simplified the entire thing down. With the Service API you had a stable, long lived IP and hostname that you could just point things towards and not think about any of the underlying concepts. You even have concepts like ExternalName that allow you to treat external services like they're in the cluster.
+YAML 的吸引力在于它既不是 JSON 也不是 XML，这就像说你的新车很棒，因为它既不是马也不是独轮车。它在 k8s 中演示效果更好，在仓库中看起来更漂亮，并且有作为简单文件格式的_错觉_。实际上，YAML 对于我们试图用 k8s 做的事情来说太过复杂，而且它不够安全。缩进容易出错，文件扩展性不好（你真的不想要一个超长的 YAML 文件），调试可能很烦人。YAML 在其规范中概述了_太多_细微的行为。
 
-## What would I put in a Kubernetes 2.0?
+我仍然记得第一次看到挪威问题时，不相信我所看到的情况。对于那些幸运到不需要处理这个问题的人来说，YAML 中的挪威问题是当 'NO' 被解释为 false 时。想象一下向你的挪威同事解释，他们的整个国家在你的配置文件中被评估为 false。再加上缺少引号导致的意外数字，这样的例子不胜枚举。有更好的文章解释为什么 YAML 很疯狂，比我能写的要好得多：[https://ruudvanasseldonk.com/2023/01/11/the-yaml-document-from-hell][4]
 
-### Ditch YAML for HCL
+**为什么选择 HCL？**
 
-YAML was appealing because it wasn't JSON or XML, which is like saying your new car is great because it's neither a horse nor a unicycle. It demos nicer for k8s, looks nicer sitting in a repo and has the _illusion_ of being a simple file format. In reality. YAML is just too much for what we're trying to do with k8s and it's not a safe enough format. Indentation is error-prone, the files don't scale great (you really don't want a super long YAML file), debugging can be annoying. YAML has _so many_ subtle behaviors outlined in its spec.
+HCL 已经是 Terraform 的格式，所以至少我们只需要讨厌一种配置语言而不是两种。它是强类型的，具有显式类型。已经有良好的验证机制。它专门设计用来完成我们要求 YAML 做的工作，而且阅读起来并不难得多。它具有人们已经在使用的内置函数，这将允许我们从 YAML 工作流中移除一些第三方工具。
 
-I still remember not believing what I was seeing the first time I saw the Norway Problem. For those lucky enough to not deal with it, the Norway Problem in YAML is when 'NO' gets interpreted as false. Imagine explaining to your Norwegian colleagues that their entire country evaluates to false in your configuration files. Add in accidental numbers from lack of quotes, the list goes on and on. There are much better posts on why YAML is crazy than I'm capable of writing: [https://ruudvanasseldonk.com/2023/01/11/the-yaml-document-from-hell][4]
+我敢打赌，今天 30% 的 Kubernetes 集群_已经_通过 Terraform 用 HCL 进行管理。我们不需要 Terraform 部分来获得优秀配置语言的很多好处。
 
-**Why HCL?**
+唯一的缺点是 HCL 比 YAML 稍微冗长一些，而且它的 Mozilla Public License 2.0 (MPL-2.0) 需要仔细的法律审查才能集成到像 Kubernetes 这样的 Apache 2.0 项目中。然而，考虑到它带来的使用体验改进，这些缺点都是可以接受的。
 
-HCL is already the format for Terraform, so at least we'd only have to hate one configuration language instead of two. It's strongly typed with explicit types. There's already good validation mechanisms. It is specifically designed to do the job that we are asking YAML to do and it's not much harder to read. It has built-in functions people are already using that would allow us to remove some of the third-party tooling from the YAML workflow.
+**为什么 HCL 更好**
 
-I would wager 30% of Kubernetes clusters today are _already_ being managed with HCL via Terraform. We don't need the Terraform part to get a lot of the benefits of a superior configuration language.
+让我们看一个简单的 YAML 文件。
 
-The only downsides are that HCL is slightly more verbose than YAML, and its Mozilla Public License 2.0 (MPL-2.0) would require careful legal review for integration into an Apache 2.0 project like Kubernetes. However, for the quality-of-life improvements it offers, these are hurdles worth clearing.
-
-**Why HCL is better**
-
-Let's take a simple YAML file.
-
-```
-# YAML doesn't enforce types
-replicas: "3"  # String instead of integer
+```yaml
+# YAML 没有强制类型
+replicas: "3"  # 字符串而不是整数
 resources:
   limits:
-    memory: 512  # Missing unit suffix
+    memory: 512  # 缺少单位后缀
   requests:
-    cpu: 0.5m    # Typo in CPU unit (should be 500m)
+    cpu: 0.5m    # CPU 单位错误（应该是 500m）
 ```
 
-Even in the most basic example, there are footguns everywhere. HCL and the type system would catch all of these problems.
+即使在最基本的例子中，到处都是陷阱。HCL 和类型系统会捕获所有这些问题。
 
-```
-replicas = 3  # Explicitly an integer
+```yaml
+replicas = 3  # 明确指定为整数
 
 resources {
   limits {
-    memory = "512Mi"  # String for memory values
+    memory = "512Mi"  # 内存值使用字符串
   }
   requests {
-    cpu = 0.5  # Number for CPU values
+    cpu = 0.5  # CPU 值使用数字
   }
 }
 ```
 
-Take a YAML file like this that you probably have 6000 in your k8s repo. Now look at HCL without needing external tooling.
+拿一个像这样的 YAML 文件，你的 k8s 仓库中可能有 6000 个这样的文件。现在看看不需要外部工具的 HCL。
 
 ```
-# Need external tools or templating for dynamic values
+# 需要外部工具或模板来处理动态值
+
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
 data:
-  # Can't easily generate or transform values
+  # 无法轻松生成或转换值
   DATABASE_URL: "postgres://user:password@db:5432/mydb"
   API_KEY: "static-key-value"
   TIMESTAMP: "2023-06-18T00:00:00Z"  # Hard-coded timestamp
 ```
 
-```
+```yaml
 resource "kubernetes_config_map" "app_config" {
   metadata {
     name = "app-config"
@@ -140,40 +134,40 @@ resource "random_string" "api_key" {
 }
 ```
 
-Here's all the pros you get with this move.
+这是这个改变带来的所有好处。
 
-1.  **Type Safety**: Preventing type-related errors before deployment
-2.  **Variables and References**: Reducing duplication and improving maintainability
-3.  **Functions and Expressions**: Enabling dynamic configuration generation
-4.  **Conditional Logic**: Supporting environment-specific configurations
-5.  **Loops and Iteration**: Simplifying repetitive configurations
-6.  **Better Comments**: Improving documentation and readability
-7.  **Error Handling**: Making errors easier to identify and fix
-8.  **Modularity**: Enabling reuse of configuration components
-9.  **Validation**: Preventing invalid configurations
-10.  **Data Transformations**: Supporting complex data manipulations  
+1.  **类型安全**：在部署前防止类型相关错误
+2.  **变量和引用**：减少重复并提高可维护性
+3.  **函数和表达式**：启用动态配置生成
+4.  **条件逻辑**：支持特定环境的配置
+5.  **循环和迭代**：简化重复配置
+6.  **更好的注释**：改进文档和可读性
+7.  **错误处理**：使错误更容易识别和修复
+8.  **模块化**：启用配置组件的重用
+9.  **验证**：防止无效配置
+10.  **数据转换**：支持复杂的数据操作  
     
 
-### Allow etcd swap-out
+### 允许 etcd 替换
 
-I know, I'm the 10,000 person to write this. Etcd has done a fine job, but it's a little crazy that it is the only tool for the job. For smaller clusters or smaller hardware configuration, it's a large use of resources in a cluster type where you will never hit the node count where it pays off. It's also a strange relationship between k8s and etcd now, where k8s is basically the only etcd customer left.
+我知道，我是第 10,000 个写这个的人。Etcd 做得很好，但它是唯一适合这个工作的工具，这有点疯狂。对于较小的集群或较小的硬件配置，它在集群类型中占用了大量资源，而你永远不会达到让它值得的节点数量。现在 k8s 和 etcd 之间的关系也很奇怪，k8s 基本上是剩下的唯一 etcd 客户。
 
-What I'm suggesting is taking the work of [kine][5] and making it official. It makes sense for the long-term health of the project to have the ability to plug in more backends, adding this abstraction means it (should) be easier to swap in new/different backends in the future and it also allows for more specific tuning depending on the hardware I'm putting out there.
+我建议的是将 [kine][5] 的工作正式化。为了项目的长期健康，能够插入更多后端是有意义的，添加这种抽象意味着（应该）更容易在未来换入新的/不同的后端，并且还允许根据我部署的硬件进行更具体的调整。
 
-What I suspect this would end up looking like is much like this: [https://github.com/canonical/k8s-dqlite][6]. Distributed SQlite in-memory with Raft consensus and almost zero upgrade work required that would allow cluster operators to have more flexibility with the persistence layer of their k8s installations. If you have a conventional server setup in a datacenter and etcd resource usage is not a problem, great! But this allows for lower-end k8s to be a nicer experience and (hopefully) reduces dependence on the etcd project.
+我怀疑这最终会看起来像这样：[https://github.com/canonical/k8s-dqlite][6]。具有 Raft 共识的分布式 SQlite 内存数据库，几乎不需要升级工作，这将允许集群操作员对其 k8s 安装的持久层有更多的灵活性。如果你在数据中心有传统的服务器设置，etcd 资源使用不是问题，那很好！但这允许低端 k8s 有更好的体验，并且（希望）减少对 etcd 项目的依赖。
 
-### Beyond Helm: A Native Package Manager
+### 超越 Helm：原生包管理器
 
-Helm is a perfect example of a temporary hack that has grown to be a permanent dependency. I'm grateful to the maintainers of Helm for all of their hard work, growing what was originally a hackathon project into the de-facto way to install software into k8s clusters. It has done as good a job as something could in fulfilling that role without having a deeper integration into k8s.
+Helm 是一个临时性变通方法的完美例子，这种变通方法已经成长为永久依赖。我感谢 Helm 的维护者的所有辛勤工作，将最初的黑客马拉松项目发展成为向 k8s 集群安装软件的事实方式。在没有与 k8s 更深入集成的情况下，它已经尽可能地履行了这一角色。
 
-All that said, Helm is a nightmare to use. The Go templates are tricky to debug, often containing complex logic that results in really confusing error scenarios. The error messages you get from those scenarios are often gibberish. Helm isn't a very good package system because it fails at some of the basic tasks you need a package system to do, which are transitive dependencies and resolving conflicts between dependencies.
+尽管如此，Helm 使用起来是一场噩梦。Go 模板很难调试，通常包含复杂的逻辑，导致真正令人困惑的错误场景。你从这些场景中得到的错误消息通常是胡言乱语。Helm 不是一个很好的包系统，因为它在包系统需要做的一些基本任务上失败了，这些任务是传递依赖项和解决依赖项之间的冲突。
 
-**What do I mean?**
+**我是什么意思？**
 
-Tell me what this conditional logic is trying to do:
+告诉我这个条件逻辑试图做什么：
 
-```
-# A real-world example of complex conditional logic in Helm
+```yaml
+# Helm 中复杂条件逻辑的真实示例
 {{- if or (and .Values.rbac.create .Values.serviceAccount.create) (and .Values.rbac.create (not .Values.serviceAccount.create) .Values.serviceAccount.name) }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -184,15 +178,15 @@ metadata:
 {{- end }}
 ```
 
-Or if I provide multiple values files to my chart, which one wins:
+或者如果我向我的 chart 提供多个值文件，哪一个会获胜：
 
-```
+```bash
 helm install myapp ./mychart -f values-dev.yaml -f values-override.yaml --set service.type=NodePort
 ```
 
-Ok, what if I want to manage my application and all the application dependencies with a Helm chart. This makes sense, I have an application that itself has dependencies on other stuff so I want to put them all together. So I define my sub-charts or umbrella charts inside of my Chart.yaml.  
+好的，如果我想用 Helm chart 管理我的应用程序和所有应用程序依赖项。这是有道理的，我有一个应用程序本身依赖于其他东西，所以我想把它们放在一起。所以我在 Chart.yaml 中定义我的子图表或伞形图表。  
 
-```
+```yaml
 dependencies:
 - name: nginx
   version: "1.2.3"
@@ -202,66 +196,68 @@ dependencies:
   repository: "<https://another.example.com/charts>"
 ```
 
-But assuming I have multiple applications, it's entirely possible that I have 2 services both with a dependency on nginx or whatever like this:  
+但假设我有多个应用程序，完全有可能我有 2 个服务都依赖于 nginx 或其他类似的东西：  
 
 ![](https://matduggan.com/content/images/2025/06/image-2.png)
 
-Helm doesn't handle this situation gracefully because template names are global with their templates loaded alphabetically. Basically you need to:
+Helm 不能优雅地处理这种情况，因为模板名称是全局的，模板按字母顺序加载。基本上你需要：
 
--   Don't declare a dependency on the same chart more than once (hard to do for a lot of microservices)
--   If you do have the same chart declared multiple times, has to use the exact same version
+-   不要多次声明对同一个图表的依赖（对于很多微服务来说很难做到）
+-   如果你确实多次声明了同一个图表，必须使用完全相同的版本
 
-The list of issues goes on and on.
+问题列表不胜枚举。
 
--   Cross-Namespace installation stinks
--   Chart verification process is a pain and nobody uses it
+-   跨命名空间安装很糟糕
+-   Chart 验证过程很痛苦，没有人使用它
 
-Let's just go to the front page of artifacthub:
+让我们直接访问 artifacthub 的首页：
 
 ![](https://matduggan.com/content/images/2025/06/image-3.png)
 
-I'll grab elasticsearch cause that seems important.
+我选择 elasticsearch，因为它看起来很重要。
 
 ![](https://matduggan.com/content/images/2025/06/image-4.png)
 
 ![](https://matduggan.com/content/images/2025/06/image-5.png)
 
-Seems _pretty bad_ for the Official Elastic helm chart. Certainly `ingress-nginx` will be right, it's an absolute critical dependency for the entire industry.
+对于官方 Elastic helm chart 来说，似乎_非常糟糕_。当然 `ingress-nginx` 会是正确的，它是整个行业的绝对关键依赖。
 
 ![](https://matduggan.com/content/images/2025/06/image-6.png)
 
-Nope. Also how is the maintainer of the chart "Kubernetes" and it's _still_ not marked as a `verified publisher`. Like Christ how much more verified does it get.
+不。另外，chart 的维护者如何是"Kubernetes"，并且_仍然_没有被标记为`verified publisher`。天啊，还要多么经过验证才行。
 
--   No metadata in chart searching. You can only search by name and description, not by features, capabilities, or other metadata.
+-   Chart 搜索中没有元数据。你只能按名称和描述搜索，而不能按功能、能力或其他元数据搜索。
 
 ![](https://matduggan.com/content/images/2025/06/image-7.png)
 
--   Helm doesn't strictly enforce semantic versioning
+-   Helm 不严格执行语义版本控制
 
 ```
-# Chart.yaml with non-semantic version
+# 具有非语义版本的 Chart.yaml
+
+```yaml
 apiVersion: v2
 name: myapp
 version: "v1.2-alpha" 
 ```
 
--   If you uninstall and reinstall a chart with CRDs, it might delete resources created by those CRDs. This one has screwed me _multiple times_ and is crazy unsafe.
+-   如果你卸载并重新安装带有 CRD 的 chart，它可能会删除这些 CRD 创建的资源。这个已经_多次_搞砸了我，而且非常不安全。
 
-I could keep writing for another 5000 words and still wouldn't have outlined all the problems. There isn't a way to make Helm good enough for the task of "package manager for all the critical infrastructure on the planet".
+我可以再写 5000 个字，仍然无法概述所有问题。没有办法让 Helm 足够好地完成"地球上所有关键基础设施的包管理器"的任务。
 
-#### What would a k8s package system look like?
+#### k8s 包系统会是什么样子？
 
-Let's call our hypothetical package system KubePkg, because if there's one thing the Kubernetes ecosystem needs, it's another abbreviated name with a 'K' in it. We would try to copy as much of the existing work inside the Linux ecosystem while taking advantage of the CRD power of k8s. My idea looks something like this:
+让我们称我们假设的包系统为 KubePkg，因为如果有一件事是 Kubernetes 生态系统需要的，那就是另一个带有'K'的缩写名称。我们将尝试复制 Linux 生态系统中的现有工作，同时利用 k8s 的 CRD 能力。我的想法看起来像这样：
 
 ![](https://matduggan.com/content/images/2025/06/image-8.png)
 
-The packages are bundles like a Linux package:  
+包是像 Linux 包一样的捆绑包：  
 
 ![](https://matduggan.com/content/images/2025/06/image-9.png)
 
-There's a definition file that accounts for as many of the real scenarios that you actually encounter when installing a thing.
+有一个定义文件，它涵盖了安装东西时实际遇到的许多真实场景。
 
-```
+```yaml
 apiVersion: kubepkg.io/v1
 kind: Package
 metadata:
@@ -275,7 +271,7 @@ spec:
   website: "https://postgresql.org"
   license: "PostgreSQL"
   
-  # Dependencies with semantic versioning
+  # 具有语义版本控制的依赖项
   dependencies:
     - name: storage-provisioner
       versionConstraint: ">=1.0.0"
@@ -283,7 +279,7 @@ spec:
       versionConstraint: "^2.0.0"
       optional: true
   
-  # Security context and requirements
+  # 安全上下文和要求
   security:
     requiredCapabilities: ["CHOWN", "SETGID", "SETUID"]
     securityContextConstraints:
@@ -294,7 +290,7 @@ spec:
         - port: 5432
           protocol: TCP
     
-  # Resources to be created (embedded or referenced)
+  # 要创建的资源（嵌入或引用）
   resources:
     - apiVersion: v1
       kind: Service
@@ -310,7 +306,7 @@ spec:
       spec:
         # StatefulSet definition
   
-  # Configuration schema using JSON Schema
+  # 使用 JSON Schema 的配置架构
   configurationSchema:
     type: object
     properties:
@@ -326,7 +322,7 @@ spec:
             pattern: "^[0-9]+[GMK]i$"
             default: "10Gi"
   
-  # Lifecycle hooks with proper sequencing
+  # 具有正确排序的生命周期钩子
   hooks:
     preInstall:
       - name: database-prerequisites
@@ -358,7 +354,7 @@ spec:
           spec:
             # Final backup job definition
   
-  # State management for stateful applications
+  # 有状态应用程序的状态管理
   stateManagement:
     backupStrategy:
       type: "snapshot"  # or "dump"
@@ -382,9 +378,9 @@ spec:
         strategy: "in-place"
 ```
 
-There's a real signing process that would be required and allow you more control over the process.  
+有一个真正的签名过程是必需的，并允许你对过程有更多的控制。  
 
-```
+```yaml
 apiVersion: kubepkg.io/v1
 kind: Repository
 metadata:
@@ -393,7 +389,7 @@ spec:
   url: "https://repo.kubepkg.io/official"
   type: "OCI"  # or "HTTP"
   
-  # Verification settings
+  # 验证设置
   verification:
     publicKeys:
       - name: "KubePkg Official"
@@ -409,9 +405,9 @@ spec:
     verificationLevel: "Strict"  # or "Warn", "None"
 ```
 
-Like how great would it be to have something where I could automatically update packages without needing to do anything on my side.
+拥有一个我可以自动更新包而不需要在我这边做任何事情的东西，那该有多好啊。
 
-```
+```yaml
 apiVersion: kubepkg.io/v1
 kind: Installation
 metadata:
@@ -422,7 +418,7 @@ spec:
     name: postgresql
     version: "14.5.2"
   
-  # Configuration values (validated against schema)
+  # 配置值（根据架构验证）
   configuration:
     replicas: 3
     persistence:
@@ -432,71 +428,69 @@ spec:
         memory: "4Gi"
         cpu: "2"
   
-  # Update policy
+  # 更新策略
   updatePolicy:
     automatic: false
     allowedVersions: "14.x.x"
     schedule: "0 2 * * 0"  # Weekly on Sunday at 2am
     approvalRequired: true
   
-  # State management reference
+  # 状态管理引用
   stateRef:
     name: postgresql-main-state
     
-  # Service account to use
+  # 要使用的服务账户
   serviceAccountName: postgresql-installer
 ```
 
-What k8s needs is a system that meets the following requirements:
+K8s 需要的是一个满足以下要求的系统：
 
-1.  **True Kubernetes Native**: Everything is a Kubernetes resource with proper status and events
-2.  **First-Class State Management**: Built-in support for stateful applications
-3.  **Enhanced Security**: Robust signing, verification, and security scanning
-4.  **Declarative Configuration**: No templates, just structured configuration with schemas
-5.  **Lifecycle Management**: Comprehensive lifecycle hooks and upgrade strategies
-6.  **Dependency Resolution**: Linux-like dependency management with semantic versioning
-7.  **Audit Trail**: Complete history of changes with who, what, and when, not what Helm currently provides.
-8.  **Policy Enforcement**: Support for organizational policies and compliance.
-9.  **Simplified User Experience**: Familiar Linux-like package management commands. It seems wild that we're trying to go a different direction from the package systems that have worked for decades.  
+1.  **真正的 Kubernetes 原生**：一切都是具有适当状态和事件的 Kubernetes 资源
+2.  **一流的状态管理**：对有状态应用程序的内置支持
+3.  **增强的安全性**：强大的签名、验证和安全扫描
+4.  **声明式配置**：没有模板，只有带有架构的结构化配置
+5.  **生命周期管理**：全面的生命周期钩子和升级策略
+6.  **依赖解析**：类似 Linux 的依赖管理与语义版本控制
+7.  **审计跟踪**：完整的更改历史记录，包括谁、什么和何时，而不是 Helm 当前提供的。
+8.  **策略执行**：对组织策略和合规性的支持。
+9.  **简化的用户体验**：熟悉的类似 Linux 的包管理命令。我们试图与已经工作了几十年的包系统走不同的方向，这似乎很疯狂。  
       
     
 
-### IPv6 By Default
+### 默认使用 IPv6
 
-Try to imagine, across the entire globe, how much time and energy has been invested in trying to solve any one of the following three problems.
+试着想象一下，在全球范围内，有多少时间和精力投入到试图解决以下三个问题中的任何一个。
 
-1.  I need this pod in this cluster to talk to that pod in that cluster.
-2.  There is a problem happening somewhere in the NAT traversal process and I need to solve it
-3.  I have run out of IP addresses with my cluster because I didn't account for how many you use. Remember: A company starting with a /20 subnet (4,096 addresses), deploys 40 nodes with 30 pods each, and suddenly realizes they're approaching their IP limit. Not that many nodes!
+1.  我需要这个集群中的这个 pod 与那个集群中的那个 pod 通信。
+2.  NAT 遍历过程中某处出现问题，我需要解决它
+3.  我的集群 IP 地址用完了，因为我没有考虑到你会使用多少个。记住：一个公司从 /20 子网（4,096 个地址）开始，部署 40 个节点，每个节点 30 个 pod，突然意识到他们正在接近 IP 限制。节点并不多！
 
-I am not suggesting the entire internet switches over to IPv6 and right now k8s happily supports IPv6-only if you want and a dualstack approach. But I'm saying now is the time to flip the default and just go IPv6. You eliminate a huge collection of problems all at once.
+我不是建议整个互联网切换到 IPv6，现在 k8s 如果你想要的话，很乐意支持仅 IPv6 和双栈方法。但我是说现在是时候切换默认值并直接使用 IPv6。你可以一次性消除大量问题集合。
 
--   Flatter, less complicated network topology inside of the cluster.
--   The distinction between multiple clusters becomes a thing organizations can choose to ignore if they want if they want to get public IPs.
--   Easier to understand exactly the flow of traffic inside of your stack.
--   Built-in IPSec
+-   集群内部更平坦、更简单的网络拓扑。
+-   多个集群之间的区别成为组织可以选择忽略的事情，如果他们想要获得公共 IP。
+-   更容易准确理解堆栈内部的流量流动。
+-   内置 IPSec
 
-It has nothing to do with driving IPv6 adoption across the entire globe and just an acknowledgement that we no longer live in a world where you have to accept the weird limitations of IPv4 in a universe where you may need 10,000 IPs suddenly with very little warning.
+这与推动全球采用 IPv6 无关，只是承认我们不再生活在一个你必须接受 IPv4 奇怪限制的世界中，在这个世界中你可能突然需要 10,000 个 IP 地址而几乎没有警告。
 
-The benefits for organizations with public IPv6 addresses is pretty obvious, but there's enough value there for cloud providers and users that even the corporate overlords might get behind it. AWS never needs to try and scrounge up more private IPv4 space inside of a VPC. That's gotta be worth something.
+拥有公共 IPv6 地址的组织的好处是显而易见的，但对于云提供商和用户来说，有足够的价值，甚至公司高管可能会支持它。AWS 永远不需要尝试在 VPC 内部寻找更多的私有 IPv4 空间。这肯定值得一些东西。
 
-### Conclusion
+### 结论
 
-The common rebuttal to these ideas is, "Kubernetes is an open platform, so the community can build these solutions." While true, this argument misses a crucial point: **defaults are the most powerful force in technology.** The "happy path" defined by the core project dictates how 90% of users will interact with it. If the system defaults to expecting signed packages and provides a robust, native way to manage them, that is what the ecosystem will adopt.
+对这些想法的常见反驳是，"Kubernetes 是一个开放平台，所以社区可以构建这些解决方案。"虽然这是真的，但这个论点忽略了一个关键点：**默认是技术中最强大的力量。**核心项目定义的"快乐路径"决定了 90% 的用户将如何与之交互。如果系统默认期望签名包并提供强大、原生的管理方式，那么生态系统将采用这种方式。
 
-This is an ambitious list, I know. But if we're going to dream, let's dream big. After all, we're the industry that thought naming a technology 'Kubernetes' would catch on, and somehow it did!
+我知道这是一个雄心勃勃的清单。但如果我们做梦，那就做大梦。毕竟，我们是那个认为命名技术为'Kubernetes'会流行起来的行业，而且不知何故它确实流行起来了！
 
-We see this all the time in other areas like mobile developer and web development, where platforms assess their situation and make _radical_ jumps forward. Not all of these are necessarily projects that the maintainers or companies _would_ take on but I think they're all ideas that _someone_ should at least revisit and think "is it worth doing now that we're this nontrivial percentage of all datacenter operations on the planet"?
+我们在其他领域经常看到这种情况，比如移动开发和 Web 开发，平台评估其情况并做出_激进_的前进。这些不一定是维护者或公司_会_承担的项目，但我认为它们都是_某人_应该至少重新审视并思考"既然我们现在占全球数据中心运营的相当大比例，这样做是否值得"的想法。
 
-Questions/feedback/got something wrong? Find me here: [https://c.im/@matdevdug][8]
+问题/反馈/有什么错误？在这里找到我：[https://c.im/@matdevdug][8]
 
-## Stay Updated
+## 保持更新
 
-Subscribe to the RSS feed to get new posts delivered to your feed reader.
+[订阅 RSS 源以获取新文章发送到您的阅读器。][9]
 
-[Subscribe via RSS][9]
-
-© 2025 matduggan.com. All rights reserved.
+© 2025 matduggan.com. 版权所有。
 
 [1]: #main-content
 [2]: https://matduggan.com
