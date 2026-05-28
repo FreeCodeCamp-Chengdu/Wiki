@@ -1,5 +1,5 @@
 ---
-title: Why stdout is faster than stderr?
+title: 为什么 stdout 比 stderr 更快？
 date: 2024-12-02T04:08:32.226Z
 authorURL: ""
 originalURL: https://blog.orhun.dev/stdout-vs-stderr/
@@ -7,54 +7,50 @@ translator: ""
 reviewer: ""
 ---
 
-# Why stdout is faster than stderr?
 
 <!-- more -->
 
-31 minute read Published: 2024-01-10
-
-I recently realized stdout is much faster than stderr for Rust. Here are my findings after diving deep into this rabbit hole.
+31 分钟阅读 发布时间：2024-01-10
+我最近意识到在 Rust 中 stdout 比 stderr 快得多。以下是我深入研究这个问题后的发现。
 
 ![rabbit](https://blog.orhun.dev/stdout-vs-stderr/rabbit.png)
 
-I have been using the terminal (i.e. command-line) for most of my day-to-day things for a while now. I was always fascinated by the fact that how quick and convenient the command-line might be and that's why I'm a proponent of using CLI (command-line) or TUI (terminal user interface) applications over GUI (graphical user interface) applications, when it is possible. On top of my already existing preference, I started to wholeheartedly believe that the terminal is the future after seeing the recent developments in the terminal user experience with tools like [Zellij][1] and GPU-powered terminal emulators such as [Alacritty][2]/[Wezterm][3]/[Rio][4]. When this huge potential is combined with a robust systems programming language such as [Rust][5], the result is often times a very smooth terminal and development experience which I think every developer appreciates when it comes to effectiveness, speed and safety.
+我已经使用终端（即命令行）处理日常大部分事务有一段时间了。我一直对命令行的快速和便捷感到着迷，这就是为什么在可能的情况下，我提倡使用 CLI（命令行）或 TUI（终端用户界面）应用程序而非 GUI（图形用户界面）应用程序。除了我已有的偏好外，在看到终端用户体验的最新发展，如 [Zellij][1] 和 GPU 驱动的终端模拟器如 [Alacritty][2]/[Wezterm][3]/[Rio][4] 后，我开始全心全意地相信终端就是未来。当这种巨大潜力与像 [Rust][5] 这样强大的系统编程语言结合时，结果通常是非常流畅的终端和开发体验，我认为每个开发者在考虑效率、速度和安全性时都会欣赏这一点。
+这很可能就是我最初被吸引去用 Rust 构建终端用户界面应用程序的原因。当我构建我的第一个 Rust/TUI 项目 [kmon][6] 时，我惊讶于像终端这样简单的东西的限制可以被突破，构建出让你更加沉迷于使用终端的应用程序。几年后，我成为了 [Ratatui][7] 的维护者之一，这是一个用于制作 TUI 的 Rust 库，我很荣幸成为核心团队成员之一，去年我们重新激活了无人维护的 [tui-rs][8] 库，将其改名为 Ratatui。
+考虑到这一切，作为一个日常终端用户和命令行开发者，我每天都在解决新的终端相关问题。有时我会遇到非常有趣的问题和挑战。正如你可能预期的那样，这篇博文就是其中一个问题的成果。
 
-That is most likely why I was drawn into building terminal user interface applications with Rust in the first place. When I built my first ever Rust/TUI project, [kmon][6], I was surprised by how the limits of a simple thing such as a terminal can be pushed to build applications which gets you addicted to using terminals even more. Couple of years later, I'm one of the maintainers of [Ratatui][7] which is a Rust library for cooking up TUIs and I'm blessed to be one of the core team members which revived the unmaintained [tui-rs][8] library as Ratatui last year.
+> 为什么 stdout 比 stderr 更快？
 
-When you take all of this into account, as a daily terminal user and a command-line developer, I'm tackling new terminal related issues every day. Sometimes I come across really interesting questions and problems. As you might expect, this blog post is the fruit of one of those questions.
+好的，现在让我们退一步，首先尝试理解这个问题。在一切之前，我们需要掌握一些关于 UNIX 的概念。
 
-> Why stdout is faster than stderr?
+**目录**
 
-Okay, now let's take a step back and try to understand the question first. We need to grasp some concepts about UNIX before everything.
-
-**Table of Contents**
-
--   [I/O Streams][9]
--   [TUI Applications and I/O][10]
--   [Measuring FPS][11]
--   [Profiling][12]
--   [Testing the buffered theory][13]
--   [Experimenting with buffered writes][14]
--   [Experimenting with raw writes][15]
--   [Making stdout faster][16]
--   [Findings][17]
--   [Other Languages][18]
--   [Conclusion][19]
+-   [I/O 流][9]
+-   [TUI 应用程序和 I/O][10]
+-   [测量 FPS][11]
+-   [性能分析][12]
+-   [测试缓冲理论][13]
+-   [缓冲写入实验][14]
+-   [原始写入实验][15]
+-   [让 stdout 更快][16]
+-   [发现][17]
+-   [其他开发语言][18]
+-   [结论][19]
 
 ---
 
-## I/O Streams
+## I/O 流
 
-[UNIX][20] operating system brought many groundbreaking advances into the world of computers and undoubtedly one of them was the standard streams. According to UNIX, every process has three streams opened for it when it starts up:
+[UNIX][20] 操作系统为计算机世界带来了许多突破性的进步，其中之一无疑是标准流。根据 UNIX，每个进程在启动时都会为其打开三个流：
 
-0\. Standard Input (`stdin`): for reading input.  
-1\. Standard Output (`stdout`): for writing conventional output.  
-2\. Standard Error (`stderr`): for printing diagnostic or error messages.
+0. 标准输入(`stdin`): 用于读取输入
+1. 标准输出 (`stdout`): 用于写入常规输出。
+2. 标准错误 (`stderr`): 用于打印诊断或错误消息。
 
-Here is an oversimplified example to demonstrate these streams:
+这里有一个过度简化的例子来演示这些流：
 
 ```bash
-# read the value of foo from stdin
+# 从 stdin 读取 foo 的值
 $ read -r foo
 test
 
@@ -62,14 +58,15 @@ test
 $ echo "value of foo is '$foo'"
 value of foo is 'test'
 
-# "echoo" command does not exist so an error message will be printed to stderr
+# "echoo" 命令不存在，所以错误消息会被打印到 stderr
 $ echoo "$foo"
 bash: echoo: command not found
 ```
 
-These I/O (input/output) streams are typically attached to the user's terminal via [tty][21] (TeleTYpe) which can be described as an interface that enables access to the terminal.
+这些 I/O（输入/输出）流通常通过 [tty][21]（电传打字机）连接到用户的终端，tty 可以被描述为一个能够访问终端的接口。
 
-As you might have heard multiple times, "everything is a file" according to the UNIX philosophy. This means that the I/O streams should also be a file and this is in fact true:
+正如你可能多次听说的，根据 UNIX 哲学，`一切皆文件`。这意味着 I/O 流也应该是文件，事实上确实如此：
+
 
 ```bash
 $ file /dev/stdin /dev/stdout /dev/stderr
@@ -85,7 +82,7 @@ So if they are files, we should be able to read them right?
 
 Actually, no-
 
-\*types quickly\*
+ *types quickly*
 
 ```bash
 $ cat /dev/stdout
