@@ -1,5 +1,5 @@
 ---
-title: COMMUNICATION TIPS FOR REMOTE WORK
+title: 远程工作的沟通技巧
 date: 2024-07-22T02:02:06.422Z
 authorURL: ""
 originalURL: https://thorstenball.com/remote-communication/
@@ -7,59 +7,45 @@ translator: ""
 reviewer: ""
 ---
 
-# COMMUNICATION TIPS FOR REMOTE WORK
+_作者: [Thorsten Ball][1]_
 
-<!-- more -->
+## 目标
 
-# \==================================
+1. **确保没有人因等待他人的输入而被阻碍**。我们希望减少或消除团队成员等待他人的时间。
+2. **提供明确的行动指南**。我们希望避免团队成员对下一步该做什么、我们说的话是什么意思、我们接下来想做什么、我们期望他们接下来做什么、或者他们可以选择采取的下一步行动感到困惑。
 
-_Author: [Thorsten Ball][1]_
+## 假设
 
-## Goals
+1. 团队是远程的。没有办公室。
+2. 团队分布在世界各地和多个时区。
 
-## —————
+1 + 2 等于高延迟。这意味着沟通并不便宜。不是走过去问鲍勃，而是安娜住在美国西海岸，大约 9 小时后上线。
 
-1.  **Nobody is blocked due to lack of input from others**. We want to reduce or eliminate the time our teammates wait for others.
-2.  **Provide clarity of action**. We want to avoid teammates asking themselves what they should do next, what we meant when we said something, what we want to do next, what we expect them to do next, or what the next steps are they could choose to take.
+## 我们如何实现这些目标？
 
-## Assumptions
+1. **利用时区**。时区很讨厌，没有人喜欢它们，程序员尤其如此。但我认为有一种方法可以利用时区，那就是：让每个人在你熟睡时工作。听起来像是那种坐在沙发上就能获得腹肌的广告，对吧？实际上更好，但有一个要求：**尽可能多地提供上下文，以便你的同事在接下来的大约 12 小时+内不需要任何额外的输入**。这很难，但是可能做到。
 
-## —————
+    _例子_：代码审查。当你离开一个代码审查时，要以这样的方式留下它：即 PR 的作者不需要等待更多输入，比如写`批准，但请在合并前添加测试` 或 `请求更改，因为 X 中有一个错误。一旦修复，随时合并和部署`。
 
-1.  Team is remote. No office.
-2.  Team is distributed, across the world and multiple time zones.
+2. **在工作进行中时分享事物**。是的，它们还没有完成，是的，你希望能添加更多内容，但：你可以在睡觉时已经获得反馈和评论。如果你预计在 WIP 和完成状态之间会有很大变化：添加一个小注释。“WIP：提议(issue)部分完成了一半，现状部分缺少 X、Y 和 Z。但请随时查看提议中的选项 1 并留下评论”。
+3. **阐述你为什么没有做某事**。如果你做了某事（留下审查、合并 PR、部署代码），通常很容易看出来，但如果你没有做，没人能看出为什么。
 
-1 + 2 equals “high latency”. That means communication is not cheap. There is no “Walk over to bob and ask him”. It’s “Anna lives on the US west coast and will come online in ~9 hours”.
+    假设你有一个 PR，你的团队想合并已经 3 天了。现在已经审查过了，构建是绿色的 — 看起来准备好了。但然后你发现了一些让你认为应该推迟合并的东西（我在这里编造东西，但比如说另一个团队对代码的那部分提出了担忧，你希望在合并前也让他们看一眼）。**现在你需要把你的思考过程写下来**。只需一句话：“嘿，团队 X 需要看看这个，这就是我不合并它的原因。如果他们给我们点赞，随时点击合并”。
 
-## How do we achieve these goals?
+4. **乐观执行**。你的任务完成了，但你不确定如何执行下一个任务。“我们现在是这样写文档的吗？我需要截图吗？”或者“我敢打赌我可以在 TypeScript 中快速搭建一些东西，但我不确定 CSS 是否正确”。与其等待：试一试！幸运的是，数字领域的材料是便宜的。当我们创建没有 CSS 的 UI 时，我们不会损失金钱。我们不必扔掉它重新开始，也不必为浪费的 HTML 支付另一袋钱。尝试一下，开始假设你做的将会在合理范围内，如果不是，也可以修复。
 
-## —————
+    准备选项！不确定你的分析查询是否应该包括客户数量还是这些客户的员工数量，而唯一能告诉你的是 Sophie，她从分析团队起床还有 5 小时？通常可以简单地编写两个查询并将它们作为选项呈现：“嘿 Sophie，我不太记得你需要什么，所以这里有 3 个选项：（1）客户数量（2）所有客户的员工总数（3）两者在同一个查询中”。
 
-1.  **Leverage time zones**. Time zones are nasty and nobody likes them, least of all programmers. But I think there is a way to leverage time zones and that is: let everyone work while you sleep soundly. Sounds as good as that sit-on-the-couch-and-get-abs-trainer commercial, right? It’s even better, but there’s a requirement: **hand off everything with as much context as possible** so that your colleagues don’t need any more input for the next ~12+ hours. That’s hard but it is possible.
-    
-    _Example_: code reviews. When you leave a code review, leave it in such a way that the author of the PR doesn’t have wait for more input, i.e. write “Approve, but please add a test before merging” or “Request changes, because there’s a bug in X. Once that’s fixed, feel free to merge & deploy”.
-    
-2.  **Share things while they’re still in work-in-progress**. Yes, they’re not finished, yes, you’d love to add more, but: you can already get feedback and comments while you sleep. If you anticipate that something will drastically change between WIP and Done status: add a little note. “WIP: The ‘proposal’ section is half-finished and the ‘status quo’ section is missing X, Y, and Z. But please feel free to look at the Option1 in ‘proposal’ and leave comments”.
-    
-3.  **Write out why you _didn’t_ do something**. If you do something (leave a review, merge a PR, deploy code) it’s usually easy to see, but if you don’t do it, nobody can see why.
-    
-    Say you have a PR that your team wanted to merge for 3 days. It’s now reviewed, build is green — looks like it’s ready to go. But then you discover something that makes you think you should delay merging (I’m making stuff up here, but say another team raised concerns around that area of the code and you want their eyes on it too before merging). **Now you need to write your thought process down**. Just one sentence: “hey, team X needs to look at this, that’s why I’m not merging it. If they give us thumbs-up, feel free to hit merge”. If you don’t, you might log off for the day, your teammate comes online and thinks: “oh, why isn’t this merged?” and hits the big fat button.
-    
-4.  **Optimistic execution**. You’re done with your task, but you’re not sure how to do your next task. “Do we write docs in this format now? Do I need screenshots?” or “I bet I can hack together something in TypeScript, but I’m not sure whether the CSS is correct”. Instead of waiting: give it a try! Luckily for us, material is cheap in the digital realm. We don’t lose money when we create a UI without CSS. We don’t have to throw it away and start over and pay for another bag of HTML that has been wasted. Give it try, start and assume that what you’ll do will be somewhere in the ballpark and if not, it can be fixed.
-    
-    Prepare options! Not sure whether your analytics query should include the count of customers or the count of employees at those customers and the only person to tell you is Sophie from the analytics team but she only gets up in 5 hours? It’s usually possible to simply write both queries and present them as options: “Hey Sophie, couldn’t remember exactly what you needed, so here’s 3 options: (1) num of customers (2) total num of employees at all customers (3) both in the same query”.
-    
-5.  **Never assume** that
-    
-    (a) somebody else knows what you know if you don’t have confirmation they do
-    
-    (b) somebody else read something or saw something if you want them to look at it.
-    
-    The mantra to use here: make the implicit explicit.
-    
-6.  **Don’t make others hunt for information**
-    
-    If you’re communicating with someone in medium 1 and say something like “I’ll write that up”: drop a link! Don’t assume the other person scans the rest of your online meeting grounds to where you dropped some information.
-    
+5. **永远不要假设**
+
+    (a) 如果你没有确认他们知道，就假设别人知道你所知道的。
+
+    (b) 如果你想让他们看一些东西，就假设别人已经读过或看过了。
+
+    这里要使用的口头禅是：将隐性的变为显性的。
+
+6. **不要让其他人寻找信息**
+
+    如果你在媒介 1 中与某人沟通，并说类似 `I’ll write that up`（我会写下来）的话：放一个链接！不要假设对方会扫描你在线会议地点的其余部分，去找你放下的一些信息。
 
 [1]: https://thorstenball.com
