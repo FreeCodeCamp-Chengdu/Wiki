@@ -1,83 +1,38 @@
 ---
-title: "The AWS Survival Guide for 2025: A Field Manual for the Brave and
-  the Bankrupt"
+title: "2025年 AWS 生存指南：勇敢者和破产者的实战手册"
 date: 2025-07-09T00:00:00.000Z
-author: By Corey Quinn
+author: Corey Quinn
 authorURL: https://www.lastweekinaws.com/blog/author/cquinn/
 originalURL: https://www.lastweekinaws.com/blog/the-aws-survival-guide-for-2025-a-field-manual-for-the-brave-and-the-bankrupt/
 translator: ""
 reviewer: ""
 ---
 
--   [Skip to primary navigation][1]
--   [Skip to main content][2]
+欢迎，勇敢的云探索者！你决定在 2025 年踏入 AWS 这片丛林，这里的服务增长速度比你的月账单还要快。忘掉那些老掉牙的服务，比如 S3、EC2 和 RDS……
 
-<!-- more -->
+## 第一章：服务名称生成器
 
-[![Last Week in AWS Logo](https://www.lastweekinaws.com/wp-content/uploads/2019/04/last-week-in-aws-logo.svg)][3]
+首先，你需要理解现代 AWS 服务的命名方式。他们显然请了一支拼字游戏冠军团队，这些人喝了太多咖啡，在早期就把所有好名字都用完了。需要无服务器 AI 驱动的量子计算吗？那就是 AWS QuantumLambdaForgeMaxProUltra™（但他们简称`Amazon Q`）。想部署一个简单的 API？你需要 AWS HyperGatewayMeshFabricOrchestrator360™。
 
-[Lower My AWS Bill][4] ![Mobile Navigation Icon](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2036%2034'%3E%3C/svg%3E)
+专业提示：如果服务名称听起来不像一个被淘汰的变形金刚，那它可能已经被弃用了，我当然是指`谷歌产品`。
 
-![Mobile Navigation Icon](https://www.lastweekinaws.com/wp-content/themes/lwiaws-2022/assets/images/utility/mobile-nav-closed.svg)
+## 第二章：文档迷宫
 
-![Close Mobile Navigation Icon](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3C/svg%3E)
+2025 年的 AWS 文档是一种"沉浸式体验"，就像被折磨一样。把它想象成一个密室逃脱游戏，奖品就是理解这个服务到底是做什么的。每个文档页面包含：
 
-![Close Mobile Navigation Icon](https://www.lastweekinaws.com/wp-content/themes/lwiaws-2022/assets/images/utility/mobile-nav-open.svg)
+-   47 个架构图，看起来像有人把一堆廉价剪贴画塞进鼻子里，然后在电路板上打了个喷嚏
+-   3 个相互矛盾的`入门指南`，它们之间差异巨大，假设你要么已经读过其他 2 个，要么至少在 AWS 服务团队工作了 5 年
+-   1 个在 2023 年有效的例子，为一个人准备的，为了赶 re:Invent 截止日期而匆忙完成
+-   0 个价格解释。（如果你觉得我在胡说八道，告诉我 Aurora DSQL Compute DPU 在现实世界中代表什么。我等着。）
 
--   [About][5]![Submenu Down Arrow](https://www.lastweekinaws.com/wp-content/themes/lwiaws-2022/assets/images/utility/caret-down-solid-orange.svg)
-    -   [Community][6]
-    -   [Contact][7]
-    -   [Contribute][8]
--   [Blog][9]
--   [Newsletter][10]
--   [Podcasts][11]![Submenu Down Arrow](https://www.lastweekinaws.com/wp-content/themes/lwiaws-2022/assets/images/utility/caret-down-solid-orange.svg)
-    -   [Last Week in AWS][12]
-    -   [Screaming in the Cloud][13]
-    -   [Nominate a Guest][14]
--   [Merch][15]
--   [Resources][16]![Submenu Down Arrow](https://www.lastweekinaws.com/wp-content/themes/lwiaws-2022/assets/images/utility/caret-down-solid-orange.svg)
-    -   [AWS Network Map][17]
--   [Sponsorships][18]
+记住：如果你第一次阅读就能理解文档，那你一定是在看错误服务的文档。如果这能给你任何安慰，你现在看的这个服务几乎肯定运行容器。
 
-![](https://www.lastweekinaws.com/wp-content/uploads/2025/07/pexels-towfiqu-barbhuiya-3440682-8515596-scaled.jpg)
+## 第三章：IAM 策略——黑暗艺术
 
-# The AWS Survival Guide for 2025: A Field Manual for the Brave and the Bankrupt
+编写 IAM 策略就像蒙着眼睛骑独轮车下四维象棋。在 2025 年，你需要权限来请求查看你所需权限的权限。最小权限原则已经演变成了"祝你好运，搞清楚为什么这不起作用，撞墙撞到放弃并允许*"的原则。
 
-[By Corey Quinn][19]
-
-Welcome, intrepid cloud explorer! You’ve decided to venture into the AWS jungle in 2025, where the services multiply faster than your monthly bill. Forget those quaint relics like S3, EC2, and RDS…
-
-[Facebook][20][Tweet][21][LinkedIn][22][Reddit][23]
-
-[Home][24] [Blog][25] The AWS Survival Guide for 2025: A Field Manual for the Brave and the Bankrupt
-
-[Prev][26]
-
-Welcome, intrepid cloud explorer! You’ve decided to venture into the AWS jungle in 2025, where the services multiply faster than your monthly bill. Forget those quaint relics like S3, EC2, and RDS that everyone always gravitates towards—despite being the lion’s share of AWS revenue, they’re practically stone tablets now when it comes to interest and attention. Let’s talk about navigating the _real_ AWS experience.
-
-## Chapter 1: The Service Name Generator
-
-First, you’ll need to understand modern AWS service naming. They’ve clearly hired a team of Scrabble champions who’ve been hitting the espresso too hard and have used up all the good letters / names in the early game. Need serverless AI-powered quantum computing? That’s AWS QuantumLambdaForgeMaxProUltra™ (but they call it “Amazon Q” for short). Want to deploy a simple API? You’ll need AWS HyperGatewayMeshFabricOrchestrator360™.
-
-Pro tip: If the service name doesn’t sound like a rejected Transformer, it’s probably deprecated, by which I of course mean “a Google product.”
-
-## Chapter 2: The Documentation Labyrinth
-
-AWS documentation in 2025 is an immersive experience in much the same way as being waterboarded. Think of it like an escape room where the prize is understanding what the service actually does. Each doc page contains:
-
--   47 architecture diagrams that look like someone sneezed on a circuit board with a nose full of cheap clipart
--   3 contradictory “Getting Started” guides that veer wildly between one another, and assume you’ve either read the other 2, or at the very least spent 5 years working on an AWS service team
--   1 example that worked in 2023, for one person, rushing to hit a re:Invent deadline
--   0 explanations of pricing. (If you think I’m shitposting, tell me what an Aurora DSQL Compute DPU represents in the real world. I’ll wait.)
-
-Remember: If you understand the documentation on first read, you’re reading the docs for the wrong service. If it’s any consolation, the one you’re reading almost certainly runs containers.
-
-## Chapter 3: IAM Policies—The Dark Arts
-
-Writing IAM policies is like playing 4D chess while blindfolded and riding a unicycle. In 2025, you need permissions to request permissions to view the permissions you need. The principle of least privilege has evolved into the principle of “good luck figuring out why this doesn’t work, beat your head on this until you give up and allow \*.”
-
-Sample modern IAM policy:
-
+现代 IAM 策略示例：
+```json
 {
   "Effect": "Deny",
   "Action": "Everything:YouActuallyNeed",
@@ -88,21 +43,22 @@ Sample modern IAM policy:
     }
   }
 }
+```
 
-## Chapter 4: The Billing Dashboard—A Horror Story
+## 第四章：计费仪表板——恐怖故事
 
-Opening your AWS bill is the modern equivalent of opening Pandora’s box. You’ll discover charges for:
+打开你的 AWS 账单就像打开了潘多拉魔盒的现代版本。你会发现以下费用：
 
--   Services you’ve never heard of
--   Regions you can’t pronounce—also known as _Mr. Jassy’s Geography Class_
--   “AWS ThoughtAboutProcessingYourRequest” fees
--   Data egress from your nightmares
+-   你从未听说过的服务
+-   你念不出来的地区——也被称为 _贾西先生的地理课_
+-   `AWS ThoughtAboutProcessingYourRequest`费用
+-   来自你噩梦的数据出口
 
-The Cost Explorer now requires its own Cost Explorer to understand why the Cost Explorer costs so much. Obnoxiously, there’s still no cohesive overview of everything in your account, despite the mediocre efforts of Resource Explorer to fumble its way into that gap.
+成本浏览器现在需要自己的成本浏览器来理解为什么成本浏览器本身成本这么高。令人讨厌的是，尽管资源浏览器做了平庸的努力来填补这个空白，但仍然没有对你的账户中所有内容的统一概览。
 
-## Chapter 5: re:Invent Announcements
+## 第五章：re:Invent公告
 
-Every re:Invent (_re:Invent: It’s the Week After Thanksgiving Because We Hate Our Families and Figure You Do, Too_™), AWS announces 73 new services that all do slightly different versions of the same thing. By 2025, there are [51 different ways to run containers on AWS][27], each with its own pricing model that would make a derivatives trader weep. You’ll need to choose between:
+每次 re:Invent（_re:Invent：感恩节后的一周，因为我们讨厌我们的家人，觉得你也是_™），AWS 都会宣布 73 个新服务，它们都做同一件事的略微不同版本。到 2025 年，有[51 种在 AWS 上运行容器的方法][27]，每种都有自己的定价模型，足以让衍生品交易员哭泣。你需要在以下选项中选择：
 
 -   AWS ContainerThing
 -   AWS KubernetesButSlightlyDifferent
@@ -111,134 +67,103 @@ Every re:Invent (_re:Invent: It’s the Week After Thanksgiving Because We Hate 
 -   AWS ContainerContainerContainer
 -   Amazon ScrewItJustUseLambda
 
-## Chapter 6: Support—The Mythical Creature
+## 第六章：支持——神话生物
 
-AWS Support in 2025 is a game of telephone played through Google Translate. Your simple question about network connectivity will result in a 3-week email chain discussing banana import regulations in Peru. The folks in AWS Support are amazing and precious (seriously, they’re incredible), which is why AWS has taken significant steps to wall off any and all access to them that doesn’t first pass through the gauntlet of useless GenAI. This is to test your mettle and ensure you’re determined to solve a problem, rather than just idly wishing a service would do what the documentation says it should.
+2025 年的 AWS 支持就像通过谷歌翻译玩的传话游戏。你关于网络连接的简单问题会导致为期 3 周的邮件往来，讨论秘鲁的香蕉进口法规。AWS 支持团队的人员都很棒和珍贵（说真的，他们令人难以置信），这就是为什么 AWS 采取了重要措施来阻止对他们的任何访问，除非首先通过无用的 GenAI 的考验。这是为了测试你的毅力，确保你决心解决问题，而不是只是空希望服务能做文档说它应该做的事情。
 
-### Support Tier Guide:
+### 支持等级指南
 
--   Basic: Thoughts and prayers
--   Developer: Automated responses that blame your code
--   Business: Real humans who’ve never used AWS
--   Enterprise On-Ramp: AWS learned to only rip out one of your kidneys at a time
--   Enterprise: Andy Jassy personally ignores your tickets
--   Shitposting Crisis: You’re reading it right now
+-   基础版：想法和祈祷
+-   开发者版：自动回复，指责你的代码
+-   商业版：从未使用过 AWS 的真实人类
+-   企业入门版：AWS 学会了每次只摘取你一个肾脏
+-   企业版：Andy Jassy 亲自忽略你的工单
+-   胡说八道危机：你现在正在读这个
 
-## Chapter 7: The Certification Treadmill
+## 第七章：认证跑步机
 
-AWS now releases new certifications faster than you can earn them. By the time you pass the “AWS Certified Quantum Blockchain Solutions Architect—Associate Level 3.5 Beta,” it’s already obsolete, because their testing partner Pearson Vue gets its corporate self off on abusing test-takers purely out of malice. Your LinkedIn profile will need its own CDN to host all your certification badges, but they’re too busy stuffing _that_ product with insipid GenAI, too.
+AWS 现在发布新认证的速度比你获得它们的速度还要快。当你通过 `AWS 认证量子区块链解决方案架构师——助理级 3.5 测试版` 时，它已经过时了，因为他们的测试合作伙伴 Pearson Vue 纯粹出于恶意，从折磨考生中获得企业满足感。你的 LinkedIn 个人资料将需要自己的 CDN 来托管你所有的认证徽章，但他们也忙着用乏味的 GenAI 填充_那个_产品。
 
-## Survival Tips
+## 生存技巧
 
-1.  **Budget like you’re planning for the apocalypse**—because your AWS bill might cause one
-2.  **Learn to love acronyms**—Your life now is EKS, ECS, ECR, EMR, EBS, EFS, and crying
-3.  **Embrace the chaos**—If something works on the first try, you’ve definitely done it wrong
-4.  **Keep a therapist on speed dial**—Preferably one who accepts payment in AWS credits; you can find them in the AWS Marketplace
-5.  **Remember the golden rule**—It’s always DNS. Even when it’s not DNS, it’s DNS. Which is a database.
+1.  **像准备世界末日一样做预算**——因为你的 AWS 账单可能会引发一个
+2.  **学会爱缩写词**——你现在的生活是 EKS、ECS、ECR、EMR、EBS、EFS 和哭泣
+3.  **拥抱混乱**——如果某件事第一次就成功，你肯定做错了
+4.  **把心理治疗师设为快速拨号**——最好是接受 AWS 积分付款的；你可以在 AWS 市场中找到他们
+5.  **记住黄金法则**——永远是 DNS。即使不是 DNS，也是 DNS。这是一个数据库。
 
-## Epilogue: The Path Forward
+## 后记：前进的道路
 
-Congratulations! You’re now ready to embark on your AWS journey. Remember, every expert was once a beginner who wondered why their [“simple” WordPress site][28] costs $3,000 a month to run.
+恭喜！你现在准备好开始你的 AWS 之旅了。记住，每个专家都曾经是初学者，他们想知道为什么他们的[`简单`WordPress 网站][28]每月花费 3000 美元运行。
 
-May your lambdas be warm, your regions be close, and your bills be… well, let’s just focus on the first two.
+愿你的 lambda 函数保持温暖，你的区域保持接近，你的账单……嗯，让我们只关注前两个。
 
-_Disclaimer: This guide is not responsible for any emotional damage, financial ruin, or existential crises resulting from using AWS. Side effects may include: compulsive dashboard refreshing, nightmares about cascading failures, and an irrational fear of the words “data transfer costs.”_
-
-![Corey Quinn Headshot](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20160%20160'%3E%3C/svg%3E)
+_免责声明：本指南对使用 AWS 导致的任何情感伤害、财务破产或存在危机不承担责任。副作用可能包括：强迫性仪表板刷新、关于级联故障的噩梦，以及对 `数据传输成本`这个词的非理性恐惧。_
 
 ![Corey Quinn Headshot](https://www.lastweekinaws.com/wp-content/uploads/2019/09/Corey_Quinn_2019_02-150x150.jpg)
 
-by Corey Quinn
+作者 Corey Quinn
 
-Corey is the Chief Cloud Economist at The Duckbill Group, where he specializes in helping companies improve their AWS bills by making them smaller and less horrifying. He also hosts the "Screaming in the Cloud" and "AWS Morning Brief" podcasts; and curates "Last Week in AWS," a weekly newsletter summarizing the latest in AWS news, blogs, and tools, sprinkled with snark and thoughtful analysis in roughly equal measure.
+Corey 是 The Duckbill Group 的首席云经济学家，他专门帮助公司通过减少和降低 AWS 账单的可怕程度来改善账单。他还主持 `Screaming in the Cloud` 和 `AWS Morning Brief` 播客；并策划 `Last Week in AWS`，这是一个每周通讯，总结 AWS 新闻、博客和工具的最新动态，大致同等程度地融入了尖刻评论和深思熟虑的分析。
 
-## More Posts from Corey
-
-[Back to the Blog][29]
-
-[![](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20350%20200'%3E%3C/svg%3E)
+## Corey 的更多文章
 
 ![](https://www.lastweekinaws.com/wp-content/uploads/2025/06/pexels-olly-3760809-350x200.jpg)
 
-][30]
+### [AWS 证书管理器宣布可导出 TLS 证书，我基本可以接受][31]
 
-### [AWS Certificate Manager Has Announced Exportable TLS Certificates, and I’m Mostly Okay With It][31]
+[作者 Corey Quinn][32]
 
-[By Corey Quinn][32]
+我认为说免费的 TLS 证书服务如 Let's Encrypt 和 AWS 证书管理器已经将加密连接推向主流并不为过。
 
-I don’t think it’s going too far to say that free TLS certificate offerings like Let’s Encrypt and AWS Certificate Manager have taken encrypted connections mainstream.
-
-[Read More about AWS Certificate Manager Has Announced Exportable TLS Certificates, and I’m Mostly Okay With It][33]
-
-[![](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20350%20200'%3E%3C/svg%3E)
+[阅读更多关于 AWS 证书管理器宣布可导出 TLS 证书，我基本可以接受][33]
 
 ![](https://www.lastweekinaws.com/wp-content/uploads/2025/06/pexels-lilartsy-1925536-350x200.jpg)
 
-][34]
+### [服务器#47B-2 的一天：AWS 数据中心回忆录][35]
 
-### [A Day in the Life of Server #47B-2: An AWS Data Center Memoir][35]
+[作者 Corey Quinn][36]
 
-[By Corey Quinn][36]
+或者：惊喜！我包含多重性，还有你的 `无服务器` 函数
 
-Or: Surprise! I Contain Multitudes and Also Your “Serverless” Functions
-
-[Read More about A Day in the Life of Server #47B-2: An AWS Data Center Memoir][37]
-
-[![Photo by Pei Peng on Unsplash](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20350%20200'%3E%3C/svg%3E)
+[阅读更多关于服务器#47B-2 的一天：AWS 数据中心回忆录][37]
 
 ![Photo by Pei Peng on Unsplash](https://www.lastweekinaws.com/wp-content/uploads/2025/05/pei-peng-3DJfbRW__Fo-unsplash-350x200.png)
 
-][38]
 
-### [Cloud Repatriation is Getting Complicated][39]
+### [云服务回迁变得复杂][39]
 
-[By Corey Quinn][40]
+[作者 Corey Quinn][40]
 
-Five years ago, I fairly confidently stated that Cloud Repatriation Isn’t a Thing, and I by and large stand by what I wrote. That said, it’s 2025, and the story has changed somewhat.
+五年前，我相当有信心地表示云服务回迁不是一件事，我大体上坚持我写的观点。也就是说，现在是 2025 年，情况有所变化。
 
-[Read More about Cloud Repatriation is Getting Complicated][41]
-
-![Billie Holding Mail Email Subscribe Icon](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20123%20140'%3E%3C/svg%3E)
+[阅读更多关于云服务回迁正变得复杂][41]
 
 ![Billie Holding Mail Email Subscribe Icon](https://www.lastweekinaws.com/wp-content/themes/lwiaws-2022/assets/images/blocks/billie-newsletter.svg)
 
-## Get the newsletter!
+## 获取通讯！
 
-Stay up to date on the latest AWS news, opinions, and tools, all lovingly sprinkled with a bit of snark.
+了解最新的 AWS 新闻、观点和工具，都带着一点尖刻评论的亲切点缀。
 
-<iframe style="display:none;width:0px;height:0px;" src="about:blank" name="gform_ajax_frame_1" id="gform_ajax_frame_1" title="This iframe contains the logic required to handle Ajax powered Gravity Forms."></iframe>
+云计算行业太过严肃了。我们要让它变得有趣起来。
 
-The world of cloud takes itself far too seriously. We aim to change that.
+[请降低我的 AWS 账单！][42]
 
-[Lower my AWS bill, please!][42]
+-   [通讯][47]
+-   [播客][48]
+-   [博客][49]
+-   [商品][50]
+-   [贡献][51]
 
-[][43][][44][][45][][46]
+-   [关于][52]
+-   [联系][53]
+-   [赞助][54]
+-   [披露][55]
 
--   [Newsletter][47]
--   [Podcasts][48]
--   [Blog][49]
--   [Merch][50]
--   [Contribute][51]
-
--   [About][52]
--   [Contact][53]
--   [Sponsorships][54]
--   [Disclosures][55]
-
-![Billie Footer](data://image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20400%20330'%3E%3C/svg%3E)
-
-![Billie Footer](https://www.lastweekinaws.com/wp-content/uploads/2022/01/billie-lwiaws-footer.svg)
-
-footprint-orange
 
 © 2025 The Duckbill Group. All Rights Reserved.
 
-[Privacy Policy][56] [Cookie Policy][57]
 
-           
-
-[1]: #genesis-nav-primary
-[2]: #genesis-content
 [3]: https://www.lastweekinaws.com
 [4]: https://duckbillgroup.com
 [5]: https://www.lastweekinaws.com/about/
