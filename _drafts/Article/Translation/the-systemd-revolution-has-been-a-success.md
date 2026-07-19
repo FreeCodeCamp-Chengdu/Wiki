@@ -1,175 +1,252 @@
 ---
-title: Tyblog
+title: systemd 的革命取得了彻底、完全、无可辩驳的成功
 date: 2025-07-22T01:12:01.636Z
 authorURL: ""
 originalURL: https://blog.tjll.net/the-systemd-revolution-has-been-a-success/
-translator: ""
+translator: "luojiyin"
 reviewer: ""
 ---
 
-### [«][1] systemd has been a complete, utter, unmitigated success
-
 <!-- more -->
 
--   8 July, 2025
--   1,782 words
--   7 minute read time
+-   2025 年 7 月 8 日
+-   1,782 字
+-   预计阅读时间 7 分钟
 
-![he-can-meme.png](/assets/images/he-can-meme.png)
+<img src="https://blog.tjll.net/assets/images/he-can-meme.png" alt="he-can-meme.png" width="400"/>
 
-Figure 1: The systemd wars of the tenties were harsh and casualties were many
+图 1：2010 年代的 systemd 之战异常激烈，伤亡惨重。
 
-The year is 2013 and I am _hopping mad_.
+时间回到 2013 年，我当时气得跳脚。
 
-`systemd` is replacing my plaintext logs with a binary format and pumping steroids into `init` and it is _laughing_ at me. The unix philosophy cries out: is this the end of Linux (or, as many are calling it, GNU plus Linux)?
+`systemd` 正在用二进制格式取代我的纯文本日志，还给 `init` 打了激素，它还在嘲笑我。Unix 哲学在呐喊：这就是 Linux（或者，正如许多人称呼的，GNU 加 Linux）的终结吗？
 
-The year is 2025 and I’m here to repent. Not only is `systemd` a worthy successor to traditional `init`, but I think that it deserves a defense for what it’s done for the landscape – especially given the hostile reception it initially received (and somehow continues to receive? for some reason?). No software is perfect – except for [TempleOS][2] – but I think that systemd has largely been a success story and proven many dire forecasts wrong (including my own). I was wrong!
+时间来到 2025 年，我在这里忏悔。不仅 systemd 是传统 `init` 的合格继任者，我还认为它值得为其所做的事情辩护——尤其是在它最初（甚至现在莫名其妙地）遭遇如此敌意的情况下。没有软件是完美的——除了 [TempleOS][2]——但我认为 systemd 基本上是一个成功的故事，证明了许多可怕的预测（包括我自己的）都是错误的。我错了！
 
-#### The `init` Paleolithic
+#### `init`  旧石器时代
 
-I hope that I don't need to whine about why the old status quo wasn't great – init scripts of varying quality with janky dependencies and wildly varying semantics were frustrating. It's sort of wild to me that I was working as a full-time software engineer during an era in which we were still writing bespoke _shell_ scripts to orchestrate process management. "Lost" or unmanaged processes, the weirdness of `S99`\-type directories for dependency ordering, and different interfaces into `/etc/init.d` scripts were all real problems.
+我希望我不需要再抱怨为什么过去的状况并不好——质量参差不齐的 init 脚本、混乱的依赖关系和极不统一的语义都令人沮丧。让我觉得不可思议的是，我作为一名全职软件工程师，竟然还经历过用定制 shell 脚本来编排进程管理的时代。“丢失”或无人管理的进程、用 `S99` 这类目录来排序依赖的怪异方式，以及各种 `/etc/init.d` 脚本的不同接口，这些都是真实存在的问题。
 
-![dino.png](/assets/images/dino.png)
+<img src="https://blog.tjll.net/assets/images/dino.png" alt="dino.png" width="400"/>
 
-Figure 2: /etc/init.d, uh, finds a way
+图 2：/etc/init.d，总会找到办法
 
-During the **LINUX INIT WARS**, you could probably write an upstart, s6, or OpenRC init script that didn't have _too_ many problems. But _even then_ you're supporting a variety of service management configuration formats with slightly differing behaviors. I wrote services for all of these different init systems! And the experience wasn't super!
+在 **LINUX INIT WARS** 期间，你或许能写出一份 upstart、s6 或 OpenRC 的 init 脚本，问题不算太多。但即便如此，你还是要支持各种服务管理配置格式，而它们的行为又略有不同。我为这些不同的 init 系统都写过服务！体验并不美好！
 
-Many of the deficiencies of traditional service management are more obvious in hindsight. Whereas bare-bones `init` was mostly about handling and/or reaping orphaned processes, entrusting a systemd-based PID 1 is also big for sandboxing and dependency management. We haven't even talked about timers, sockets, or mounts, either.
+许多传统服务管理的缺陷，事后看来更加明显。原始的 `init` 主要是处理和/或回收孤儿进程，而基于 systemd 的 PID 1 则在沙箱和依赖管理方面有了很大提升。我们还没谈到定时器、套接字或挂载点呢。
 
-#### I Deprecated Your Mom
+#### 我废弃了你妈
 
-We don't need to re-tread in great detail the history of _how_ we arrived here. But the _how_ is part of the reason I think systemd worked out in the end.
+我们没必要详细重述我们是怎么走到今天的。但"怎么走到这一步"正是我认为 systemd 最终成功的原因之一。
 
-Consider that the two primary ways that older init systems managed processes – either foregrounded or forked – were (and are!) fully supported modes. Modern systemd provides for more nuanced "I'm ready" signaling apart from "is the process alive" (via `Type=notify`), but this kind of backward compatability really helped bridge the legacy gap. The systemd authors even wrote [generator code to help migrate old services][3].
+要知道，旧的 init 系统管理进程的两种主要方式——前台或 fork——在 systemd 里都得到了完全支持。现代 systemd 提供了更细致的"我已就绪"信号（通过 `Type=notify`），而不仅仅是"进程是否存活"，这种向后兼容性极大地弥合了遗留鸿沟。systemd 的作者甚至写了[生成器代码来帮助迁移旧服务][3]。
 
-I don't think the ini-style configuration format is a panacea (I like [Dhall][4]), but that's another olive branch from systemd authors to system administrators: it doesn't require a turing-complete configuration format or domain-specific language. You can generally understand what this means when you read it and how to change it:
+我不认为 ini 风格的配置格式是万能的（我喜欢 [Dhall][4]），但这也是 systemd 作者向系统管理员伸出的橄榄枝：它不需要图灵完备的配置格式或领域专用语言。你通常能看懂它的意思，也知道怎么改：
 
 Systemd
 
--   Font used to highlight builtins.
--   Font used to highlight keywords.
--   Font used to highlight type and class names.
+-   用于高亮内置项的字体。
+-   用于高亮关键字的字体。
+-   用于高亮类型和类名的字体。
 
-```
+```plain
 [Service]
 ```
 
-[Defaults matter][5] and configuration languages matter, too. I appreciate that systemd chose one that is obvious.
+[约定大于配置][5]，配置语言也很重要。我很欣赏 systemd 选择了一个显而易见的方案。
 
-I can cite other examples but the point I want to make is that systemd deliberately chose
+我还可以举其他例子，但我想强调的是，systemd 有意选择了
 
--   backward compatability,
--   simple configuration paradigms,
--   and to proactively support and help folks migrate.
+-   向后兼容，
+-   简单的配置范式，
+-   并主动支持和帮助用户迁移。
 
-Not every open source project chooses to take explicit steps to support old paths on the road to deprecation. Lennart, you sweetheart.
+并不是每个开源项目都会明确采取措施支持旧路径的弃用。Lennart，你真是个好人。
 
-#### Trust the Process
+#### 信任这个进程
 
-I don't just think that systemd is our newer, cooler Dad now that does previously-annoying things better, but that systemd also brought us good, _brand new_ things.
+我不只是觉得 systemd 是我们现在更酷的"老爸"，能把以前烦人的事做得更好，systemd 还带来了许多全新的好东西。
 
-###### Won't Somebody Think of the Plaintext?
+###### 谁来关心纯文本？
 
-![log-logs.png](/assets/images/log-logs.png)
+<img src="https://blog.tjll.net/assets/images/log-logs.png" alt="log-logs.png" width="400"/>
 
-Figure 3: Logged logs logging loggily
+图 3：日志的日志在有条不紊地记录
 
-`journald` is here. Past Me hated it, too. The primary complaint with journald is that its journal files aren't in plaintext. Do I miss that? A little, yeah. I'm sort of a Linux boomer at heart and like to use `awk` for everything.
+`journald` 来了。过去的我也讨厌它。大家对 journald 的主要抱怨是它的日志文件不是纯文本。我会怀念吗？有一点吧。我骨子里还是个 Linux 老顽固，喜欢用 `awk` 处理一切。
 
-However, I _really_ like having one place to send `stdout` and `stderr`! Have you ever leveraged custom fields when writing logs to the journal natively? I attach `NOTIFY_SLACK=1` to some of my services and listen to my lab's log stream for these events and forward them along to a Slack channel to see logs I want more easily, it's great!
+但我 _真的_ 很喜欢有一个地方能收集所有 `stdout` 和 `stderr`！你有没有在写日志到 journal 时用过自定义字段？我会给一些服务加上 `NOTIFY_SLACK=1`，监听实验室的日志流，把这些事件转发到 Slack 频道，这样更容易看到我想要的日志，非常棒！
 
-Moreover, delegating the responsibility to journald is also convenient from a rotation and disk space perspective. With an awareness of filesystem space, I essentially never have to make rough guesses about rotation frequency any more, either[1][6]. Are you aware that part of the reason your journal files are in a binary format rather than plaintext because journald is compressing them transparently? That default choice is probably saving exabytes of space in aggregate across the entire computing space.
+此外，把日志轮转和磁盘空间的责任交给 journald 也很方便。它能感知文件系统空间，我基本再也不用猜测轮转频率了[1][6]。你知道你的日志文件是二进制格式而不是纯文本的部分原因，是因为 journald 会自动压缩它们吗？这个默认选择可能为整个计算领域节省了数十亿 GB 的空间。
 
-We can still live-tail logs, we can still forward log streams to different servers, and services can now reliably trust that their output will be captured during runtime. These are all just net Good Things.
+我们依然可以实时查看日志，依然可以把日志流转发到其他服务器，服务现在也能可靠地信任它们的输出会在运行时被捕获。这些都是纯粹的好事。
 
-###### Time-r Out
+###### 定时器（Time-r Out）
 
-![clock-wall.png](/assets/images/clock-wall.png)
+<img src="https://blog.tjll.net/assets/images/clock-wall.png" alt="clock-wall.png" width="400"/>
 
-I can still remember debugging `cron` scripts at my university job: was `$PATH` wrong? Should I `echo $USER` somewhere? Why am I emitting output to the _mail spool_ by default???
+我还记得在大学工作时调试 `cron` 脚本：是不是 `$PATH` 配错了？要不要在某处 `echo $USER`？为什么默认输出会发到 _邮件队列_ 里？
 
-If there's a candidate for "most legible over its predecessor", it might be the systemd timer system. Every Linux person feels some smug pride knowing what `0 0 * * *` means just by seeing a sequence of asterisks, but we all know `OnCalendar=daily` is easier to understand. Is `OnCalendar=minutely` a word? Not according to the grammar police, but you can probably infer what `minutely` means!
+如果要评选"最容易理解的替代品"，systemd 的定时器系统可能是最佳候选。每个 Linuxer 看到一串星号就能自豪地知道 `0 0 * * *` 是什么意思，但我们都知道 `OnCalendar=daily` 更容易理解。`OnCalendar=minutely` 是个词吗？语法警察可能不认，但你大概能猜到它的意思！
 
-I could fill a blog post with things I love about systemd timers, so here's a list instead:
+我可以写一整篇博客来讲我有多喜欢 systemd 的定时器，这里就列个清单吧：
 
--   `Persistent=true` is a great tool to ensure you don't miss timer executions.
--   `systemctl list-timers` is an excellent way to see everything scheduled on a machine.
--   The scheduling flexibility of `OnCalendar=` and `OnActiveSec=` are both powerful and easy to understand.
+-   `Persistent=true` 是个好工具，能确保你不会错过定时任务的执行。
+-   `systemctl list-timers` 是查看机器上所有定时任务的极佳方式。
+-   `OnCalendar=` 和 `OnActiveSec=` 的调度灵活性既强大又易懂。
 
-###### Socket Activation
+###### 套接字激活
 
-This _alone_ is a hugely different and powerful way to optimize a system. `nix-daemon` leverages this to great effect by "lazily" running only when you need it: the daemon will stop when you aren't building anything, but as soon as you ask for it, `nix-daemon.socket` will start `nix-daemon.service`. That's a great feature!
+光是这一点，就极大地优化了系统。`nix-daemon` 就很好地利用了这一点，通过"懒加载"只在需要时运行：当你不在构建时，守护进程会停止，但只要你需要，`nix-daemon.socket` 就会启动 `nix-daemon.service`。这太棒了！
 
-True to form, systemd even provides the `systemd-socket-proxyd` executable to bridge the gap for services that may not speak the native protocol yet. I leverate this trick with heavy-handed daemons like Minecraft servers to great effect: I don't need to alter the original daemon at all, but `systemd-socket-proxyd` lets me leverage socket activation to run it on-demand anyway.
+一如既往，systemd 甚至提供了 `systemd-socket-proxyd` 可执行文件，帮助那些还不支持原生协议的服务实现套接字激活。我用这个技巧让像 Minecraft 服务器这样重量级的守护进程按需启动：我不用改动原始守护进程，`systemd-socket-proxyd` 就能让我用套接字激活按需运行它。
 
-###### A Fistful of Units
+###### 一把"单元"
 
-![unit-hand.png](/assets/images/unit-hand.png)
+<img src="https://blog.tjll.net/assets/images/unit-hand.png" alt="unit-hand.png" width="400"/>
 
-When you glue together the various unit types - `service`, `path`, `timer`, `mount`, `socket`, and so on - you can almost create a state machine out of your system. I've done this on NixOS and it's a powerful way to model interdependent service management.
+当你把各种单元类型——`service`、`path`、`timer`、`mount`、`socket` 等——组合起来时，你几乎可以把系统变成一个状态机。我在 NixOS 上就这么做过，这是一种强大的方式来建模相互依赖的服务管理。
 
-Expressing system configuration like mounts as `mount` units lets you correctly order a daemon that needs a network mount to function. Triggering a service to restart when a file changes is easy with a `path` unit. The variety of options available to a `service` unit are mind-boggling and address almost every need you can think of. Seriously – did you know that `ConditionVirtualization=` can be used to run a unit depending on whether you're in AWS or Docker, for example? That's crazy.
+像挂载点这样的系统配置用 `mount` 单元表达，可以让依赖网络挂载的守护进程正确排序。用 `path` 单元可以很容易地在文件变更时触发服务重启。`service` 单元可用的选项多得令人咋舌，几乎能满足你能想到的所有需求。说真的——你知道 `ConditionVirtualization=` 可以用来判断你是在 AWS 还是 Docker 环境下运行，从而决定是否运行某个单元吗？太神奇了。
 
-###### Security
+###### 安全性
 
-If you've written a nontrivial number of `.service` units, then you know the options available for hardening services are vast in number. There are already many great blog posts about what they are; I won't go into that there.
+如果你写过不少 `.service` 单元，你就知道可用的加固选项多得惊人。已经有很多优秀的博客介绍这些选项，这里就不赘述了。
 
-Personally, my problem is **remembering what those options are**. Did you know that systemd built tools to help with that, too? **Each one of these** explains some operational security benefit you can wrap a daemon with and in most cases they're each easy to add and don't break functionality. These are a great way to take advantage of features like capabilities easily.
+我个人的问题是**记不住这些选项**。你知道 systemd 还专门做了工具来帮你记吗？**每一个选项**都解释了你可以用来加固守护进程的运维安全好处，而且大多数情况下都很容易添加，不会破坏功能。这些都是利用能力机制的好方法。
 
-shell
 
-```
+```shell
 systemd-analyze security polkit.service
 ```
 
-```
-  NAME                                                        DESCRIPTION                                                                                         EXPOSURE
-```
+|    | NAME | DESCRIPTION  | EXPOSURE |
+|:----:|:-------|:-----|:------:|
+| ✓ | SystemCallFilter=~@swap | System call allow list defined for service, and @swap is not included |  |
+| ✗ | SystemCallFilter=~@resources | System call allow list defined for service, and @resources is included (e.g. ioprio_set is allowed) | 0.2 |
+| ✓ | SystemCallFilter=~@reboot | System call allow list defined for service, and @reboot is not included |  |
+| ✓ | SystemCallFilter=~@raw-io | System call allow list defined for service, and @raw-io is not included |  |
+| ✗ | SystemCallFilter=~@privileged | System call allow list defined for service, and @privileged is included (e.g. chown is allowed) | 0.2 |
+| ✓ | SystemCallFilter=~@obsolete | System call allow list defined for service, and @obsolete is not included |  |
+| ✓ | SystemCallFilter=~@mount | System call allow list defined for service, and @mount is not included |  |
+| ✓ | SystemCallFilter=~@module | System call allow list defined for service, and @module is not included |  |
+| ✓ | SystemCallFilter=~@debug | System call allow list defined for service, and @debug is not included |  |
+| ✓ | SystemCallFilter=~@cpu-emulation | System call allow list defined for service, and @cpu-emulation is not included |  |
+| ✓ | SystemCallFilter=~@clock | System call allow list defined for service, and @clock is not included |  |
+| ✓ | RemoveIPC= | Service user cannot leave SysV IPC objects around |  |
+| ✗ | RootDirectory=/RootImage= | Service runs within the host's root directory | 0.1 |
+| ✓ | User=/DynamicUser= | Service runs under a static non-root user identity |  |
+| ✓ | RestrictRealtime= | Service realtime scheduling access is restricted |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_TIME | Service processes cannot change the system clock |  |
+| ✓ | NoNewPrivileges= | Service processes cannot acquire new privileges |  |
+| ✓ | AmbientCapabilities= | Service process does not receive ambient capabilities |  |
+| ✓ | CapabilityBoundingSet=~CAP_BPF | Service may not load BPF programs |  |
+| ✓ | SystemCallArchitectures= | Service may execute system calls only with native ABI |  |
+| ✗ | CapabilityBoundingSet=~CAP_SET(UID\|GID\|PCAP) | Service may change UID/GID identities/capabilities | 0.3 |
+| ✗ | RestrictAddressFamilies=~AF_UNIX | Service may allocate local sockets | 0.1 |
+| ✓ | ProtectSystem= | Service has strict read-only access to the OS file hierarchy |  |
+| ✓ | SupplementaryGroups= | Service has no supplementary groups |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_RAWIO | Service has no raw I/O access |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_PTRACE | Service has no ptrace() debugging abilities |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_(NICE\|RESOURCE) | Service has no privileges to change resource use parameters |  |
+| ✓ | CapabilityBoundingSet=~CAP_NET_ADMIN | Service has no network configuration privileges |  |
+| ✓ | CapabilityBoundingSet=~CAP_NET_(BIND_SERVICE\|BROADCAST\|RAW) | Service has no elevated networking privileges |  |
+| ✓ | CapabilityBoundingSet=~CAP_AUDIT_* | Service has no audit subsystem access |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_ADMIN | Service has no administrator privileges |  |
+| ✓ | PrivateNetwork= | Service has no access to the host's network |  |
+| ✓ | PrivateTmp= | Service has no access to other software's temporary files |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYSLOG | Service has no access to kernel logging |  |
+| ✓ | ProtectHome= | Service has no access to home directories |  |
+| ✓ | PrivateDevices= | Service has no access to hardware devices |  |
+| ✗ | ProtectProc= | Service has full access to process tree (/proc hidepid=) | 0.2 |
+| ✗ | ProcSubset= | Service has full access to non-process /proc files (/proc subset=) | 0.1 |
+| ✗ | PrivateUsers= | Service has access to other users | 0.2 |
+| ✗ | DeviceAllow= | Service has a device ACL with some special devices: char-rtc:r /dev/null:rw | 0.1 |
+| ✓ | KeyringMode= | Service doesn't share key material with other services |  |
+| ✓ | Delegate= | Service does not maintain its own delegated control group subtree |  |
+| ✗ | IPAddressDeny= | Service does not define an IP address allow list | 0.2 |
+| ✓ | NotifyAccess= | Service child processes cannot alter service state |  |
+| ✓ | ProtectClock= | Service cannot write to the hardware clock or system clock |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_PACCT | Service cannot use acct() |  |
+| ✓ | CapabilityBoundingSet=~CAP_KILL | Service cannot send UNIX signals to arbitrary processes |  |
+| ✓ | ProtectKernelLogs= | Service cannot read from or write to the kernel log ring buffer |  |
+| ✓ | CapabilityBoundingSet=~CAP_WAKE_ALARM | Service cannot program timers that wake up the system |  |
+| ✓ | CapabilityBoundingSet=~CAP_(DAC_*\|FOWNER\|IPC_OWNER) | Service cannot override UNIX file/IPC permission checks |  |
+| ✓ | ProtectControlGroups= | Service cannot modify the control group file system |  |
+| ✓ | CapabilityBoundingSet=~CAP_LINUX_IMMUTABLE | Service cannot mark files immutable |  |
+| ✓ | CapabilityBoundingSet=~CAP_IPC_LOCK | Service cannot lock memory into RAM |  |
+| ✓ | ProtectKernelModules= | Service cannot load or read kernel modules |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_MODULE | Service cannot load kernel modules |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_TTY_CONFIG | Service cannot issue vhangup() |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_BOOT | Service cannot issue reboot() |  |
+| ✓ | CapabilityBoundingSet=~CAP_SYS_CHROOT | Service cannot issue chroot() |  |
+| ✓ | PrivateMounts= | Service cannot install system mounts |  |
+| ✓ | CapabilityBoundingSet=~CAP_BLOCK_SUSPEND | Service cannot establish wake locks |  |
+| ✓ | MemoryDenyWriteExecute= | Service cannot create writable executable memory mappings |  |
+| ✓ | RestrictNamespaces=~user | Service cannot create user namespaces |  |
+| ✓ | RestrictNamespaces=~pid | Service cannot create process namespaces |  |
+| ✓ | RestrictNamespaces=~net | Service cannot create network namespaces |  |
+| ✓ | RestrictNamespaces=~uts | Service cannot create hostname namespaces |  |
+| ✓ | RestrictNamespaces=~mnt | Service cannot create file system namespaces |  |
+| ✓ | CapabilityBoundingSet=~CAP_LEASE | Service cannot create file leases |  |
+| ✓ | CapabilityBoundingSet=~CAP_MKNOD | Service cannot create device nodes |  |
+| ✓ | RestrictNamespaces=~cgroup | Service cannot create cgroup namespaces |  |
+| ✓ | RestrictNamespaces=~ipc | Service cannot create IPC namespaces |  |
+| ✓ | ProtectHostname= | Service cannot change system host/domainname |  |
+| ✓ | CapabilityBoundingSet=~CAP_(CHOWN\|FSETID\|SETFCAP) | Service cannot change file ownership/access mode/capabilities |  |
+| ✓ | LockPersonality= | Service cannot change ABI personality |  |
+| ✓ | ProtectKernelTunables= | Service cannot alter kernel tunables (/proc/sys, …) |  |
+| ✓ | RestrictAddressFamilies=~AF_PACKET | Service cannot allocate packet sockets |  |
+| ✓ | RestrictAddressFamilies=~AF_NETLINK | Service cannot allocate netlink sockets |  |
+| ✓ | RestrictAddressFamilies=~… | Service cannot allocate exotic sockets |  |
+| ✓ | RestrictAddressFamilies=~AF_(INET\|INET6) | Service cannot allocate Internet sockets |  |
+| ✓ | CapabilityBoundingSet=~CAP_MAC_* | Service cannot adjust SMACK MAC |  |
+| ✓ | RestrictSUIDSGID= | SUID/SGID file creation by service is restricted |  |
+| ✓ | UMask= | Files created by service are accessible only by service's own user by default |  |
+> Overall exposure level for polkit.service: 1.2 OK :-)
 
-#### Hater Sauce and The Terror From The Year 2000
 
-![pointing-at-systemd.png](/assets/images/pointing-at-systemd.png)
+#### 黑粉酱与千禧年的恐怖
 
-Part of the reason I wrote this piece is that I keep stumbling onto [threads like this][7]:
+<img src="https://blog.tjll.net/assets/images/pointing-at-systemd.png" alt="pointing-at-systemd.png" width="400"/>
 
-> i used to think that systemd was made the default and adopted by most distros because of its ease of use and the fact it supplied a whole bunch of things in one suite and i see where the appeal is in that but after switching to artix openrc, im just lost on why they decided to use systemd when openrc is objectively better when it comes to being an init system and for managing services, and all the other components of systemd suite can just be replaced, like why would they do this?
+我写这篇文章的部分原因是我总能碰到[这样的讨论串][7]：
 
-Oh my god. Look, I respect that `stvpidcvnt111111` has a right to their opinion, but we can't let rhetoric with the intellectual weight of a mediocre fart waft into spaces as critical as computing infrastructure. Get your stench **outta here**.
+> 我以前以为 systemd 之所以成为默认并被大多数发行版采用，是因为它易用，而且一套工具包涵盖了很多功能，我能理解这种吸引力。但自从换到 artix openrc 后，我就不明白为什么他们要用 systemd，明明 openrc 作为 init 系统和服务管理都更好，systemd 套件的其他组件也都能被替换，为什么要这样做？
 
-I'm not going to argue with straw men here, but wait, I am actually:
+天哪。好吧，我尊重 `stvpidcvnt111111` 有权发表自己的看法，但我们不能让这种像平庸的屁一样的言论飘进像计算基础设施这样关键的领域。请把你的臭气**带走**。
 
-> systemd does too much.
+我不打算和稻草人争论，但其实我还是要说：
 
-Have you considered that just "reaping old process IDs" wasn't _enough_ responsibility for an init daemon on a secure, robust system? That maybe it should be protecting other parts of the system and tracking the liveness of a desired service?
+> systemd 做得太多了。
 
-> systemd does a bad job
+你有没有想过，仅仅"回收旧进程 ID"对一个安全、健壮的 init 守护进程来说还**不够**？也许它还应该保护系统的其他部分，跟踪所需服务的存活状态？
 
-If I see an argument like this then I can only assume the interlocutor doesn't do software engineering. Any sort of consistent experience using `systemctl` or `journalctl` will tell you otherwise. I've never even _heard_ of systemd failing at its core responsibilities (starting, stopping, and managing daemons).
+> systemd 做得很烂
 
-> systemd is too bloated and tries to do too much
+如果我看到这种观点，只能认为对方不是做软件工程的。只要你用过 `systemctl` 或 `journalctl`，就会有完全不同的体验。我甚至**从没听说过** systemd 在核心职责（启动、停止、管理守护进程）上失败过。
 
-For everything that modern systemd does, I'm shocked that there aren't more vulnerabilities (and yes, I'm aware of the CVEs that systemd does have). I have no hard numbers supporting this claim, but I do wonder what the delta is between "exploits due to systemd itself" against "exploits blocked by the service sandboxing that systemd provides" is. The ease of dropping an executable in an unprivileged environment is a great feature. The industry as a whole is almost assuredly safer with the accessibility to process sandboxing that systemd brought down to an easier level.
+> systemd 太臃肿，什么都想做
 
-Yeah, `systemd-boot` and `systemd-networkd` do different things. Frankly, my life as an operator has been significantly _better_ thanks to the quality of software that comes out of `systemd-*` based projects and they're all configured in similar ways, too. I've integrated at a low level with systemd APIs as well, so it's not as if this scary-sounding sprawl is _closed_, either. The APIs are there! You can use them!
+以现代 systemd 的功能之多，我很惊讶它没有更多漏洞（是的，我知道 systemd 有 CVE）。我没有确切数据，但我很好奇"systemd 本身导致的漏洞"与"systemd 提供的服务沙箱机制阻止的漏洞"之间的差距。能轻松把可执行文件放进非特权环境是个很棒的特性。整个行业因为 systemd 降低了进程沙箱的门槛，几乎可以肯定变得更安全了。
 
-I've consistently found myself _preferring_ to use the systemd based alternatives like `systemd-resolved` and `systemd-networkd` when given the option because they end up being easier to configure and use.
+没错，`systemd-boot` 和 `systemd-networkd` 做的是不同的事情。坦率地说，作为运维人员，得益于 systemd-* 项目的高质量软件，我的生活明显**更好了**，而且它们的配置方式也很统一。我也在底层集成过 systemd 的 API，所以这种听起来很吓人的"扩张"其实并不封闭。API 都在那儿！你可以用！
 
-> red hat is trying to control the linux ecosystem with systemd
+我一贯更喜欢用 systemd 相关的替代品，比如 `systemd-resolved` 和 `systemd-networkd`，因为它们最终更容易配置和使用。
 
-![alex-jones.jpg](/assets/images/alex-jones.jpg)
+> red hat 想通过 systemd 控制 linux 生态
 
-This is absolutely true. I can't believe we, the **SYSTEMD GLOBALIST ILLUMINATI**, have been exposed.
+<img src="https://blog.tjll.net/assets/images/alex-jones.jpg" alt="alex-jones.jpg" width="400"/>
 
-## Footnotes:
+这是真的。我简直不敢相信我们，**SYSTEMD 全球光明会**，居然被曝光了。
 
-[1][8]
+## 脚注
 
-I know logrotate can do very intelligent things. But the configuration steps for journald is "print to stdout, done".
+我知道 logrotate 能做很多智能的事情。但配置 journald 只需要输出到 stdout，搞定。
 
 ---
 
-[« The Human Resources Alignment Problem][9]
+[人力资源协调问题][9]
 
 ---
 
@@ -178,7 +255,5 @@ I know logrotate can do very intelligent things. But the configuration steps for
 [3]: https://www.freedesktop.org/software/systemd/man/latest/systemd-sysv-generator.html
 [4]: https://dhall-lang.org/
 [5]: https://mattinouye.com/defaults-matter
-[6]: #fn.1
 [7]: https://old.reddit.com/r/artixlinux/comments/1lc382o/why_is_systemd_the_default/
-[8]: #fnr.1
 [9]: https://blog.tjll.net/human-resources-misalignment/ "Previous post: The Human Resources Alignment Problem"
